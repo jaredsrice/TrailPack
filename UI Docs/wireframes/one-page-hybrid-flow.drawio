@@ -1,0 +1,186 @@
+<mxfile host="65bd71144e">
+    <diagram id="desktop-wireframe" name="Desktop Wireframe">
+        <mxGraphModel dx="793" dy="718" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="desktop-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#cbd5e1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="20" width="1160" height="1540" as="geometry"/>
+                </mxCell>
+                <mxCell id="desktop-title" value="TrailPack One-Page Hybrid Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1;fontColor=#111827;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="45" width="620" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="desktop-note" value="Low-fidelity desktop wireframe for the Week 5 UI/UX workflow." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontColor=#475569;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="88" width="620" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="hero-section" value="Scenic mountain or nature background" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#2f4f46;gradientColor=#526d82;strokeColor=#1f2937;fontColor=#e5f3f0;fontSize=18;fontStyle=1;verticalAlign=top;align=left;spacing=24;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="130" width="1080" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="hero-brand" value="TrailPack" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="174" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="hero-question" value="Where would you like to go?" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=38;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="220" width="660" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="hero-search" value="Search a park or trail..." style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#ffffff;strokeColor=#d1d5db;fontColor=#64748b;fontSize=16;align=left;spacingLeft=24;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="300" width="620" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="suggestions-label" value="Suggestions" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="380" width="180" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="suggestion-park-1" value="Supported park&lt;br&gt;&lt;b&gt;Yellowstone National Park&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="415" width="260" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="suggestion-trail-1" value="Supported trail&lt;br&gt;&lt;b&gt;Fairy Falls Trail&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="415" width="260" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="suggestion-park-2" value="Supported park&lt;br&gt;&lt;b&gt;Zion National Park&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="660" y="415" width="220" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="suggestion-manual" value="Manual entry&lt;br&gt;&lt;b&gt;Enter hike details yourself&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="900" y="415" width="200" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="dest-section" value="Selected destination" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=18;fontStyle=1;verticalAlign=top;align=left;spacing=24;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="530" width="1080" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="dest-park" value="Park: Yellowstone National Park" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=#10b981;fontColor=#064e3b;fontSize=15;fontStyle=1;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="585" width="360" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="dest-next" value="Next: Choose a trail" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=15;fontStyle=1;fontColor=#334155;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="640" width="200" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="dest-trail-search" value="Search supported trails in this park..." style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=14;align=left;spacingLeft=18;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="634" width="480" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="dest-trails" value="Trail suggestions: Fairy Falls Trail, Mount Washburn, Lone Star Geyser" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f1f5f9;strokeColor=#cbd5e1;fontColor=#334155;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="690" width="710" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-section" value="Hike profile summary" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=18;fontStyle=1;verticalAlign=top;align=left;spacing=24;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="760" width="1080" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-distance" value="Distance&lt;br&gt;&lt;b&gt;4.8 miles&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;Supported profile&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="820" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-elevation" value="Elevation gain&lt;br&gt;&lt;b&gt;Missing&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#b45309&quot;&gt;Missing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#f59e0b;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="820" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-route" value="Route type&lt;br&gt;&lt;b&gt;Out and back&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;Supported profile&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="820" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-weather" value="Weather&lt;br&gt;&lt;b&gt;Rain possible&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;Forecast-based&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="930" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-duration" value="Expected duration&lt;br&gt;&lt;b&gt;Missing&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#b45309&quot;&gt;Missing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fffbeb;strokeColor=#f59e0b;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="430" y="930" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="profile-conditions" value="Known conditions&lt;br&gt;&lt;b&gt;User can add notes&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#64748b&quot;&gt;User-provided&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="930" width="300" height="88" as="geometry"/>
+                </mxCell>
+                <mxCell id="missing-section" value="Missing details" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=18;fontStyle=1;verticalAlign=top;align=left;spacing=24;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="1080" width="1080" height="185" as="geometry"/>
+                </mxCell>
+                <mxCell id="missing-elevation" value="Add elevation gain? This helps TrailPack judge effort and footing needs." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#334155;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1138" width="430" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="input-elevation" value="Elevation gain in feet" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=13;align=left;spacingLeft=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1172" width="300" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="missing-duration" value="Add expected duration? This helps adjust water and food suggestions." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#334155;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="1138" width="430" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="input-duration" value="Expected hours" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=13;align=left;spacingLeft=12;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="1172" width="300" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="items-section" value="Suggested items" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=18;fontStyle=1;verticalAlign=top;align=left;spacing=24;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="1300" width="1080" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="items-essential" value="&lt;b&gt;Essential&lt;/b&gt;&lt;br&gt;- Water&lt;br&gt;&amp;nbsp;&amp;nbsp;Reason: distance and forecast&lt;br&gt;- Rain layer&lt;br&gt;&amp;nbsp;&amp;nbsp;Reason: forecast-based rain risk&lt;br&gt;- Snack&lt;br&gt;&amp;nbsp;&amp;nbsp;Reason: expected duration missing" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=14;align=left;verticalAlign=top;spacing=16;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1360" width="470" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="items-optional" value="&lt;b&gt;Optional&lt;/b&gt;&lt;br&gt;- Trekking poles&lt;br&gt;&amp;nbsp;&amp;nbsp;Reason: helpful if elevation gain or slick conditions apply&lt;br&gt;- Extra dry socks&lt;br&gt;&amp;nbsp;&amp;nbsp;Reason: optional for wet trail" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=14;align=left;verticalAlign=top;spacing=16;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="1360" width="470" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="items-missing-note" value="Missing or uncertain: elevation gain, expected duration" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fff7ed;strokeColor=#fb923c;fontColor=#9a3412;fontSize=13;align=left;spacing=12;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1500" width="500" height="36" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="mobile-wireframe" name="Mobile Wireframe">
+        <mxGraphModel dx="858" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="520" pageHeight="1600" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="mobile-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#cbd5e1;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="20" width="460" height="1540" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-title" value="Mobile One-Page Flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#111827;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="45" width="360" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-hero" value="Scenic background" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#2f4f46;gradientColor=#526d82;strokeColor=#1f2937;fontColor=#e5f3f0;fontSize=15;fontStyle=1;verticalAlign=top;align=left;spacing=18;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="100" width="410" height="480" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-brand" value="TrailPack" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="145" width="170" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-question" value="Where would you like to go?" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=28;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="190" width="340" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-search" value="Search a park or trail..." style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#ffffff;strokeColor=#d1d5db;fontColor=#64748b;fontSize=14;align=left;spacingLeft=18;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="280" width="340" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-suggestions-label" value="Suggestions" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#ffffff;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="348" width="160" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-suggestion-1" value="Supported park&lt;br&gt;&lt;b&gt;Yellowstone National Park&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=12;align=left;spacing=10;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="380" width="340" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-suggestion-2" value="Supported trail&lt;br&gt;&lt;b&gt;Fairy Falls Trail&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=12;align=left;spacing=10;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="445" width="340" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-suggestion-3" value="Manual entry&lt;br&gt;&lt;b&gt;Enter hike details yourself&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#fef3c7;strokeColor=#d97706;fontColor=#111827;fontSize=12;align=left;spacing=10;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="510" width="340" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-dest" value="Selected destination" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=17;fontStyle=1;verticalAlign=top;align=left;spacing=18;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="600" width="410" height="185" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-dest-copy" value="Park: Yellowstone National Park&lt;br&gt;Choose a trail" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#ecfdf5;strokeColor=#10b981;fontColor=#064e3b;fontSize=13;align=left;spacing=10;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="655" width="340" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-trail-search" value="Search trails..." style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=13;align=left;spacingLeft=14;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="725" width="340" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-profile" value="Hike profile" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=17;fontStyle=1;verticalAlign=top;align=left;spacing=18;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="820" width="410" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-profile-copy" value="Distance: 4.8 miles&lt;br&gt;Elevation gain: Missing&lt;br&gt;Route type: Out and back&lt;br&gt;Weather: Rain possible" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="875" width="340" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-missing" value="Missing details" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=17;fontStyle=1;verticalAlign=top;align=left;spacing=18;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="1045" width="410" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-elevation-label" value="Elevation gain" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontColor=#334155;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1102" width="180" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-elevation-input" value="feet" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=13;align=left;spacingLeft=12;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1130" width="340" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-duration-label" value="Expected duration" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontColor=#334155;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1178" width="180" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-duration-input" value="hours" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#64748b;fontSize=13;align=left;spacingLeft=12;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1206" width="340" height="38" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-items" value="Suggested items" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fillColor=#ffffff;strokeColor=#cbd5e1;fontColor=#111827;fontSize=17;fontStyle=1;verticalAlign=top;align=left;spacing=18;" vertex="1" parent="1">
+                    <mxGeometry x="55" y="1270" width="410" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-essential" value="&lt;b&gt;Essential&lt;/b&gt;&lt;br&gt;- Water&lt;br&gt;- Rain layer&lt;br&gt;- Snack" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1325" width="340" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="mobile-optional" value="&lt;b&gt;Optional&lt;/b&gt;&lt;br&gt;- Trekking poles&lt;br&gt;- Extra dry socks" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#111827;fontSize=13;align=left;verticalAlign=top;spacing=14;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1420" width="340" height="70" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
