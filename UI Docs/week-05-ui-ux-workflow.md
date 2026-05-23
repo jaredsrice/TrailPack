@@ -140,6 +140,14 @@ If AI-assisted explanations are added later, the AI should only receive structur
 
 Every explanation should be short, practical, and evidence-based. If a recommendation depends on uncertain information, the explanation should say so plainly.
 
+## Technology Approach
+
+TrailPack will likely be built as a web application using React, Next.js, and TypeScript. React will handle the one-page user interface, Next.js will provide the app structure and backend API routes, and TypeScript will help define reliable data shapes for hike profiles, weather/context data, missing fields, and packing-list recommendations.
+
+The frontend will use HTML and CSS through React components to create the landing page, search experience, trail detail sections, missing-detail prompts, and packing-list output. The backend portion will focus on fetching and normalizing data from public or approved sources. Candidate data sources include weather APIs, geocoding/location tools, OpenStreetMap or Overpass, Nominatim, National Park Service resources, Recreation.gov/RIDB, or saved supported hike profiles if live lookup is limited.
+
+The first prototype should not depend on every API working perfectly. The practical approach is to start with saved sample hike profiles, add weather or weather-like context where feasible, and then use rule-based TypeScript logic to generate the initial packing list. If an AI-assisted recommendation path is added later, it should build on the same structured data and guardrails rather than replacing the baseline logic.
+
 ## Prototype Scope
 
 For the first working version, TrailPack should focus on:
