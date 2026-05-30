@@ -1,76 +1,317 @@
 # TrailPack Week 6 Trail Data Feasibility and Fallback Decision
 
 Date: 2026-05-28  
+Updated: 2026-05-30  
 Course phase: CSE 499A Week 6  
 Milestone: Trail-data feasibility notes and fallback decision completed for 5-10 representative trails, including returned fields, missing fields, unreliable fields, and fallback needs.
 
-## Summary Decision
+## Current Decision
 
-TrailPack should use saved supported hike profiles as the primary prototype data path, with live weather added when coordinates are known.
+TrailPack should not rely on the user manually entering base trail data for normal use. That would make the app tedious and would not solve the planning problem.
 
-Live public lookup is useful, but it is not reliable enough to be the only source for the Week 8 thin vertical slice. Public sources can usually help with coordinates, current forecast context, official park alerts, and some OpenStreetMap path tags. They do not consistently return the full hike-profile fields TrailPack needs, especially distance, elevation gain, route type, expected duration, and trail-specific condition details.
+The current plan is:
 
-Recommended prototype path:
+1. Use **Trailforks downloaded trail data** as the main trail-data source for supported regions.
+2. Use **NPS API data** for official alerts, park context, and accessibility/terrain notes.
+3. Use **Open-Meteo** for live weather.
+4. Use **USGS Trails** as a public-domain backup/reference for trail geometry and segment length.
+5. Keep manual entry as a fallback for unsupported trails only.
 
-- Use saved supported hike profiles for trail name, park or region, state, coordinates, distance, elevation gain, route type, and expected duration.
-- Use Open-Meteo for weather/context after TrailPack has coordinates.
-- Use Nominatim only for location lookup or search suggestions after sanity-checking the result against the expected park/state.
-- Use NPS API alerts as optional official context when an NPS park code applies and a real API key is available.
-- Treat Overpass/OpenStreetMap trail tags as supplemental and experimental, not as the source of truth for complete hike profiles.
-- Defer RIDB/Recreation.gov for the prototype unless an API key is added and a later check proves it returns useful trail-level data.
+Trailforks API access has been requested by email. Until API access is approved, the working use case is direct download/export of available Trailforks trail data.
 
-## Sources Checked
+## Why The Decision Changed
 
-| Source | What Was Checked | Useful Returned Fields | Missing Or Unreliable Fields | Prototype Use |
-|---|---|---|---|---|
-| Nominatim / OpenStreetMap search | Trail and landmark name searches | Display name, latitude, longitude, OSM object type, rough category/type | Not all trail names resolve; some generic queries resolve to the wrong trail; no distance/elevation/duration | Useful for search suggestions and coordinates only after sanity checks |
-| Open-Meteo Forecast API | Weather from coordinates | Current temperature, precipitation, wind speed, daily min/max, precipitation probability, timezone | No trail conditions, closures, mud, ice, shade, exposure, or route facts | Good live source for weather-based packing rules |
-| National Park Service API | Park alerts, places, and things-to-do for NPS park codes | Official alert titles, alert categories, park context, broad activity/place records | DEMO_KEY rate-limited quickly; places/things-to-do were broad and not always trail-profile data | Useful optional official-alert context with a real API key and caching |
-| Overpass API | Broad name searches and bounded path searches around known coordinates | Nearby `highway=path`, `foot`, `surface`, `operator`, and occasional `sac_scale` tags | Broad name searches often timed out or returned no results; bounded results may include nearby paths instead of the target trail; no standard distance/elevation/duration | Supplemental only; not reliable enough for core prototype data |
-| RIDB / Recreation.gov | Basic unauthenticated request | No usable data without credentials | Returned `401 Unauthorized Access`; no RIDB key was available in the environment | Defer unless an API key is added later |
+The first feasibility pass showed that NPS, USGS, OpenStreetMap, and weather APIs do not produce a complete AllTrails-style trail profile by themselves.
 
-## Representative Trail Checks
+The missing piece was a practical trail dataset with fields like distance, elevation, difficulty, status, condition, and trail type. Trailforks appears to provide those fields through its trail data export tool, under a free-access/share-alike use model with proper credit.
 
-Weather values below are a live snapshot from 2026-05-28. They prove field availability, not permanent trail conditions.
+That makes Trailforks the best current candidate for the base trail dataset.
 
-| Trail | Region | Public Data Found | Missing Or Risky Data | Prototype Decision |
-|---|---|---|---|---|
-| Delicate Arch | Arches National Park, Utah | Nominatim found Delicate Arch at `38.7434703, -109.4993193` as a natural arch. Open-Meteo returned current temperature, wind, precipitation, daily min/max, and precipitation probability. NPS alerts returned one official alert: "Trip-planning tips for 2026." A bounded Overpass query found nearby paths including `Delicate Arch Trail` with tags such as `highway=path`, `foot=designated`, `surface=ground`, `sac_scale=mountain_hiking`, and `operator=National Park Service`. | Public sources did not provide a complete hike profile with distance, elevation gain, route type, and expected duration. NPS places/things-to-do results were broad. | Use as a supported saved profile. Add live weather and optional official alert/path tags. |
-| Angels Landing | Zion National Park, Utah | Nominatim found Angels Landing at `37.2693149, -112.94799` as a peak. Open-Meteo returned weather fields. NPS alerts returned several official alerts, including fire restrictions and closures. NPS things-to-do returned related Zion hiking records such as West Rim to Scout Lookout. | Overpass broad search returned no direct result. Bounded Overpass around the coordinate returned nearby East Rim/Observation Point paths, not a clean Angels Landing trail profile. Public data did not return full route facts. | Use as a supported saved profile. Add live weather and optional NPS alert context. |
-| Avalanche Lake | Glacier National Park, Montana | Nominatim found Avalanche Lake at `48.6561324, -113.7868704` as a lake/water feature. Open-Meteo returned weather fields. An earlier NPS alerts check returned a Glacier alert for Going-to-the-Sun Road spring status before the NPS demo key started rate-limiting. Bounded Overpass near the profile coordinate returned nearby paths such as Avalanche Campground Trail and Trail of the Cedars. | Nominatim found the lake, not a full trail profile. Overpass results were nearby paths, not a clean complete Avalanche Lake Trail profile. NPS demo key hit HTTP 429 rate limits. | Use as a supported saved profile. Add live weather from saved coordinates. Treat NPS/OSM context as optional. |
-| Fairy Falls | Yellowstone National Park, Wyoming | Nominatim found Fairy Falls at `44.5248127, -110.870018` as a waterfall after broader Yellowstone-specific queries failed. Open-Meteo returned weather fields. An earlier NPS alerts check returned Yellowstone alerts including wildlife and temporary closure notices before the NPS demo key started rate-limiting. Bounded Overpass found `Fairy Falls Trail` path records with surface tags such as gravel and dirt. | Nominatim required a fallback query. Public data still did not provide distance, elevation gain, route type, or expected duration. NPS demo key hit HTTP 429 rate limits. | Use as a supported saved profile. Add live weather and optional official-alert/path-tag context. |
-| Black Elk Peak | Black Hills, South Dakota | Nominatim found Black Elk Peak at `43.8659985, -103.5310254` as a peak. A related query in the first pass found Black Elk Peak Trail as an OSM path. Open-Meteo returned weather fields from saved coordinates. | NPS alerts are not applicable because this is not an NPS park-code target. Overpass was rate-limited during the bounded retry. Public lookup did not provide a complete hike profile. | Use as a supported saved profile. Add live weather from saved coordinates. |
-| Navajo Loop | Bryce Canyon National Park, Utah | Open-Meteo returned weather fields when using the saved Bryce Canyon profile coordinate `37.6229, -112.1666`. | This was the clearest Nominatim false-positive risk. Generic `Navajo Loop Trail` returned a trail in Iron County, Utah, not the Bryce Canyon trail. More targeted Nominatim queries for Bryce Canyon returned no results. NPS and Overpass retries hit rate limits. | Use only as a saved supported profile for the prototype. Do not trust generic geocoding for this trail without park/state validation. |
+## Current Source Status
 
-## Data Fields TrailPack Can Trust
+### Trailforks
 
-These fields are realistic for the prototype when they come from saved supported profiles or a verified live source:
+Status: **usable through direct download/export; API access requested and pending**
 
-- Trail name
-- Park, region, and state
-- Coordinates
-- Distance
-- Elevation gain
-- Route type
-- Expected duration
-- Difficulty or effort label
-- Weather temperature, precipitation, wind, and forecast-based context
-- Official alerts when NPS data is available
-- Basic OSM path tags when Overpass returns a clearly relevant path
+Trailforks is currently the strongest source for the data TrailPack needs. The export tool can provide trail rows with practical route-card fields.
 
-These fields should not be guessed from public lookup:
+Important available columns:
 
-- Exact current trail conditions
-- Mud, snow, ice, or closure status unless an official alert or user note supports it
-- Water availability
-- Cell coverage
-- Wildlife or insect risk
-- Route distance/elevation/duration when a public source did not explicitly provide it
-- Review sentiment or crowd reports
+- `trailid`
+- `title`
+- `aka`
+- `activitytype`
+- `activitytypes`
+- `difficulty`
+- `status`
+- `condition`
+- `region_title`
+- `rid`
+- `difficulty_system`
+- `trailtype`
+- `usage`
+- `direction`
+- `season`
+- `wet_weather`
+- `distance`
+- `time`
+- `alt_change`
+- `alt_max`
+- `alt_climb`
+- `alt_descent`
+- `grade`
+- `grade_max`
+- `grade_min`
+- `dst_climb`
+- `dst_descent`
+- `dst_flat`
+- `rating`
+- `ridden`
+- `total_checkins`
+- `total_reports`
+- `total_photos`
+- `total_videos`
+- `views`
+- `global_rank`
+- `land_manager`
+- `closed`
+- `osmway`
+- `trail_association`
+- `sponsors`
+- `builders`
+- `maintainers`
 
-## Fallback Needs
+Most useful TrailPack fields:
 
-TrailPack should prompt the user only for missing details that materially change the packing list.
+- Trail name: `title`, `aka`
+- Trail location: `region_title`, `rid`
+- Trail distance: `distance`
+- Estimated time: `time`
+- Difficulty: `difficulty`, `difficulty_system`
+- Trail type: `trailtype`
+- Use and direction: `usage`, `direction`
+- Season and weather sensitivity: `season`, `wet_weather`
+- Status and condition: `status`, `condition`, `closed`
+- Elevation and grade: `alt_change`, `alt_max`, `alt_climb`, `alt_descent`, `grade`, `grade_max`, `grade_min`
+- Uphill/downhill/flat breakdown: `dst_climb`, `dst_descent`, `dst_flat`
+- Management/source context: `land_manager`, `trail_association`, `builders`, `maintainers`, `osmway`
+
+Prototype use:
+
+- Use downloaded Trailforks data to seed the supported trail catalog.
+- Credit Trailforks in the app and documentation.
+- Keep the app free-access to match the stated Trailforks data-use expectations.
+- Replace download-based import with API integration only if API access is approved.
+
+Limitations:
+
+- Direct downloads are region-based and may require manual export steps.
+- API access is not guaranteed.
+- The app still needs an import/normalization step before recommendation logic can use the data.
+- Trailforks data should not be treated as an official safety source. NPS alerts should still be used where available.
+
+### National Park Service API
+
+Status: **API key works; main endpoints are accessible**
+
+The NPS API is useful for official context. It is not a complete trail database.
+
+Useful endpoints checked:
+
+- `parks`
+- `alerts`
+- `thingstodo`
+- `places`
+- `articles`
+- `visitorcenters`
+- `campgrounds`
+- `parkinglots`
+- `roadevents`
+- `webcams`
+- `feespasses`
+- `mapdata/parkboundaries/{sitecode}`
+
+Most useful TrailPack fields:
+
+- Official park alerts and closures
+- Park metadata and coordinates
+- Official descriptions
+- Trail/activity duration when available
+- Accessibility and terrain notes when available
+- Parking lots, visitor centers, and official park facilities
+
+Important finding:
+
+The `thingstodo` endpoint sometimes includes useful trail information. For example, some records include duration, location, coordinates, accessibility notes, surface, grade, width, ascent, and trail cautions.
+
+Examples found:
+
+- Zion: `West Rim to Scout Lookout` included duration, coordinates, and detailed accessibility/grade information.
+- Zion: `Angels Landing` included trail caution details such as chains, drop-offs, narrow sections, and rocky terrain.
+- Yellowstone: `Fairy Falls Trail` appeared as a trail/activity record with duration.
+- Bryce Canyon: `Queen's/Navajo Combination Loop`, `Queen's Garden Trail`, and `Navajo Loop Trail` included useful duration and accessibility/terrain information.
+
+Prototype use:
+
+- Use NPS data as official enrichment.
+- Use NPS alerts for closures, cautions, permits, and safety notices.
+- Use NPS accessibility notes as source-backed terrain context when available.
+- Do not depend on NPS as the only source for distance/elevation/difficulty.
+
+### Open-Meteo
+
+Status: **usable**
+
+Open-Meteo reliably returned weather data when given coordinates.
+
+Useful fields:
+
+- Current temperature
+- Precipitation
+- Wind speed
+- Daily high/low temperature
+- Precipitation probability
+- Timezone
+
+Prototype use:
+
+- Use Open-Meteo for weather-based packing rules.
+- Combine weather with trail distance, elevation, difficulty, and exposure/terrain notes.
+
+### USGS Trails
+
+Status: **usable as a public-domain reference, but incomplete for route cards**
+
+USGS Trails provides public-domain trail geometry and segment information.
+
+Useful fields found:
+
+- `name`
+- `namealternate`
+- `trailtype`
+- `hikerpedestrian`
+- `sourceoriginator`
+- `primarytrailmaintainer`
+- `lengthmiles`
+- `networklength`
+- `Shape__Length`
+
+Important finding:
+
+USGS can help with trail geometry and segment length, but it does not directly provide elevation gain, duration, difficulty, or exact user-facing route cards.
+
+Examples checked:
+
+- `Delicate Arch Trail` returned multiple segments that summed to about 1.63 miles.
+- `Navajo Loop Trail` returned segments that summed to about 1.13 miles.
+- `Queens Garden Trail` returned a segment of about 1.57 miles.
+- `Angels Landing Trail` returned only the final Angels Landing segment, not the full route from the canyon floor.
+- `Fairy Falls Trail` returned many segments, but the total did not clearly represent the exact common day-hike route.
+
+Prototype use:
+
+- Use USGS as a backup/reference for public-domain trail geometry and length checks.
+- Do not use USGS as the primary route-card source.
+- Elevation gain would require additional processing with elevation data, which is outside the current MVP.
+
+### Nominatim / OpenStreetMap / Overpass
+
+Status: **supplemental only**
+
+These sources can help with coordinates, basic OSM tags, and nearby path data, but they are inconsistent for named hike routes.
+
+Prototype use:
+
+- Use only for optional lookup support or sanity checks.
+- Do not use as the main source for TrailPack profiles.
+
+### RIDB / Recreation.gov
+
+Status: **deferred**
+
+An unauthenticated RIDB request returned `401 Unauthorized Access`. RIDB may be useful later with an API key, but it is not needed for the current MVP.
+
+### AllTrails
+
+Status: **not used as a data source**
+
+AllTrails has the kind of trail cards users recognize, but it is not a clean integration source for this project. TrailPack should not scrape or copy AllTrails data.
+
+Prototype use:
+
+- Use only as market comparison.
+- Do not use AllTrails data in the app database.
+
+## What TrailPack Still Needs
+
+Trailforks solves many of the earlier data gaps, but the app still needs a normalization layer.
+
+TrailPack still needs to define:
+
+- Which regions are supported first
+- Which exported Trailforks columns map into the app's hike profile model
+- How difficulty codes map to user-facing labels
+- How status and condition values affect packing recommendations
+- How elevation fields affect water, food, effort, and traction recommendations
+- How NPS alerts override or supplement Trailforks condition data
+- How stale or missing Trailforks condition data should be labeled
+- How to handle unsupported trails
+
+## Current MVP Data Model
+
+TrailPack should build a normalized profile from Trailforks, then enrich it with NPS and weather data.
+
+```ts
+type SupportedHikeProfile = {
+  id: string;
+  name: string;
+  region: string;
+  activityType: string;
+  distance: string;
+  estimatedTime: string | null;
+  difficulty: string | null;
+  trailType: string | null;
+  usage: string | null;
+  direction: string | null;
+  season: string | null;
+  status: string | null;
+  condition: string | null;
+  wetWeather: string | null;
+  elevationChange: number | null;
+  elevationMax: number | null;
+  elevationClimb: number | null;
+  elevationDescent: number | null;
+  grade: number | null;
+  gradeMax: number | null;
+  gradeMin: number | null;
+  climbDistance: number | null;
+  descentDistance: number | null;
+  flatDistance: number | null;
+  landManager: string | null;
+  source: "trailforks-download" | "trailforks-api";
+};
+```
+
+## Recommended Prototype Flow
+
+1. Download Trailforks data for one supported region.
+2. Import the CSV/spreadsheet into TrailPack as seed data.
+3. Normalize the important fields into `SupportedHikeProfile`.
+4. Let the user select a supported trail.
+5. Add Open-Meteo weather using trail or region coordinates.
+6. Add NPS alerts/context if the trail is inside or near an NPS park.
+7. Generate the packing list from trail facts, weather, alerts, and condition/status fields.
+8. Clearly label data sources in the output.
+
+## Fallback Behavior
+
+Manual entry should not be the main user path.
+
+Use manual entry only when:
+
+- The trail is not in the supported Trailforks import.
+- A key field is missing from the imported row.
+- The user wants to add personal context, such as known mud, ice, snow, exposure, water availability, or expected pace.
 
 High-priority fallback prompts:
 
@@ -79,83 +320,35 @@ High-priority fallback prompts:
 - What type of route is it?
 - When do you plan to hike?
 - How long do you expect to be out?
-- Do you know of any current trail conditions, such as muddy, icy, exposed, shaded, or unknown?
+- Do you know of any current trail conditions?
 
-Prototype source labels:
+## Source Labels
 
-- `supported profile`: saved TrailPack prototype data
-- `forecast-based`: Open-Meteo weather data
-- `official`: NPS alert or other official source
-- `user-provided`: entered or confirmed by the user
-- `inferred`: derived from available data and clearly labeled as not confirmed
-- `missing`: a needed field was not provided
-- `unavailable`: TrailPack checked but did not get usable data
-- `future work`: useful signal outside current prototype scope
+TrailPack should label data clearly:
 
-## Implementation Recommendation
+- `Trailforks download`: imported from downloaded Trailforks trail data
+- `Trailforks API`: imported from Trailforks API if access is approved
+- `Official`: from NPS or another official source
+- `Forecast-based`: from Open-Meteo
+- `User-provided`: entered or confirmed by the user
+- `Inferred`: calculated by TrailPack from available data
+- `Missing`: needed field was not provided
+- `Unavailable`: TrailPack checked but did not get usable data
+- `Future work`: useful signal outside the current prototype scope
 
-For the Week 8 thin vertical slice, create 2-3 saved hike profiles first. Each saved profile should include at least:
+## Final Week 6 Status
 
-- `id`
-- `name`
-- `parkOrRegion`
-- `state`
-- `coordinates`
-- `distanceMiles`
-- `elevationGainFeet`
-- `routeType`
-- `estimatedDuration`
-- `difficulty`
-- `sourceLabel`
+The project is no longer blocked on having no trail dataset.
 
-Then add live weather as a separate enrichment step:
+Current status:
 
-1. User selects a supported trail.
-2. TrailPack loads the saved hike profile.
-3. TrailPack requests Open-Meteo weather using the saved coordinates.
-4. TrailPack runs baseline recommendation rules.
-5. If any important fields are missing, TrailPack shows targeted missing-detail prompts.
-6. Output labels each recommendation with the data source that triggered it.
+- Trailforks direct download/export appears to provide the best available trail-data foundation.
+- Trailforks API access has been requested by email and is pending.
+- NPS API access works and provides official enrichment data.
+- Open-Meteo works for weather.
+- USGS is useful as a public-domain trail geometry and length reference.
+- AllTrails should not be used as a data source.
 
-## Example Queries Used
+Final MVP decision:
 
-Nominatim example:
-
-```text
-https://nominatim.openstreetmap.org/search?q=Delicate%20Arch&format=jsonv2&limit=3&addressdetails=1&extratags=1
-```
-
-Open-Meteo example:
-
-```text
-https://api.open-meteo.com/v1/forecast?latitude=38.74347&longitude=-109.49932&current=temperature_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto
-```
-
-NPS alerts example:
-
-```text
-https://developer.nps.gov/api/v1/alerts?parkCode=arch&limit=5&api_key=DEMO_KEY
-```
-
-Bounded Overpass pattern:
-
-```text
-[out:json][timeout:12];
-(
-  way(around:1800,38.7436,-109.4993)["highway"~"path|footway|track"];
-  relation(around:1800,38.7436,-109.4993)["route"~"hiking|foot"];
-);
-out tags center 8;
-```
-
-RIDB unauthenticated check:
-
-```text
-https://ridb.recreation.gov/api/v1/recareas?query=Delicate%20Arch&limit=3
-```
-
-Result: `401 Unauthorized Access`, so RIDB requires an API key before meaningful feasibility testing.
-
-## Final Week 6 Milestone Check
-
-This feasibility pass tested six representative trails across Utah, Yellowstone, Glacier, and the Black Hills. The main result is that public sources can enrich TrailPack, but they cannot consistently replace saved supported hike profiles. The prototype should proceed with saved profiles plus live weather, with optional official alerts and OSM tags when available.
+TrailPack should use a Trailforks-based supported trail catalog, enriched with NPS and weather data. Unsupported trails can still use manual input, but manual input should not be the main user experience.
