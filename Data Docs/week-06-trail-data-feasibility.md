@@ -11,22 +11,29 @@ TrailPack should use a supported trail catalog instead of asking users to manual
 
 Current MVP data plan:
 
-1. Use **Trailforks exports** as the main trail-data source.
-2. Prefer **CSV/spreadsheet** export if available.
-3. If CSV is unavailable, use **KML + OSM + GPX together**.
+1. Use **Trailforks API data only if API access or written permission is granted**.
+2. Use **local Trailforks exports only for personal feasibility testing**, not as shipped app data.
+3. If Trailforks access is not approved, use **curated supported profiles from official/public sources**.
 4. Use **NPS API** for official alerts, park context, and accessibility/terrain notes.
 5. Use **Open-Meteo** for weather.
 6. Keep manual entry only as a fallback for unsupported trails or missing user-specific context.
 
-Trailforks API access has been requested by email. Until API access is approved, the working path is downloaded Trailforks export data.
+Trailforks API access has been requested by email. Until API access is approved, Trailforks export files should be treated as local proof-of-concept data only.
 
-## Why This Works
+## Why This Changed
 
-The original concern was that public sources did not provide an AllTrails-style trail profile. NPS, OpenStreetMap, and weather APIs were useful, but they did not reliably provide distance, elevation, difficulty, route type, condition, and time in one usable profile.
+Trailforks has the kind of trail data TrailPack needs, but its data policy says Trailforks data use is only allowed through the Trailforks API and that copied Trailforks data cannot be used for non-personal use.
 
-Trailforks changes the feasibility picture. Its export data includes the core trail fields TrailPack needs for supported trails. This removes the need for the user to copy trail stats from another app.
+That means downloaded KML, OSM, GPX, or spreadsheet files are useful for technical feasibility testing, but they should not be committed, shipped, or used as the app's production dataset without API access or written permission.
+
+This creates two implementation paths:
+
+- **Approved path**: Trailforks API or written permission provides scalable supported trail data.
+- **Fallback path**: manually curated supported profiles from official/public sources provide enough data for the senior-project MVP.
 
 ## Trailforks Data
+
+Status: **technically sufficient, permission-gated**
 
 The most useful Trailforks fields for TrailPack are:
 
@@ -65,13 +72,15 @@ These fields support the main TrailPack recommendation logic:
 - status, condition, wet-weather sensitivity, and closure data for caution labels
 - trail type, direction, and surface for context
 
-Trailforks data should still be labeled as Trailforks-sourced and should not be treated as an official safety source. NPS alerts should override or supplement Trailforks data when official warnings are available.
+Trailforks data should only be used in the app if Trailforks grants API access or written permission. If used, it should be labeled as Trailforks-sourced and should not be treated as an official safety source. NPS alerts should override or supplement Trailforks data when official warnings are available.
 
-## Export Fallback
+## Local Export Test
 
-CSV/spreadsheet export is the cleanest format because it provides one row per trail with the selected columns.
+Trailforks export files were tested locally to answer a technical question: if permission/API access is granted, can TrailPack get the needed trail profile fields?
 
-If CSV is unavailable, use:
+The answer is yes.
+
+If Trailforks data can be used, preferred import order is:
 
 1. **KML** for trail ID, URL, closed flag, difficulty, direction, activity type, trail type, physical rating, distance, climb, descent, average time, and geometry.
 2. **OSM** for backup Trailforks ID, region ID, surface, path type, difficulty code, and source URL.
@@ -83,7 +92,9 @@ Use this priority when merging values:
 CSV/API > KML ExtendedData > OSM tags > GPX/elevation-derived values > missing
 ```
 
-## Jenny Lake Test
+This is not the current production data plan unless Trailforks approves API access or grants permission.
+
+## Jenny Lake Local Test
 
 A test was run with Trailforks exports for `Jenny Lake (East)`:
 
@@ -115,7 +126,7 @@ The KML + OSM + GPX files recovered:
 - Climb: `117 m`
 - Descent: `-95 m`
 
-Fields not recovered from the non-CSV files:
+Fields not recovered from the non-CSV local files:
 
 - `condition`
 - `region_title`
@@ -176,7 +187,32 @@ dst_descent: 2276.04 m
 dst_flat:     343.74 m
 ```
 
-The fallback is accurate enough for the MVP. If CSV/API data is available, use its exact `dst_climb`, `dst_descent`, and `dst_flat` values.
+The local fallback is technically accurate enough for the MVP if Trailforks data use is approved. If CSV/API data is available, use its exact `dst_climb`, `dst_descent`, and `dst_flat` values.
+
+## Safe Fallback Dataset
+
+If Trailforks API access is denied or not received in time, TrailPack should use a small curated supported-trail catalog.
+
+For each supported trail, manually record the base profile from official/public sources where possible:
+
+- trail name
+- park or region
+- coordinates
+- distance
+- elevation gain/loss
+- route type
+- estimated time
+- difficulty or effort label
+- source URL or source note
+
+Then enrich that profile with:
+
+- NPS alerts and official context
+- NPS accessibility/terrain notes when available
+- Open-Meteo weather
+- user notes for conditions that are not available from official data
+
+This fallback is less scalable, but it is safe and sufficient for the senior-project MVP.
 
 ## NPS API
 
@@ -305,16 +341,20 @@ type SupportedHikeProfile = {
   flatDistance: number | null;
   surface: string | null;
   closed: boolean | null;
-  source: "trailforks-csv" | "trailforks-kml" | "trailforks-api";
-  backupSources: Array<"trailforks-osm" | "trailforks-gpx" | "nps">;
+  source:
+    | "curated-official"
+    | "curated-public"
+    | "trailforks-api"
+    | "trailforks-permitted-export";
+  backupSources: Array<"nps" | "open-meteo" | "user-provided">;
 };
 ```
 
 ## Prototype Flow
 
-1. Download Trailforks data for one supported region.
-2. Prefer CSV/spreadsheet import if available.
-3. If CSV is unavailable, import KML + OSM + GPX together.
+1. Build a `TrailDataProvider` interface so the data source can be swapped later.
+2. Start with a curated supported-trail dataset.
+3. If Trailforks API access is approved, add a Trailforks-backed provider.
 4. Normalize the important fields into `SupportedHikeProfile`.
 5. Let the user select a supported trail.
 6. Add Open-Meteo weather using trail coordinates.
@@ -329,8 +369,9 @@ TrailPack is no longer blocked on trail data.
 The final Week 6 decision is:
 
 ```text
-Use Trailforks exports as the supported-trail catalog.
-Use KML + OSM + GPX as the fallback when CSV/API is unavailable.
+Trailforks is technically sufficient but permission-gated.
+Use Trailforks only if API access or written permission is granted.
+Use curated supported profiles as the safe MVP fallback.
 Use NPS and Open-Meteo as enrichment sources.
 Keep manual entry as a fallback only.
 ```
