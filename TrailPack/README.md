@@ -11,7 +11,10 @@ Week 7 milestone: a one-page trail selection shell with a supported Jenny Lake L
 
 ## Run locally
 
+From the repo root, change into the app folder first:
+
 ```bash
+cd TrailPack
 npm install
 npm run dev
 ```
