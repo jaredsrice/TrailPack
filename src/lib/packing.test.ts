@@ -163,6 +163,23 @@ describe("condition negation", () => {
     expect(result.snowOrIce).toBe(true);
   });
 
+  it("scopes negation to its clause so a later positive report survives", () => {
+    // Regression: a negator on one clause must not suppress an independent
+    // same-category report in a later clause (safety-critical for traction).
+    expect(analyzeTrailConditions("no snow, icy bridge").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("no fresh snow. ice on the rocks").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("no snow but icy switchbacks").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("no standing water, wet rocks everywhere").muddyOrWet).toBe(
+      true,
+    );
+  });
+
+  it("still negates a whole same-clause list", () => {
+    // "no snow or ice" is a single clause: the negator covers both keywords.
+    expect(analyzeTrailConditions("no snow or ice").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("no mud or standing water").muddyOrWet).toBe(false);
+  });
+
   it("does not add recommendations for negated reports", () => {
     const snow = build({ trailConditions: "no snow or ice" });
     expect(names(snow.essential)).not.toContain("Traction devices (microspikes)");
@@ -172,6 +189,11 @@ describe("condition negation", () => {
 
     const suffix = build({ trailConditions: "snow-free" });
     expect(names(suffix.essential)).not.toContain("Traction devices (microspikes)");
+  });
+
+  it("recommends traction when a later clause reports ice", () => {
+    const rec = build({ trailConditions: "no snow, icy bridge" });
+    expect(names(rec.essential)).toContain("Traction devices (microspikes)");
   });
 });
 

@@ -133,11 +133,22 @@ function stripNegatedConditionPhrases(text: string): string {
 }
 
 /**
+ * Clause boundaries that scope negation. A negator only applies within the
+ * clause it appears in, so "no snow, icy bridge" negates "snow" but still
+ * reports the independent "icy" mention. Splitting on these markers prevents a
+ * negator from leaking across commas, sentence punctuation, or a contrasting
+ * "but" into a later positive condition.
+ */
+const CLAUSE_BOUNDARY = /[,;:.!?]+|\bbut\b/;
+
+/**
  * Returns true when a token matching `matcher` appears and is not negated.
  *
  * Negation is detected by scanning left from a matched keyword: connector words
  * (e.g. "or", "and") and sibling keywords are skipped, so a single negator can
- * cover a list like "no snow or ice". Any other word stops the scan.
+ * cover a list like "no snow or ice". Any other word stops the scan. Because the
+ * scan skips sibling keywords, it must be run per clause (see CLAUSE_BOUNDARY) so
+ * a negator does not reach across a boundary into an independent positive report.
  */
 function groupPresent(tokens: string[], matcher: RegExp): boolean {
   for (let i = 0; i < tokens.length; i += 1) {
@@ -173,17 +184,27 @@ function groupPresent(tokens: string[], matcher: RegExp): boolean {
  * recommendations, per the Week 6 data rules (user-reported conditions are a
  * valid stronger signal). It uses fixed keyword matching plus deterministic
  * negation handling ("no snow or ice", "not muddy", "snow-free", "clear of
- * snow"), not AI inference. Each condition occurrence is evaluated independently
- * so a negated mention does not suppress a later positive one.
+ * snow"), not AI inference. Negation is scoped to each clause so a negated
+ * mention does not suppress an independent positive one (e.g. "no snow, icy
+ * bridge" still reports ice).
  */
 export function analyzeTrailConditions(input?: string): TrailConditionFlags {
   const normalized = stripNegatedConditionPhrases((input ?? "").toLowerCase());
-  const tokens = tokenize(normalized);
+  const clauses = normalized.split(CLAUSE_BOUNDARY);
 
-  return {
-    snowOrIce: groupPresent(tokens, SNOW_ICE_KEYWORD),
-    muddyOrWet: groupPresent(tokens, MUD_KEYWORD),
-  };
+  let snowOrIce = false;
+  let muddyOrWet = false;
+  for (const clause of clauses) {
+    const tokens = tokenize(clause);
+    if (!snowOrIce && groupPresent(tokens, SNOW_ICE_KEYWORD)) {
+      snowOrIce = true;
+    }
+    if (!muddyOrWet && groupPresent(tokens, MUD_KEYWORD)) {
+      muddyOrWet = true;
+    }
+  }
+
+  return { snowOrIce, muddyOrWet };
 }
 
 type AlertItem = AlertContext["alerts"][number];
