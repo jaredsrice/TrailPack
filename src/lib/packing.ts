@@ -23,9 +23,16 @@ export const GRTE_BEAR_SAFETY_URL =
 /**
  * Parse an expected-duration free-text field into a conservative number of hours.
  *
- * Deterministic, keyword/number based only. Returns null when no usable number
- * is found. When a range like "4-6 hours" is given, the larger value is used so
- * recommendations stay conservative. Bare minute values are converted to hours.
+ * Deterministic, keyword/number based only. Supported forms:
+ *  - single hours: "4 hours" -> 4
+ *  - hour ranges:  "4-6 hours" / "5 to 7 hrs" -> larger endpoint (6, 7)
+ *  - minutes:      "90 minutes" -> 1.5
+ *  - mixed units:  "1 hour 30 minutes" -> 1.5
+ *  - decimals:     "5.5 hours" -> 5.5
+ *  - invalid text: "a while" -> null
+ *
+ * Hours and minutes are combined when both appear. For hour ranges the larger
+ * endpoint is used so recommendations stay conservative.
  */
 export function parseExpectedHours(input?: string): number | null {
   if (!input) {
@@ -34,26 +41,58 @@ export function parseExpectedHours(input?: string): number | null {
 
   const normalized = input.toLowerCase();
 
-  const minuteMatch = normalized.match(/(\d+(?:\.\d+)?)\s*(?:min|minute|minutes|mins)\b/);
-  if (minuteMatch && !/(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)/.test(normalized)) {
-    const minutes = Number.parseFloat(minuteMatch[1]);
-    return Number.isFinite(minutes) ? minutes / 60 : null;
+  let minutes = 0;
+  let hasMinutes = false;
+  const minuteRegex = /(\d+(?:\.\d+)?)\s*(?:minutes|minute|mins|min)\b/g;
+  for (let match = minuteRegex.exec(normalized); match; match = minuteRegex.exec(normalized)) {
+    const value = Number.parseFloat(match[1]);
+    if (Number.isFinite(value)) {
+      minutes += value;
+      hasMinutes = true;
+    }
   }
 
-  const numbers = normalized.match(/\d+(?:\.\d+)?/g);
-  if (!numbers || numbers.length === 0) {
-    return null;
+  let hours = 0;
+  let hasHours = false;
+  const hourUnit = "(?:hours|hour|hrs|hr|h)";
+  const rangeMatch = normalized.match(
+    new RegExp(`(\\d+(?:\\.\\d+)?)\\s*(?:-|–|—|to)\\s*(\\d+(?:\\.\\d+)?)\\s*${hourUnit}\\b`),
+  );
+  if (rangeMatch) {
+    hours = Math.max(Number.parseFloat(rangeMatch[1]), Number.parseFloat(rangeMatch[2]));
+    hasHours = Number.isFinite(hours);
+  } else {
+    const hourRegex = new RegExp(`(\\d+(?:\\.\\d+)?)\\s*${hourUnit}\\b`, "g");
+    const hourValues: number[] = [];
+    for (let match = hourRegex.exec(normalized); match; match = hourRegex.exec(normalized)) {
+      const value = Number.parseFloat(match[1]);
+      if (Number.isFinite(value)) {
+        hourValues.push(value);
+      }
+    }
+    if (hourValues.length > 0) {
+      hours = Math.max(...hourValues);
+      hasHours = true;
+    }
   }
 
-  const parsed = numbers
-    .map((value) => Number.parseFloat(value))
-    .filter((value) => Number.isFinite(value));
-
-  if (parsed.length === 0) {
-    return null;
+  if (hasHours || hasMinutes) {
+    const total = (hasHours ? hours : 0) + (hasMinutes ? minutes / 60 : 0);
+    return Number.isFinite(total) ? total : null;
   }
 
-  return Math.max(...parsed);
+  // Fallback: a bare number with no unit is treated as hours.
+  const bareNumbers = normalized.match(/\d+(?:\.\d+)?/g);
+  if (bareNumbers) {
+    const parsed = bareNumbers
+      .map((value) => Number.parseFloat(value))
+      .filter((value) => Number.isFinite(value));
+    if (parsed.length > 0) {
+      return Math.max(...parsed);
+    }
+  }
+
+  return null;
 }
 
 export interface TrailConditionFlags {
@@ -61,26 +100,85 @@ export interface TrailConditionFlags {
   snowOrIce: boolean;
 }
 
+const SNOW_ICE_KEYWORD = /^(snow|ice|icy|verglas|posthol)/;
+const MUD_KEYWORD = /^(mud|wet|soggy|flood|puddle)/;
+const NEGATORS = new Set(["no", "not", "without", "never", "free", "zero", "none"]);
+const CONNECTORS = new Set(["or", "and", "of", "any", "some", "a", "the"]);
+
+function tokenize(text: string): string[] {
+  return text.split(/[^a-z0-9']+/).filter(Boolean);
+}
+
+/**
+ * Returns true when a token matching `matcher` appears and is not negated.
+ *
+ * Negation is detected by scanning left from a matched keyword: connector words
+ * (e.g. "or", "and") and sibling keywords are skipped, so a single negator can
+ * cover a list like "no snow or ice". Any other word stops the scan.
+ */
+function groupPresent(tokens: string[], matcher: RegExp): boolean {
+  for (let i = 0; i < tokens.length; i += 1) {
+    if (!matcher.test(tokens[i])) {
+      continue;
+    }
+
+    let negated = false;
+    for (let j = i - 1; j >= 0; j -= 1) {
+      const token = tokens[j];
+      if (NEGATORS.has(token) || token.endsWith("n't")) {
+        negated = true;
+        break;
+      }
+      if (CONNECTORS.has(token) || matcher.test(token)) {
+        continue;
+      }
+      break;
+    }
+
+    if (!negated) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 /**
  * Deterministic keyword scan of the user-provided trail-conditions field.
  *
  * This is the only free-text field allowed to influence traction/footwear
  * recommendations, per the Week 6 data rules (user-reported conditions are a
- * valid stronger signal). It uses fixed keyword matching, not AI inference.
+ * valid stronger signal). It uses fixed keyword matching plus a simple negation
+ * check ("no snow or ice", "not muddy"), not AI inference.
  */
 export function analyzeTrailConditions(input?: string): TrailConditionFlags {
-  const normalized = (input ?? "").toLowerCase();
+  const tokens = tokenize((input ?? "").toLowerCase());
 
-  const muddyOrWet = /\b(mud|muddy|wet|soggy|flooded|standing water|puddle)\b/.test(
-    normalized,
-  );
-  const snowOrIce = /\b(snow|snowy|ice|icy|verglas|posthol)/.test(normalized);
-
-  return { muddyOrWet, snowOrIce };
+  return {
+    snowOrIce: groupPresent(tokens, SNOW_ICE_KEYWORD),
+    muddyOrWet: groupPresent(tokens, MUD_KEYWORD),
+  };
 }
 
 function formatTrailStats(trail: TrailProfile): string {
   return `${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}`;
+}
+
+/**
+ * Invariant: an item may only carry the "official" label when it also has a
+ * sourceUrl. If the URL is missing, the "official" label is dropped and replaced
+ * with an accurate fallback ("unavailable") so provenance is never overstated.
+ */
+function enforceOfficialProvenance(item: PackingItem): PackingItem {
+  if (!item.sourceLabels.includes("official") || item.sourceUrl) {
+    return item;
+  }
+
+  const withoutOfficial = item.sourceLabels.filter((label) => label !== "official");
+  return {
+    ...item,
+    sourceLabels: withoutOfficial.length > 0 ? withoutOfficial : ["unavailable"],
+  };
 }
 
 export function generatePackingRecommendation(
@@ -214,11 +312,12 @@ export function generatePackingRecommendation(
   });
 
   if (alerts.hasActiveAlerts) {
+    const alertWithUrl = alerts.alerts.find((alert) => alert.sourceUrl);
     essential.push({
       name: "Check official alerts before leaving",
       reason: alerts.alerts.map((alert) => alert.title).join("; "),
-      sourceLabels: ["official"],
-      sourceUrl: alerts.alerts.find((alert) => alert.sourceUrl)?.sourceUrl,
+      sourceLabels: alertWithUrl ? ["official"] : ["unavailable"],
+      sourceUrl: alertWithUrl?.sourceUrl,
     });
   }
 
@@ -256,8 +355,8 @@ export function generatePackingRecommendation(
     trailId: trail.id,
     trailName: trail.name,
     generatedAt: new Date().toISOString(),
-    essential,
-    optional,
+    essential: essential.map(enforceOfficialProvenance),
+    optional: optional.map(enforceOfficialProvenance),
     missingDetails,
     confidenceNote: `${trail.sourceConfidence.summary} Display stats: ${formatTrailStats(trail)}.`,
   };

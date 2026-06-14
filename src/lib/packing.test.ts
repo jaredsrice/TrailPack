@@ -52,6 +52,21 @@ describe("parseExpectedHours", () => {
     expect(parseExpectedHours("90 minutes")).toBeCloseTo(1.5, 5);
     expect(parseExpectedHours("45 min")).toBeCloseTo(0.75, 5);
   });
+
+  it("combines mixed hour and minute units", () => {
+    expect(parseExpectedHours("1 hour 30 minutes")).toBeCloseTo(1.5, 5);
+    expect(parseExpectedHours("2 hours 15 min")).toBeCloseTo(2.25, 5);
+    expect(parseExpectedHours("1 hr 45 mins")).toBeCloseTo(1.75, 5);
+  });
+
+  it("parses decimal hours", () => {
+    expect(parseExpectedHours("5.5 hours")).toBe(5.5);
+  });
+
+  it("does not misread mixed units as a large hour count", () => {
+    // Regression: "1 hour 30 minutes" must not be read as 30 hours.
+    expect(parseExpectedHours("1 hour 30 minutes")).toBeLessThan(2);
+  });
 });
 
 describe("analyzeTrailConditions", () => {
@@ -80,6 +95,18 @@ describe("duration rule", () => {
     expect(names(rec.essential)).not.toContain("Headlamp");
     expect(names(rec.optional)).not.toContain("Extra food");
   });
+
+  it("does not add long-day equipment for '1 hour 30 minutes'", () => {
+    const rec = build({ expectedDuration: "1 hour 30 minutes" });
+    expect(names(rec.essential)).not.toContain("Headlamp");
+    expect(names(rec.optional)).not.toContain("Extra food");
+    // 1.5 h is below the 5 h water threshold, so no duration-driven water bump.
+    expect(
+      rec.essential.some(
+        (item) => item.name === "Water: 2-3 liters" && item.sourceLabels.includes("user-provided"),
+      ),
+    ).toBe(false);
+  });
 });
 
 describe("trail-condition rules", () => {
@@ -97,6 +124,34 @@ describe("trail-condition rules", () => {
     const rec = build({ trailConditions: "dry and clear" });
     expect(names(rec.essential)).not.toContain("Traction devices (microspikes)");
     expect(names(rec.optional)).not.toContain("Waterproof boots or gaiters");
+  });
+});
+
+describe("condition negation", () => {
+  it("does not trigger for negated snow/ice phrases", () => {
+    for (const phrase of ["no snow or ice", "not icy", "no snow", "without ice"]) {
+      expect(analyzeTrailConditions(phrase).snowOrIce, phrase).toBe(false);
+    }
+  });
+
+  it("does not trigger for negated mud phrases", () => {
+    for (const phrase of ["not muddy", "no mud", "no mud or standing water"]) {
+      expect(analyzeTrailConditions(phrase).muddyOrWet, phrase).toBe(false);
+    }
+  });
+
+  it("still triggers for positive condition phrases", () => {
+    expect(analyzeTrailConditions("patchy snow").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("icy sections").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("muddy near the inlet").muddyOrWet).toBe(true);
+  });
+
+  it("does not add recommendations for negated reports", () => {
+    const snow = build({ trailConditions: "no snow or ice" });
+    expect(names(snow.essential)).not.toContain("Traction devices (microspikes)");
+
+    const mud = build({ trailConditions: "not muddy" });
+    expect(names(mud.optional)).not.toContain("Waterproof boots or gaiters");
   });
 });
 
@@ -133,6 +188,76 @@ describe("source provenance", () => {
 
   it("only labels items official when they carry a source URL", () => {
     const rec = build();
+    for (const item of [...rec.essential, ...rec.optional]) {
+      if (item.sourceLabels.includes("official")) {
+        expect(item.sourceUrl, `${item.name} should have a source URL`).toBeTruthy();
+      }
+    }
+  });
+
+  it("labels the alert item official and attaches the URL when an alert has one", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Trail closure near Hidden Falls",
+          description: "Section closed for maintenance.",
+          severity: "closure",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+      ],
+      label: "official",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Check official alerts before leaving",
+    );
+    expect(alertItem).toBeDefined();
+    expect(alertItem?.sourceLabels).toContain("official");
+    expect(alertItem?.sourceUrl).toBe(
+      "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+    );
+  });
+
+  it("does not label the alert item official when no alert has a URL", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "High water on the connector",
+          description: "Use caution at the crossing.",
+          severity: "caution",
+          source: "NPS",
+        },
+      ],
+      label: "unavailable",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Check official alerts before leaving",
+    );
+    expect(alertItem).toBeDefined();
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+  });
+
+  it("never emits an official label without a source URL across inputs", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Bridge work",
+          description: "Temporary detour.",
+          source: "NPS",
+        },
+      ],
+      label: "unavailable",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {
+      expectedDuration: "8 hours",
+      trailConditions: "icy and muddy",
+    });
     for (const item of [...rec.essential, ...rec.optional]) {
       if (item.sourceLabels.includes("official")) {
         expect(item.sourceUrl, `${item.name} should have a source URL`).toBeTruthy();
