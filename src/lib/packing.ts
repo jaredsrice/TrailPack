@@ -109,6 +109,29 @@ function tokenize(text: string): string[] {
   return text.split(/[^a-z0-9']+/).filter(Boolean);
 }
 
+const CONDITION_WORD =
+  "(?:snow|snowy|ice|icy|verglas|posthol\\w*|mud|muddy|wet|soggy|flood\\w*|puddle\\w*)";
+
+/**
+ * Remove explicitly negated condition phrases before keyword detection so a
+ * negated mention does not register, while leaving any independent positive
+ * mention intact. Handles deterministic suffix/phrase forms:
+ *   - "<condition>-free"        (e.g. "snow-free")
+ *   - "free of <condition...>"  (e.g. "free of snow and ice")
+ *   - "clear of <condition...>" (e.g. "clear of snow")
+ */
+function stripNegatedConditionPhrases(text: string): string {
+  return text
+    .replace(new RegExp(`\\b${CONDITION_WORD}\\s*-\\s*free\\b`, "g"), " ")
+    .replace(
+      new RegExp(
+        `\\b(?:free|clear)\\s+of\\s+(?:${CONDITION_WORD}(?:\\s+(?:and|or)\\s+)?)+`,
+        "g",
+      ),
+      " ",
+    );
+}
+
 /**
  * Returns true when a token matching `matcher` appears and is not negated.
  *
@@ -148,16 +171,49 @@ function groupPresent(tokens: string[], matcher: RegExp): boolean {
  *
  * This is the only free-text field allowed to influence traction/footwear
  * recommendations, per the Week 6 data rules (user-reported conditions are a
- * valid stronger signal). It uses fixed keyword matching plus a simple negation
- * check ("no snow or ice", "not muddy"), not AI inference.
+ * valid stronger signal). It uses fixed keyword matching plus deterministic
+ * negation handling ("no snow or ice", "not muddy", "snow-free", "clear of
+ * snow"), not AI inference. Each condition occurrence is evaluated independently
+ * so a negated mention does not suppress a later positive one.
  */
 export function analyzeTrailConditions(input?: string): TrailConditionFlags {
-  const tokens = tokenize((input ?? "").toLowerCase());
+  const normalized = stripNegatedConditionPhrases((input ?? "").toLowerCase());
+  const tokens = tokenize(normalized);
 
   return {
     snowOrIce: groupPresent(tokens, SNOW_ICE_KEYWORD),
     muddyOrWet: groupPresent(tokens, MUD_KEYWORD),
   };
+}
+
+type AlertItem = AlertContext["alerts"][number];
+
+/**
+ * An alert may back an "official" label only when it is an NPS alert whose
+ * sourceUrl is a valid HTTPS URL on nps.gov (or a subdomain of nps.gov).
+ *
+ * URL parsing is done safely: malformed URLs return false instead of throwing.
+ * A URL alone is never treated as proof of an official source, and look-alike
+ * hosts such as "nps.gov.example.com" are rejected.
+ */
+export function isOfficialNpsAlert(alert: AlertItem): boolean {
+  if (alert.source !== "NPS" || !alert.sourceUrl) {
+    return false;
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(alert.sourceUrl);
+  } catch {
+    return false;
+  }
+
+  if (parsed.protocol !== "https:") {
+    return false;
+  }
+
+  const host = parsed.hostname.toLowerCase();
+  return host === "nps.gov" || host.endsWith(".nps.gov");
 }
 
 function formatTrailStats(trail: TrailProfile): string {
@@ -312,12 +368,12 @@ export function generatePackingRecommendation(
   });
 
   if (alerts.hasActiveAlerts) {
-    const alertWithUrl = alerts.alerts.find((alert) => alert.sourceUrl);
+    const officialAlert = alerts.alerts.find(isOfficialNpsAlert);
     essential.push({
-      name: "Check official alerts before leaving",
+      name: "Review active alerts before leaving",
       reason: alerts.alerts.map((alert) => alert.title).join("; "),
-      sourceLabels: alertWithUrl ? ["official"] : ["unavailable"],
-      sourceUrl: alertWithUrl?.sourceUrl,
+      sourceLabels: officialAlert ? ["official"] : ["unavailable"],
+      sourceUrl: officialAlert?.sourceUrl,
     });
   }
 

@@ -3,6 +3,7 @@ import {
   analyzeTrailConditions,
   generatePackingRecommendation,
   GRTE_BEAR_SAFETY_URL,
+  isOfficialNpsAlert,
   parseExpectedHours,
   type UserHikeInput,
 } from "@/lib/packing";
@@ -146,12 +147,76 @@ describe("condition negation", () => {
     expect(analyzeTrailConditions("muddy near the inlet").muddyOrWet).toBe(true);
   });
 
+  it("treats suffix and phrase negations as negative", () => {
+    expect(analyzeTrailConditions("snow-free").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("ice-free").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("mud-free").muddyOrWet).toBe(false);
+    expect(analyzeTrailConditions("free of snow and ice").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("trail is clear of snow").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("no snow or ice").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("not muddy").muddyOrWet).toBe(false);
+  });
+
+  it("evaluates each occurrence independently", () => {
+    // "snow-free" is negated, but the independent "icy" report stays positive.
+    const result = analyzeTrailConditions("snow-free lower trail but icy near the lake");
+    expect(result.snowOrIce).toBe(true);
+  });
+
   it("does not add recommendations for negated reports", () => {
     const snow = build({ trailConditions: "no snow or ice" });
     expect(names(snow.essential)).not.toContain("Traction devices (microspikes)");
 
     const mud = build({ trailConditions: "not muddy" });
     expect(names(mud.optional)).not.toContain("Waterproof boots or gaiters");
+
+    const suffix = build({ trailConditions: "snow-free" });
+    expect(names(suffix.essential)).not.toContain("Traction devices (microspikes)");
+  });
+});
+
+describe("isOfficialNpsAlert", () => {
+  function alert(overrides: Partial<AlertContext["alerts"][number]>): AlertContext["alerts"][number] {
+    return {
+      title: "Test alert",
+      description: "Test description.",
+      source: "NPS",
+      ...overrides,
+    };
+  }
+
+  it("accepts an NPS alert with a valid https nps.gov URL", () => {
+    expect(
+      isOfficialNpsAlert(alert({ sourceUrl: "https://www.nps.gov/grte/alerts.htm" })),
+    ).toBe(true);
+    expect(isOfficialNpsAlert(alert({ sourceUrl: "https://nps.gov/alerts" }))).toBe(true);
+  });
+
+  it("rejects an NPS alert without a URL", () => {
+    expect(isOfficialNpsAlert(alert({ sourceUrl: undefined }))).toBe(false);
+  });
+
+  it("rejects a non-NPS source even with a valid URL", () => {
+    expect(
+      isOfficialNpsAlert(
+        alert({ source: "open-meteo", sourceUrl: "https://open-meteo.com/" }),
+      ),
+    ).toBe(false);
+  });
+
+  it("rejects a malformed URL instead of throwing", () => {
+    expect(isOfficialNpsAlert(alert({ sourceUrl: "http s://not a url" }))).toBe(false);
+    expect(isOfficialNpsAlert(alert({ sourceUrl: "nps.gov/alerts" }))).toBe(false);
+  });
+
+  it("rejects a deceptive look-alike host", () => {
+    expect(
+      isOfficialNpsAlert(alert({ sourceUrl: "https://nps.gov.example.com/alerts" })),
+    ).toBe(false);
+  });
+
+  it("rejects a non-https NPS URL", () => {
+    expect(isOfficialNpsAlert(alert({ sourceUrl: "http://www.nps.gov/alerts" }))).toBe(false);
   });
 });
 
@@ -211,7 +276,7 @@ describe("source provenance", () => {
     };
     const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
     const alertItem = rec.essential.find(
-      (item) => item.name === "Check official alerts before leaving",
+      (item) => item.name === "Review active alerts before leaving",
     );
     expect(alertItem).toBeDefined();
     expect(alertItem?.sourceLabels).toContain("official");
@@ -235,7 +300,7 @@ describe("source provenance", () => {
     };
     const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
     const alertItem = rec.essential.find(
-      (item) => item.name === "Check official alerts before leaving",
+      (item) => item.name === "Review active alerts before leaving",
     );
     expect(alertItem).toBeDefined();
     expect(alertItem?.sourceLabels).not.toContain("official");
@@ -262,6 +327,123 @@ describe("source provenance", () => {
       if (item.sourceLabels.includes("official")) {
         expect(item.sourceUrl, `${item.name} should have a source URL`).toBeTruthy();
       }
+    }
+  });
+
+  it("does not label an Open-Meteo alert official even with a URL", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Wind advisory",
+          description: "Gusty conditions expected.",
+          source: "open-meteo",
+          sourceUrl: "https://open-meteo.com/",
+        },
+      ],
+      label: "forecast-based",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+  });
+
+  it("does not label an NPS alert official when its URL is malformed", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Closure",
+          description: "Area closed.",
+          source: "NPS",
+          sourceUrl: "http s://broken url",
+        },
+      ],
+      label: "unavailable",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+  });
+
+  it("does not label an NPS alert official for a deceptive look-alike host", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Suspicious",
+          description: "Phishing-style host.",
+          source: "NPS",
+          sourceUrl: "https://nps.gov.example.com/alerts",
+        },
+      ],
+      label: "unavailable",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+  });
+
+  it("preserves every alert title in the reason", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        { title: "Alert one", description: "d1", source: "NPS" },
+        {
+          title: "Alert two",
+          description: "d2",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+        },
+      ],
+      label: "official",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.reason).toContain("Alert one");
+    expect(alertItem?.reason).toContain("Alert two");
+  });
+
+  it("every official item carries a verified official NPS source URL", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Trail closure",
+          description: "Closed section.",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+      ],
+      label: "official",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {
+      trailConditions: "icy and muddy",
+      expectedDuration: "8 hours",
+    });
+
+    const officialItems = [...rec.essential, ...rec.optional].filter((item) =>
+      item.sourceLabels.includes("official"),
+    );
+    expect(officialItems.length).toBeGreaterThan(0);
+
+    for (const item of officialItems) {
+      expect(item.sourceUrl, `${item.name} should have a source URL`).toBeTruthy();
+      const parsed = new URL(item.sourceUrl as string);
+      expect(parsed.protocol).toBe("https:");
+      const host = parsed.hostname.toLowerCase();
+      expect(host === "nps.gov" || host.endsWith(".nps.gov")).toBe(true);
     }
   });
 });
