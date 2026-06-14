@@ -83,4 +83,3 @@ rule-based hiking packing list.
 - Weather and alerts are demo data in this prototype and are not yet loaded from
   live APIs.
 - Jenny Lake Loop is the only fully supported trail profile in version `0.1.0`.
-
