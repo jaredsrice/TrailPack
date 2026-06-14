@@ -330,6 +330,91 @@ describe("source provenance", () => {
     }
   });
 
+  it("labels the aggregate official when every alert is a verified NPS alert", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Closure A",
+          description: "d1",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+        {
+          title: "Closure B",
+          description: "d2",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+        },
+      ],
+      label: "official",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).toContain("official");
+    expect(alertItem?.sourceUrl).toBe(
+      "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+    );
+    expect(alertItem?.reason).toContain("Closure A");
+    expect(alertItem?.reason).toContain("Closure B");
+  });
+
+  it("does not label the aggregate official when alerts mix NPS and Open-Meteo", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "NPS closure",
+          description: "d1",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+        },
+        {
+          title: "Weather advisory",
+          description: "d2",
+          source: "open-meteo",
+          sourceUrl: "https://open-meteo.com/",
+        },
+      ],
+      label: "official",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+    // Every title is still preserved despite the mixed provenance.
+    expect(alertItem?.reason).toContain("NPS closure");
+    expect(alertItem?.reason).toContain("Weather advisory");
+  });
+
+  it("does not label the aggregate official when all alerts are unverified", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        { title: "Community report", description: "d1", source: "user" },
+        {
+          title: "Third-party note",
+          description: "d2",
+          source: "open-meteo",
+          sourceUrl: "https://open-meteo.com/",
+        },
+      ],
+      label: "unavailable",
+    };
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem?.sourceLabels).not.toContain("official");
+    expect(alertItem?.sourceUrl).toBeUndefined();
+    expect(alertItem?.reason).toContain("Community report");
+    expect(alertItem?.reason).toContain("Third-party note");
+  });
+
   it("does not label an Open-Meteo alert official even with a URL", () => {
     const alerts: AlertContext = {
       hasActiveAlerts: true,

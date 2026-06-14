@@ -368,12 +368,16 @@ export function generatePackingRecommendation(
   });
 
   if (alerts.hasActiveAlerts) {
-    const officialAlert = alerts.alerts.find(isOfficialNpsAlert);
+    // The aggregate item may only be "official" when EVERY active alert is a
+    // verified NPS alert. A single unverified/third-party alert means the whole
+    // aggregate cannot claim official provenance.
+    const allAlertsOfficial =
+      alerts.alerts.length > 0 && alerts.alerts.every(isOfficialNpsAlert);
     essential.push({
       name: "Review active alerts before leaving",
       reason: alerts.alerts.map((alert) => alert.title).join("; "),
-      sourceLabels: officialAlert ? ["official"] : ["unavailable"],
-      sourceUrl: officialAlert?.sourceUrl,
+      sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
+      sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
     });
   }
 
