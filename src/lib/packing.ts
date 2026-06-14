@@ -167,22 +167,34 @@ function groupPresent(tokens: string[], matcher: RegExp): boolean {
 }
 
 /**
+ * Split condition text into independent clauses on commas, semicolons, sentence
+ * punctuation, and the conjunction "but" so a negator in one clause cannot
+ * suppress a positive report in another (e.g. "no snow, icy bridge").
+ */
+function splitClauses(text: string): string[] {
+  return text.split(/[,;.!?]+|\bbut\b/);
+}
+
+/**
  * Deterministic keyword scan of the user-provided trail-conditions field.
  *
  * This is the only free-text field allowed to influence traction/footwear
  * recommendations, per the Week 6 data rules (user-reported conditions are a
  * valid stronger signal). It uses fixed keyword matching plus deterministic
  * negation handling ("no snow or ice", "not muddy", "snow-free", "clear of
- * snow"), not AI inference. Each condition occurrence is evaluated independently
- * so a negated mention does not suppress a later positive one.
+ * snow"), not AI inference. Negation is scoped per clause, and within a clause
+ * each occurrence is evaluated independently, so a negated mention does not
+ * suppress a positive one elsewhere.
  */
 export function analyzeTrailConditions(input?: string): TrailConditionFlags {
   const normalized = stripNegatedConditionPhrases((input ?? "").toLowerCase());
-  const tokens = tokenize(normalized);
+  const clauses = splitClauses(normalized).map(tokenize);
+  const anyClausePresent = (matcher: RegExp): boolean =>
+    clauses.some((tokens) => groupPresent(tokens, matcher));
 
   return {
-    snowOrIce: groupPresent(tokens, SNOW_ICE_KEYWORD),
-    muddyOrWet: groupPresent(tokens, MUD_KEYWORD),
+    snowOrIce: anyClausePresent(SNOW_ICE_KEYWORD),
+    muddyOrWet: anyClausePresent(MUD_KEYWORD),
   };
 }
 

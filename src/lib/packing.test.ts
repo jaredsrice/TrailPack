@@ -163,6 +163,22 @@ describe("condition negation", () => {
     expect(result.snowOrIce).toBe(true);
   });
 
+  it("scopes negation per clause", () => {
+    expect(analyzeTrailConditions("no snow, icy bridge").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("no snow. ice on the rocks").snowOrIce).toBe(true);
+    expect(analyzeTrailConditions("no snow but icy switchbacks").snowOrIce).toBe(true);
+    expect(
+      analyzeTrailConditions("no standing water, wet rocks everywhere").muddyOrWet,
+    ).toBe(true);
+    expect(analyzeTrailConditions("no snow or ice").snowOrIce).toBe(false);
+    expect(analyzeTrailConditions("no mud or standing water").muddyOrWet).toBe(false);
+  });
+
+  it("adds microspikes when a later clause reports ice", () => {
+    const rec = build({ trailConditions: "no snow, icy bridge" });
+    expect(names(rec.essential)).toContain("Traction devices (microspikes)");
+  });
+
   it("does not add recommendations for negated reports", () => {
     const snow = build({ trailConditions: "no snow or ice" });
     expect(names(snow.essential)).not.toContain("Traction devices (microspikes)");
