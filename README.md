@@ -1,64 +1,92 @@
 # TrailPack
 
-CSE 499 senior project for rule-based hiking packing recommendations.
+TrailPack turns trail information and trip conditions into a clear hiking
+packing list. It explains why each item is recommended and where the supporting
+data came from.
 
-## Stack
+Version `0.1.0` is a CSE 499 technical prototype. It uses fixed rules, not AI, so
+the same input always produces the same result.
 
-- Next.js (App Router)
-- React
-- TypeScript
-- Tailwind CSS
+## How It Works
 
-## Run locally
+1. Search for a supported park or trail.
+2. Review the official trail statistics and any computed estimates.
+3. Add useful details such as expected duration or trail conditions.
+4. Receive an essential and optional packing list with reasons and source labels.
 
-From the repo root:
+The current demo supports the Jenny Lake Loop in Grand Teton National Park.
+
+## Data Sources
+
+- **NPS** is the primary source for official trail distance, elevation gain,
+  difficulty, and estimated time.
+- **USGS** provides public federal data for trail geometry and computed elevation
+  estimates when official values are missing or need comparison.
+- **User input** can add conservative recommendations for long trips, snow, ice,
+  mud, or wet conditions.
+
+Official NPS values stay visible even when a USGS calculation differs. TrailPack
+labels the difference instead of averaging the numbers or hiding the conflict.
+
+The NPS API can provide alerts and park information, but it does not provide all
+the trail statistics TrailPack needs. A production version would collect those
+values from public NPS trail pages, keep the source URL and attribution, follow
+site access rules, and refresh cached results on a slow schedule instead of
+requesting the page for every user. USGS data would fill gaps or provide a
+clearly labeled computed estimate.
+
+This approach keeps the data traceable:
+
+- Official values link back to their NPS source.
+- Computed values identify USGS as the source and remain separate from official values.
+- User-reported conditions are labeled as user input.
+- General recommendations are labeled as inferred rather than official.
+
+Trailforks is not used as a production data source. It would only be considered
+as a backup if suitable API access or written permission becomes available.
+
+## Run Locally
+
+From the repository root:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`, and
+select the supported trail.
 
-## Week 7 scope
-
-- One-page search-led workflow
-- Supported Jenny Lake Loop profile using official NPS values
-- TypeScript types for `TrailProfile`, `WeatherContext`, `AlertContext`, `SourceConfidence`, and `PackingRecommendation`
-- Rule-based packing list generation (no AI)
-- No Trailforks app data source
-
-## Demo path
-
-1. Search for `Jenny Lake` or `Grand Teton`.
-2. Select the supported trail.
-3. Review the hike profile and Sources & Confidence section.
-4. Optionally fill in trip details (expected time out and trail conditions change the list).
-5. Scroll to the generated packing list.
-
-## Testing
-
-Unit tests cover the rule-based packing logic and the supported trail profile:
+## Verify the Project
 
 ```bash
+npm run lint
+npx tsc --noEmit
 npm test
+npm run build
 ```
 
-## Known dependency risk (residual)
+The test suite covers trail values, packing rules, duration parsing, trail-condition
+phrasing, and official-source validation.
 
-`npm audit` reports a moderate-severity advisory in `postcss` (<8.5.10,
-[GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)). This
-vulnerable copy of PostCSS is **bundled inside Next.js**
-(`node_modules/next/node_modules/postcss`), not a direct dependency of this
-project. The only `npm audit fix --force` remedy downgrades Next.js to `9.3.3`,
-which is a breaking change and is intentionally not applied. The advisory affects
-CSS stringify output (XSS in generated CSS), which is not part of this app's
-runtime data flow. It will clear when Next.js ships a release that bundles
-`postcss >= 8.5.10`. Safe in-range patch updates to other dependencies have been
-applied.
+## Current Limits
 
-## Docs
+- Jenny Lake Loop is the only complete trail profile.
+- Weather and alerts use demo data instead of live APIs.
+- Automatic NPS page collection and USGS processing are planned but are not yet
+  part of this prototype.
+- Planned date and notes are stored as context but do not yet change the list.
+- `npm audit` reports a moderate PostCSS issue bundled inside Next.js. The known
+  attack requires processing untrusted CSS, which TrailPack does not do. A forced
+  audit fix would install an incompatible Next.js version, so the project is
+  waiting for a safe upstream update.
 
-- [`CHANGELOG.md`](CHANGELOG.md) — version history and known issues
-- `Data Docs/` — trail data feasibility and source strategy
-- `UI Docs/` — UI/UX workflow and wireframes
+## Technology
+
+Next.js, React, TypeScript, Tailwind CSS, and Vitest.
+
+## Project Documents
+
+- [`CHANGELOG.md`](CHANGELOG.md) - version history and known issues
+- [`Data Docs/`](Data%20Docs/) - data feasibility and source decisions
+- [`UI Docs/`](UI%20Docs/) - workflow, wireframes, and UI planning
