@@ -59,5 +59,6 @@ applied.
 
 ## Docs
 
+- [`CHANGELOG.md`](CHANGELOG.md) — version history and known issues
 - `Data Docs/` — trail data feasibility and source strategy
 - `UI Docs/` — UI/UX workflow and wireframes
