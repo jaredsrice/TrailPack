@@ -42,6 +42,8 @@ export const JENNY_LAKE_LOOP: TrailProfile = {
     computedValue: 698,
     computedSource: "USGS",
     computedSourceUrl: "USGS 3DEP",
+    computedNote:
+      "Computed estimate only; varies roughly 700–1,200 ft by method and does not match the official NPS gain.",
   },
   estimatedDuration: {
     value: "3-5 hours",
@@ -60,12 +62,12 @@ export const JENNY_LAKE_LOOP: TrailProfile = {
   elevationMaxFeet: 6901,
   npsSourceUrl: "https://www.nps.gov/thingstodo/jennylakeloop.htm",
   sourceConfidence: {
-    status: "official_nps_with_usgs_geometry_ok",
+    status: "official_nps_with_gain_conflict",
     summary:
-      "Official NPS trail stats with USGS geometry that closely matches the loop distance.",
+      "Official NPS trail stats are the display values. USGS geometry closely matches the loop distance, but the USGS-computed elevation gain conflicts with the official NPS gain and is shown only as an estimate.",
     distanceMatch: "ok",
-    gainMatch: "ok",
-    lastChecked: "2026-06-06",
+    gainMatch: "conflict",
+    lastChecked: "2026-06-14",
   },
 };
 

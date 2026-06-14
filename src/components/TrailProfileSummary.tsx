@@ -23,22 +23,27 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
         <StatCard
           label="Distance"
           value={`${trail.distanceMiles.value} mi`}
+          officialNote="Official (NPS)"
           sourceLabel={trail.distanceMiles.label}
           computed={
             trail.distanceMiles.computedValue
-              ? `USGS estimate: ${trail.distanceMiles.computedValue} mi`
+              ? `USGS computed estimate: ~${trail.distanceMiles.computedValue} mi`
               : undefined
           }
+          computedNote={trail.distanceMiles.computedNote}
         />
         <StatCard
           label="Elevation gain"
           value={`${trail.elevationGainFeet.value.toLocaleString()} ft`}
+          officialNote="Official (NPS)"
           sourceLabel={trail.elevationGainFeet.label}
           computed={
             trail.elevationGainFeet.computedValue
-              ? `USGS estimate: ${trail.elevationGainFeet.computedValue} ft`
+              ? `USGS computed estimate: ~${trail.elevationGainFeet.computedValue} ft`
               : undefined
           }
+          computedNote={trail.elevationGainFeet.computedNote}
+          conflict={trail.sourceConfidence.gainMatch === "conflict"}
         />
         <StatCard
           label="Time"
@@ -94,20 +99,39 @@ function StatCard({
   value,
   sourceLabel,
   computed,
+  computedNote,
+  officialNote,
+  conflict = false,
 }: {
   label: string;
   value: string;
   sourceLabel: TrailProfile["distanceMiles"]["label"];
   computed?: string;
+  computedNote?: string;
+  officialNote?: string;
+  conflict?: boolean;
 }) {
   return (
     <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-2 text-lg font-semibold text-slate-900">{value}</p>
-      <div className="mt-2">
+      <div className="mt-2 flex flex-wrap items-center gap-2">
         <SourceBadge label={sourceLabel} />
+        {officialNote ? (
+          <span className="text-xs text-slate-500">{officialNote}</span>
+        ) : null}
       </div>
-      {computed ? <p className="mt-2 text-xs text-slate-500">{computed}</p> : null}
+      {computed ? (
+        <p className="mt-2 text-xs text-slate-500">
+          {computed}
+          {conflict ? (
+            <span className="ml-1 font-medium text-amber-700">· conflicts with NPS</span>
+          ) : null}
+        </p>
+      ) : null}
+      {computedNote ? (
+        <p className="mt-1 text-xs text-slate-400">{computedNote}</p>
+      ) : null}
     </div>
   );
 }

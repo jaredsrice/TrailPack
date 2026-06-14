@@ -27,6 +27,12 @@ export interface SourcedValue<T> {
   computedValue?: T;
   computedSource?: DataSource;
   computedSourceUrl?: string;
+  /**
+   * Human-readable note for a computed value, e.g. an estimate range. Used when
+   * the computed (USGS) value should not be presented as a single exact match to
+   * the official (NPS) value.
+   */
+  computedNote?: string;
 }
 
 export interface SourceConfidence {
@@ -88,6 +94,11 @@ export interface PackingItem {
   name: string;
   reason: string;
   sourceLabels: SourceLabel[];
+  /**
+   * Official source URL backing this item. Required for any item that carries an
+   * "official" label so provenance can be displayed to the user.
+   */
+  sourceUrl?: string;
 }
 
 export interface PackingRecommendation {
