@@ -1,5 +1,6 @@
 import type {
   AlertContext,
+  PackingItem,
   PackingRecommendation,
   TrailProfile,
   WeatherContext,
@@ -12,6 +13,72 @@ export interface UserHikeInput {
   notes?: string;
 }
 
+/**
+ * Official Grand Teton National Park bear-safety page. Verified source used to
+ * back the "official" label on the bear-spray recommendation.
+ */
+export const GRTE_BEAR_SAFETY_URL =
+  "https://www.nps.gov/grte/planyourvisit/bearsafety.htm";
+
+/**
+ * Parse an expected-duration free-text field into a conservative number of hours.
+ *
+ * Deterministic, keyword/number based only. Returns null when no usable number
+ * is found. When a range like "4-6 hours" is given, the larger value is used so
+ * recommendations stay conservative. Bare minute values are converted to hours.
+ */
+export function parseExpectedHours(input?: string): number | null {
+  if (!input) {
+    return null;
+  }
+
+  const normalized = input.toLowerCase();
+
+  const minuteMatch = normalized.match(/(\d+(?:\.\d+)?)\s*(?:min|minute|minutes|mins)\b/);
+  if (minuteMatch && !/(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours)/.test(normalized)) {
+    const minutes = Number.parseFloat(minuteMatch[1]);
+    return Number.isFinite(minutes) ? minutes / 60 : null;
+  }
+
+  const numbers = normalized.match(/\d+(?:\.\d+)?/g);
+  if (!numbers || numbers.length === 0) {
+    return null;
+  }
+
+  const parsed = numbers
+    .map((value) => Number.parseFloat(value))
+    .filter((value) => Number.isFinite(value));
+
+  if (parsed.length === 0) {
+    return null;
+  }
+
+  return Math.max(...parsed);
+}
+
+export interface TrailConditionFlags {
+  muddyOrWet: boolean;
+  snowOrIce: boolean;
+}
+
+/**
+ * Deterministic keyword scan of the user-provided trail-conditions field.
+ *
+ * This is the only free-text field allowed to influence traction/footwear
+ * recommendations, per the Week 6 data rules (user-reported conditions are a
+ * valid stronger signal). It uses fixed keyword matching, not AI inference.
+ */
+export function analyzeTrailConditions(input?: string): TrailConditionFlags {
+  const normalized = (input ?? "").toLowerCase();
+
+  const muddyOrWet = /\b(mud|muddy|wet|soggy|flooded|standing water|puddle)\b/.test(
+    normalized,
+  );
+  const snowOrIce = /\b(snow|snowy|ice|icy|verglas|posthol)/.test(normalized);
+
+  return { muddyOrWet, snowOrIce };
+}
+
 function formatTrailStats(trail: TrailProfile): string {
   return `${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}`;
 }
@@ -22,25 +89,36 @@ export function generatePackingRecommendation(
   alerts: AlertContext,
   userInput: UserHikeInput = {},
 ): PackingRecommendation {
-  const essential: PackingRecommendation["essential"] = [];
-  const optional: PackingRecommendation["optional"] = [];
+  const essential: PackingItem[] = [];
+  const optional: PackingItem[] = [];
   const missingDetails: string[] = [];
 
   const distance = trail.distanceMiles.value;
   const gain = trail.elevationGainFeet.value;
   const duration = trail.estimatedDuration.value;
 
+  const expectedHours = parseExpectedHours(userInput.expectedDuration);
+  const conditions = analyzeTrailConditions(userInput.trailConditions);
+
   essential.push({
     name: "Sturdy hiking shoes",
     reason: `${trail.difficulty.value} trail with ${gain} ft gain benefits from supportive footwear.`,
-    sourceLabels: ["supported-profile", "official"],
+    sourceLabels: ["supported-profile", "inferred"],
   });
 
-  if (distance >= 5 || gain >= 800) {
+  const longByProfile = distance >= 5 || gain >= 800;
+  const longByUserDuration = expectedHours !== null && expectedHours >= 5;
+
+  if (longByProfile || longByUserDuration) {
+    const reason = longByUserDuration
+      ? `Longer planned day (about ${expectedHours} hr) needs steady hydration.`
+      : `Longer effort (${distance} mi, ${duration}) needs steady hydration.`;
     essential.push({
       name: "Water: 2-3 liters",
-      reason: `Longer effort (${distance} mi, ${duration}) needs steady hydration.`,
-      sourceLabels: ["supported-profile", "official"],
+      reason,
+      sourceLabels: longByUserDuration
+        ? ["user-provided", "supported-profile"]
+        : ["supported-profile"],
     });
   } else {
     essential.push({
@@ -53,13 +131,29 @@ export function generatePackingRecommendation(
   essential.push({
     name: "Snacks / lunch",
     reason: `Plan for ${duration} on trail.`,
-    sourceLabels: ["supported-profile", "official"],
+    sourceLabels: ["supported-profile"],
   });
+
+  // Duration rule: a long planned day raises the chance of finishing near dark.
+  if (expectedHours !== null && expectedHours >= 6) {
+    essential.push({
+      name: "Headlamp",
+      reason: `A long planned day (about ${expectedHours} hr) raises the chance of finishing near dusk.`,
+      sourceLabels: ["user-provided", "inferred"],
+    });
+    optional.push({
+      name: "Extra food",
+      reason: `Pack a little more food for a long day out (about ${expectedHours} hr).`,
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
 
   essential.push({
     name: "Bear spray",
-    reason: "Grand Teton is grizzly country; carry bear spray and know how to use it.",
-    sourceLabels: ["official", "supported-profile"],
+    reason:
+      "Grand Teton National Park recommends carrying bear spray in all areas of the park.",
+    sourceLabels: ["official"],
+    sourceUrl: GRTE_BEAR_SAFETY_URL,
   });
 
   if (weather.conditions.includes("rain") || (weather.precipitationChance ?? 0) >= 40) {
@@ -84,16 +178,39 @@ export function generatePackingRecommendation(
     });
   }
 
-  essential.push({
+  // Trail-condition rules from the user-provided conditions field.
+  if (conditions.snowOrIce) {
+    essential.push({
+      name: "Traction devices (microspikes)",
+      reason: "You reported snow or ice on the trail; traction helps on slick sections.",
+      sourceLabels: ["user-provided"],
+    });
+    optional.push({
+      name: "Trekking poles",
+      reason: "Poles add stability on reported snow or ice.",
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
+
+  if (conditions.muddyOrWet) {
+    optional.push({
+      name: "Waterproof boots or gaiters",
+      reason: "You reported mud or wet trail; waterproof footwear keeps feet dry.",
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
+
+  optional.push({
     name: "Offline map",
-    reason: "Cell service is limited around Jenny Lake; save a map before you go.",
-    sourceLabels: ["supported-profile", "future-work"],
+    reason:
+      "Cell service can be limited in mountain areas; consider saving an offline map before you go.",
+    sourceLabels: ["inferred"],
   });
 
   essential.push({
     name: "First-aid basics",
     reason: "Blister care and basic supplies for a moderate full-day loop.",
-    sourceLabels: ["supported-profile"],
+    sourceLabels: ["supported-profile", "inferred"],
   });
 
   if (alerts.hasActiveAlerts) {
@@ -101,14 +218,15 @@ export function generatePackingRecommendation(
       name: "Check official alerts before leaving",
       reason: alerts.alerts.map((alert) => alert.title).join("; "),
       sourceLabels: ["official"],
+      sourceUrl: alerts.alerts.find((alert) => alert.sourceUrl)?.sourceUrl,
     });
   }
 
-  if (gain >= 1000) {
+  if (gain >= 1000 && !conditions.snowOrIce) {
     optional.push({
       name: "Trekking poles",
       reason: `${gain} ft gain can be easier on knees with poles, especially on descent.`,
-      sourceLabels: ["supported-profile"],
+      sourceLabels: ["supported-profile", "inferred"],
     });
   }
 
@@ -130,7 +248,7 @@ export function generatePackingRecommendation(
 
   if (!userInput.expectedDuration) {
     missingDetails.push(
-      "Your expected pace could refine snack and water amounts.",
+      "Your expected time out could add items like a headlamp for a long day.",
     );
   }
 

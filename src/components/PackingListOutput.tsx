@@ -63,10 +63,20 @@ function ItemGroup({
           >
             <p className="font-medium text-slate-900">{item.name}</p>
             <p className="mt-1 text-sm text-slate-600">{item.reason}</p>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               {item.sourceLabels.map((label) => (
                 <SourceBadge key={`${item.name}-${label}`} label={label} />
               ))}
+              {item.sourceUrl ? (
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs text-emerald-700 underline"
+                >
+                  Source
+                </a>
+              ) : null}
             </div>
           </li>
         ))}
