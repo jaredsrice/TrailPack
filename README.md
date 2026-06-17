@@ -54,8 +54,8 @@ npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`, and
-select the supported trail.
+Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`,
+`Taggart`, or `String Lake`, and select one of the supported trails.
 
 ## Verify the Project
 
@@ -71,7 +71,8 @@ phrasing, and official-source validation.
 
 ## Current Limits
 
-- Jenny Lake Loop is the only complete trail profile.
+- Jenny Lake Loop, Taggart Lake, and String Lake Loop are the complete supported
+  trail profiles in the current prototype.
 - Weather and alerts use demo data instead of live APIs.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
