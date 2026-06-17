@@ -7,7 +7,11 @@ import {
   parseExpectedHours,
   type UserHikeInput,
 } from "@/lib/packing";
-import { JENNY_LAKE_LOOP } from "@/data/supported-trails";
+import {
+  JENNY_LAKE_LOOP,
+  STRING_LAKE_LOOP,
+  TAGGART_LAKE,
+} from "@/data/supported-trails";
 import type { AlertContext, PackingItem, WeatherContext } from "@/types/trailpack";
 
 const CLEAR_WEATHER: WeatherContext = {
@@ -545,6 +549,17 @@ describe("source provenance", () => {
       expect(parsed.protocol).toBe("https:");
       const host = parsed.hostname.toLowerCase();
       expect(host === "nps.gov" || host.endsWith(".nps.gov")).toBe(true);
+    }
+  });
+});
+
+describe("supported trail coverage", () => {
+  it("generates recommendations for every supported trail profile", () => {
+    for (const trail of [JENNY_LAKE_LOOP, TAGGART_LAKE, STRING_LAKE_LOOP]) {
+      const rec = generatePackingRecommendation(trail, CLEAR_WEATHER, NO_ALERTS, {});
+      expect(rec.trailName).toBe(trail.name);
+      expect(rec.essential.length).toBeGreaterThan(0);
+      expect(rec.optional.length).toBeGreaterThan(0);
     }
   });
 });
