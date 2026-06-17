@@ -14,7 +14,8 @@ the same input always produces the same result.
 3. Add useful details such as expected duration or trail conditions.
 4. Receive an essential and optional packing list with reasons and source labels.
 
-The current demo supports the Jenny Lake Loop in Grand Teton National Park.
+The current demo supports Jenny Lake Loop, Taggart Lake, and String Lake Loop
+in Grand Teton National Park.
 
 ## Data Sources
 
@@ -61,7 +62,7 @@ Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`,
 
 ```bash
 npm run lint
-npx tsc --noEmit
+npm run typecheck
 npm test
 npm run build
 ```
