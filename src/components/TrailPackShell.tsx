@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { DEMO_CONTEXTS } from "@/data/demo-contexts";
+import { getDemoScenario } from "@/data/demo-contexts";
 import {
   getTrailsForPark,
   SUPPORTED_PARKS,
@@ -37,7 +37,7 @@ export function TrailPackShell() {
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
   const selectedPark = SUPPORTED_PARKS.find((park) => park.id === selectedParkId);
-  const selectedScenario = selectedTrail ? DEMO_CONTEXTS[selectedTrail.id] : null;
+  const selectedScenario = getDemoScenario(selectedTrail?.id);
 
   const recommendation = useMemo(() => {
     if (!selectedTrail || !selectedScenario) {

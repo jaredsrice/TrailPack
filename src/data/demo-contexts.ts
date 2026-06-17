@@ -1,3 +1,4 @@
+import { SUPPORTED_TRAILS } from "@/data/supported-trails";
 import type { AlertContext, WeatherContext } from "@/types/trailpack";
 
 export interface DemoScenario {
@@ -5,13 +6,15 @@ export interface DemoScenario {
   alerts: AlertContext;
 }
 
+export type SupportedTrailId = keyof typeof SUPPORTED_TRAILS;
+
 const NO_ALERTS: AlertContext = {
   hasActiveAlerts: false,
   alerts: [],
   label: "unavailable",
 };
 
-export const DEMO_CONTEXTS: Record<string, DemoScenario> = {
+export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
   "jenny-lake-loop": {
     weather: {
       plannedDate: "2026-06-15",
@@ -52,3 +55,15 @@ export const DEMO_CONTEXTS: Record<string, DemoScenario> = {
     alerts: NO_ALERTS,
   },
 };
+
+export function getDemoScenario(trailId: string | null | undefined): DemoScenario | null {
+  if (!trailId) {
+    return null;
+  }
+
+  if (!(trailId in DEMO_CONTEXTS)) {
+    return null;
+  }
+
+  return DEMO_CONTEXTS[trailId as SupportedTrailId];
+}
