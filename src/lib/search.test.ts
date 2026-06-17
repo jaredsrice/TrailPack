@@ -18,8 +18,12 @@ describe("getSearchSuggestions", () => {
 
   it("still finds Grand Teton by park search", () => {
     const suggestions = getSearchSuggestions("teton");
-    expect(
-      suggestions.some((suggestion) => suggestion.parkId === "grand-teton"),
-    ).toBe(true);
+    expect(suggestions).toContainEqual({
+      id: "park-grand-teton",
+      type: "park",
+      title: "Grand Teton National Park",
+      subtitle: "Supported park · Wyoming",
+      parkId: "grand-teton",
+    });
   });
 });

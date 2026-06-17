@@ -9,8 +9,7 @@ import {
 } from "@/lib/packing";
 import {
   JENNY_LAKE_LOOP,
-  STRING_LAKE_LOOP,
-  TAGGART_LAKE,
+  SUPPORTED_TRAILS,
 } from "@/data/supported-trails";
 import type { AlertContext, PackingItem, WeatherContext } from "@/types/trailpack";
 
@@ -555,7 +554,7 @@ describe("source provenance", () => {
 
 describe("supported trail coverage", () => {
   it("generates recommendations for every supported trail profile", () => {
-    for (const trail of [JENNY_LAKE_LOOP, TAGGART_LAKE, STRING_LAKE_LOOP]) {
+    for (const trail of Object.values(SUPPORTED_TRAILS)) {
       const rec = generatePackingRecommendation(trail, CLEAR_WEATHER, NO_ALERTS, {});
       expect(rec.trailName).toBe(trail.name);
       expect(rec.essential.length).toBeGreaterThan(0);
