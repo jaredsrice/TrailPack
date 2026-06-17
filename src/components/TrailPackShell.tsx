@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { DEMO_CONTEXTS } from "@/data/demo-contexts";
 import {
   getTrailsForPark,
   SUPPORTED_PARKS,
@@ -8,33 +9,12 @@ import {
 } from "@/data/supported-trails";
 import { generatePackingRecommendation, type UserHikeInput } from "@/lib/packing";
 import { getSearchSuggestions, type SearchSuggestion } from "@/lib/search";
-import type {
-  AlertContext,
-  TrailProfile,
-  WeatherContext,
-} from "@/types/trailpack";
+import type { TrailProfile } from "@/types/trailpack";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";
 
 type FlowMode = "search" | "park" | "trail" | "manual";
-
-const DEMO_WEATHER: WeatherContext = {
-  plannedDate: "2026-06-15",
-  summary: "Partly sunny with a chance of afternoon showers in the Tetons.",
-  temperatureF: { high: 68, low: 42, current: 55 },
-  precipitationChance: 35,
-  windMph: 12,
-  conditions: ["sun", "rain", "wind"],
-  source: "open-meteo",
-  label: "forecast-based",
-};
-
-const DEMO_ALERTS: AlertContext = {
-  hasActiveAlerts: false,
-  alerts: [],
-  label: "unavailable",
-};
 
 function suggestionBadge(type: SearchSuggestion["type"]): string {
   switch (type) {
@@ -57,22 +37,23 @@ export function TrailPackShell() {
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
   const selectedPark = SUPPORTED_PARKS.find((park) => park.id === selectedParkId);
+  const selectedScenario = selectedTrail ? DEMO_CONTEXTS[selectedTrail.id] : null;
 
   const recommendation = useMemo(() => {
-    if (!selectedTrail) {
+    if (!selectedTrail || !selectedScenario) {
       return null;
     }
 
     return generatePackingRecommendation(
       selectedTrail,
       {
-        ...DEMO_WEATHER,
-        plannedDate: userInput.plannedDate ?? DEMO_WEATHER.plannedDate,
+        ...selectedScenario.weather,
+        plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
       },
-      DEMO_ALERTS,
+      selectedScenario.alerts,
       userInput,
     );
-  }, [selectedTrail, userInput]);
+  }, [selectedScenario, selectedTrail, userInput]);
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
     if (suggestion.type === "manual") {
@@ -217,9 +198,8 @@ export function TrailPackShell() {
           <section className="rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-amber-950">Manual hike entry</h2>
             <p className="mt-2 text-sm text-amber-900">
-              Manual entry is available as a fallback, but Week 7 focuses on the supported Jenny
-              Lake Loop profile. Search for &quot;Jenny Lake&quot; or select Grand Teton National
-              Park to demo the supported flow.
+              Manual entry is still the fallback for unsupported hikes. Week 8 now supports Jenny
+              Lake Loop, Taggart Lake, and String Lake Loop in Grand Teton National Park.
             </p>
           </section>
         ) : null}
