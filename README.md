@@ -17,6 +17,15 @@ the same input always produces the same result.
 The current demo supports Jenny Lake Loop, Taggart Lake, and String Lake Loop
 in Grand Teton National Park.
 
+## Supported Demo Trails
+
+- `Jenny Lake Loop` - longer moderate loop with a known NPS versus USGS
+  elevation-gain conflict that stays visibly labeled in the UI.
+- `Taggart Lake` - short easy out-and-back trail with official NPS values and a
+  close USGS geometry match.
+- `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a
+  breezier saved demo weather scenario.
+
 ## Data Sources
 
 - **NPS** is the primary source for official trail distance, elevation gain,
