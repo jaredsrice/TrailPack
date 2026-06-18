@@ -12,4 +12,5 @@ The skills speak in terms of five canonical triage roles. This file maps those r
 
 When a skill mentions a role, use the corresponding label string from this table.
 
-This repo already has GitHub's default `wontfix` label. The other four labels may need to be created in GitHub before triage automation can apply them cleanly.
+All five labels in this table already exist in the GitHub repository and can be
+applied directly during issue triage.

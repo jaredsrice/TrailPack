@@ -98,6 +98,9 @@ Next.js, React, TypeScript, Tailwind CSS, and Vitest.
 
 ## Project Documents
 
+- [`AGENTS.md`](AGENTS.md) - repo-specific agent workflow entrypoints and pointers
+- [`docs/agents/`](docs/agents/) - issue tracker, triage label, and domain-doc guidance for agent work
+- [`docs/superpowers/`](docs/superpowers/) - saved planning and design artifacts for implementation work
 - [`CHANGELOG.md`](CHANGELOG.md) - version history and known issues
 - [`Data Docs/`](Data%20Docs/) - data feasibility and source decisions
 - [`UI Docs/`](UI%20Docs/) - workflow, wireframes, and UI planning
