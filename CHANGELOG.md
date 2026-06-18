@@ -17,7 +17,8 @@ change as the project develops.
 - Search coverage and packing coverage tests for the expanded supported trail set.
 - A standalone `npm run typecheck` script that runs `next typegen` before
   `tsc --noEmit` on a clean checkout.
-- Repo-level agent workflow documentation in `AGENTS.md` and `docs/agents/`.
+- Repo-level agent workflow documentation in `AGENTS.md`, `CONTEXT.md`, and
+  `docs/agents/`.
 - The saved Week 8 implementation plan in
   `docs/superpowers/plans/2026-06-17-week-8-supported-trails.md`.
 
@@ -27,6 +28,8 @@ change as the project develops.
   scenario instead of sharing one static weather context.
 - Refreshed the README to describe the three supported Week 8 demo trails and
   the current verification commands.
+- Tightened the agent-maintenance guidance to prefer the latest proposal version
+  and keep user-facing docs aligned with merged scope.
 
 ### Fixed
 
