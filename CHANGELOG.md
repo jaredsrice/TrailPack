@@ -9,7 +9,28 @@ change as the project develops.
 
 ## [Unreleased]
 
-No unreleased changes yet.
+### Added
+
+- Taggart Lake and String Lake Loop as additional supported Grand Teton trail
+  profiles alongside Jenny Lake Loop.
+- Deterministic saved demo weather and alert scenarios for each supported trail.
+- Search coverage and packing coverage tests for the expanded supported trail set.
+- A standalone `npm run typecheck` script that runs `next typegen` before
+  `tsc --noEmit` on a clean checkout.
+
+### Changed
+
+- Updated the main app flow so each supported trail uses its own saved demo
+  scenario instead of sharing one static weather context.
+- Refreshed the README to describe the three supported Week 8 demo trails and
+  the current verification commands.
+
+### Fixed
+
+- Prevented unsupported or unknown trail ids from being treated like valid saved
+  demo scenarios.
+- Made the documented TypeScript verification flow reliable even when `.next`
+  route types have not been generated yet.
 
 ## [0.1.0] - 2026-06-14
 
