@@ -49,11 +49,11 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
   "string-lake-loop": {
     weather: {
       plannedDate: "2026-06-15",
-      summary: "Mostly sunny and breezy near the ridge above String Lake.",
-      temperatureF: { high: 70, low: 45, current: 56 },
-      precipitationChance: 15,
-      windMph: 16,
-      conditions: ["sun", "wind"],
+      summary: "Hot, sunny, and breezy around the exposed String Lake shoreline.",
+      temperatureF: { high: 84, low: 52, current: 74 },
+      precipitationChance: 5,
+      windMph: 14,
+      conditions: ["sun", "heat", "wind"],
       source: "open-meteo",
       label: "forecast-based",
     },

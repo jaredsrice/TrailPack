@@ -7,14 +7,23 @@ import {
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
 } from "@/data/supported-trails";
-import { generatePackingRecommendation, type UserHikeInput } from "@/lib/packing";
+import {
+  generateManualEntryRecommendation,
+  generatePackingRecommendation,
+  type UserHikeInput,
+} from "@/lib/packing";
+import {
+  buildClearedSearchState,
+  buildManualSelectionState,
+  buildParkSelectionState,
+  buildTrailSelectionState,
+  type FlowMode,
+} from "@/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/lib/search";
 import type { TrailProfile } from "@/types/trailpack";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";
-
-type FlowMode = "search" | "park" | "trail" | "manual";
 
 function suggestionBadge(type: SearchSuggestion["type"]): string {
   switch (type) {
@@ -40,6 +49,10 @@ export function TrailPackShell() {
   const selectedScenario = getDemoScenario(selectedTrail?.id);
 
   const recommendation = useMemo(() => {
+    if (mode === "manual") {
+      return generateManualEntryRecommendation(userInput);
+    }
+
     if (!selectedTrail || !selectedScenario) {
       return null;
     }
@@ -53,21 +66,26 @@ export function TrailPackShell() {
       selectedScenario.alerts,
       userInput,
     );
-  }, [selectedScenario, selectedTrail, userInput]);
+  }, [mode, selectedScenario, selectedTrail, userInput]);
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
     if (suggestion.type === "manual") {
-      setMode("manual");
-      setSelectedParkId(null);
-      setSelectedTrail(null);
+      const next = buildManualSelectionState(query);
+      setMode(next.mode);
+      setSelectedParkId(next.selectedParkId);
+      setSelectedTrail(next.selectedTrail);
+      setQuery(next.query);
+      setUserInput(next.userInput);
       return;
     }
 
     if (suggestion.type === "park" && suggestion.parkId) {
-      setMode("park");
-      setSelectedParkId(suggestion.parkId);
-      setSelectedTrail(null);
-      setQuery(suggestion.title);
+      const next = buildParkSelectionState(suggestion.parkId, suggestion.title);
+      setMode(next.mode);
+      setSelectedParkId(next.selectedParkId);
+      setSelectedTrail(next.selectedTrail);
+      setQuery(next.query);
+      setUserInput(next.userInput);
       return;
     }
 
@@ -77,10 +95,12 @@ export function TrailPackShell() {
         return;
       }
 
-      setMode("trail");
-      setSelectedParkId(suggestion.parkId ?? null);
-      setSelectedTrail(trail);
-      setQuery(trail.name);
+      const next = buildTrailSelectionState(trail, suggestion.parkId ?? null);
+      setMode(next.mode);
+      setSelectedParkId(next.selectedParkId);
+      setSelectedTrail(next.selectedTrail);
+      setQuery(next.query);
+      setUserInput(next.userInput);
     }
   }
 
@@ -90,9 +110,12 @@ export function TrailPackShell() {
       return;
     }
 
-    setMode("trail");
-    setSelectedTrail(trail);
-    setQuery(trail.name);
+    const next = buildTrailSelectionState(trail, selectedParkId);
+    setMode(next.mode);
+    setSelectedParkId(next.selectedParkId);
+    setSelectedTrail(next.selectedTrail);
+    setQuery(next.query);
+    setUserInput(next.userInput);
   }
 
   return (
@@ -127,9 +150,11 @@ export function TrailPackShell() {
               onChange={(event) => {
                 setQuery(event.target.value);
                 if (!event.target.value) {
-                  setMode("search");
-                  setSelectedParkId(null);
-                  setSelectedTrail(null);
+                  const next = buildClearedSearchState();
+                  setMode(next.mode);
+                  setSelectedParkId(next.selectedParkId);
+                  setSelectedTrail(next.selectedTrail);
+                  setUserInput(next.userInput);
                 }
               }}
               placeholder="Search a park or trail..."
@@ -206,7 +231,7 @@ export function TrailPackShell() {
 
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
 
-        {selectedTrail ? (
+        {selectedTrail || mode === "manual" ? (
           <MissingDetailPrompts value={userInput} onChange={setUserInput} />
         ) : null}
 
