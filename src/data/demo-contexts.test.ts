@@ -29,10 +29,11 @@ describe("demo contexts", () => {
 
   it("stores the exact String Lake Loop scenario values", () => {
     expect(DEMO_CONTEXTS["string-lake-loop"].weather).toMatchObject({
-      summary: "Mostly sunny and breezy near the ridge above String Lake.",
-      precipitationChance: 15,
-      windMph: 16,
-      conditions: ["sun", "wind"],
+      summary: "Hot, sunny, and breezy around the exposed String Lake shoreline.",
+      temperatureF: { high: 84, low: 52, current: 74 },
+      precipitationChance: 5,
+      windMph: 14,
+      conditions: ["sun", "heat", "wind"],
     });
   });
 });

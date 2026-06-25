@@ -17,6 +17,14 @@ change as the project develops.
 - Search coverage and packing coverage tests for the expanded supported trail set.
 - A standalone `npm run typecheck` script that runs `next typegen` before
   `tsc --noEmit` on a clean checkout.
+- Repo-level agent workflow documentation in `AGENTS.md`, `CONTEXT.md`, and
+  `docs/agents/`.
+- The saved Week 8 implementation plan in
+  `docs/superpowers/plans/2026-06-17-week-8-supported-trails.md`.
+- A saved Week 8 / Week 9 validation note in
+  `docs/superpowers/validation/2026-06-19-week-8-9-validation.md`.
+- A saved Week 10 scenario review note in
+  `docs/superpowers/validation/2026-06-20-week-10-scenario-review.md`.
 
 ### Changed
 
@@ -24,6 +32,22 @@ change as the project develops.
   scenario instead of sharing one static weather context.
 - Refreshed the README to describe the three supported Week 8 demo trails and
   the current verification commands.
+- Tightened the agent-maintenance guidance to prefer the latest proposal version
+  and keep user-facing docs aligned with merged scope.
+- Recorded the current milestone status more explicitly: Week 8 is complete,
+  Week 9 is complete for the baseline rule-engine milestone, the supported
+  prototype remains limited to three Grand Teton trails, and the AI path is
+  still deferred.
+- Added a limited manual-entry fallback packing list for unsupported or
+  incomplete hikes.
+- Polished the Week 10 evaluation scenarios so short-hike, hot/exposed, and
+  incomplete-data demo paths are cleaner and more defensible.
+- Reset trip-detail state when switching trails or modes so one scenario no
+  longer contaminates the next during live demos.
+- Replaced obsolete technology-demo framing with a next-project-focus note for
+  prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
+- Polished the main app surface with quick-start trail cards, tighter card
+  geometry, clearer manual-entry copy, and recommendation item counts.
 
 ### Fixed
 
@@ -31,6 +55,10 @@ change as the project develops.
   demo scenarios.
 - Made the documented TypeScript verification flow reliable even when `.next`
   route types have not been generated yet.
+- Removed the misleading planned-date prompt from the missing-details list while
+  date remains a context-only field.
+- Softened food and first-aid wording where the previous output overstated
+  shorter scenarios.
 
 ## [0.1.0] - 2026-06-14
 

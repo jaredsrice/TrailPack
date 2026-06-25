@@ -14,6 +14,9 @@ the same input always produces the same result.
 3. Add useful details such as expected duration or trail conditions.
 4. Receive an essential and optional packing list with reasons and source labels.
 
+Unsupported hikes can now use the manual-entry fallback to get a limited
+baseline list while the prototype still lacks full trail stats.
+
 The current demo supports Jenny Lake Loop, Taggart Lake, and String Lake Loop
 in Grand Teton National Park.
 
@@ -23,8 +26,8 @@ in Grand Teton National Park.
   elevation-gain conflict that stays visibly labeled in the UI.
 - `Taggart Lake` - short easy out-and-back trail with official NPS values and a
   close USGS geometry match.
-- `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a
-  breezier saved demo weather scenario.
+- `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a hot,
+  exposed saved demo weather scenario for Week 10 evaluation.
 
 ## Data Sources
 
@@ -83,6 +86,8 @@ phrasing, and official-source validation.
 
 - Jenny Lake Loop, Taggart Lake, and String Lake Loop are the complete supported
   trail profiles in the current prototype.
+- Unsupported hikes can only use a limited manual fallback list. The manual path
+  does not yet collect direct distance, elevation gain, or route-type inputs.
 - Weather and alerts use demo data instead of live APIs.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
@@ -92,12 +97,26 @@ phrasing, and official-source validation.
   audit fix would install an incompatible Next.js version, so the project is
   waiting for a safe upstream update.
 
+## Next Project Focus
+
+- Keep polishing the current rule-based prototype before expanding scope.
+- Use the next planning pass to turn the working prototype into Requirements
+  Spec material: core workflow, fallback behavior, data-source limits, AI
+  guardrails, UAT expectations, and final-demo expectations.
+- Keep live data and AI work deferred until the baseline workflow and
+  requirements are stable enough to protect with tests.
+
 ## Technology
 
 Next.js, React, TypeScript, Tailwind CSS, and Vitest.
 
 ## Project Documents
 
+- [`AGENTS.md`](AGENTS.md) - repo-specific agent workflow entrypoints and pointers
+- [`CONTEXT.md`](CONTEXT.md) - canonical TrailPack domain glossary and repo memory
+- [`docs/agents/`](docs/agents/) - issue tracker, triage label, and domain-doc guidance for agent work
+- [`docs/superpowers/`](docs/superpowers/) - saved planning and design artifacts for implementation work
+- [`docs/superpowers/validation/`](docs/superpowers/validation/) - saved milestone validation notes and proposal-alignment checks
 - [`CHANGELOG.md`](CHANGELOG.md) - version history and known issues
 - [`Data Docs/`](Data%20Docs/) - data feasibility and source decisions
 - [`UI Docs/`](UI%20Docs/) - workflow, wireframes, and UI planning

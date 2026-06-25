@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   analyzeTrailConditions,
+  generateManualEntryRecommendation,
   generatePackingRecommendation,
   GRTE_BEAR_SAFETY_URL,
   isOfficialNpsAlert,
@@ -9,8 +10,11 @@ import {
 } from "@/lib/packing";
 import {
   JENNY_LAKE_LOOP,
+  STRING_LAKE_LOOP,
   SUPPORTED_TRAILS,
+  TAGGART_LAKE,
 } from "@/data/supported-trails";
+import { DEMO_CONTEXTS } from "@/data/demo-contexts";
 import type { AlertContext, PackingItem, WeatherContext } from "@/types/trailpack";
 
 const CLEAR_WEATHER: WeatherContext = {
@@ -250,6 +254,75 @@ describe("missing-detail warnings", () => {
   it("notes details when nothing is provided", () => {
     const rec = build();
     expect(rec.missingDetails.length).toBeGreaterThan(0);
+  });
+
+  it("does not ask for a planned date while date is still context only", () => {
+    const rec = build();
+    expect(rec.missingDetails.join(" ")).not.toMatch(/planned hike date/i);
+  });
+});
+
+describe("scenario polish", () => {
+  it("uses lighter food wording for a short easy hike", () => {
+    const rec = generatePackingRecommendation(
+      TAGGART_LAKE,
+      DEMO_CONTEXTS["taggart-lake"].weather,
+      NO_ALERTS,
+      {},
+    );
+    expect(names(rec.essential)).toContain("Snack or light food");
+    expect(names(rec.essential)).not.toContain("Snacks / lunch");
+    const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
+    expect(firstAid?.reason).not.toMatch(/moderate full-day loop/i);
+  });
+
+  it("adds heat support for a hot exposed scenario", () => {
+    const rec = generatePackingRecommendation(
+      STRING_LAKE_LOOP,
+      DEMO_CONTEXTS["string-lake-loop"].weather,
+      NO_ALERTS,
+      {},
+    );
+    expect(names(rec.essential)).toContain("Water: 2-3 liters");
+    expect(names(rec.optional)).toContain("Electrolytes or salty snack");
+    expect(names(rec.optional)).toContain("Breathable sun layer");
+    const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
+    expect(firstAid?.reason).not.toMatch(/full-day loop/i);
+  });
+});
+
+describe("manual entry fallback", () => {
+  it("builds a limited baseline list for unsupported hikes", () => {
+    const rec = generateManualEntryRecommendation({});
+    expect(rec.trailId).toBe("manual-entry");
+    expect(rec.trailName).toBe("Manual hike entry");
+    expect(names(rec.essential)).toContain("Water: 1-2 liters");
+    expect(names(rec.essential)).toContain("Snack or light food");
+    expect(names(rec.essential)).toContain("First-aid basics");
+    expect(rec.confidenceNote).toMatch(/limited fallback/i);
+  });
+
+  it("asks only for the supported manual inputs that would improve the fallback list", () => {
+    const rec = generateManualEntryRecommendation({});
+    const joined = rec.missingDetails.join(" ");
+    expect(joined).toMatch(/expected time/i);
+    expect(joined).toMatch(/trail conditions/i);
+    expect(joined).not.toMatch(/distance/i);
+    expect(joined).not.toMatch(/elevation/i);
+  });
+
+  it("still responds to provided duration and trail conditions", () => {
+    const rec = generateManualEntryRecommendation({
+      expectedDuration: "7 hours",
+      trailConditions: "icy and muddy",
+    });
+    expect(names(rec.essential)).toContain("Headlamp");
+    expect(names(rec.essential)).toContain("Traction devices (microspikes)");
+    expect(names(rec.optional)).toContain("Extra food");
+    expect(names(rec.optional)).toContain("Waterproof boots or gaiters");
+    const joined = rec.missingDetails.join(" ");
+    expect(joined).not.toMatch(/expected time/i);
+    expect(joined).not.toMatch(/trail conditions/i);
   });
 });
 

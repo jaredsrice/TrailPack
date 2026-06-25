@@ -265,6 +265,11 @@ export function generatePackingRecommendation(
 
   const expectedHours = parseExpectedHours(userInput.expectedDuration);
   const conditions = analyzeTrailConditions(userInput.trailConditions);
+  const shortByProfile = distance <= 3.5 && gain <= 500;
+  const hotConditions =
+    weather.conditions.includes("heat") ||
+    (weather.temperatureF?.high ?? 0) >= 80 ||
+    (weather.temperatureF?.current ?? 0) >= 75;
 
   essential.push({
     name: "Sturdy hiking shoes",
@@ -295,8 +300,10 @@ export function generatePackingRecommendation(
   }
 
   essential.push({
-    name: "Snacks / lunch",
-    reason: `Plan for ${duration} on trail.`,
+    name: shortByProfile ? "Snack or light food" : "Snacks / lunch",
+    reason: shortByProfile
+      ? `A shorter ${duration.toLowerCase()} hike still calls for quick trail fuel.`
+      : `Plan for ${duration} on trail.`,
     sourceLabels: ["supported-profile"],
   });
 
@@ -344,6 +351,35 @@ export function generatePackingRecommendation(
     });
   }
 
+  if (hotConditions) {
+    const waterIndex = essential.findIndex((item) => item.name.startsWith("Water:"));
+    if (waterIndex !== -1) {
+      const existingWater = essential[waterIndex];
+      essential[waterIndex] = {
+        ...existingWater,
+        name: "Water: 2-3 liters",
+        reason:
+          existingWater.name === "Water: 2-3 liters"
+            ? `${existingWater.reason} Warm exposed conditions reinforce the higher water target.`
+            : "Warm exposed conditions call for extra hydration support.",
+        sourceLabels: Array.from(
+          new Set([...existingWater.sourceLabels, "forecast-based"]),
+        ),
+      };
+    }
+
+    optional.push({
+      name: "Electrolytes or salty snack",
+      reason: "Warm sun-exposed hiking can increase sweat loss.",
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+    optional.push({
+      name: "Breathable sun layer",
+      reason: "Light breathable coverage helps on a hot exposed trail.",
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  }
+
   // Trail-condition rules from the user-provided conditions field.
   if (conditions.snowOrIce) {
     essential.push({
@@ -375,7 +411,9 @@ export function generatePackingRecommendation(
 
   essential.push({
     name: "First-aid basics",
-    reason: "Blister care and basic supplies for a moderate full-day loop.",
+    reason: longByProfile
+      ? "Blister care and basic supplies for a longer mountain hike."
+      : "Basic blister care and a few small first-aid supplies are still worth carrying.",
     sourceLabels: ["supported-profile", "inferred"],
   });
 
@@ -407,10 +445,6 @@ export function generatePackingRecommendation(
     sourceLabels: ["supported-profile", "inferred"],
   });
 
-  if (!userInput.plannedDate) {
-    missingDetails.push("Planned hike date would improve weather-based packing.");
-  }
-
   if (!userInput.trailConditions) {
     missingDetails.push(
       "Current trail conditions (muddy, icy, snow) are not known from official data alone.",
@@ -431,5 +465,108 @@ export function generatePackingRecommendation(
     optional: optional.map(enforceOfficialProvenance),
     missingDetails,
     confidenceNote: `${trail.sourceConfidence.summary} Display stats: ${formatTrailStats(trail)}.`,
+  };
+}
+
+export function generateManualEntryRecommendation(
+  userInput: UserHikeInput = {},
+): PackingRecommendation {
+  const essential: PackingItem[] = [
+    {
+      name: "Water: 1-2 liters",
+      reason: "Use a limited baseline while trail distance and effort are still unknown.",
+      sourceLabels: ["missing", "inferred"],
+    },
+    {
+      name: "Snack or light food",
+      reason: "A simple baseline list should still include quick trail fuel.",
+      sourceLabels: ["missing", "inferred"],
+    },
+    {
+      name: "Sun protection",
+      reason: "A generic day-hike fallback should still cover basic sun exposure.",
+      sourceLabels: ["inferred"],
+    },
+    {
+      name: "First-aid basics",
+      reason: "Carry a basic safety item even before the hike stats are complete.",
+      sourceLabels: ["inferred"],
+    },
+  ];
+  const optional: PackingItem[] = [
+    {
+      name: "Offline map",
+      reason: "Unsupported hikes should still keep a simple navigation fallback.",
+      sourceLabels: ["inferred"],
+    },
+    {
+      name: "Light rain shell",
+      reason: "A conservative fallback list should still include light weather protection.",
+      sourceLabels: ["inferred"],
+    },
+  ];
+  const missingDetails: string[] = [];
+
+  const expectedHours = parseExpectedHours(userInput.expectedDuration);
+  const conditions = analyzeTrailConditions(userInput.trailConditions);
+
+  if (expectedHours !== null && expectedHours >= 5) {
+    essential[0] = {
+      name: "Water: 2-3 liters",
+      reason: `A longer planned day (about ${expectedHours} hr) needs more hydration.`,
+      sourceLabels: ["user-provided", "missing"],
+    };
+  }
+
+  if (expectedHours !== null && expectedHours >= 6) {
+    essential.push({
+      name: "Headlamp",
+      reason: `A long planned day (about ${expectedHours} hr) can run late.`,
+      sourceLabels: ["user-provided", "inferred"],
+    });
+    optional.push({
+      name: "Extra food",
+      reason: "Pack a little more food for a long unsupported-hike day.",
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
+
+  if (conditions.snowOrIce) {
+    essential.push({
+      name: "Traction devices (microspikes)",
+      reason: "You reported snow or ice on the trail.",
+      sourceLabels: ["user-provided"],
+    });
+  }
+
+  if (conditions.muddyOrWet) {
+    optional.push({
+      name: "Waterproof boots or gaiters",
+      reason: "You reported mud or wet trail conditions.",
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
+
+  if (!userInput.expectedDuration) {
+    missingDetails.push(
+      "Your expected time out would improve hydration and food sizing for this fallback list.",
+    );
+  }
+
+  if (!userInput.trailConditions) {
+    missingDetails.push(
+      "Current trail conditions would improve traction and footwear recommendations.",
+    );
+  }
+
+  return {
+    trailId: "manual-entry",
+    trailName: "Manual hike entry",
+    generatedAt: new Date().toISOString(),
+    essential: essential.map(enforceOfficialProvenance),
+    optional: optional.map(enforceOfficialProvenance),
+    missingDetails,
+    confidenceNote:
+      "This is a limited fallback list for an unsupported or incomplete hike profile. Trail distance, elevation gain, route type, and source-backed weather are still missing in the current manual-entry prototype.",
   };
 }
