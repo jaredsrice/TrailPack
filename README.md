@@ -97,6 +97,15 @@ phrasing, and official-source validation.
   audit fix would install an incompatible Next.js version, so the project is
   waiting for a safe upstream update.
 
+## Next Project Focus
+
+- Keep polishing the current rule-based prototype before expanding scope.
+- Use the next planning pass to turn the working prototype into Requirements
+  Spec material: core workflow, fallback behavior, data-source limits, AI
+  guardrails, UAT expectations, and final-demo expectations.
+- Keep live data and AI work deferred until the baseline workflow and
+  requirements are stable enough to protect with tests.
+
 ## Technology
 
 Next.js, React, TypeScript, Tailwind CSS, and Vitest.

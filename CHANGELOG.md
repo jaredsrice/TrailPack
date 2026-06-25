@@ -44,6 +44,10 @@ change as the project develops.
   incomplete-data demo paths are cleaner and more defensible.
 - Reset trip-detail state when switching trails or modes so one scenario no
   longer contaminates the next during live demos.
+- Replaced obsolete technology-demo framing with a next-project-focus note for
+  prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
+- Polished the main app surface with quick-start trail cards, tighter card
+  geometry, clearer manual-entry copy, and recommendation item counts.
 
 ### Fixed
 

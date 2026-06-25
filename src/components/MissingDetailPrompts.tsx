@@ -7,11 +7,11 @@ interface MissingDetailPromptsProps {
 
 export function MissingDetailPrompts({ value, onChange }: MissingDetailPromptsProps) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">A few useful details</h2>
+    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-slate-900">Trip details</h2>
       <p className="mt-1 text-sm text-slate-600">
-        Expected time out and trail conditions can change your packing list. Date and notes
-        are saved as trip context for now.
+        Expected time out and current conditions can change your packing list. Date and notes stay
+        as trip context for now.
       </p>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -24,7 +24,7 @@ export function MissingDetailPrompts({ value, onChange }: MissingDetailPromptsPr
             onChange={(event) =>
               onChange({ ...value, plannedDate: event.target.value || undefined })
             }
-            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
           />
         </label>
 
@@ -41,7 +41,7 @@ export function MissingDetailPrompts({ value, onChange }: MissingDetailPromptsPr
                 expectedDuration: event.target.value || undefined,
               })
             }
-            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
           />
         </label>
 
@@ -60,7 +60,7 @@ export function MissingDetailPrompts({ value, onChange }: MissingDetailPromptsPr
                 trailConditions: event.target.value || undefined,
               })
             }
-            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
           />
         </label>
 
@@ -76,7 +76,7 @@ export function MissingDetailPrompts({ value, onChange }: MissingDetailPromptsPr
             onChange={(event) =>
               onChange({ ...value, notes: event.target.value || undefined })
             }
-            className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
           />
         </label>
       </div>

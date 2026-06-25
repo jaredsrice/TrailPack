@@ -7,7 +7,7 @@ function formatConfidence(status: TrailProfile["sourceConfidence"]["status"]): s
 
 export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-slate-500">Selected trail</p>
@@ -57,7 +57,7 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
         />
       </div>
 
-      <details className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <details className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
         <summary className="cursor-pointer text-sm font-semibold text-slate-800">
           Sources &amp; Confidence
         </summary>
@@ -112,7 +112,7 @@ function StatCard({
   conflict?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-slate-100 bg-slate-50 p-4">
+    <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-2 text-lg font-semibold text-slate-900">{value}</p>
       <div className="mt-2 flex flex-wrap items-center gap-2">

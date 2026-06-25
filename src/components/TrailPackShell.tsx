@@ -25,6 +25,12 @@ import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";
 
+const QUICK_START_TRAIL_IDS = [
+  "jenny-lake-loop",
+  "taggart-lake",
+  "string-lake-loop",
+] as const;
+
 function suggestionBadge(type: SearchSuggestion["type"]): string {
   switch (type) {
     case "park":
@@ -121,26 +127,21 @@ export function TrailPackShell() {
   return (
     <main className="min-h-screen bg-slate-50">
       <section
-        className="relative overflow-hidden px-6 pb-10 pt-8 text-white"
+        className="relative overflow-hidden px-6 pb-12 pt-10 text-white"
         style={{
           background: "linear-gradient(135deg, var(--hero-from), var(--hero-to))",
         }}
       >
-        <div className="pointer-events-none absolute inset-0 opacity-20">
-          <div className="absolute -left-10 top-10 h-56 w-56 rounded-full bg-white/30 blur-3xl" />
-          <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-emerald-200/20 blur-3xl" />
-        </div>
-
-        <div className="relative mx-auto max-w-5xl">
+        <div className="relative mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-100">
             TrailPack
           </p>
-          <h1 className="mt-4 text-4xl font-bold md:text-5xl">
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
             Where would you like to go?
           </h1>
           <p className="mt-3 max-w-2xl text-base text-emerald-50/90">
-            Search a supported park or trail, then get a rule-based packing list built from
-            official trail stats and trip context.
+            Search a supported park or trail, then get a focused packing list built from
+            traceable trail stats and trip context.
           </p>
 
           <div className="mt-8">
@@ -165,13 +166,13 @@ export function TrailPackShell() {
           {query.trim() ? (
             <div className="mt-6">
               <p className="text-sm font-semibold text-emerald-100">Suggestions</p>
-              <div className="mt-3 flex flex-wrap gap-3">
+              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {suggestions.map((suggestion) => (
                   <button
                     key={suggestion.id}
                     type="button"
                     onClick={() => handleSuggestionSelect(suggestion)}
-                    className={`min-w-[220px] rounded-2xl border px-4 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+                    className={`rounded-lg border px-4 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
                       suggestion.type === "manual"
                         ? "border-amber-300 bg-amber-50 text-slate-900"
                         : "border-slate-200 bg-white text-slate-900"
@@ -186,13 +187,35 @@ export function TrailPackShell() {
                 ))}
               </div>
             </div>
+          ) : mode === "search" ? (
+            <div className="mt-8">
+              <p className="text-sm font-semibold text-emerald-100">Start with a supported trail</p>
+              <div className="mt-3 grid gap-3 md:grid-cols-3">
+                {QUICK_START_TRAIL_IDS.map((trailId) => {
+                  const trail = SUPPORTED_TRAILS[trailId];
+                  return (
+                    <button
+                      key={trail.id}
+                      type="button"
+                      onClick={() => handleTrailSelect(trail.id)}
+                      className="rounded-lg border border-white/20 bg-white/95 px-4 py-3 text-left text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
+                    >
+                      <p className="font-semibold">{trail.name}</p>
+                      <p className="mt-1 text-sm text-slate-600">
+                        {trail.distanceMiles.value} mi · {trail.elevationGainFeet.value} ft gain
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ) : null}
         </div>
       </section>
 
-      <div className="mx-auto max-w-5xl space-y-6 px-6 py-8">
+      <div className="mx-auto max-w-6xl space-y-6 px-6 py-8">
         {mode === "park" && selectedPark ? (
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             <p className="text-sm font-medium text-slate-500">Selected park</p>
             <h2 className="mt-1 text-2xl font-semibold text-slate-900">{selectedPark.name}</h2>
             <p className="mt-1 text-slate-600">{selectedPark.state}</p>
@@ -205,7 +228,7 @@ export function TrailPackShell() {
                     key={trail.id}
                     type="button"
                     onClick={() => handleTrailSelect(trail.id)}
-                    className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-left transition hover:bg-emerald-100"
+                    className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-left transition hover:bg-emerald-100"
                   >
                     <p className="font-semibold text-emerald-950">{trail.name}</p>
                     <p className="mt-1 text-sm text-emerald-800">
@@ -220,11 +243,11 @@ export function TrailPackShell() {
         ) : null}
 
         {mode === "manual" ? (
-          <section className="rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
+          <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-amber-950">Manual hike entry</h2>
             <p className="mt-2 text-sm text-amber-900">
-              Manual entry is still the fallback for unsupported hikes. Week 8 now supports Jenny
-              Lake Loop, Taggart Lake, and String Lake Loop in Grand Teton National Park.
+              Unsupported hikes use a limited fallback list until distance, elevation, route type,
+              and source-backed weather are available.
             </p>
           </section>
         ) : null}
