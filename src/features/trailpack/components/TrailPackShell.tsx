@@ -1,26 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { getDemoScenario } from "@/data/demo-contexts";
+import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import {
   getTrailsForPark,
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
-} from "@/data/supported-trails";
+} from "@/features/trailpack/data/supported-trails";
 import {
   generateManualEntryRecommendation,
   generatePackingRecommendation,
   type UserHikeInput,
-} from "@/lib/packing";
+} from "@/features/trailpack/lib/packing";
 import {
   buildClearedSearchState,
   buildManualSelectionState,
   buildParkSelectionState,
   buildTrailSelectionState,
   type FlowMode,
-} from "@/lib/trailpack-flow";
-import { getSearchSuggestions, type SearchSuggestion } from "@/lib/search";
-import type { TrailProfile } from "@/types/trailpack";
+} from "@/features/trailpack/lib/trailpack-flow";
+import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
+import type { TrailProfile } from "@/features/trailpack/types";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";

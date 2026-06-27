@@ -1,4 +1,4 @@
-import type { AlertContext, WeatherContext } from "@/types/trailpack";
+import type { AlertContext, WeatherContext } from "@/features/trailpack/types";
 
 export interface DemoScenario {
   weather: WeatherContext;

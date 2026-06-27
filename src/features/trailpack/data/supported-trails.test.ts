@@ -5,7 +5,7 @@ import {
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
   TAGGART_LAKE,
-} from "@/data/supported-trails";
+} from "@/features/trailpack/data/supported-trails";
 
 describe("supported trail inventory", () => {
   it("includes the expected Grand Teton park and trail catalog", () => {

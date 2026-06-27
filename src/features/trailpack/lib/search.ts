@@ -1,4 +1,4 @@
-import { SUPPORTED_PARKS, SUPPORTED_TRAILS } from "@/data/supported-trails";
+import { SUPPORTED_PARKS, SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
 
 export type SuggestionType = "park" | "trail" | "manual";
 

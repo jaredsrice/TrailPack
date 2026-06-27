@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSearchSuggestions } from "@/lib/search";
+import { getSearchSuggestions } from "@/features/trailpack/lib/search";
 
 describe("getSearchSuggestions", () => {
   it("finds Taggart Lake by trail name", () => {

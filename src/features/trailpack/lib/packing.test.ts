@@ -7,15 +7,15 @@ import {
   isOfficialNpsAlert,
   parseExpectedHours,
   type UserHikeInput,
-} from "@/lib/packing";
+} from "@/features/trailpack/lib/packing";
 import {
   JENNY_LAKE_LOOP,
   STRING_LAKE_LOOP,
   SUPPORTED_TRAILS,
   TAGGART_LAKE,
-} from "@/data/supported-trails";
-import { DEMO_CONTEXTS } from "@/data/demo-contexts";
-import type { AlertContext, PackingItem, WeatherContext } from "@/types/trailpack";
+} from "@/features/trailpack/data/supported-trails";
+import { DEMO_CONTEXTS } from "@/features/trailpack/data/demo-contexts";
+import type { AlertContext, PackingItem, WeatherContext } from "@/features/trailpack/types";
 
 const CLEAR_WEATHER: WeatherContext = {
   summary: "Clear and mild.",

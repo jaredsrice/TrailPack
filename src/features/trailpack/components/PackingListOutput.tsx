@@ -1,4 +1,4 @@
-import type { PackingRecommendation } from "@/types/trailpack";
+import type { PackingRecommendation } from "@/features/trailpack/types";
 import { SourceBadge } from "./SourceBadge";
 
 export function PackingListOutput({

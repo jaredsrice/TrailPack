@@ -1,4 +1,4 @@
-import type { SourceLabel } from "@/types/trailpack";
+import type { SourceLabel } from "@/features/trailpack/types";
 
 const LABEL_STYLES: Record<SourceLabel, string> = {
   "supported-profile": "bg-emerald-50 text-emerald-800 border-emerald-200",

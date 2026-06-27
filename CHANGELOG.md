@@ -28,6 +28,8 @@ change as the project develops.
 
 ### Changed
 
+- Reorganized the app code into a single `src/features/trailpack/` feature
+  module and moved planning docs under `docs/data/` and `docs/ui/`.
 - Updated the main app flow so each supported trail uses its own saved demo
   scenario instead of sharing one static weather context.
 - Refreshed the README to describe the three supported Week 8 demo trails and

@@ -99,24 +99,32 @@ phrasing, and official-source validation.
 
 ## Next Project Focus
 
-- Keep polishing the current rule-based prototype before expanding scope.
-- Use the next planning pass to turn the working prototype into Requirements
-  Spec material: core workflow, fallback behavior, data-source limits, AI
-  guardrails, UAT expectations, and final-demo expectations.
-- Keep live data and AI work deferred until the baseline workflow and
-  requirements are stable enough to protect with tests.
+- Complete the Week 13 verification pass for the current prototype before
+  expanding scope.
+- Add or document focused checks for rule-based recommendations, incomplete-data
+  fallback behavior, and saved demo scenarios.
+- Keep broader trail-data expansion, live data, and AI work deferred until the
+  Week 14 CSE 499B planning pass prioritizes the next backlog items.
 
 ## Technology
 
 Next.js, React, TypeScript, Tailwind CSS, and Vitest.
+
+## Source Layout
+
+- [`src/app/`](src/app/) - Next.js route entrypoints and global styles
+- [`src/features/trailpack/components/`](src/features/trailpack/components/) - TrailPack UI modules
+- [`src/features/trailpack/data/`](src/features/trailpack/data/) - supported trail and demo-context fixtures
+- [`src/features/trailpack/lib/`](src/features/trailpack/lib/) - search, packing, and flow logic
+- [`src/features/trailpack/types.ts`](src/features/trailpack/types.ts) - shared TrailPack domain types
 
 ## Project Documents
 
 - [`AGENTS.md`](AGENTS.md) - repo-specific agent workflow entrypoints and pointers
 - [`CONTEXT.md`](CONTEXT.md) - canonical TrailPack domain glossary and repo memory
 - [`docs/agents/`](docs/agents/) - issue tracker, triage label, and domain-doc guidance for agent work
+- [`docs/data/`](docs/data/) - data feasibility and source decisions
 - [`docs/superpowers/`](docs/superpowers/) - saved planning and design artifacts for implementation work
 - [`docs/superpowers/validation/`](docs/superpowers/validation/) - saved milestone validation notes and proposal-alignment checks
+- [`docs/ui/`](docs/ui/) - workflow, wireframes, and UI planning
 - [`CHANGELOG.md`](CHANGELOG.md) - version history and known issues
-- [`Data Docs/`](Data%20Docs/) - data feasibility and source decisions
-- [`UI Docs/`](UI%20Docs/) - workflow, wireframes, and UI planning
