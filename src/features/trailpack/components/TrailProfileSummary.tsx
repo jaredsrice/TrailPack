@@ -1,4 +1,4 @@
-import type { TrailProfile } from "@/types/trailpack";
+import type { TrailProfile } from "@/features/trailpack/types";
 import { SourceBadge } from "./SourceBadge";
 
 function formatConfidence(status: TrailProfile["sourceConfidence"]["status"]): string {

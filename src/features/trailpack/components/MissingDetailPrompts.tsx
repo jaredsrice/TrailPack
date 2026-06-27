@@ -1,4 +1,4 @@
-import type { UserHikeInput } from "@/lib/packing";
+import type { UserHikeInput } from "@/features/trailpack/lib/packing";
 
 interface MissingDetailPromptsProps {
   value: UserHikeInput;

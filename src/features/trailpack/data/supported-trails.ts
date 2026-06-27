@@ -1,4 +1,4 @@
-import type { TrailProfile } from "@/types/trailpack";
+import type { TrailProfile } from "@/features/trailpack/types";
 
 export interface SupportedPark {
   id: string;

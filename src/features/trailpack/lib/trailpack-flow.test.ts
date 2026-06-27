@@ -4,8 +4,8 @@ import {
   buildManualSelectionState,
   buildParkSelectionState,
   buildTrailSelectionState,
-} from "@/lib/trailpack-flow";
-import { JENNY_LAKE_LOOP } from "@/data/supported-trails";
+} from "@/features/trailpack/lib/trailpack-flow";
+import { JENNY_LAKE_LOOP } from "@/features/trailpack/data/supported-trails";
 
 describe("trailpack flow state", () => {
   it("clears user input when manual entry is selected", () => {

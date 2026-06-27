@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { DEMO_CONTEXTS, getDemoScenario } from "@/data/demo-contexts";
-import { SUPPORTED_TRAILS } from "@/data/supported-trails";
+import { DEMO_CONTEXTS, getDemoScenario } from "@/features/trailpack/data/demo-contexts";
+import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
 
 describe("demo contexts", () => {
   it("covers every supported trail", () => {

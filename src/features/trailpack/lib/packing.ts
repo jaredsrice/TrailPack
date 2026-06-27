@@ -4,7 +4,7 @@ import type {
   PackingRecommendation,
   TrailProfile,
   WeatherContext,
-} from "@/types/trailpack";
+} from "@/features/trailpack/types";
 
 export interface UserHikeInput {
   plannedDate?: string;

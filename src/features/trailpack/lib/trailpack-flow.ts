@@ -1,5 +1,5 @@
-import type { UserHikeInput } from "@/lib/packing";
-import type { TrailProfile } from "@/types/trailpack";
+import type { UserHikeInput } from "@/features/trailpack/lib/packing";
+import type { TrailProfile } from "@/features/trailpack/types";
 
 export type FlowMode = "search" | "park" | "trail" | "manual";
 

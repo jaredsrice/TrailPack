@@ -24,14 +24,15 @@ Scope: CSE 499A Week 8 and Week 9 milestone closeout
 
 The current repo satisfies the Week 8 slice:
 
-- Three supported trail profiles exist in `src/data/supported-trails.ts`:
+- Three supported trail profiles exist in
+  `src/features/trailpack/data/supported-trails.ts`:
   - `Jenny Lake Loop`
   - `Taggart Lake`
   - `String Lake Loop`
 - Each supported trail has a saved demo weather/alert scenario in
-  `src/data/demo-contexts.ts`.
+  `src/features/trailpack/data/demo-contexts.ts`.
 - The main UI routes supported trails into a visible packing-list output through
-  `src/components/TrailPackShell.tsx`.
+  `src/features/trailpack/components/TrailPackShell.tsx`.
 - Missing-detail prompts are still present in the visible UI and recommendation
   output.
 
@@ -39,12 +40,12 @@ The current repo satisfies the Week 8 slice:
 
 The current repo satisfies the Week 9 baseline-rule milestone:
 
-- The rule engine in `src/lib/packing.ts` already exceeds the minimum `6-8`
+- The rule engine in `src/features/trailpack/lib/packing.ts` already exceeds the minimum `6-8`
   baseline-rule target.
 - Recommendation items carry short template explanations.
 - Automated tests already cover duration handling, trail-condition handling,
   negation, provenance, and supported-trail coverage in
-  `src/lib/packing.test.ts`.
+  `src/features/trailpack/lib/packing.test.ts`.
 
 ## Automated Verification
 
