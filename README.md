@@ -13,8 +13,9 @@ add, remove, or relabel packing items.
 
 1. Search for a supported park or trail.
 2. Review the official trail statistics and any computed estimates.
-3. Add useful details such as expected duration or trail conditions.
-4. Receive an essential and optional packing list with reasons and source labels.
+3. Review saved or live-path weather and NPS alert status.
+4. Add useful details such as expected duration or trail conditions.
+5. Receive an essential and optional packing list with reasons and source labels.
 
 Unsupported hikes can use the manual-entry fallback to get a limited baseline
 list. Manual distance, elevation gain, route type, expected duration, and trail
@@ -96,7 +97,9 @@ keeping saved demo fixtures available for deterministic demos:
   fails, the route returns a labeled unavailable or saved-fixture alert state.
 
 The main UI still uses saved demo scenarios by default so the CSE 499A demo
-remains stable when live services are unavailable.
+remains stable when live services are unavailable. Supported trail pages show
+the current weather context and NPS alert state before the packing list, including
+the saved no-active-alert fixture state.
 
 ## Guarded AI Review Fixture
 

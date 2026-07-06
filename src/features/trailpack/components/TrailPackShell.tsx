@@ -27,6 +27,7 @@ import {
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
 import type { TrailProfile } from "@/features/trailpack/types";
 import { AiReviewPanel } from "./AiReviewPanel";
+import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";
@@ -278,6 +279,16 @@ export function TrailPackShell() {
         ) : null}
 
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
+
+        {selectedTrail && selectedScenario ? (
+          <ContextStatusPanel
+            weather={{
+              ...selectedScenario.weather,
+              plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
+            }}
+            alerts={selectedScenario.alerts}
+          />
+        ) : null}
 
         {selectedTrail || mode === "manual" ? (
           <MissingDetailPrompts

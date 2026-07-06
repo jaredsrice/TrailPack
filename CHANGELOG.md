@@ -39,6 +39,10 @@ change as the project develops.
   unsupported hikes can produce a more specific fallback list.
 - Unit coverage for manual distance/gain sizing, route-type prompts, and
   point-to-point route-planning recommendations.
+- A supported-trail context status panel that shows weather context and NPS
+  alert state, including saved no-active-alert fixtures.
+- Unit coverage for saved weather status, no-active alert status, and active
+  official alert summaries.
 
 ### Changed
 
@@ -66,6 +70,8 @@ change as the project develops.
   while the guarded AI review appears as a separate validated summary panel.
 - Expanded manual fallback behavior so user-entered trail facts can affect water,
   food, route-planning prompts, and the fallback confidence note.
+- Made weather and NPS alert context visible before the packing list instead of
+  relying only on recommendation side effects.
 - Replaced obsolete technology-demo framing with a next-project-focus note for
   prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
 - Polished the main app surface with quick-start trail cards, tighter card
