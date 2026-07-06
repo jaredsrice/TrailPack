@@ -10,6 +10,8 @@ export type SourceLabel =
 
 export type DataSource = "NPS" | "USGS" | "user" | "open-meteo" | "trailpack";
 
+export type RetrievalStatus = "live" | "saved-fixture" | "unavailable";
+
 export type ConfidenceStatus =
   | "official_nps_with_usgs_geometry_ok"
   | "official_nps_with_strong_usgs_bridge"
@@ -76,6 +78,8 @@ export interface WeatherContext {
   conditions: Array<"heat" | "cold" | "rain" | "wind" | "snow" | "sun">;
   source: DataSource;
   label: SourceLabel;
+  retrievalStatus?: RetrievalStatus;
+  statusReason?: string;
 }
 
 export interface AlertContext {
@@ -88,6 +92,8 @@ export interface AlertContext {
     sourceUrl?: string;
   }>;
   label: SourceLabel;
+  retrievalStatus?: RetrievalStatus;
+  statusReason?: string;
 }
 
 export interface PackingItem {
