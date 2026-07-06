@@ -16,8 +16,9 @@ add, remove, or relabel packing items.
 3. Add useful details such as expected duration or trail conditions.
 4. Receive an essential and optional packing list with reasons and source labels.
 
-Unsupported hikes can now use the manual-entry fallback to get a limited
-baseline list while the prototype still lacks full trail stats.
+Unsupported hikes can use the manual-entry fallback to get a limited baseline
+list. Manual distance, elevation gain, route type, expected duration, and trail
+conditions can make that fallback more specific.
 
 The current demo supports Jenny Lake Loop, Taggart Lake, and String Lake Loop
 in Grand Teton National Park.
@@ -132,8 +133,9 @@ phrasing, and official-source validation.
 
 - Jenny Lake Loop, Taggart Lake, and String Lake Loop are the complete supported
   trail profiles in the current prototype.
-- Unsupported hikes can only use a limited manual fallback list. The manual path
-  does not yet collect direct distance, elevation gain, or route-type inputs.
+- Unsupported hikes can only use a limited manual fallback list. Direct distance,
+  elevation gain, and route-type inputs improve that fallback, but source-backed
+  trail profiles remain more complete.
 - The main UI still uses demo weather and alert contexts by default, although
   server-side Open-Meteo and NPS alert routes now exist for the live-data path.
 - The guarded AI review uses a saved Jenny Lake fixture and template fallback;

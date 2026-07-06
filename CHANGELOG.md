@@ -35,6 +35,10 @@ change as the project develops.
 - Unit coverage for accepted AI fixture output, rejected packing-item changes,
   rejected source-label changes, unsupported safety claims, unsupported trail
   facts, and template fallback behavior.
+- Manual-entry fields for distance, elevation gain, and route type so
+  unsupported hikes can produce a more specific fallback list.
+- Unit coverage for manual distance/gain sizing, route-type prompts, and
+  point-to-point route-planning recommendations.
 
 ### Changed
 
@@ -60,6 +64,8 @@ change as the project develops.
   live, saved-fixture, and unavailable states can stay labeled.
 - Updated the main output so the packing list remains explicitly rule-based
   while the guarded AI review appears as a separate validated summary panel.
+- Expanded manual fallback behavior so user-entered trail facts can affect water,
+  food, route-planning prompts, and the fallback confidence note.
 - Replaced obsolete technology-demo framing with a next-project-focus note for
   prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
 - Polished the main app surface with quick-start trail cards, tighter card
