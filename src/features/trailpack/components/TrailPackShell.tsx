@@ -271,8 +271,8 @@ export function TrailPackShell() {
           <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-amber-950">Manual hike entry</h2>
             <p className="mt-2 text-sm text-amber-900">
-              Unsupported hikes use a limited fallback list until distance, elevation, route type,
-              and source-backed weather are available.
+              Unsupported hikes use a limited fallback list. Distance, elevation gain, route type,
+              expected time out, and current conditions can make the fallback more specific.
             </p>
           </section>
         ) : null}
@@ -280,7 +280,11 @@ export function TrailPackShell() {
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
 
         {selectedTrail || mode === "manual" ? (
-          <MissingDetailPrompts value={userInput} onChange={setUserInput} />
+          <MissingDetailPrompts
+            value={userInput}
+            onChange={setUserInput}
+            showManualFields={mode === "manual"}
+          />
         ) : null}
 
         {recommendation ? <PackingListOutput recommendation={recommendation} /> : null}

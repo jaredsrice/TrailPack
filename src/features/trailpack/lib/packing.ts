@@ -2,6 +2,7 @@ import type {
   AlertContext,
   PackingItem,
   PackingRecommendation,
+  RouteType,
   TrailProfile,
   WeatherContext,
 } from "@/features/trailpack/types";
@@ -10,6 +11,9 @@ export interface UserHikeInput {
   plannedDate?: string;
   expectedDuration?: string;
   trailConditions?: string;
+  distanceMiles?: string;
+  elevationGainFeet?: string;
+  routeType?: RouteType;
   notes?: string;
 }
 
@@ -93,6 +97,24 @@ export function parseExpectedHours(input?: string): number | null {
   }
 
   return null;
+}
+
+function parsePositiveNumber(input?: string): number | null {
+  if (!input) {
+    return null;
+  }
+
+  const match = input.match(/\d+(?:\.\d+)?/);
+  if (!match) {
+    return null;
+  }
+
+  const value = Number.parseFloat(match[0]);
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function formatManualNumber(value: number): string {
+  return Number.isInteger(value) ? value.toFixed(0) : value.toString();
 }
 
 export interface TrailConditionFlags {
@@ -471,16 +493,30 @@ export function generatePackingRecommendation(
 export function generateManualEntryRecommendation(
   userInput: UserHikeInput = {},
 ): PackingRecommendation {
+  const distanceMiles = parsePositiveNumber(userInput.distanceMiles);
+  const elevationGainFeet = parsePositiveNumber(userInput.elevationGainFeet);
+  const routeType =
+    userInput.routeType && userInput.routeType !== "unknown" ? userInput.routeType : null;
+  const expectedHours = parseExpectedHours(userInput.expectedDuration);
+  const conditions = analyzeTrailConditions(userInput.trailConditions);
+  const longerByManualFacts =
+    (distanceMiles !== null && distanceMiles >= 5) ||
+    (elevationGainFeet !== null && elevationGainFeet >= 800);
+
   const essential: PackingItem[] = [
     {
-      name: "Water: 1-2 liters",
-      reason: "Use a limited baseline while trail distance and effort are still unknown.",
-      sourceLabels: ["missing", "inferred"],
+      name: longerByManualFacts ? "Water: 2-3 liters" : "Water: 1-2 liters",
+      reason: longerByManualFacts
+        ? "Manual distance or elevation gain suggests a longer effort that needs more hydration."
+        : "Use a limited baseline while trail distance and effort are still unknown.",
+      sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
     },
     {
-      name: "Snack or light food",
-      reason: "A simple baseline list should still include quick trail fuel.",
-      sourceLabels: ["missing", "inferred"],
+      name: longerByManualFacts ? "Snacks / lunch" : "Snack or light food",
+      reason: longerByManualFacts
+        ? "Manual trail facts suggest planning for more than a short outing."
+        : "A simple baseline list should still include quick trail fuel.",
+      sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
     },
     {
       name: "Sun protection",
@@ -506,9 +542,6 @@ export function generateManualEntryRecommendation(
     },
   ];
   const missingDetails: string[] = [];
-
-  const expectedHours = parseExpectedHours(userInput.expectedDuration);
-  const conditions = analyzeTrailConditions(userInput.trailConditions);
 
   if (expectedHours !== null && expectedHours >= 5) {
     essential[0] = {
@@ -547,6 +580,32 @@ export function generateManualEntryRecommendation(
     });
   }
 
+  if (routeType === "point-to-point") {
+    optional.push({
+      name: "Route plan or shuttle check",
+      reason: "A point-to-point manual route may need a shuttle, pickup, or turnaround plan.",
+      sourceLabels: ["user-provided", "inferred"],
+    });
+  }
+
+  if (distanceMiles === null) {
+    missingDetails.push(
+      "Trail distance would improve hydration and food sizing for this fallback list.",
+    );
+  }
+
+  if (elevationGainFeet === null) {
+    missingDetails.push(
+      "Elevation gain would improve effort-based recommendations for this fallback list.",
+    );
+  }
+
+  if (!routeType) {
+    missingDetails.push(
+      "Route type would improve navigation and route-planning recommendations.",
+    );
+  }
+
   if (!userInput.expectedDuration) {
     missingDetails.push(
       "Your expected time out would improve hydration and food sizing for this fallback list.",
@@ -566,7 +625,29 @@ export function generateManualEntryRecommendation(
     essential: essential.map(enforceOfficialProvenance),
     optional: optional.map(enforceOfficialProvenance),
     missingDetails,
-    confidenceNote:
-      "This is a limited fallback list for an unsupported or incomplete hike profile. Trail distance, elevation gain, route type, and source-backed weather are still missing in the current manual-entry prototype.",
+    confidenceNote: buildManualConfidenceNote(distanceMiles, elevationGainFeet, routeType),
   };
+}
+
+function buildManualConfidenceNote(
+  distanceMiles: number | null,
+  elevationGainFeet: number | null,
+  routeType: RouteType | null,
+): string {
+  const facts = [
+    distanceMiles !== null ? `${formatManualNumber(distanceMiles)} mi` : null,
+    elevationGainFeet !== null ? `${formatManualNumber(elevationGainFeet)} ft gain` : null,
+    routeType,
+  ].filter(Boolean);
+
+  const factSentence =
+    facts.length > 0
+      ? ` Manual facts used: ${facts.join(", ")}.`
+      : " Trail distance, elevation gain, and route type are still missing.";
+
+  return (
+    "This is a limited fallback list for an unsupported or incomplete hike profile." +
+    factSentence +
+    " Source-backed weather is still missing in the current manual-entry prototype."
+  );
 }

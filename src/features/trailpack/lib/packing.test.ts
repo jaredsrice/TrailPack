@@ -302,16 +302,17 @@ describe("manual entry fallback", () => {
     expect(rec.confidenceNote).toMatch(/limited fallback/i);
   });
 
-  it("asks only for the supported manual inputs that would improve the fallback list", () => {
+  it("asks for manual trail facts that would improve the fallback list", () => {
     const rec = generateManualEntryRecommendation({});
     const joined = rec.missingDetails.join(" ");
     expect(joined).toMatch(/expected time/i);
     expect(joined).toMatch(/trail conditions/i);
-    expect(joined).not.toMatch(/distance/i);
-    expect(joined).not.toMatch(/elevation/i);
+    expect(joined).toMatch(/distance/i);
+    expect(joined).toMatch(/elevation/i);
+    expect(joined).toMatch(/route type/i);
   });
 
-  it("still responds to provided duration and trail conditions", () => {
+  it("responds to provided duration and trail conditions", () => {
     const rec = generateManualEntryRecommendation({
       expectedDuration: "7 hours",
       trailConditions: "icy and muddy",
@@ -323,6 +324,33 @@ describe("manual entry fallback", () => {
     const joined = rec.missingDetails.join(" ");
     expect(joined).not.toMatch(/expected time/i);
     expect(joined).not.toMatch(/trail conditions/i);
+  });
+
+  it("uses manual distance and elevation gain to size water and food", () => {
+    const rec = generateManualEntryRecommendation({
+      distanceMiles: "6.2",
+      elevationGainFeet: "900",
+      routeType: "loop",
+    });
+
+    expect(names(rec.essential)).toContain("Water: 2-3 liters");
+    expect(names(rec.essential)).toContain("Snacks / lunch");
+    expect(rec.confidenceNote).toMatch(/6.2 mi/);
+    expect(rec.confidenceNote).toMatch(/900 ft/);
+    expect(rec.confidenceNote).toMatch(/loop/i);
+
+    const joined = rec.missingDetails.join(" ");
+    expect(joined).not.toMatch(/distance/i);
+    expect(joined).not.toMatch(/elevation/i);
+    expect(joined).not.toMatch(/route type/i);
+  });
+
+  it("adds a route-planning item for point-to-point manual hikes", () => {
+    const rec = generateManualEntryRecommendation({
+      routeType: "point-to-point",
+    });
+
+    expect(names(rec.optional)).toContain("Route plan or shuttle check");
   });
 });
 
