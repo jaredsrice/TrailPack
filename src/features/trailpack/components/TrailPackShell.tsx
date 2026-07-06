@@ -2,11 +2,16 @@
 
 import { useMemo, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
+import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
   getTrailsForPark,
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
 } from "@/features/trailpack/data/supported-trails";
+import {
+  buildAiContractInput,
+  buildGuardedAiReview,
+} from "@/features/trailpack/lib/ai-contract";
 import {
   generateManualEntryRecommendation,
   generatePackingRecommendation,
@@ -21,6 +26,7 @@ import {
 } from "@/features/trailpack/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
 import type { TrailProfile } from "@/features/trailpack/types";
+import { AiReviewPanel } from "./AiReviewPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { PackingListOutput } from "./PackingListOutput";
 import { TrailProfileSummary } from "./TrailProfileSummary";
@@ -73,6 +79,25 @@ export function TrailPackShell() {
       userInput,
     );
   }, [mode, selectedScenario, selectedTrail, userInput]);
+
+  const aiReview = useMemo(() => {
+    if (!selectedTrail || !selectedScenario || !recommendation) {
+      return null;
+    }
+
+    const input = buildAiContractInput({
+      trail: selectedTrail,
+      weather: {
+        ...selectedScenario.weather,
+        plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
+      },
+      alerts: selectedScenario.alerts,
+      userInput,
+      recommendation,
+    });
+
+    return buildGuardedAiReview(input, getSavedAiReviewFixture(input.trail.id));
+  }, [recommendation, selectedScenario, selectedTrail, userInput]);
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
     if (suggestion.type === "manual") {
@@ -259,6 +284,7 @@ export function TrailPackShell() {
         ) : null}
 
         {recommendation ? <PackingListOutput recommendation={recommendation} /> : null}
+        {aiReview ? <AiReviewPanel review={aiReview} /> : null}
       </div>
     </main>
   );
