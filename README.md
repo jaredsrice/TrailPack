@@ -4,8 +4,10 @@ TrailPack turns trail information and trip conditions into a clear hiking
 packing list. It explains why each item is recommended and where the supporting
 data came from.
 
-Version `0.1.0` is a CSE 499 technical prototype. It uses fixed rules, not AI, so
-the same input always produces the same result.
+Version `0.1.0` is a CSE 499 technical prototype. The packing list uses fixed
+rules, so the same input always produces the same packing decisions. A guarded
+saved AI-style review fixture can summarize the rule-based result, but it cannot
+add, remove, or relabel packing items.
 
 ## How It Works
 
@@ -95,6 +97,25 @@ keeping saved demo fixtures available for deterministic demos:
 The main UI still uses saved demo scenarios by default so the CSE 499A demo
 remains stable when live services are unavailable.
 
+## Guarded AI Review Fixture
+
+TrailPack includes a fixture-first guarded AI path for the Week 13 / Week 14
+requirements. For the Jenny Lake Loop demo, the app builds structured AI input
+from the selected trail profile, saved weather and alert context, user trip
+details, missing-data status, and the rule-based packing output. A saved
+AI-style response is then validated before display.
+
+Validation rejects AI text that:
+
+- adds or omits rule-based packing items
+- changes source labels
+- references another supported trail as if it were the selected hike
+- makes unsupported safety claims
+
+If validation fails or a saved fixture is unavailable, TrailPack displays
+template fallback text generated from the rule-based recommendation. Live Gemini
+or OpenAI calls are not part of this slice.
+
 ## Verify the Project
 
 ```bash
@@ -115,6 +136,8 @@ phrasing, and official-source validation.
   does not yet collect direct distance, elevation gain, or route-type inputs.
 - The main UI still uses demo weather and alert contexts by default, although
   server-side Open-Meteo and NPS alert routes now exist for the live-data path.
+- The guarded AI review uses a saved Jenny Lake fixture and template fallback;
+  it does not call a live AI provider yet.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
 - Planned date and notes are stored as context but do not yet change the list.
@@ -129,8 +152,9 @@ phrasing, and official-source validation.
   expanding scope.
 - Add or document focused checks for rule-based recommendations, incomplete-data
   fallback behavior, and saved demo scenarios.
-- Keep broader trail-data expansion, live data, and AI work deferred until the
-  Week 14 CSE 499B planning pass prioritizes the next backlog items.
+- Keep broader trail-data expansion, live AI calls, and account/profile work
+  deferred until the Week 14 CSE 499B planning pass prioritizes the next backlog
+  items.
 
 ## Technology
 

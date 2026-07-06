@@ -16,7 +16,7 @@ export function PackingListOutput({
           </h2>
         </div>
         <p className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
-          Rule-based · no AI · {new Date(recommendation.generatedAt).toLocaleString()}
+          Rule-based list · {new Date(recommendation.generatedAt).toLocaleString()}
         </p>
       </div>
 

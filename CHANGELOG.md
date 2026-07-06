@@ -29,6 +29,12 @@ change as the project develops.
   alerts, with saved-fixture and unavailable-state fallbacks.
 - Unit coverage for weather normalization, NPS alert normalization, supported
   park-code validation, and external-context fallback behavior.
+- A fixture-first guarded AI review path for Jenny Lake Loop that builds
+  structured input from TrailPack data, validates saved AI-style text, and falls
+  back to template text when validation fails.
+- Unit coverage for accepted AI fixture output, rejected packing-item changes,
+  rejected source-label changes, unsupported safety claims, unsupported trail
+  facts, and template fallback behavior.
 
 ### Changed
 
@@ -52,6 +58,8 @@ change as the project develops.
   longer contaminates the next during live demos.
 - Extended weather and alert context objects with retrieval status metadata so
   live, saved-fixture, and unavailable states can stay labeled.
+- Updated the main output so the packing list remains explicitly rule-based
+  while the guarded AI review appears as a separate validated summary panel.
 - Replaced obsolete technology-demo framing with a next-project-focus note for
   prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
 - Polished the main app surface with quick-start trail cards, tighter card
