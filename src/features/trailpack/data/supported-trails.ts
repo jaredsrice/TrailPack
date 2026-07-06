@@ -4,6 +4,7 @@ export interface SupportedPark {
   id: string;
   name: string;
   state: string;
+  parkCode: string;
   trailIds: string[];
 }
 
@@ -12,6 +13,7 @@ export const SUPPORTED_PARKS: SupportedPark[] = [
     id: "grand-teton",
     name: "Grand Teton National Park",
     state: "Wyoming",
+    parkCode: "grte",
     trailIds: ["jenny-lake-loop", "taggart-lake", "string-lake-loop"],
   },
 ];
@@ -174,4 +176,10 @@ export function getTrailsForPark(parkId: string): TrailProfile[] {
   return park.trailIds
     .map((trailId) => SUPPORTED_TRAILS[trailId])
     .filter((trail): trail is TrailProfile => Boolean(trail));
+}
+
+export function getSupportedParkForTrail(trailId: string): SupportedPark | null {
+  return (
+    SUPPORTED_PARKS.find((park) => park.trailIds.includes(trailId)) ?? null
+  );
 }

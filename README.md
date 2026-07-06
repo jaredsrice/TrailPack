@@ -70,6 +70,31 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`,
 `Taggart`, or `String Lake`, and select one of the supported trails.
 
+Live NPS alerts are optional during local development. To enable the server-side
+NPS alert route, add an API key to `.env.local`:
+
+```bash
+NPS_API_KEY=your-key-here
+```
+
+Do not commit `.env.local` or any provider keys.
+
+## External Context Routes
+
+TrailPack now includes server-side context routes for the live-data path while
+keeping saved demo fixtures available for deterministic demos:
+
+- `GET /api/trailpack/weather?trailId=jenny-lake-loop` loads Open-Meteo weather
+  for a supported trail when coordinates are available, then falls back to the
+  saved demo weather context if the request fails.
+- `GET /api/trailpack/alerts?trailId=jenny-lake-loop` or
+  `GET /api/trailpack/alerts?parkCode=grte` loads NPS alerts with the
+  server-side `NPS_API_KEY`. If the key is missing or the provider request
+  fails, the route returns a labeled unavailable or saved-fixture alert state.
+
+The main UI still uses saved demo scenarios by default so the CSE 499A demo
+remains stable when live services are unavailable.
+
 ## Verify the Project
 
 ```bash
@@ -88,7 +113,8 @@ phrasing, and official-source validation.
   trail profiles in the current prototype.
 - Unsupported hikes can only use a limited manual fallback list. The manual path
   does not yet collect direct distance, elevation gain, or route-type inputs.
-- Weather and alerts use demo data instead of live APIs.
+- The main UI still uses demo weather and alert contexts by default, although
+  server-side Open-Meteo and NPS alert routes now exist for the live-data path.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
 - Planned date and notes are stored as context but do not yet change the list.

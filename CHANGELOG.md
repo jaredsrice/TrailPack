@@ -25,6 +25,10 @@ change as the project develops.
   `docs/superpowers/validation/2026-06-19-week-8-9-validation.md`.
 - A saved Week 10 scenario review note in
   `docs/superpowers/validation/2026-06-20-week-10-scenario-review.md`.
+- Server-side external-context route handlers for Open-Meteo weather and NPS
+  alerts, with saved-fixture and unavailable-state fallbacks.
+- Unit coverage for weather normalization, NPS alert normalization, supported
+  park-code validation, and external-context fallback behavior.
 
 ### Changed
 
@@ -46,6 +50,8 @@ change as the project develops.
   incomplete-data demo paths are cleaner and more defensible.
 - Reset trip-detail state when switching trails or modes so one scenario no
   longer contaminates the next during live demos.
+- Extended weather and alert context objects with retrieval status metadata so
+  live, saved-fixture, and unavailable states can stay labeled.
 - Replaced obsolete technology-demo framing with a next-project-focus note for
   prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
 - Polished the main app surface with quick-start trail cards, tighter card
