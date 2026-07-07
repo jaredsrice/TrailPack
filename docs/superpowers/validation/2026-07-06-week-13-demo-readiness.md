@@ -156,8 +156,8 @@ Enter:
 Show:
 
 - confidence note: `Manual facts used: 6.2 mi, 900 ft gain, point-to-point`
-- `Water: 2-3 liters`
-- `Snacks / lunch`
+- `Water: 2-3 L per adult`
+- `Food: lunch plus 2-3 snacks per person`
 - `Route plan or shuttle check`
 - remaining missing prompts for expected time out and trail conditions
 
@@ -171,9 +171,10 @@ In manual entry, add:
 Show:
 
 - `Headlamp`
-- `Extra food`
+- `Extra food reserve`
 - `Traction devices (microspikes)`
-- `Waterproof boots or gaiters`
+- `Waterproof footwear or gaiters`
+- `Extra dry socks`
 
 ## Remaining Week 13 Evidence Gap
 
@@ -191,9 +192,10 @@ Feedback summary:
 
 Follow-up action:
 
-- Add civil-twilight/daylight context and start-time-aware headlamp logic first,
-  then continue toward question-answer recommendation cards with concrete
-  quantities and examples.
+- Added civil-twilight/daylight context and start-time-aware headlamp logic.
+- Reworked packing cards into question-answer recommendations with concrete
+  quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
+  links, socks for wet/snowy conditions, and summer-layer framing.
 
 ## CSE 499B Planning Notes
 

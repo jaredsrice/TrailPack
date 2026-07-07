@@ -48,6 +48,10 @@ change as the project develops.
 - A start-time trip detail field that can affect daylight/headlamp guidance.
 - Unit coverage for civil-twilight normalization, live daylight attachment,
   visible context status, and start-time-aware headlamp recommendations.
+- Question-answer packing item fields and unit coverage requiring every generated
+  recommendation to answer a concrete hiker question.
+- Bear-spray recommendation links for official NPS guidance and current Bear
+  Aware rental-location information.
 
 ### Changed
 
@@ -84,6 +88,12 @@ change as the project develops.
 - Changed headlamp guidance so supported-trail recommendations use start time,
   expected duration, sunset, and civil twilight when available instead of making
   every long summer hike treat a headlamp as automatically essential.
+- Reworked packing cards from terse item/reason copy into concrete answers for
+  footwear, water per adult or person, food amounts, first-aid examples, bear
+  spray access, trekking poles, socks, headlamp timing, and summer layers.
+- Passed the richer question-answer packing context through the guarded AI input
+  contract and updated the saved Jenny Lake fixture to match the new rule-based
+  item set.
 
 ### Fixed
 
