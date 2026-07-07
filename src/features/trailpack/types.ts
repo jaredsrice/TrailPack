@@ -2,13 +2,20 @@ export type SourceLabel =
   | "supported-profile"
   | "user-provided"
   | "forecast-based"
+  | "daylight"
   | "official"
   | "inferred"
   | "missing"
   | "unavailable"
   | "future-work";
 
-export type DataSource = "NPS" | "USGS" | "user" | "open-meteo" | "trailpack";
+export type DataSource =
+  | "NPS"
+  | "USGS"
+  | "user"
+  | "open-meteo"
+  | "sunrise-sunset"
+  | "trailpack";
 
 export type RetrievalStatus = "live" | "saved-fixture" | "unavailable";
 
@@ -67,6 +74,7 @@ export interface TrailProfile {
 
 export interface WeatherContext {
   plannedDate?: string;
+  timezone?: string;
   summary: string;
   temperatureF?: {
     high?: number;
@@ -78,6 +86,20 @@ export interface WeatherContext {
   conditions: Array<"heat" | "cold" | "rain" | "wind" | "snow" | "sun">;
   source: DataSource;
   label: SourceLabel;
+  retrievalStatus?: RetrievalStatus;
+  statusReason?: string;
+  daylight?: DaylightContext;
+}
+
+export interface DaylightContext {
+  date?: string;
+  sunrise?: string;
+  sunset?: string;
+  civilTwilightBegin?: string;
+  civilTwilightEnd?: string;
+  dayLengthSeconds?: number;
+  timezone?: string;
+  source: DataSource;
   retrievalStatus?: RetrievalStatus;
   statusReason?: string;
 }

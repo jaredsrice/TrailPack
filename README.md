@@ -13,8 +13,8 @@ add, remove, or relabel packing items.
 
 1. Search for a supported park or trail.
 2. Review the official trail statistics and any computed estimates.
-3. Review saved or live-path weather and NPS alert status.
-4. Add useful details such as expected duration or trail conditions.
+3. Review saved or live-path weather, daylight, and NPS alert status.
+4. Add useful details such as start time, expected duration, or trail conditions.
 5. Receive an essential and optional packing list with reasons and source labels.
 
 Unsupported hikes can use the manual-entry fallback to get a limited baseline
@@ -89,8 +89,10 @@ TrailPack now includes server-side context routes for the live-data path while
 keeping saved demo fixtures available for deterministic demos:
 
 - `GET /api/trailpack/weather?trailId=jenny-lake-loop` loads Open-Meteo weather
-  for a supported trail when coordinates are available, then falls back to the
-  saved demo weather context if the request fails.
+  for a supported trail when coordinates are available. When live weather
+  succeeds, the same path also requests Sunrise-Sunset.org daylight context for
+  civil twilight, then falls back to the saved demo weather context if weather
+  fails.
 - `GET /api/trailpack/alerts?trailId=jenny-lake-loop` or
   `GET /api/trailpack/alerts?parkCode=grte` loads NPS alerts with the
   server-side `NPS_API_KEY`. If the key is missing or the provider request
@@ -98,8 +100,8 @@ keeping saved demo fixtures available for deterministic demos:
 
 The main UI still uses saved demo scenarios by default so the CSE 499A demo
 remains stable when live services are unavailable. Supported trail pages show
-the current weather context and NPS alert state before the packing list, including
-the saved no-active-alert fixture state.
+the current weather, civil-twilight, and NPS alert state before the packing list,
+including the saved no-active-alert fixture state.
 
 ## Guarded AI Review Fixture
 
@@ -140,12 +142,14 @@ phrasing, and official-source validation.
   elevation gain, and route-type inputs improve that fallback, but source-backed
   trail profiles remain more complete.
 - The main UI still uses demo weather and alert contexts by default, although
-  server-side Open-Meteo and NPS alert routes now exist for the live-data path.
+  server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
+  exist for the live-data path.
 - The guarded AI review uses a saved Jenny Lake fixture and template fallback;
   it does not call a live AI provider yet.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
 - Planned date and notes are stored as context but do not yet change the list.
+  Start time can change headlamp guidance when daylight context is available.
 - `npm audit` reports a moderate PostCSS issue bundled inside Next.js. The known
   attack requires processing untrusted CSS, which TrailPack does not do. A forced
   audit fix would install an incompatible Next.js version, so the project is

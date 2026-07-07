@@ -39,7 +39,10 @@ export interface AiContractInput {
     sourceLabel: SourceLabel;
     retrievalStatus?: AlertContext["retrievalStatus"];
   };
-  userInput: Pick<UserHikeInput, "expectedDuration" | "trailConditions" | "notes">;
+  userInput: Pick<
+    UserHikeInput,
+    "startTime" | "expectedDuration" | "trailConditions" | "notes"
+  >;
   packing: {
     essential: AiContractPackingItem[];
     optional: AiContractPackingItem[];
@@ -116,6 +119,7 @@ export function buildAiContractInput({
       retrievalStatus: alerts.retrievalStatus,
     },
     userInput: {
+      startTime: userInput.startTime,
       expectedDuration: userInput.expectedDuration,
       trailConditions: userInput.trailConditions,
       notes: userInput.notes,
