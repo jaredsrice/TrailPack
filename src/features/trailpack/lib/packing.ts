@@ -9,6 +9,7 @@ import type {
 
 export interface UserHikeInput {
   plannedDate?: string;
+  startTime?: string;
   expectedDuration?: string;
   trailConditions?: string;
   distanceMiles?: string;
@@ -115,6 +116,163 @@ function parsePositiveNumber(input?: string): number | null {
 
 function formatManualNumber(value: number): string {
   return Number.isInteger(value) ? value.toFixed(0) : value.toString();
+}
+
+function getTimezoneSuffix(isoValue?: string): string {
+  const match = isoValue?.match(/(Z|[+-]\d{2}:\d{2})$/);
+  return match?.[1] ?? "";
+}
+
+function parseLocalTimeOnDate({
+  date,
+  time,
+  referenceIso,
+}: {
+  date?: string;
+  time?: string;
+  referenceIso?: string;
+}): Date | null {
+  if (!date || !time) {
+    return null;
+  }
+
+  const match = time.trim().match(/^(\d{1,2})(?::(\d{2})(?::\d{2})?)?\s*(am|pm)?$/i);
+  if (!match) {
+    return null;
+  }
+
+  const hour = Number.parseInt(match[1], 10);
+  const minute = match[2] ? Number.parseInt(match[2], 10) : 0;
+  const meridiem = match[3]?.toLowerCase();
+
+  if (minute > 59) {
+    return null;
+  }
+
+  let hour24 = hour;
+  if (meridiem) {
+    if (hour < 1 || hour > 12) {
+      return null;
+    }
+    hour24 = hour % 12;
+    if (meridiem === "pm") {
+      hour24 += 12;
+    }
+  } else if (hour > 23) {
+    return null;
+  }
+
+  const timezoneSuffix = getTimezoneSuffix(referenceIso);
+  const parsed = new Date(
+    `${date}T${hour24.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}:00${timezoneSuffix}`,
+  );
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function parseIsoDate(isoValue?: string): Date | null {
+  if (!isoValue) {
+    return null;
+  }
+
+  const parsed = new Date(isoValue);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function formatClock(isoValue?: string): string | null {
+  const match = isoValue?.match(/T(\d{2}):(\d{2})/);
+  if (!match) {
+    return null;
+  }
+
+  const hour = Number.parseInt(match[1], 10);
+  const minute = match[2];
+  const period = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minute} ${period}`;
+}
+
+interface HeadlampDecision {
+  placement: "essential" | "optional";
+  reason: string;
+  sourceLabels: PackingItem["sourceLabels"];
+}
+
+function buildHeadlampDecision(
+  weather: WeatherContext,
+  expectedHours: number | null,
+  startTime?: string,
+): HeadlampDecision | null {
+  const daylight = weather.daylight;
+  const date = daylight?.date ?? weather.plannedDate;
+  const start = parseLocalTimeOnDate({
+    date,
+    time: startTime,
+    referenceIso: daylight?.civilTwilightEnd ?? daylight?.sunset,
+  });
+  const civilTwilightBegin = parseIsoDate(daylight?.civilTwilightBegin);
+  const sunset = parseIsoDate(daylight?.sunset);
+  const civilTwilightEnd = parseIsoDate(daylight?.civilTwilightEnd);
+
+  if (start && expectedHours !== null && civilTwilightEnd) {
+    const finish = new Date(start.getTime() + expectedHours * 60 * 60 * 1000);
+    if (civilTwilightBegin && start < civilTwilightBegin) {
+      const twilightBegin = formatClock(daylight?.civilTwilightBegin);
+      return {
+        placement: "essential",
+        reason: twilightBegin
+          ? `Your planned start is before civil twilight begins around ${twilightBegin}, so you need your own light at the trailhead.`
+          : "Your planned start is before usable morning light, so you need your own light at the trailhead.",
+        sourceLabels: ["user-provided", "daylight", "inferred"],
+      };
+    }
+
+    if (finish > civilTwilightEnd) {
+      const twilightEnd = formatClock(daylight?.civilTwilightEnd);
+      return {
+        placement: "essential",
+        reason: twilightEnd
+          ? `Your planned finish is after civil twilight ends around ${twilightEnd}, so natural light may not be enough.`
+          : "Your planned finish is after civil twilight, so natural light may not be enough.",
+        sourceLabels: ["user-provided", "daylight", "inferred"],
+      };
+    }
+
+    if (sunset && finish > sunset) {
+      const sunsetText = formatClock(daylight?.sunset);
+      const twilightEnd = formatClock(daylight?.civilTwilightEnd);
+      return {
+        placement: "optional",
+        reason:
+          sunsetText && twilightEnd
+            ? `Your planned finish is after sunset around ${sunsetText} but before civil twilight ends around ${twilightEnd}; pack a small headlamp as a backup.`
+            : "Your planned finish is after sunset but before civil twilight ends; pack a small headlamp as a backup.",
+        sourceLabels: ["user-provided", "daylight", "inferred"],
+      };
+    }
+
+    if (expectedHours >= 6) {
+      return {
+        placement: "optional",
+        reason:
+          "Your planned finish is before civil twilight ends, so a headlamp is a backup rather than a core item for this daylight window.",
+        sourceLabels: ["user-provided", "daylight", "inferred"],
+      };
+    }
+
+    return null;
+  }
+
+  if (expectedHours !== null && expectedHours >= 6) {
+    return {
+      placement: "essential",
+      reason: `A long planned day (about ${expectedHours} hr) raises the chance of finishing near dusk when daylight timing is unknown.`,
+      sourceLabels: ["user-provided", "inferred"],
+    };
+  }
+
+  return null;
 }
 
 export interface TrailConditionFlags {
@@ -329,13 +487,22 @@ export function generatePackingRecommendation(
     sourceLabels: ["supported-profile"],
   });
 
-  // Duration rule: a long planned day raises the chance of finishing near dark.
-  if (expectedHours !== null && expectedHours >= 6) {
-    essential.push({
+  const headlampDecision = buildHeadlampDecision(
+    weather,
+    expectedHours,
+    userInput.startTime,
+  );
+  if (headlampDecision) {
+    const target =
+      headlampDecision.placement === "essential" ? essential : optional;
+    target.push({
       name: "Headlamp",
-      reason: `A long planned day (about ${expectedHours} hr) raises the chance of finishing near dusk.`,
-      sourceLabels: ["user-provided", "inferred"],
+      reason: headlampDecision.reason,
+      sourceLabels: headlampDecision.sourceLabels,
     });
+  }
+
+  if (expectedHours !== null && expectedHours >= 6) {
     optional.push({
       name: "Extra food",
       reason: `Pack a little more food for a long day out (about ${expectedHours} hr).`,
@@ -475,7 +642,13 @@ export function generatePackingRecommendation(
 
   if (!userInput.expectedDuration) {
     missingDetails.push(
-      "Your expected time out could add items like a headlamp for a long day.",
+      "Your expected time out improves food, water, and daylight/headlamp guidance.",
+    );
+  }
+
+  if (!userInput.startTime) {
+    missingDetails.push(
+      "Your start time would improve daylight and headlamp guidance.",
     );
   }
 
@@ -609,6 +782,12 @@ export function generateManualEntryRecommendation(
   if (!userInput.expectedDuration) {
     missingDetails.push(
       "Your expected time out would improve hydration and food sizing for this fallback list.",
+    );
+  }
+
+  if (!userInput.startTime) {
+    missingDetails.push(
+      "Your start time would improve daylight and headlamp guidance for this fallback list.",
     );
   }
 

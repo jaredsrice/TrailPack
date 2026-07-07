@@ -43,6 +43,11 @@ change as the project develops.
   alert state, including saved no-active-alert fixtures.
 - Unit coverage for saved weather status, no-active alert status, and active
   official alert summaries.
+- Civil-twilight daylight context from Sunrise-Sunset.org on the live weather
+  path, plus saved daylight fixtures for supported demo trails.
+- A start-time trip detail field that can affect daylight/headlamp guidance.
+- Unit coverage for civil-twilight normalization, live daylight attachment,
+  visible context status, and start-time-aware headlamp recommendations.
 
 ### Changed
 
@@ -76,6 +81,9 @@ change as the project develops.
   prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
 - Polished the main app surface with quick-start trail cards, tighter card
   geometry, clearer manual-entry copy, and recommendation item counts.
+- Changed headlamp guidance so supported-trail recommendations use start time,
+  expected duration, sunset, and civil twilight when available instead of making
+  every long summer hike treat a headlamp as automatically essential.
 
 ### Fixed
 

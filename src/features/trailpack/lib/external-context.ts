@@ -4,7 +4,7 @@ import {
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
 } from "@/features/trailpack/data/supported-trails";
-import type { AlertContext, WeatherContext } from "@/features/trailpack/types";
+import type { AlertContext, DaylightContext, WeatherContext } from "@/features/trailpack/types";
 
 type Fetcher = (
   input: RequestInfo | URL,
@@ -16,6 +16,7 @@ type Fetcher = (
 }>;
 
 interface OpenMeteoForecastResponse {
+  timezone?: string;
   current?: {
     temperature_2m?: number;
     wind_speed_10m?: number;
@@ -33,6 +34,18 @@ interface OpenMeteoForecastResponse {
   };
 }
 
+interface SunriseSunsetResponse {
+  status?: string;
+  tzid?: string;
+  results?: {
+    sunrise?: string;
+    sunset?: string;
+    day_length?: number;
+    civil_twilight_begin?: string;
+    civil_twilight_end?: string;
+  };
+}
+
 interface NpsAlertsResponse {
   total?: string | number;
   data?: Array<{
@@ -44,6 +57,7 @@ interface NpsAlertsResponse {
 }
 
 const OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
+const SUNRISE_SUNSET_URL = "https://api.sunrise-sunset.org/json";
 const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
 const SUPPORTED_PARK_CODES = new Set(SUPPORTED_PARKS.map((park) => park.parkCode));
 
@@ -179,6 +193,7 @@ export function buildWeatherContextFromOpenMeteoResponse(
 
   return {
     plannedDate: plannedDate ?? daily.time?.[0],
+    timezone: response.timezone,
     summary: buildWeatherSummary({
       high,
       low,
@@ -200,6 +215,32 @@ export function buildWeatherContextFromOpenMeteoResponse(
   };
 }
 
+export function buildDaylightContextFromSunriseSunsetResponse(
+  response: SunriseSunsetResponse,
+  date?: string,
+): DaylightContext | null {
+  if (response.status !== "OK") {
+    return null;
+  }
+
+  const results = response.results ?? {};
+  if (!results.sunset || !results.civil_twilight_end) {
+    return null;
+  }
+
+  return {
+    date,
+    sunrise: results.sunrise,
+    sunset: results.sunset,
+    civilTwilightBegin: results.civil_twilight_begin,
+    civilTwilightEnd: results.civil_twilight_end,
+    dayLengthSeconds: results.day_length,
+    timezone: response.tzid,
+    source: "sunrise-sunset",
+    retrievalStatus: "live",
+  };
+}
+
 export function buildSavedWeatherFallback(trailId: string): WeatherContext | null {
   const scenario = getDemoScenario(trailId);
   if (!scenario) {
@@ -211,6 +252,52 @@ export function buildSavedWeatherFallback(trailId: string): WeatherContext | nul
     retrievalStatus: "saved-fixture",
     statusReason: "Using saved demo weather because live weather is unavailable.",
   };
+}
+
+async function fetchSunriseSunsetDaylightContext({
+  lat,
+  lng,
+  date,
+  timezone,
+  fetcher,
+}: {
+  lat: number;
+  lng: number;
+  date?: string;
+  timezone?: string;
+  fetcher: Fetcher;
+}): Promise<DaylightContext | null> {
+  if (!date) {
+    return null;
+  }
+
+  const url = new URL(SUNRISE_SUNSET_URL);
+  url.searchParams.set("lat", String(lat));
+  url.searchParams.set("lng", String(lng));
+  url.searchParams.set("date", date);
+  url.searchParams.set("formatted", "0");
+  if (timezone) {
+    url.searchParams.set("tzid", timezone);
+  }
+
+  try {
+    const response = await fetcher(url, {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return buildDaylightContextFromSunriseSunsetResponse(
+      (await response.json()) as SunriseSunsetResponse,
+      date,
+    );
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchOpenMeteoWeatherContext(
@@ -251,9 +338,18 @@ export async function fetchOpenMeteoWeatherContext(
       return fallback;
     }
 
-    return buildWeatherContextFromOpenMeteoResponse(
+    const weather = buildWeatherContextFromOpenMeteoResponse(
       (await response.json()) as OpenMeteoForecastResponse,
     );
+    const daylight = await fetchSunriseSunsetDaylightContext({
+      lat: trail.coordinates.lat,
+      lng: trail.coordinates.lng,
+      date: weather.plannedDate,
+      timezone: weather.timezone,
+      fetcher,
+    });
+
+    return daylight ? { ...weather, daylight } : weather;
   } catch {
     return fallback;
   }

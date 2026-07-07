@@ -11,6 +11,7 @@ describe("context status summaries", () => {
 
     expect(status.weather.status).toBe("Saved demo forecast");
     expect(status.weather.summary).toMatch(/Partly sunny/);
+    expect(status.weather.details).toContain("Civil twilight ends 9:42 PM");
     expect(status.alerts.status).toBe("No active alerts in saved fixture");
     expect(status.alerts.details).toEqual([]);
   });

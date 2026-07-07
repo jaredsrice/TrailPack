@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   buildAlertContextFromNpsResponse,
+  buildDaylightContextFromSunriseSunsetResponse,
   buildSavedAlertFallback,
   buildSavedWeatherFallback,
   buildWeatherContextFromOpenMeteoResponse,
@@ -13,6 +14,7 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
   it("normalizes Open-Meteo forecast data into TrailPack weather context", () => {
     const weather = buildWeatherContextFromOpenMeteoResponse(
       {
+        timezone: "America/Denver",
         current: {
           temperature_2m: 78,
           wind_speed_10m: 22,
@@ -33,11 +35,52 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
     expect(weather.label).toBe("forecast-based");
     expect(weather.source).toBe("open-meteo");
     expect(weather.retrievalStatus).toBe("live");
+    expect(weather.timezone).toBe("America/Denver");
     expect(weather.temperatureF).toEqual({ current: 78, high: 84, low: 42 });
     expect(weather.precipitationChance).toBe(55);
     expect(weather.windMph).toBe(24);
     expect(weather.conditions).toEqual(expect.arrayContaining(["heat", "rain", "wind"]));
     expect(weather.summary).toContain("84°F high");
+  });
+});
+
+describe("buildDaylightContextFromSunriseSunsetResponse", () => {
+  it("normalizes civil-twilight data from Sunrise-Sunset.org", () => {
+    const daylight = buildDaylightContextFromSunriseSunsetResponse(
+      {
+        status: "OK",
+        tzid: "America/Denver",
+        results: {
+          sunrise: "2026-06-15T05:38:37-06:00",
+          sunset: "2026-06-15T21:08:20-06:00",
+          day_length: 55783,
+          civil_twilight_begin: "2026-06-15T05:04:20-06:00",
+          civil_twilight_end: "2026-06-15T21:42:37-06:00",
+        },
+      },
+      "2026-06-15",
+    );
+
+    expect(daylight).toEqual({
+      date: "2026-06-15",
+      sunrise: "2026-06-15T05:38:37-06:00",
+      sunset: "2026-06-15T21:08:20-06:00",
+      civilTwilightBegin: "2026-06-15T05:04:20-06:00",
+      civilTwilightEnd: "2026-06-15T21:42:37-06:00",
+      dayLengthSeconds: 55783,
+      timezone: "America/Denver",
+      source: "sunrise-sunset",
+      retrievalStatus: "live",
+    });
+  });
+
+  it("returns null when the daylight provider returns an invalid status", () => {
+    expect(
+      buildDaylightContextFromSunriseSunsetResponse({
+        status: "INVALID_TZID",
+        results: {},
+      }),
+    ).toBeNull();
   });
 });
 
@@ -93,6 +136,62 @@ describe("external-context fallbacks", () => {
     expect(weather).not.toBeNull();
     expect(weather?.retrievalStatus).toBe("saved-fixture");
     expect(weather?.summary).toMatch(/Partly sunny/);
+  });
+
+  it("attaches live civil-twilight context when weather and daylight calls succeed", async () => {
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      const url = new URL(String(input));
+
+      if (url.hostname === "api.open-meteo.com") {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            timezone: "America/Denver",
+            current: {
+              temperature_2m: 70,
+              wind_speed_10m: 8,
+              weather_code: 1,
+            },
+            daily: {
+              time: ["2026-06-15"],
+              temperature_2m_max: [74],
+              temperature_2m_min: [44],
+              precipitation_probability_max: [10],
+              wind_speed_10m_max: [12],
+              weather_code: [1],
+            },
+          }),
+        };
+      }
+
+      expect(url.hostname).toBe("api.sunrise-sunset.org");
+      expect(url.searchParams.get("date")).toBe("2026-06-15");
+      expect(url.searchParams.get("formatted")).toBe("0");
+      expect(url.searchParams.get("tzid")).toBe("America/Denver");
+
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          status: "OK",
+          tzid: "America/Denver",
+          results: {
+            sunrise: "2026-06-15T05:38:37-06:00",
+            sunset: "2026-06-15T21:08:20-06:00",
+            day_length: 55783,
+            civil_twilight_begin: "2026-06-15T05:04:20-06:00",
+            civil_twilight_end: "2026-06-15T21:42:37-06:00",
+          },
+        }),
+      };
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", fetcher);
+
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(weather?.daylight?.source).toBe("sunrise-sunset");
+    expect(weather?.daylight?.civilTwilightEnd).toBe("2026-06-15T21:42:37-06:00");
   });
 
   it("returns unavailable alert context when the NPS key is missing", async () => {

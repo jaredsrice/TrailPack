@@ -31,6 +31,23 @@ const NO_ALERTS: AlertContext = {
   label: "unavailable",
 };
 
+const JENNY_SUMMER_DAYLIGHT_WEATHER: WeatherContext = {
+  ...CLEAR_WEATHER,
+  plannedDate: "2026-06-15",
+  timezone: "America/Denver",
+  daylight: {
+    date: "2026-06-15",
+    sunrise: "2026-06-15T05:38:37-06:00",
+    sunset: "2026-06-15T21:08:20-06:00",
+    civilTwilightBegin: "2026-06-15T05:04:20-06:00",
+    civilTwilightEnd: "2026-06-15T21:42:37-06:00",
+    dayLengthSeconds: 55783,
+    timezone: "America/Denver",
+    source: "sunrise-sunset",
+    retrievalStatus: "live",
+  },
+};
+
 function build(userInput: UserHikeInput = {}, weather: WeatherContext = CLEAR_WEATHER) {
   return generatePackingRecommendation(JENNY_LAKE_LOOP, weather, NO_ALERTS, userInput);
 }
@@ -92,10 +109,67 @@ describe("analyzeTrailConditions", () => {
 });
 
 describe("duration rule", () => {
-  it("adds a headlamp and extra food for a long planned day (>= 6h)", () => {
+  it("adds a headlamp and extra food for a long planned day (>= 6h) when daylight context is missing", () => {
     const rec = build({ expectedDuration: "7 hours" });
     expect(names(rec.essential)).toContain("Headlamp");
     expect(names(rec.optional)).toContain("Extra food");
+  });
+
+  it("does not make a headlamp essential when summer daylight covers the plan", () => {
+    const rec = build(
+      { expectedDuration: "7 hours", startTime: "10:00" },
+      JENNY_SUMMER_DAYLIGHT_WEATHER,
+    );
+
+    expect(names(rec.essential)).not.toContain("Headlamp");
+    const headlamp = rec.optional.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/backup/i);
+    expect(headlamp?.reason).toMatch(/before civil twilight ends/i);
+  });
+
+  it("accepts native time inputs that include seconds", () => {
+    const rec = build(
+      { expectedDuration: "7 hours", startTime: "10:00:00" },
+      JENNY_SUMMER_DAYLIGHT_WEATHER,
+    );
+
+    expect(names(rec.essential)).not.toContain("Headlamp");
+    const headlamp = rec.optional.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/backup/i);
+  });
+
+  it("accepts plain-language AM and PM start times", () => {
+    const rec = build(
+      { expectedDuration: "7 hours", startTime: "10 AM" },
+      JENNY_SUMMER_DAYLIGHT_WEATHER,
+    );
+
+    expect(names(rec.essential)).not.toContain("Headlamp");
+    const headlamp = rec.optional.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/backup/i);
+  });
+
+  it("adds an optional headlamp when the plan ends after sunset but before civil twilight", () => {
+    const rec = build(
+      { expectedDuration: "30 minutes", startTime: "20:45" },
+      JENNY_SUMMER_DAYLIGHT_WEATHER,
+    );
+
+    expect(names(rec.essential)).not.toContain("Headlamp");
+    const headlamp = rec.optional.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/after sunset/i);
+    expect(headlamp?.sourceLabels).toEqual(["user-provided", "daylight", "inferred"]);
+  });
+
+  it("makes a headlamp essential when the plan ends after civil twilight", () => {
+    const rec = build(
+      { expectedDuration: "4 hours", startTime: "18:30" },
+      JENNY_SUMMER_DAYLIGHT_WEATHER,
+    );
+
+    const headlamp = rec.essential.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/after civil twilight/i);
+    expect(headlamp?.sourceLabels).toEqual(["user-provided", "daylight", "inferred"]);
   });
 
   it("does not add a headlamp for a short planned day", () => {
@@ -245,15 +319,21 @@ describe("isOfficialNpsAlert", () => {
 
 describe("missing-detail warnings", () => {
   it("clears the duration and condition warnings once provided", () => {
-    const rec = build({ expectedDuration: "5 hours", trailConditions: "dry" });
+    const rec = build({
+      expectedDuration: "5 hours",
+      startTime: "10:00",
+      trailConditions: "dry",
+    });
     const joined = rec.missingDetails.join(" ");
     expect(joined).not.toMatch(/expected time out/i);
+    expect(joined).not.toMatch(/start time/i);
     expect(joined).not.toMatch(/Current trail conditions/i);
   });
 
   it("notes details when nothing is provided", () => {
     const rec = build();
     expect(rec.missingDetails.length).toBeGreaterThan(0);
+    expect(rec.missingDetails.join(" ")).toMatch(/start time/i);
   });
 
   it("does not ask for a planned date while date is still context only", () => {

@@ -177,14 +177,23 @@ Show:
 
 ## Remaining Week 13 Evidence Gap
 
-The only Week 13 handoff item not fully closed in this review is the real
-hiker/tester feedback note. It should not be invented.
+Closed by follow-up tester/product feedback collected after the Week 13 review.
 
-Needed note:
+Feedback summary:
 
-- whether the output felt useful, too broad, too minimal, unclear, or missing an obvious recommendation
-- one or two sentences are enough
-- save the note in a follow-up validation doc or append it to this file once collected
+- The output felt too stiff and unspecific. Several items used vague language such
+  as "pack more food" or "first-aid basics" without answering how much or what
+  that means in practice.
+- The tester wanted recommendations to answer the real question behind each item:
+  what to wear on feet, how much water/food to bring per person, why bear spray
+  is needed and where to get it, whether headlamp guidance changes with summer
+  daylight, and whether a warm layer should be framed as a light jacket.
+
+Follow-up action:
+
+- Add civil-twilight/daylight context and start-time-aware headlamp logic first,
+  then continue toward question-answer recommendation cards with concrete
+  quantities and examples.
 
 ## CSE 499B Planning Notes
 

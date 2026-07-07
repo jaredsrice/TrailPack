@@ -23,7 +23,7 @@ export function buildContextStatus(
       summary: weather.summary,
       label: weather.label,
       retrievalStatus: weather.retrievalStatus ?? "saved-fixture",
-      details: weather.conditions,
+      details: weatherDetails(weather),
     },
     alerts: {
       status: alertStatusText(alerts),
@@ -33,6 +33,29 @@ export function buildContextStatus(
       details: alerts.alerts.map((alert) => alert.title),
     },
   };
+}
+
+function formatClock(isoValue?: string): string | null {
+  const match = isoValue?.match(/T(\d{2}):(\d{2})/);
+  if (!match) {
+    return null;
+  }
+
+  const hour = Number.parseInt(match[1], 10);
+  const minute = match[2];
+  const period = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minute} ${period}`;
+}
+
+function weatherDetails(weather: WeatherContext): string[] {
+  const details: string[] = [...weather.conditions];
+  const civilTwilightEnd = formatClock(weather.daylight?.civilTwilightEnd);
+  if (civilTwilightEnd) {
+    details.push(`Civil twilight ends ${civilTwilightEnd}`);
+  }
+
+  return details;
 }
 
 function weatherStatusText(weather: WeatherContext): string {

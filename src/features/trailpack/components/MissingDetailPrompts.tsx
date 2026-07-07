@@ -96,6 +96,20 @@ export function MissingDetailPrompts({
         </label>
 
         <label className="block text-sm">
+          <span className="font-medium text-slate-700">What time will you start?</span>
+          <span className="ml-1 text-xs text-emerald-700">(affects headlamp)</span>
+          <input
+            type="text"
+            placeholder="e.g. 10 AM or 14:30"
+            value={value.startTime ?? ""}
+            onChange={(event) =>
+              onChange({ ...value, startTime: event.target.value || undefined })
+            }
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 outline-none ring-emerald-500 focus:ring-2"
+          />
+        </label>
+
+        <label className="block text-sm">
           <span className="font-medium text-slate-700">How long do you expect to be out?</span>
           <span className="ml-1 text-xs text-emerald-700">(affects list)</span>
           <input
