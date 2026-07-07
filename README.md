@@ -15,7 +15,8 @@ add, remove, or relabel packing items.
 2. Review the official trail statistics and any computed estimates.
 3. Review saved or live-path weather, daylight, and NPS alert status.
 4. Add useful details such as start time, expected duration, or trail conditions.
-5. Receive an essential and optional packing list with reasons and source labels.
+5. Receive an essential and optional packing list whose cards answer concrete
+   hiker questions with quantities, examples, and source labels.
 
 Unsupported hikes can use the manual-entry fallback to get a limited baseline
 list. Manual distance, elevation gain, route type, expected duration, and trail
@@ -41,6 +42,8 @@ in Grand Teton National Park.
   estimates when official values are missing or need comparison.
 - **User input** can add conservative recommendations for long trips, snow, ice,
   mud, or wet conditions.
+- **Bear Aware** is linked as a current regional bear-spray rental-location
+  reference when the official NPS bear-spray recommendation is shown.
 
 Official NPS values stay visible even when a USGS calculation differs. TrailPack
 labels the difference instead of averaging the numbers or hiding the conflict.
@@ -103,6 +106,16 @@ remains stable when live services are unavailable. Supported trail pages show
 the current weather, civil-twilight, and NPS alert state before the packing list,
 including the saved no-active-alert fixture state.
 
+## Recommendation Style
+
+Packing items are rendered as question-answer cards instead of terse item names.
+For example, TrailPack now distinguishes "How much water should I bring?",
+"What should I wear on my feet?", "Do I need bear spray, and where do I get
+it?", and "Do I need a warm layer in summer?" from the underlying item label.
+The rule engine keeps concrete quantities such as `2-3 L per adult`, food counts
+per person, first-aid examples, shoe tradeoffs, extra dry socks for wet or snowy
+conditions, and bear-spray rental links visible before any AI text is displayed.
+
 ## Guarded AI Review Fixture
 
 TrailPack includes a fixture-first guarded AI path for the Week 13 / Week 14
@@ -132,7 +145,8 @@ npm run build
 ```
 
 The test suite covers trail values, packing rules, duration parsing, trail-condition
-phrasing, and official-source validation.
+phrasing, question-answer recommendation copy, guarded AI validation, and
+official-source validation.
 
 ## Current Limits
 
@@ -157,10 +171,8 @@ phrasing, and official-source validation.
 
 ## Next Project Focus
 
-- Complete the Week 13 verification pass for the current prototype before
-  expanding scope.
-- Add or document focused checks for rule-based recommendations, incomplete-data
-  fallback behavior, and saved demo scenarios.
+- Keep tightening the Week 13/14 feedback loop around recommendation specificity,
+  incomplete-data fallback behavior, and saved demo scenarios.
 - Keep broader trail-data expansion, live AI calls, and account/profile work
   deferred until the Week 14 CSE 499B planning pass prioritizes the next backlog
   items.

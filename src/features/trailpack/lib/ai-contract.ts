@@ -11,6 +11,8 @@ import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
 
 export interface AiContractPackingItem {
   name: string;
+  question: string;
+  answer: string;
   reason: string;
   sourceLabels: SourceLabel[];
 }
@@ -215,6 +217,8 @@ export function buildGuardedAiReview(
 function toContractPackingItem(item: PackingItem): AiContractPackingItem {
   return {
     name: item.name,
+    question: item.question,
+    answer: item.answer,
     reason: item.reason,
     sourceLabels: item.sourceLabels,
   };
@@ -263,7 +267,7 @@ function buildTemplateFallbackReview(input: AiContractInput): GuardedAiReview {
         : ["No missing details were recorded for the current rule-based recommendation."],
     itemExplanationDrafts: items.map((item) => ({
       itemName: item.name,
-      explanation: item.reason,
+      explanation: item.answer,
       sourceLabels: item.sourceLabels,
     })),
   };

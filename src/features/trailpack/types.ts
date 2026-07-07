@@ -120,6 +120,16 @@ export interface AlertContext {
 
 export interface PackingItem {
   name: string;
+  /**
+   * User-facing question this item answers, e.g. "How much water should I
+   * bring?" Keeping this structured lets the UI avoid generic item cards.
+   */
+  question: string;
+  /**
+   * Concrete recommendation text that answers the question. `reason` is kept
+   * for the guarded AI contract and existing validation paths.
+   */
+  answer: string;
   reason: string;
   sourceLabels: SourceLabel[];
   /**
@@ -127,6 +137,10 @@ export interface PackingItem {
    * "official" label so provenance can be displayed to the user.
    */
   sourceUrl?: string;
+  links?: Array<{
+    label: string;
+    url: string;
+  }>;
 }
 
 export interface PackingRecommendation {

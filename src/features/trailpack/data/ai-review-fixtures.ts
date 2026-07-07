@@ -9,19 +9,19 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
   ],
   itemExplanationDrafts: [
     {
-      itemName: "Sturdy hiking shoes",
+      itemName: "Supportive trail shoes or hiking shoes",
       explanation:
         "The supported trail profile lists a moderate route with enough gain to justify supportive footwear.",
       sourceLabels: ["supported-profile", "inferred"],
     },
     {
-      itemName: "Water: 2-3 liters",
+      itemName: "Water: 2-3 L per adult",
       explanation:
         "The rule engine sizes water from the supported trail distance and elevation gain.",
       sourceLabels: ["supported-profile"],
     },
     {
-      itemName: "Snacks / lunch",
+      itemName: "Food: lunch plus 2-3 snacks per person",
       explanation:
         "The supported trail profile indicates a longer effort where food is useful.",
       sourceLabels: ["supported-profile"],
@@ -51,6 +51,12 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
       sourceLabels: ["supported-profile", "inferred"],
     },
     {
+      itemName: "Extra dry socks",
+      explanation:
+        "The saved forecast context includes rain risk, so a dry sock backup is useful.",
+      sourceLabels: ["forecast-based", "inferred"],
+    },
+    {
       itemName: "Offline map",
       explanation:
         "The rule engine keeps navigation as an inferred backup for mountain areas.",
@@ -63,7 +69,7 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
       sourceLabels: ["supported-profile", "inferred"],
     },
     {
-      itemName: "Extra warm layer",
+      itemName: "Light jacket or warm layer",
       explanation:
         "The supported profile reaches mountain elevation where temperatures can feel cooler.",
       sourceLabels: ["supported-profile", "inferred"],
