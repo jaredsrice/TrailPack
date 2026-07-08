@@ -108,13 +108,13 @@ including the saved no-active-alert fixture state.
 
 ## Recommendation Style
 
-Packing items are rendered as question-answer cards instead of terse item names.
-For example, TrailPack now distinguishes "How much water should I bring?",
-"What should I wear on my feet?", "Do I need bear spray, and where do I get
-it?", and "Do I need a warm layer in summer?" from the underlying item label.
-The rule engine keeps concrete quantities such as `2-3 L per adult`, food counts
-per person, first-aid examples, shoe tradeoffs, extra dry socks for wet or snowy
-conditions, and bear-spray rental links visible before any AI text is displayed.
+Packing items are rendered as recommendation-topic cards. The rule engine still
+tracks the question each card answers, but the UI shows clean topics such as
+`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`, followed by a
+specific "you need this because..." explanation. The rule engine keeps concrete
+quantities, food counts per person, first-aid examples, shoe tradeoffs, socks or
+gaiter guidance for wet or snowy conditions, and bear-spray rental links visible
+before any AI text is displayed.
 
 ## Guarded AI Review Fixture
 

@@ -64,10 +64,7 @@ function ItemGroup({
             key={item.name}
             className="rounded-lg border border-slate-100 bg-slate-50 p-4"
           >
-            <p className="text-sm font-semibold text-slate-900">{item.question}</p>
-            <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
-              Recommendation: {item.name}
-            </p>
+            <p className="text-sm font-semibold text-slate-900">{item.name}</p>
             <p className="mt-2 text-sm leading-6 text-slate-700">{item.answer}</p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {item.sourceLabels.map((label) => (
