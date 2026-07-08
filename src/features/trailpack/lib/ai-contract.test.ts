@@ -77,6 +77,12 @@ function validDraft(): AiReviewDraft {
         sourceLabels: ["forecast-based", "inferred"],
       },
       {
+        itemName: "Insect repellent",
+        explanation:
+          "The saved June date falls in the regional mosquito and tick window described by NPS guidance.",
+        sourceLabels: ["official", "inferred"],
+      },
+      {
         itemName: "First-aid basics",
         explanation:
           "The rule-based list keeps a basic first-aid item for a longer day hike.",
@@ -178,6 +184,21 @@ describe("guarded AI contract", () => {
     expect(result.review.tripSummary).toMatch(/rule-based packing list/i);
     expect(result.review.tripSummary).not.toMatch(/guaranteed safe/i);
     expect(result.validationReasons.join(" ")).toMatch(/unsupported safety claim/i);
+  });
+
+  it("does not expose unknown fixture item names in fallback validation copy", () => {
+    const draft = validDraft();
+    draft.itemExplanationDrafts.push({
+      itemName: "Emergency satellite beacon",
+      explanation: "AI should not add packing items in the must-have path.",
+      sourceLabels: ["inferred"],
+    });
+
+    const result = buildGuardedAiReview(buildInput(), draft);
+
+    expect(result.status).toBe("fallback");
+    expect(result.validationReasons.join(" ")).toMatch(/outside the current rule-based packing list/i);
+    expect(result.validationReasons.join(" ")).not.toMatch(/Emergency satellite beacon/i);
   });
 
   it("accepts the saved Jenny Lake fixture through the guarded review path", () => {

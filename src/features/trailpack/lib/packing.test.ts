@@ -5,8 +5,10 @@ import {
   generateManualEntryRecommendation,
   generatePackingRecommendation,
   GRTE_BEAR_SAFETY_URL,
+  NPS_HIKE_SMART_URL,
   isOfficialNpsAlert,
   parseExpectedHours,
+  YELLOWSTONE_SAFETY_URL,
   type UserHikeInput,
 } from "@/features/trailpack/lib/packing";
 import {
@@ -360,7 +362,7 @@ describe("missing-detail warnings", () => {
     expect(rec.missingDetails.join(" ")).toMatch(/start time/i);
   });
 
-  it("does not ask for a planned date while date is still context only", () => {
+  it("does not require a planned date before showing packing guidance", () => {
     const rec = build();
     expect(rec.missingDetails.join(" ")).not.toMatch(/planned hike date/i);
   });
@@ -396,6 +398,64 @@ describe("scenario polish", () => {
     expect(names(rec.optional)).toContain("Breathable sun layer");
     const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
     expect(firstAid?.reason).not.toMatch(/full-day loop/i);
+  });
+});
+
+describe("seasonal insect guidance", () => {
+  it("adds optional insect repellent during regional bug season", () => {
+    const rec = generatePackingRecommendation(
+      JENNY_LAKE_LOOP,
+      DEMO_CONTEXTS["jenny-lake-loop"].weather,
+      NO_ALERTS,
+      {},
+    );
+
+    const repellent = itemNamed(rec, "Insect repellent");
+    expect(names(rec.optional)).toContain("Insect repellent");
+    expect(repellent.question).toBe("Should I bring bug spray?");
+    expect(repellent.recommendation).toMatch(/EPA-registered insect repellent/i);
+    expect(repellent.recommendation).toMatch(/long sleeves|netting|pants/i);
+    expect(repellent.why).toMatch(/NPS Hike Smart/i);
+    expect(repellent.why).toMatch(/mosquitoes|ticks/i);
+    expect(repellent.why).toMatch(/June|July|mid-March|August/i);
+    expect(repellent.sourceLabels).toContain("official");
+    expect(repellent.sourceUrl).toBe(NPS_HIKE_SMART_URL);
+    expect(repellent.links).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          label: "NPS Hike Smart",
+          url: NPS_HIKE_SMART_URL,
+        }),
+        expect.objectContaining({
+          label: "Yellowstone insect season guidance",
+          url: YELLOWSTONE_SAFETY_URL,
+        }),
+      ]),
+    );
+  });
+
+  it("does not add insect repellent outside regional bug season", () => {
+    const winterWeather: WeatherContext = {
+      ...CLEAR_WEATHER,
+      plannedDate: "2026-12-15",
+    };
+
+    const rec = generatePackingRecommendation(
+      JENNY_LAKE_LOOP,
+      winterWeather,
+      NO_ALERTS,
+      {},
+    );
+
+    expect(names(rec.optional)).not.toContain("Insect repellent");
+  });
+
+  it("uses manual planned dates for seasonal insect guidance", () => {
+    const summer = generateManualEntryRecommendation({ plannedDate: "2026-07-01" });
+    expect(names(summer.optional)).toContain("Insect repellent");
+
+    const winter = generateManualEntryRecommendation({ plannedDate: "2026-12-01" });
+    expect(names(winter.optional)).not.toContain("Insect repellent");
   });
 });
 

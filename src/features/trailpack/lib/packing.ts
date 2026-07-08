@@ -32,6 +32,19 @@ export const GRTE_BEAR_SAFETY_URL =
 export const BEAR_AWARE_LOCATIONS_URL = "https://bearaware.com/locations/";
 
 /**
+ * NPS Hike Smart includes mosquito/tick bite prevention guidance for hikers.
+ */
+export const NPS_HIKE_SMART_URL =
+  "https://www.nps.gov/articles/hiking-safety.htm";
+
+/**
+ * Regional NPS guidance for Yellowstone insect timing. Used as a Grand Teton
+ * regional proxy because both parks share the Greater Yellowstone ecosystem.
+ */
+export const YELLOWSTONE_SAFETY_URL =
+  "https://www.nps.gov/yell/planyourvisit/safety.htm";
+
+/**
  * Parse an expected-duration free-text field into a conservative number of hours.
  *
  * Deterministic, keyword/number based only. Supported forms:
@@ -122,6 +135,37 @@ function parsePositiveNumber(input?: string): number | null {
 
 function formatManualNumber(value: number): string {
   return Number.isInteger(value) ? value.toFixed(0) : value.toString();
+}
+
+function parseMonthDay(date?: string): { month: number; day: number } | null {
+  const match = date?.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) {
+    return null;
+  }
+
+  const month = Number.parseInt(match[2], 10);
+  const day = Number.parseInt(match[3], 10);
+  if (month < 1 || month > 12 || day < 1 || day > 31) {
+    return null;
+  }
+
+  return { month, day };
+}
+
+function isRegionalBugSeason(date?: string): boolean {
+  const parsed = parseMonthDay(date);
+  if (!parsed) {
+    return false;
+  }
+
+  const { month, day } = parsed;
+  if (month > 3 && month < 8) {
+    return true;
+  }
+  if (month === 3) {
+    return day >= 15;
+  }
+  return month === 8;
 }
 
 type PackingItemInput = Omit<PackingItem, "recommendation" | "why" | "answer" | "reason"> & {
@@ -478,6 +522,31 @@ function enforceOfficialProvenance(item: PackingItem): PackingItem {
   };
 }
 
+function buildInsectRepellentItem(plannedDate?: string): PackingItem {
+  const monthName = plannedDate
+    ? new Date(`${plannedDate}T00:00:00`).toLocaleString("en-US", { month: "long" })
+    : "this season";
+
+  return item({
+    name: "Insect repellent",
+    question: "Should I bring bug spray?",
+    recommendation:
+      "Bring EPA-registered insect repellent. Long sleeves, long pants, or bug netting can help if mosquitoes or ticks are heavy.",
+    why:
+      `NPS Hike Smart recommends repellents, netting, long pants, and sleeved clothing for mosquitoes and ticks. ` +
+      `Regional NPS guidance for Yellowstone notes ticks from mid-March to mid-July and mosquitoes around lakes and streams in June and July, often diminishing by mid-to-late August. Your ${monthName} date falls in that bug-season window.`,
+    sourceLabels: ["official", "inferred"],
+    sourceUrl: NPS_HIKE_SMART_URL,
+    links: [
+      { label: "NPS Hike Smart", url: NPS_HIKE_SMART_URL },
+      {
+        label: "Yellowstone insect season guidance",
+        url: YELLOWSTONE_SAFETY_URL,
+      },
+    ],
+  });
+}
+
 export function generatePackingRecommendation(
   trail: TrailProfile,
   weather: WeatherContext,
@@ -499,6 +568,8 @@ export function generatePackingRecommendation(
     weather.conditions.includes("heat") ||
     (weather.temperatureF?.high ?? 0) >= 80 ||
     (weather.temperatureF?.current ?? 0) >= 75;
+  const bugSeasonDate =
+    userInput.plannedDate ?? weather.plannedDate ?? weather.daylight?.date;
 
   const footwearSourceLabels: PackingItem["sourceLabels"] = ["supported-profile"];
   const footwearRecommendationParts = [
@@ -685,6 +756,10 @@ export function generatePackingRecommendation(
         sourceLabels: ["forecast-based", "inferred"],
       }),
     );
+  }
+
+  if (isRegionalBugSeason(bugSeasonDate)) {
+    optional.push(buildInsectRepellentItem(bugSeasonDate));
   }
 
   if (hotConditions) {
@@ -956,6 +1031,10 @@ export function generateManualEntryRecommendation(
     }),
   ];
   const missingDetails: string[] = [];
+
+  if (isRegionalBugSeason(userInput.plannedDate)) {
+    optional.push(buildInsectRepellentItem(userInput.plannedDate));
+  }
 
   if (expectedHours !== null && expectedHours >= 5) {
     essential[0] = item({
