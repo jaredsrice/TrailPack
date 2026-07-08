@@ -52,6 +52,8 @@ change as the project develops.
   recommendation to answer a concrete hiker question.
 - Bear-spray recommendation links for official NPS guidance and current Bear
   Aware rental-location information.
+- Seasonal optional insect-repellent guidance backed by NPS Hike Smart and
+  regional Yellowstone insect-season guidance.
 
 ### Changed
 
@@ -97,6 +99,12 @@ change as the project develops.
   can scan the clear action before reading the supporting trip context.
 - Merged wet-footwear, tennis-shoe, gaiter, and dry-sock guidance into the single
   `Trail footwear` recommendation instead of showing separate foot-related cards.
+- Added a date-gated `Insect repellent` optional card for regional bug season
+  rather than making bug spray a permanent essential.
+- Updated trip-detail copy so the planned date is described as seasonal
+  recommendation context instead of context-only data.
+- Sanitized guarded-AI fallback validation copy so stale fixture item names do
+  not appear when the current rule-based list changes.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.

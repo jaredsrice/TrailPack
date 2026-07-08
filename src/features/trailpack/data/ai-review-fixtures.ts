@@ -45,6 +45,12 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
       sourceLabels: ["forecast-based", "inferred"],
     },
     {
+      itemName: "Insect repellent",
+      explanation:
+        "The saved June date falls in the regional mosquito and tick window described by NPS guidance.",
+      sourceLabels: ["official", "inferred"],
+    },
+    {
       itemName: "First-aid basics",
       explanation:
         "The rule-based list keeps a basic first-aid item for a longer day hike.",

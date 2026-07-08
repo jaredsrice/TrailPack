@@ -212,8 +212,16 @@ export function buildGuardedAiReview(
   return {
     status: "fallback",
     review: buildTemplateFallbackReview(input),
-    validationReasons: result.validationReasons,
+    validationReasons: result.validationReasons.map(toFallbackValidationReason),
   };
+}
+
+function toFallbackValidationReason(reason: string): string {
+  if (/^AI review referenced unknown packing item "/.test(reason)) {
+    return "AI review referenced an item outside the current rule-based packing list.";
+  }
+
+  return reason;
 }
 
 function toContractPackingItem(item: PackingItem): AiContractPackingItem {

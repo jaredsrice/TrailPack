@@ -197,6 +197,8 @@ Follow-up action:
 - Reworked packing cards into question-answer recommendations with concrete
   quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
   links, socks for wet/snowy conditions, and summer-layer framing.
+- Added a seasonal optional `Insect repellent` card for the regional bug-season
+  window, backed by NPS Hike Smart and Yellowstone insect-season guidance.
 - Refined the UI wording so card titles are recommendation topics, each card
   separates `Recommendation` from `Why`, and the hidden question remains in the
   item data for the guarded AI path.

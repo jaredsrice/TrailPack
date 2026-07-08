@@ -15,10 +15,10 @@ export function MissingDetailPrompts({
     <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
       <h2 className="text-lg font-semibold text-slate-900">Trip details</h2>
       <p className="mt-1 text-sm text-slate-600">
-        Expected time out and current conditions can change your packing list.
+        Expected time out, seasonal date, and current conditions can change your packing list.
         {showManualFields
           ? " Manual trail facts improve the unsupported-hike fallback."
-          : " Date and notes stay as trip context for now."}
+          : " Notes stay as trip context for now."}
       </p>
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
@@ -84,7 +84,7 @@ export function MissingDetailPrompts({
 
         <label className="block text-sm">
           <span className="font-medium text-slate-700">When do you plan to hike?</span>
-          <span className="ml-1 text-xs text-slate-400">(context only)</span>
+          <span className="ml-1 text-xs text-emerald-700">(affects seasonal items)</span>
           <input
             type="date"
             value={value.plannedDate ?? ""}
