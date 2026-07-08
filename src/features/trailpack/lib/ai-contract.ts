@@ -12,6 +12,8 @@ import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
 export interface AiContractPackingItem {
   name: string;
   question: string;
+  recommendation: string;
+  why: string;
   answer: string;
   reason: string;
   sourceLabels: SourceLabel[];
@@ -218,6 +220,8 @@ function toContractPackingItem(item: PackingItem): AiContractPackingItem {
   return {
     name: item.name,
     question: item.question,
+    recommendation: item.recommendation,
+    why: item.why,
     answer: item.answer,
     reason: item.reason,
     sourceLabels: item.sourceLabels,

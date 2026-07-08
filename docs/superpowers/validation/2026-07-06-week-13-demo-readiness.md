@@ -197,8 +197,9 @@ Follow-up action:
 - Reworked packing cards into question-answer recommendations with concrete
   quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
   links, socks for wet/snowy conditions, and summer-layer framing.
-- Refined the UI wording so card titles are recommendation topics, while the
-  hidden question remains in the item data for the guarded AI path.
+- Refined the UI wording so card titles are recommendation topics, each card
+  separates `Recommendation` from `Why`, and the hidden question remains in the
+  item data for the guarded AI path.
 
 ## CSE 499B Planning Notes
 

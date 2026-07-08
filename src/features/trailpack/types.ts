@@ -126,6 +126,16 @@ export interface PackingItem {
    */
   question: string;
   /**
+   * Clear action-oriented guidance shown first in the card. This should be
+   * usable without reading the supporting explanation.
+   */
+  recommendation: string;
+  /**
+   * Supporting context explaining why this recommendation applies to the
+   * selected hike, weather, daylight, alerts, or user-entered details.
+   */
+  why: string;
+  /**
    * Concrete recommendation text that answers the question. `reason` is kept
    * for the guarded AI contract and existing validation paths.
    */

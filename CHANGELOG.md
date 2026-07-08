@@ -93,11 +93,13 @@ change as the project develops.
   spray access, trekking poles, socks, headlamp timing, and summer layers.
 - Refined packing card headings so the UI shows clean recommendation topics
   while the underlying item data keeps the hidden question each answer addresses.
+- Split packing card content into `Recommendation` and `Why` sections so users
+  can scan the clear action before reading the supporting trip context.
 - Merged wet-footwear, tennis-shoe, gaiter, and dry-sock guidance into the single
   `Trail footwear` recommendation instead of showing separate foot-related cards.
-- Passed the richer question-answer packing context through the guarded AI input
-  contract and updated the saved Jenny Lake fixture to match the new rule-based
-  item set.
+- Passed the richer question, recommendation, why, and answer context through
+  the guarded AI input contract and updated the saved Jenny Lake fixture to match
+  the new rule-based item set.
 
 ### Fixed
 
