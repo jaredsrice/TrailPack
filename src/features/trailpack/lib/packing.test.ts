@@ -8,7 +8,6 @@ import {
   NPS_HIKE_SMART_URL,
   isOfficialNpsAlert,
   parseExpectedHours,
-  YELLOWSTONE_SAFETY_URL,
   type UserHikeInput,
 } from "@/features/trailpack/lib/packing";
 import {
@@ -417,7 +416,8 @@ describe("seasonal insect guidance", () => {
     expect(repellent.recommendation).toMatch(/long sleeves|netting|pants/i);
     expect(repellent.why).toMatch(/NPS Hike Smart/i);
     expect(repellent.why).toMatch(/mosquitoes|ticks/i);
-    expect(repellent.why).toMatch(/June|July|mid-March|August/i);
+    expect(repellent.why).toMatch(/June|spring|summer/i);
+    expect(repellent.why).not.toMatch(/Yellowstone/i);
     expect(repellent.sourceLabels).toContain("official");
     expect(repellent.sourceUrl).toBe(NPS_HIKE_SMART_URL);
     expect(repellent.links).toEqual(
@@ -426,9 +426,12 @@ describe("seasonal insect guidance", () => {
           label: "NPS Hike Smart",
           url: NPS_HIKE_SMART_URL,
         }),
+      ]),
+    );
+    expect(repellent.links).not.toEqual(
+      expect.arrayContaining([
         expect.objectContaining({
-          label: "Yellowstone insect season guidance",
-          url: YELLOWSTONE_SAFETY_URL,
+          label: expect.stringMatching(/Yellowstone/i),
         }),
       ]),
     );

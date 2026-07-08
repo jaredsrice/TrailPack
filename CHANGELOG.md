@@ -52,8 +52,7 @@ change as the project develops.
   recommendation to answer a concrete hiker question.
 - Bear-spray recommendation links for official NPS guidance and current Bear
   Aware rental-location information.
-- Seasonal optional insect-repellent guidance backed by NPS Hike Smart and
-  regional Yellowstone insect-season guidance.
+- Seasonal optional insect-repellent guidance backed by NPS Hike Smart.
 
 ### Changed
 
@@ -105,6 +104,9 @@ change as the project develops.
   recommendation context instead of context-only data.
 - Sanitized guarded-AI fallback validation copy so stale fixture item names do
   not appear when the current rule-based list changes.
+- Removed the Yellowstone insect-season source from Grand Teton-facing bug-spray
+  guidance; TrailPack now treats the date window as an inference instead of
+  showing another park as the source.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.

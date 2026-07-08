@@ -79,7 +79,7 @@ function validDraft(): AiReviewDraft {
       {
         itemName: "Insect repellent",
         explanation:
-          "The saved June date falls in the regional mosquito and tick window described by NPS guidance.",
+          "NPS Hike Smart supports repellent for mosquitoes and ticks, while TrailPack treats the saved June date as inferred seasonal context.",
         sourceLabels: ["official", "inferred"],
       },
       {
@@ -209,6 +209,12 @@ describe("guarded AI contract", () => {
 
     expect(result.status).toBe("accepted");
     expect(result.review.tripSummary).toMatch(/Jenny Lake Loop/);
+    expect(result.review.itemExplanationDrafts).toContainEqual(
+      expect.objectContaining({
+        itemName: "Insect repellent",
+        explanation: expect.not.stringMatching(/window described by NPS guidance/i),
+      }),
+    );
     expect(result.validationReasons).toEqual([]);
   });
 });

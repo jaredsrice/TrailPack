@@ -198,7 +198,8 @@ Follow-up action:
   quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
   links, socks for wet/snowy conditions, and summer-layer framing.
 - Added a seasonal optional `Insect repellent` card for the regional bug-season
-  window, backed by NPS Hike Smart and Yellowstone insect-season guidance.
+  window, backed by NPS Hike Smart with the date window labeled as a TrailPack
+  inference.
 - Refined the UI wording so card titles are recommendation topics, each card
   separates `Recommendation` from `Why`, and the hidden question remains in the
   item data for the guarded AI path.

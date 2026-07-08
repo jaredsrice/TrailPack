@@ -38,13 +38,6 @@ export const NPS_HIKE_SMART_URL =
   "https://www.nps.gov/articles/hiking-safety.htm";
 
 /**
- * Regional NPS guidance for Yellowstone insect timing. Used as a Grand Teton
- * regional proxy because both parks share the Greater Yellowstone ecosystem.
- */
-export const YELLOWSTONE_SAFETY_URL =
-  "https://www.nps.gov/yell/planyourvisit/safety.htm";
-
-/**
  * Parse an expected-duration free-text field into a conservative number of hours.
  *
  * Deterministic, keyword/number based only. Supported forms:
@@ -534,16 +527,10 @@ function buildInsectRepellentItem(plannedDate?: string): PackingItem {
       "Bring EPA-registered insect repellent. Long sleeves, long pants, or bug netting can help if mosquitoes or ticks are heavy.",
     why:
       `NPS Hike Smart recommends repellents, netting, long pants, and sleeved clothing for mosquitoes and ticks. ` +
-      `Regional NPS guidance for Yellowstone notes ticks from mid-March to mid-July and mosquitoes around lakes and streams in June and July, often diminishing by mid-to-late August. Your ${monthName} date falls in that bug-season window.`,
+      `Your ${monthName} date falls in TrailPack's spring and summer bug-season window, so this is a reasonable optional add-on for wet, brushy, or lakeside stretches.`,
     sourceLabels: ["official", "inferred"],
     sourceUrl: NPS_HIKE_SMART_URL,
-    links: [
-      { label: "NPS Hike Smart", url: NPS_HIKE_SMART_URL },
-      {
-        label: "Yellowstone insect season guidance",
-        url: YELLOWSTONE_SAFETY_URL,
-      },
-    ],
+    links: [{ label: "NPS Hike Smart", url: NPS_HIKE_SMART_URL }],
   });
 }
 

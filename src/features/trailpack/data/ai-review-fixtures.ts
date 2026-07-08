@@ -47,7 +47,7 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
     {
       itemName: "Insect repellent",
       explanation:
-        "The saved June date falls in the regional mosquito and tick window described by NPS guidance.",
+        "NPS Hike Smart supports repellent for mosquitoes and ticks, while TrailPack treats the saved June date as inferred seasonal context.",
       sourceLabels: ["official", "inferred"],
     },
     {
