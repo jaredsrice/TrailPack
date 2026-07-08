@@ -472,14 +472,45 @@ export function generatePackingRecommendation(
     (weather.temperatureF?.high ?? 0) >= 80 ||
     (weather.temperatureF?.current ?? 0) >= 75;
 
+  const footwearSourceLabels: PackingItem["sourceLabels"] = ["supported-profile"];
+  const footwearAnswerParts = [
+    shortByProfile
+      ? "Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy."
+      : `Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but this ${trail.difficulty.value.toLowerCase()} ${distance} mi route with ${gain} ft gain makes grippy, supportive footwear the better default.`,
+  ];
+
+  if (conditions.muddyOrWet) {
+    footwearSourceLabels.push("user-provided");
+    footwearAnswerParts.push(
+      "Because you reported mud or wet trail, waterproof hiking shoes, boots, or gaiters are better than basic tennis shoes.",
+    );
+  }
+
+  if (conditions.snowOrIce) {
+    footwearSourceLabels.push("user-provided");
+    footwearAnswerParts.push(
+      "Because you reported snow or ice, wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.",
+    );
+  }
+
+  if (weather.conditions.includes("rain") || weather.conditions.includes("snow")) {
+    footwearSourceLabels.push("forecast-based");
+    footwearAnswerParts.push(
+      "Pack one dry pair of socks because wet feet increase blister risk and a dry backup is an easy fix.",
+    );
+  } else if (conditions.muddyOrWet || conditions.snowOrIce) {
+    footwearAnswerParts.push(
+      "Pack one dry pair of socks because wet or snowy trail sections increase blister risk.",
+    );
+  }
+  footwearSourceLabels.push("inferred");
+
   essential.push(
     item({
-      name: "Supportive trail shoes or hiking shoes",
-      question: "What should I wear on my feet?",
-      answer: shortByProfile
-        ? "Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy."
-        : `Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but this ${trail.difficulty.value.toLowerCase()} ${distance} mi route with ${gain} ft gain makes grippy, supportive footwear the better default.`,
-      sourceLabels: ["supported-profile", "inferred"],
+      name: "Trail footwear",
+      question: "What footwear setup fits this hike?",
+      answer: footwearAnswerParts.join(" "),
+      sourceLabels: uniqueSourceLabels(footwearSourceLabels),
     }),
   );
 
@@ -492,7 +523,7 @@ export function generatePackingRecommendation(
       : `Longer effort (${distance} mi, ${duration}) needs steady hydration.`;
     essential.push(
       item({
-        name: "Water: 2-3 L per adult",
+        name: "Water",
         question: "How much water should I bring?",
         answer: `Bring 2-3 liters per adult. ${answer} Use the higher end for heat, full sun, slower pacing, or if an adult is carrying backup water for kids. Do not treat this as a group total.`,
         sourceLabels: longByUserDuration
@@ -503,7 +534,7 @@ export function generatePackingRecommendation(
   } else {
     essential.push(
       item({
-        name: "Water: 1-2 L per person",
+        name: "Water",
         question: "How much water should I bring?",
         answer: `Bring 1-2 liters per person for this ${distance} mi hike. Use the higher end if it is hot, sunny, or your group moves slowly, and do not treat this as a group total.`,
         sourceLabels: ["supported-profile"],
@@ -513,10 +544,8 @@ export function generatePackingRecommendation(
 
   essential.push(
     item({
-      name: shortByProfile
-        ? "Food: 1-2 trail snacks per person"
-        : "Food: lunch plus 2-3 snacks per person",
-      question: "How much food is enough?",
+      name: "Food",
+      question: "How much food should I bring?",
       answer: shortByProfile
         ? `Bring 1-2 easy trail snacks per person for this ${duration.toLowerCase()} hike, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.`
         : `Pack lunch plus 2-3 trail snacks per person for ${duration} on trail. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.`,
@@ -535,7 +564,7 @@ export function generatePackingRecommendation(
     target.push(
       item({
         name: "Headlamp",
-        question: "Do I need a headlamp with this start time?",
+        question: "Do I need a headlamp?",
         answer: `${headlampDecision.reason} A small headlamp is more reliable than counting on a phone battery for trail light.`,
         reason: headlampDecision.reason,
         sourceLabels: headlampDecision.sourceLabels,
@@ -573,7 +602,7 @@ export function generatePackingRecommendation(
     essential.push(
       item({
         name: "Rain shell",
-        question: "Do I need a jacket for rain or wind?",
+        question: "Do I need a jacket or shell?",
         answer: `Bring a light rain shell because the forecast says: ${weather.summary} It keeps rain and wind off without needing a heavy summer layer.`,
         sourceLabels: ["forecast-based"],
       }),
@@ -582,7 +611,7 @@ export function generatePackingRecommendation(
     optional.push(
       item({
         name: "Light rain or wind shell",
-        question: "Do I need a jacket for rain or wind?",
+        question: "Do I need a jacket or shell?",
         answer:
           "Carry a light jacket, wind shell, or rain shell even on clear summer days. Mountain weather can change quickly, and a shell also helps if shade, wind, or an evening finish feels cooler than expected.",
         sourceLabels: ["inferred"],
@@ -603,16 +632,16 @@ export function generatePackingRecommendation(
   }
 
   if (hotConditions) {
-    const waterIndex = essential.findIndex((item) => item.name.startsWith("Water:"));
+    const waterIndex = essential.findIndex((item) => item.name === "Water");
     if (waterIndex !== -1) {
       const existingWater = essential[waterIndex];
       const answer =
-        existingWater.name === "Water: 2-3 L per adult"
+        existingWater.answer.includes("2-3 liters per adult")
           ? `${existingWater.answer} Warm exposed conditions reinforce using the higher end.`
           : "Bring 2-3 liters per adult because warm exposed conditions increase sweat loss. Use the higher end for full sun, slower pacing, or if an adult is carrying backup water for kids. Do not treat this as a group total.";
       essential[waterIndex] = {
         ...existingWater,
-        name: "Water: 2-3 L per adult",
+        name: "Water",
         answer,
         reason: answer,
         sourceLabels: uniqueSourceLabels([...existingWater.sourceLabels, "forecast-based"]),
@@ -653,48 +682,10 @@ export function generatePackingRecommendation(
     optional.push(
       item({
         name: "Trekking poles",
-        question: "Why would I bring trekking poles?",
+        question: "Are trekking poles recommended for this route?",
         answer:
           "Use trekking poles if you have them because you reported snow or ice. They add balance on slick sections and descents, but they do not replace microspikes when traction is needed.",
         sourceLabels: ["user-provided", "inferred"],
-      }),
-    );
-  }
-
-  if (conditions.muddyOrWet) {
-    optional.push(
-      item({
-        name: "Waterproof footwear or gaiters",
-        question: "Can I do this in tennis shoes if it is wet or muddy?",
-        answer:
-          "You reported mud or wet trail, so waterproof hiking shoes, boots, or gaiters are better than basic tennis shoes. Wet cotton socks and slick soles increase blister and slip risk.",
-        sourceLabels: ["user-provided", "inferred"],
-      }),
-    );
-  }
-
-  if (
-    conditions.muddyOrWet ||
-    conditions.snowOrIce ||
-    weather.conditions.includes("rain") ||
-    weather.conditions.includes("snow")
-  ) {
-    const sockSourceLabels: PackingItem["sourceLabels"] = [];
-    if (conditions.muddyOrWet || conditions.snowOrIce) {
-      sockSourceLabels.push("user-provided");
-    }
-    if (weather.conditions.includes("rain") || weather.conditions.includes("snow")) {
-      sockSourceLabels.push("forecast-based");
-    }
-    sockSourceLabels.push("inferred");
-
-    optional.push(
-      item({
-        name: "Extra dry socks",
-        question: "Should I bring extra socks?",
-        answer:
-          "Pack one dry pair of socks if rain, mud, snow, or wet trail sections are possible. Dry socks reduce blister risk and give you a simple fix without changing shoes.",
-        sourceLabels: uniqueSourceLabels(sockSourceLabels),
       }),
     );
   }
@@ -742,7 +733,7 @@ export function generatePackingRecommendation(
     optional.push(
       item({
         name: "Trekking poles",
-        question: "Why would I bring trekking poles?",
+        question: "Are trekking poles recommended for this route?",
         answer: `${gain} ft of elevation gain means descents can be harder on knees. Trekking poles are optional, but they help with balance, steady pacing, rocky steps, and long downhill sections.`,
         sourceLabels: ["supported-profile", "inferred"],
       }),
@@ -800,10 +791,36 @@ export function generateManualEntryRecommendation(
   const longerByManualFacts =
     (distanceMiles !== null && distanceMiles >= 5) ||
     (elevationGainFeet !== null && elevationGainFeet >= 800);
+  const manualFootwearSourceLabels: PackingItem["sourceLabels"] = ["inferred"];
+  const manualFootwearAnswerParts = [
+    longerByManualFacts
+      ? "Wear supportive trail runners or hiking shoes with good tread because your entered distance or elevation suggests more than a short outing."
+      : "Wear comfortable shoes with decent tread while TrailPack has only a limited manual profile. Basic tennis shoes can work for short, dry, low-gain walks, but grippier trail runners or hiking shoes are the safer default when the route is unknown.",
+  ];
+
+  if (conditions.muddyOrWet) {
+    manualFootwearSourceLabels.push("user-provided");
+    manualFootwearAnswerParts.push(
+      "Because you reported mud or wet trail conditions, waterproof hiking shoes, boots, or gaiters are better than basic tennis shoes.",
+    );
+  }
+
+  if (conditions.snowOrIce) {
+    manualFootwearSourceLabels.push("user-provided");
+    manualFootwearAnswerParts.push(
+      "Because you reported snow or ice, wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.",
+    );
+  }
+
+  if (conditions.muddyOrWet || conditions.snowOrIce) {
+    manualFootwearAnswerParts.push(
+      "Pack one dry pair of socks because wet or snowy trail sections increase blister risk.",
+    );
+  }
 
   const essential: PackingItem[] = [
     item({
-      name: longerByManualFacts ? "Water: 2-3 L per adult" : "Water: 1-2 L per person",
+      name: "Water",
       question: "How much water should I bring?",
       answer: longerByManualFacts
         ? "Bring 2-3 liters per adult because your entered distance or elevation suggests more than a short outing. Use the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids. Do not treat this as a group total."
@@ -811,14 +828,18 @@ export function generateManualEntryRecommendation(
       sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
     }),
     item({
-      name: longerByManualFacts
-        ? "Food: lunch plus 2-3 snacks per person"
-        : "Food: 1-2 trail snacks per person",
-      question: "How much food is enough?",
+      name: "Food",
+      question: "How much food should I bring?",
       answer: longerByManualFacts
         ? "Pack lunch plus 2-3 trail snacks per person because your entered trail facts suggest more than a short outing. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks."
         : "Bring 1-2 easy trail snacks per person as a baseline, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.",
       sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
+    }),
+    item({
+      name: "Trail footwear",
+      question: "What footwear setup fits this hike?",
+      answer: manualFootwearAnswerParts.join(" "),
+      sourceLabels: uniqueSourceLabels(manualFootwearSourceLabels),
     }),
     item({
       name: "Sun protection",
@@ -845,7 +866,7 @@ export function generateManualEntryRecommendation(
     }),
     item({
       name: "Light rain or wind shell",
-      question: "Do I need a jacket for rain or wind?",
+      question: "Do I need a jacket or shell?",
       answer:
         "Carry a light jacket, wind shell, or rain shell as a conservative manual-entry fallback. It covers surprise rain, wind, shade, or a slower-than-planned finish without adding much weight.",
       sourceLabels: ["inferred"],
@@ -855,7 +876,7 @@ export function generateManualEntryRecommendation(
 
   if (expectedHours !== null && expectedHours >= 5) {
     essential[0] = item({
-      name: "Water: 2-3 L per adult",
+      name: "Water",
       question: "How much water should I bring?",
       answer: `Bring 2-3 liters per adult because your planned time out is about ${expectedHours} hr. Use the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids. Do not treat this as a group total.`,
       sourceLabels: ["user-provided", "missing"],
@@ -866,7 +887,7 @@ export function generateManualEntryRecommendation(
     essential.push(
       item({
         name: "Headlamp",
-        question: "Do I need a headlamp with this start time?",
+        question: "Do I need a headlamp?",
         answer: `Bring a small headlamp because an unsupported hike planned for about ${expectedHours} hr can run late, and this manual fallback does not have source-backed civil twilight timing yet.`,
         sourceLabels: ["user-provided", "inferred"],
       }),
@@ -890,30 +911,6 @@ export function generateManualEntryRecommendation(
         answer:
           "Yes if your trail report is accurate. You reported snow or ice, so microspikes help on slick shaded sections, packed snow, or icy bridges where regular shoe tread can slide.",
         sourceLabels: ["user-provided"],
-      }),
-    );
-  }
-
-  if (conditions.muddyOrWet) {
-    optional.push(
-      item({
-        name: "Waterproof footwear or gaiters",
-        question: "Can I do this in tennis shoes if it is wet or muddy?",
-        answer:
-          "You reported mud or wet trail conditions, so waterproof hiking shoes, boots, or gaiters are better than basic tennis shoes. Wet cotton socks and slick soles increase blister and slip risk.",
-        sourceLabels: ["user-provided", "inferred"],
-      }),
-    );
-  }
-
-  if (conditions.muddyOrWet || conditions.snowOrIce) {
-    optional.push(
-      item({
-        name: "Extra dry socks",
-        question: "Should I bring extra socks?",
-        answer:
-          "Pack one dry pair of socks if mud, snow, ice, or wet trail sections are possible. Dry socks reduce blister risk and give you a simple fix without changing shoes.",
-        sourceLabels: ["user-provided", "inferred"],
       }),
     );
   }

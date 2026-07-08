@@ -202,7 +202,7 @@ describe("duration rule", () => {
     expect(
       rec.essential.some(
         (item) =>
-          item.name === "Water: 2-3 L per adult" &&
+          item.name === "Water" &&
           item.sourceLabels.includes("user-provided"),
       ),
     ).toBe(false);
@@ -217,14 +217,19 @@ describe("trail-condition rules", () => {
 
   it("adds waterproof footwear when mud is reported", () => {
     const rec = build({ trailConditions: "muddy sections" });
-    expect(names(rec.optional)).toContain("Waterproof footwear or gaiters");
-    expect(names(rec.optional)).toContain("Extra dry socks");
+    expect(names(rec.essential)).toContain("Trail footwear");
+    expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
+    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    const footwear = itemNamed(rec, "Trail footwear");
+    expect(footwear.answer).toMatch(/waterproof hiking shoes|gaiters/i);
+    expect(footwear.answer).toMatch(/dry pair of socks/i);
   });
 
   it("does not add traction for dry conditions", () => {
     const rec = build({ trailConditions: "dry and clear" });
     expect(names(rec.essential)).not.toContain("Traction devices (microspikes)");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
+    expect(names(rec.optional)).not.toContain("Extra dry socks");
   });
 });
 
@@ -369,8 +374,10 @@ describe("scenario polish", () => {
       NO_ALERTS,
       {},
     );
-    expect(names(rec.essential)).toContain("Food: 1-2 trail snacks per person");
-    expect(names(rec.essential)).not.toContain("Food: lunch plus 2-3 snacks per person");
+    expect(names(rec.essential)).toContain("Food");
+    const food = itemNamed(rec, "Food");
+    expect(food.answer).toMatch(/1-2 easy trail snacks per person/i);
+    expect(food.answer).not.toMatch(/lunch plus 2-3/i);
     const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
     expect(firstAid?.reason).not.toMatch(/moderate full-day loop/i);
   });
@@ -382,7 +389,9 @@ describe("scenario polish", () => {
       NO_ALERTS,
       {},
     );
-    expect(names(rec.essential)).toContain("Water: 2-3 L per adult");
+    expect(names(rec.essential)).toContain("Water");
+    const water = itemNamed(rec, "Water");
+    expect(water.answer).toMatch(/2-3 liters per adult/i);
     expect(names(rec.optional)).toContain("Electrolytes or salty snack");
     expect(names(rec.optional)).toContain("Breathable sun layer");
     const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
@@ -427,17 +436,19 @@ describe("question-answer recommendation copy", () => {
       {},
     );
 
-    const shoes = itemNamed(rec, "Supportive trail shoes or hiking shoes");
-    expect(shoes.question).toBe("What should I wear on my feet?");
+    const shoes = itemNamed(rec, "Trail footwear");
+    expect(shoes.question).toBe("What footwear setup fits this hike?");
     expect(shoes.answer).toMatch(/trail runners|hiking shoes/i);
     expect(shoes.answer).toMatch(/tennis shoes/i);
+    expect(shoes.answer).toMatch(/dry pair of socks/i);
 
-    const water = itemNamed(rec, "Water: 2-3 L per adult");
+    const water = itemNamed(rec, "Water");
     expect(water.question).toBe("How much water should I bring?");
     expect(water.answer).toMatch(/2-3 liters per adult/i);
     expect(water.answer).toMatch(/not.*group total/i);
 
-    const food = itemNamed(rec, "Food: lunch plus 2-3 snacks per person");
+    const food = itemNamed(rec, "Food");
+    expect(food.question).toBe("How much food should I bring?");
     expect(food.answer).toMatch(/lunch plus 2-3 trail snacks per person/i);
     expect(food.answer).toMatch(/bars|trail mix|sandwich/i);
 
@@ -468,7 +479,7 @@ describe("question-answer recommendation copy", () => {
     );
 
     const poles = itemNamed(rec, "Trekking poles");
-    expect(poles.question).toBe("Why would I bring trekking poles?");
+    expect(poles.question).toBe("Are trekking poles recommended for this route?");
     expect(poles.answer).toMatch(/knee|descent/i);
 
     const layer = itemNamed(rec, "Light jacket or warm layer");
@@ -485,19 +496,39 @@ describe("question-answer recommendation copy", () => {
       {},
     );
 
-    const food = itemNamed(rec, "Food: 1-2 trail snacks per person");
-    expect(food.question).toBe("How much food is enough?");
+    const food = itemNamed(rec, "Food");
+    expect(food.question).toBe("How much food should I bring?");
     expect(food.answer).toMatch(/1-2/i);
     expect(food.answer).toMatch(/per person/i);
   });
 
-  it("explains extra socks for wet or snowy trail conditions", () => {
+  it("folds wet or snowy footwear details into the footwear recommendation", () => {
     const rec = build({ trailConditions: "muddy with patchy snow" });
 
-    const socks = itemNamed(rec, "Extra dry socks");
-    expect(socks.question).toBe("Should I bring extra socks?");
-    expect(socks.answer).toMatch(/dry pair/i);
-    expect(socks.answer).toMatch(/blister/i);
+    expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
+    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    const footwear = itemNamed(rec, "Trail footwear");
+    expect(footwear.answer).toMatch(/waterproof hiking shoes|gaiters/i);
+    expect(footwear.answer).toMatch(/dry pair/i);
+    expect(footwear.answer).toMatch(/blister/i);
+  });
+
+  it("keeps user-facing item names as recommendation topics, not visible questions", () => {
+    const rec = build({ expectedDuration: "7 hours", trailConditions: "muddy" });
+
+    expect(names(rec.essential)).toContain("Water");
+    expect(names(rec.essential)).toContain("Food");
+    expect(names(rec.essential)).toContain("Trail footwear");
+
+    for (const item of allItems(rec)) {
+      expect(item.name, `${item.name} should be a topic label`).not.toMatch(/\?/);
+      expect(item.name, `${item.name} should not expose the hidden prompt`).not.toMatch(
+        /^(what|why|how|do|should|can)\b/i,
+      );
+    }
+
+    expect(itemNamed(rec, "Water").question).toMatch(/\?$/);
+    expect(itemNamed(rec, "Food").question).toMatch(/\?$/);
   });
 });
 
@@ -506,8 +537,8 @@ describe("manual entry fallback", () => {
     const rec = generateManualEntryRecommendation({});
     expect(rec.trailId).toBe("manual-entry");
     expect(rec.trailName).toBe("Manual hike entry");
-    expect(names(rec.essential)).toContain("Water: 1-2 L per person");
-    expect(names(rec.essential)).toContain("Food: 1-2 trail snacks per person");
+    expect(names(rec.essential)).toContain("Water");
+    expect(names(rec.essential)).toContain("Food");
     expect(names(rec.essential)).toContain("First-aid basics");
     expect(rec.confidenceNote).toMatch(/limited fallback/i);
   });
@@ -530,7 +561,9 @@ describe("manual entry fallback", () => {
     expect(names(rec.essential)).toContain("Headlamp");
     expect(names(rec.essential)).toContain("Traction devices (microspikes)");
     expect(names(rec.optional)).toContain("Extra food reserve");
-    expect(names(rec.optional)).toContain("Waterproof footwear or gaiters");
+    expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
+    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    expect(itemNamed(rec, "Trail footwear").answer).toMatch(/dry pair of socks/i);
     const joined = rec.missingDetails.join(" ");
     expect(joined).not.toMatch(/expected time/i);
     expect(joined).not.toMatch(/trail conditions/i);
@@ -543,8 +576,8 @@ describe("manual entry fallback", () => {
       routeType: "loop",
     });
 
-    expect(names(rec.essential)).toContain("Water: 2-3 L per adult");
-    expect(names(rec.essential)).toContain("Food: lunch plus 2-3 snacks per person");
+    expect(names(rec.essential)).toContain("Water");
+    expect(names(rec.essential)).toContain("Food");
     expect(rec.confidenceNote).toMatch(/6.2 mi/);
     expect(rec.confidenceNote).toMatch(/900 ft/);
     expect(rec.confidenceNote).toMatch(/loop/i);

@@ -156,8 +156,9 @@ Enter:
 Show:
 
 - confidence note: `Manual facts used: 6.2 mi, 900 ft gain, point-to-point`
-- `Water: 2-3 L per adult`
-- `Food: lunch plus 2-3 snacks per person`
+- `Water`
+- `Food`
+- `Trail footwear`
 - `Route plan or shuttle check`
 - remaining missing prompts for expected time out and trail conditions
 
@@ -173,8 +174,8 @@ Show:
 - `Headlamp`
 - `Extra food reserve`
 - `Traction devices (microspikes)`
-- `Waterproof footwear or gaiters`
-- `Extra dry socks`
+- `Trail footwear` explanation includes waterproof footwear/gaiters and a dry
+  sock backup for the reported muddy/icy conditions
 
 ## Remaining Week 13 Evidence Gap
 
@@ -196,6 +197,8 @@ Follow-up action:
 - Reworked packing cards into question-answer recommendations with concrete
   quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
   links, socks for wet/snowy conditions, and summer-layer framing.
+- Refined the UI wording so card titles are recommendation topics, while the
+  hidden question remains in the item data for the guarded AI path.
 
 ## CSE 499B Planning Notes
 
