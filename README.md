@@ -110,11 +110,13 @@ including the saved no-active-alert fixture state.
 
 Packing items are rendered as recommendation-topic cards. The rule engine still
 tracks the question each card answers, but the UI shows clean topics such as
-`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`, followed by a
-specific "you need this because..." explanation. The rule engine keeps concrete
-quantities, food counts per person, first-aid examples, shoe tradeoffs, socks or
-gaiter guidance for wet or snowy conditions, and bear-spray rental links visible
-before any AI text is displayed.
+`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. Each card then
+separates the clear action under `Recommendation` from the supporting context
+under `Why`, so users can skim the packing action first and read the evidence
+only when they want it. The rule engine keeps concrete quantities, food counts
+per person, first-aid examples, shoe tradeoffs, socks or gaiter guidance for wet
+or snowy conditions, and bear-spray rental links visible before any AI text is
+displayed.
 
 ## Guarded AI Review Fixture
 

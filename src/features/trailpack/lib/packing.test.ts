@@ -420,9 +420,14 @@ describe("question-answer recommendation copy", () => {
     for (const rec of scenarios) {
       for (const item of allItems(rec)) {
         expect(item.question?.trim(), `${item.name} needs a question`).toBeTruthy();
+        expect(item.recommendation?.trim(), `${item.name} needs a recommendation`).toBeTruthy();
+        expect(item.why?.trim(), `${item.name} needs a why`).toBeTruthy();
         expect(item.answer?.trim(), `${item.name} needs an answer`).toBeTruthy();
         expect(item.answer, `${item.name} should not use vague food wording`).not.toMatch(
           /pack (a little )?more food/i,
+        );
+        expect(item.recommendation, `${item.name} should lead with the action`).not.toMatch(
+          /\b(because|since|due to)\b/i,
         );
       }
     }
@@ -438,17 +443,27 @@ describe("question-answer recommendation copy", () => {
 
     const shoes = itemNamed(rec, "Trail footwear");
     expect(shoes.question).toBe("What footwear setup fits this hike?");
+    expect(shoes.recommendation).toMatch(/trail runners|hiking shoes/i);
+    expect(shoes.recommendation).toMatch(/dry pair of socks/i);
+    expect(shoes.why).toMatch(/7\.1 mi|1040 ft|moderate/i);
+    expect(shoes.why).toMatch(/blister/i);
     expect(shoes.answer).toMatch(/trail runners|hiking shoes/i);
     expect(shoes.answer).toMatch(/tennis shoes/i);
     expect(shoes.answer).toMatch(/dry pair of socks/i);
 
     const water = itemNamed(rec, "Water");
     expect(water.question).toBe("How much water should I bring?");
+    expect(water.recommendation).toMatch(/2-3 liters per adult/i);
+    expect(water.recommendation).toMatch(/not.*group total/i);
+    expect(water.why).toMatch(/7\.1 mi|3-5 hours/i);
+    expect(water.why).not.toMatch(/Bring 2-3 liters/i);
     expect(water.answer).toMatch(/2-3 liters per adult/i);
     expect(water.answer).toMatch(/not.*group total/i);
 
     const food = itemNamed(rec, "Food");
     expect(food.question).toBe("How much food should I bring?");
+    expect(food.recommendation).toMatch(/lunch plus 2-3 trail snacks per person/i);
+    expect(food.why).toMatch(/3-5 hours/i);
     expect(food.answer).toMatch(/lunch plus 2-3 trail snacks per person/i);
     expect(food.answer).toMatch(/bars|trail mix|sandwich/i);
 
@@ -462,6 +477,10 @@ describe("question-answer recommendation copy", () => {
 
     const bearSpray = itemNamed(rec, "Bear spray");
     expect(bearSpray.question).toBe("Do I need bear spray, and where do I get it?");
+    expect(bearSpray.recommendation).toMatch(/carry bear spray/i);
+    expect(bearSpray.recommendation).toMatch(/rent|buy/i);
+    expect(bearSpray.why).toMatch(/NPS/i);
+    expect(bearSpray.why).toMatch(/Grand Teton/i);
     expect(bearSpray.answer).toMatch(/NPS/i);
     expect(bearSpray.answer).toMatch(/immediately reachable|not buried/i);
     expect(bearSpray.answer).toMatch(/rent|buy/i);
@@ -480,6 +499,8 @@ describe("question-answer recommendation copy", () => {
 
     const poles = itemNamed(rec, "Trekking poles");
     expect(poles.question).toBe("Are trekking poles recommended for this route?");
+    expect(poles.recommendation).toMatch(/optional/i);
+    expect(poles.why).toMatch(/1040 ft|descent|knees/i);
     expect(poles.answer).toMatch(/knee|descent/i);
 
     const layer = itemNamed(rec, "Light jacket or warm layer");
@@ -508,6 +529,9 @@ describe("question-answer recommendation copy", () => {
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
     expect(names(rec.optional)).not.toContain("Extra dry socks");
     const footwear = itemNamed(rec, "Trail footwear");
+    expect(footwear.recommendation).toMatch(/waterproof hiking shoes|gaiters/i);
+    expect(footwear.recommendation).toMatch(/dry pair/i);
+    expect(footwear.why).toMatch(/mud|snow|blister/i);
     expect(footwear.answer).toMatch(/waterproof hiking shoes|gaiters/i);
     expect(footwear.answer).toMatch(/dry pair/i);
     expect(footwear.answer).toMatch(/blister/i);

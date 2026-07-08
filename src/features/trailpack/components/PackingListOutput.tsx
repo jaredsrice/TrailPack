@@ -65,7 +65,20 @@ function ItemGroup({
             className="rounded-lg border border-slate-100 bg-slate-50 p-4"
           >
             <p className="text-sm font-semibold text-slate-900">{item.name}</p>
-            <p className="mt-2 text-sm leading-6 text-slate-700">{item.answer}</p>
+            <div className="mt-2 space-y-3 text-sm leading-6 text-slate-700">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Recommendation
+                </p>
+                <p className="mt-1">{item.recommendation}</p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  Why
+                </p>
+                <p className="mt-1">{item.why}</p>
+              </div>
+            </div>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {item.sourceLabels.map((label) => (
                 <SourceBadge key={`${item.name}-${label}`} label={label} />
