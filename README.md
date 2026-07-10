@@ -113,10 +113,11 @@ tracks the question each card answers, but the UI shows clean topics such as
 `Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. Each card then
 separates the clear action under `Recommendation` from the supporting context
 under `Why`, so users can skim the packing action first and read the evidence
-only when they want it. The rule engine keeps concrete quantities, food counts
-per person, first-aid examples, shoe tradeoffs, socks or gaiter guidance for wet
-or snowy conditions, seasonal insect-repellent guidance, and bear-spray rental
-links visible before any AI text is displayed.
+only when they want it. The rule engine keeps concrete quantities, food and
+water ranges for long planned days, first-aid examples, shoe tradeoffs, socks or
+gaiter guidance for wet or snowy conditions, seasonal insect-repellent guidance,
+sun-shirt options, and bear-spray rental links visible before any AI text is
+displayed.
 
 ## Guarded AI Review Fixture
 
@@ -164,8 +165,9 @@ official-source validation.
   it does not call a live AI provider yet.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
-- Planned date and notes are stored as context but do not yet change the list.
-  Start time can change headlamp guidance when daylight context is available.
+- Planned date can affect seasonal insect-repellent guidance. Start time can
+  change headlamp guidance when daylight context is available. Notes are stored
+  as context but do not yet change the list.
 - `npm audit` reports a moderate PostCSS issue bundled inside Next.js. The known
   attack requires processing untrusted CSS, which TrailPack does not do. A forced
   audit fix would install an incompatible Next.js version, so the project is

@@ -107,6 +107,12 @@ change as the project develops.
 - Removed the Yellowstone insect-season source from Grand Teton-facing bug-spray
   guidance; TrailPack now treats the date window as an inference instead of
   showing another park as the source.
+- Scaled long-day food and water recommendations from expected duration, with
+  distance, elevation gain, difficulty, and hot/exposed weather reflected in the
+  range and explanation.
+- Expanded bear-spray guidance to recommend one can per adult while keeping
+  official NPS support tied to EPA-approved, immediately accessible bear spray.
+- Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.

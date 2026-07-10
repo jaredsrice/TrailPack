@@ -29,8 +29,8 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
     {
       itemName: "Bear spray",
       explanation:
-        "Grand Teton is bear country, and this item keeps the official NPS bear-safety source visible.",
-      sourceLabels: ["official"],
+        "Grand Teton is bear country, so this item keeps official NPS bear-safety guidance visible while TrailPack adds group-sizing guidance.",
+      sourceLabels: ["official", "inferred"],
     },
     {
       itemName: "Rain shell",

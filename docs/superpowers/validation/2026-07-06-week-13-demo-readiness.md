@@ -197,6 +197,9 @@ Follow-up action:
 - Reworked packing cards into question-answer recommendations with concrete
   quantities, examples, shoe tradeoffs, first-aid contents, bear-spray access
   links, socks for wet/snowy conditions, and summer-layer framing.
+- Tightened long-day food and water sizing so entered duration scales the
+  recommended range, while distance, gain, difficulty, and hot/exposed weather
+  explain the low and worst-case ends.
 - Added a seasonal optional `Insect repellent` card for the regional bug-season
   window, backed by NPS Hike Smart with the date window labeled as a TrailPack
   inference.
