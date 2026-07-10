@@ -208,6 +208,36 @@ describe("duration rule", () => {
       ),
     ).toBe(false);
   });
+
+  it("scales food and water for an 18 hour supported-trail day", () => {
+    const rec = build({ expectedDuration: "18 hrs" });
+
+    const water = itemNamed(rec, "Water");
+    expect(water.recommendation).toMatch(/9-14 liters per adult/i);
+    expect(water.recommendation).toMatch(/water treatment/i);
+    expect(water.why).toMatch(/18 hr/i);
+    expect(water.why).toMatch(/distance|1040 ft|moderate/i);
+
+    const food = itemNamed(rec, "Food");
+    expect(food.recommendation).toMatch(/2 meals/i);
+    expect(food.recommendation).toMatch(/6-8 trail snacks per person/i);
+    expect(food.why).toMatch(/18 hr/i);
+    expect(food.why).toMatch(/7\.1 mi|1040 ft|moderate/i);
+    expect(names(rec.optional)).toContain("Extra food reserve");
+  });
+
+  it("raises the long-day water upper range for hot or exposed weather", () => {
+    const rec = generatePackingRecommendation(
+      STRING_LAKE_LOOP,
+      DEMO_CONTEXTS["string-lake-loop"].weather,
+      NO_ALERTS,
+      { expectedDuration: "18 hrs" },
+    );
+
+    const water = itemNamed(rec, "Water");
+    expect(water.recommendation).toMatch(/9-18 liters per adult/i);
+    expect(water.why).toMatch(/heat|exposed|sweat/i);
+  });
 });
 
 describe("trail-condition rules", () => {
@@ -541,6 +571,7 @@ describe("question-answer recommendation copy", () => {
     const bearSpray = itemNamed(rec, "Bear spray");
     expect(bearSpray.question).toBe("Do I need bear spray, and where do I get it?");
     expect(bearSpray.recommendation).toMatch(/carry bear spray/i);
+    expect(bearSpray.recommendation).toMatch(/one.*can.*per adult/i);
     expect(bearSpray.recommendation).toMatch(/rent|buy/i);
     expect(bearSpray.why).toMatch(/NPS/i);
     expect(bearSpray.why).toMatch(/Grand Teton/i);
@@ -559,6 +590,10 @@ describe("question-answer recommendation copy", () => {
         }),
       ]),
     );
+
+    const sunProtection = itemNamed(rec, "Sun protection");
+    expect(sunProtection.recommendation).toMatch(/UPF|long-sleeve sun shirt/i);
+    expect(sunProtection.recommendation).toMatch(/sunscreen|sunglasses|hat/i);
 
     const poles = itemNamed(rec, "Trekking poles");
     expect(poles.question).toBe("Are trekking poles recommended for this route?");
@@ -673,6 +708,22 @@ describe("manual entry fallback", () => {
     expect(joined).not.toMatch(/distance/i);
     expect(joined).not.toMatch(/elevation/i);
     expect(joined).not.toMatch(/route type/i);
+  });
+
+  it("scales manual fallback food and water for an 18 hour day", () => {
+    const rec = generateManualEntryRecommendation({
+      expectedDuration: "18 hrs",
+      distanceMiles: "7",
+      elevationGainFeet: "1000",
+    });
+
+    const water = itemNamed(rec, "Water");
+    expect(water.recommendation).toMatch(/9-14 liters per adult/i);
+    expect(water.recommendation).toMatch(/water treatment/i);
+
+    const food = itemNamed(rec, "Food");
+    expect(food.recommendation).toMatch(/2 meals/i);
+    expect(food.recommendation).toMatch(/6-8 trail snacks per person/i);
   });
 
   it("adds a route-planning item for point-to-point manual hikes", () => {

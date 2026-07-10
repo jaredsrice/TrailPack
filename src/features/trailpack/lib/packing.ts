@@ -534,6 +534,171 @@ function buildInsectRepellentItem(plannedDate?: string): PackingItem {
   });
 }
 
+function formatHours(hours: number): string {
+  return Number.isInteger(hours) ? hours.toFixed(0) : hours.toFixed(1);
+}
+
+function difficultyLevel(difficulty?: string): "easy" | "moderate" | "hard" | "unknown" {
+  const normalized = difficulty?.toLowerCase() ?? "";
+  if (
+    normalized.includes("strenuous") ||
+    normalized.includes("hard") ||
+    normalized.includes("difficult")
+  ) {
+    return "hard";
+  }
+  if (normalized.includes("moderate")) {
+    return "moderate";
+  }
+  if (normalized.includes("easy")) {
+    return "easy";
+  }
+  return "unknown";
+}
+
+function buildWaterItem({
+  expectedHours,
+  distance,
+  gain,
+  duration,
+  difficulty,
+  hotConditions,
+  sourceLabels,
+}: {
+  expectedHours: number;
+  distance?: number;
+  gain?: number;
+  duration?: string;
+  difficulty?: string;
+  hotConditions: boolean;
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  const difficultyRating = difficultyLevel(difficulty);
+  const distanceMaxBump =
+    distance !== undefined && distance >= 10
+      ? 0.1
+      : distance !== undefined && distance >= 5
+        ? 0.05
+        : 0;
+  const gainMaxBump =
+    gain !== undefined && gain >= 2000
+      ? 0.15
+      : gain !== undefined && gain >= 800
+        ? 0.1
+        : 0;
+  const difficultyMaxBump =
+    difficultyRating === "hard" ? 0.1 : difficultyRating === "moderate" ? 0.05 : 0;
+  const manualEffortMaxBump =
+    difficultyRating === "unknown" &&
+    ((distance !== undefined && distance >= 5) || (gain !== undefined && gain >= 800))
+      ? 0.05
+      : 0;
+  const weatherMaxBump = hotConditions ? 0.4 : 0;
+  const minimumRate =
+    0.5 +
+    (distance !== undefined && distance >= 12 ? 0.05 : 0) +
+    (gain !== undefined && gain >= 2000 ? 0.05 : 0) +
+    (difficultyRating === "hard" ? 0.05 : 0);
+  const worstCaseRate =
+    0.55 +
+    distanceMaxBump +
+    gainMaxBump +
+    difficultyMaxBump +
+    manualEffortMaxBump +
+    weatherMaxBump;
+  const minimumLiters = Math.max(1, Math.ceil(expectedHours * minimumRate));
+  const worstCaseLiters = Math.max(
+    minimumLiters + 1,
+    Math.ceil(expectedHours * worstCaseRate),
+  );
+  const effortContext = [
+    distance !== undefined ? `${distance} mi` : null,
+    gain !== undefined ? `${gain} ft gain` : null,
+    difficultyRating !== "unknown" ? `${difficultyRating} difficulty` : null,
+    duration ? `${duration} profile estimate` : null,
+  ].filter(Boolean).join(", ");
+  const rangeDrivers = [
+    distanceMaxBump > 0 ? "distance" : null,
+    gainMaxBump > 0 ? "elevation gain" : null,
+    difficultyMaxBump > 0 ? "difficulty" : null,
+    manualEffortMaxBump > 0 ? "entered route effort" : null,
+    hotConditions ? "heat or exposed sun" : null,
+  ].filter(Boolean).join(", ");
+
+  const heatText = hotConditions
+    ? " Heat or exposed sun pushes the worst-case end higher because sweat loss rises."
+    : "";
+
+  return item({
+    name: "Water",
+    question: "How much water should I bring?",
+    recommendation:
+      `Bring ${minimumLiters}-${worstCaseLiters} liters per adult. ` +
+      "For the upper end, plan a reliable refill or water treatment option instead of assuming you can comfortably carry all of it. Do not treat this as a group total.",
+    why:
+      `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes water from time first, then raises the upper range for ${rangeDrivers || "available route and weather risk"}. It checked ${effortContext || "the available hike context"}.` +
+      `${heatText} Use the low end for cool, shaded, efficient travel and the high end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids.`,
+    sourceLabels: uniqueSourceLabels(sourceLabels),
+  });
+}
+
+function buildFoodItem({
+  expectedHours,
+  distance,
+  gain,
+  duration,
+  difficulty,
+  weatherConditions,
+  sourceLabels,
+}: {
+  expectedHours: number;
+  distance?: number;
+  gain?: number;
+  duration?: string;
+  difficulty?: string;
+  weatherConditions?: WeatherContext["conditions"];
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  const difficultyRating = difficultyLevel(difficulty);
+  const routeSnackBump =
+    (distance !== undefined && distance >= 10) ||
+    (gain !== undefined && gain >= 2000) ||
+    difficultyRating === "hard"
+      ? 1
+      : 0;
+  const heatSnackBump = weatherConditions?.includes("heat") ? 1 : 0;
+  const meals = Math.max(1, Math.floor(expectedHours / 8));
+  const snackMinimum = Math.max(2, Math.ceil(expectedHours / 3));
+  const snackWorstCase = Math.max(
+    snackMinimum + 1,
+    Math.ceil(expectedHours / 2.5) + routeSnackBump + heatSnackBump,
+  );
+  const effortContext = [
+    distance !== undefined ? `${distance} mi` : null,
+    gain !== undefined ? `${gain} ft gain` : null,
+    difficultyRating !== "unknown" ? `${difficultyRating} difficulty` : null,
+    duration ? `${duration} profile estimate` : null,
+    weatherConditions && weatherConditions.length > 0 ? `${weatherConditions.join(", ")} weather` : null,
+  ].filter(Boolean).join(", ");
+  const snackDrivers = [
+    routeSnackBump > 0 ? "harder route effort" : null,
+    heatSnackBump > 0 ? "heat" : null,
+  ].filter(Boolean).join(" and ");
+
+  return item({
+    name: "Food",
+    question: "How much food should I bring?",
+    recommendation:
+      `Pack ${meals} ${meals === 1 ? "meal" : "meals"} plus ` +
+      `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.`,
+    why:
+      `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes food from time first, then checks ${effortContext || "the available hike context"}.` +
+      `${snackDrivers ? ` The upper snack count rises for ${snackDrivers}.` : ""} ` +
+      "Use the lower end if the day stays on schedule; use the higher end for slow pacing, kids, weather delays, or a longer-than-planned exit.",
+    sourceLabels: uniqueSourceLabels(sourceLabels),
+  });
+}
+
 export function generatePackingRecommendation(
   trail: TrailProfile,
   weather: WeatherContext,
@@ -622,21 +787,32 @@ export function generatePackingRecommendation(
   const longByUserDuration = expectedHours !== null && expectedHours >= 5;
 
   if (longByProfile || longByUserDuration) {
-    const why = longByUserDuration
-      ? `Longer planned day (about ${expectedHours} hr) needs steady hydration.`
-      : `Longer effort (${distance} mi, ${duration}) needs steady hydration.`;
-    essential.push(
-      item({
-        name: "Water",
-        question: "How much water should I bring?",
-        recommendation:
-          "Bring 2-3 liters per adult. Do not treat this as a group total.",
-        why: `${why} Use the higher end for heat, full sun, slower pacing, or if an adult is carrying backup water for kids.`,
-        sourceLabels: longByUserDuration
-          ? ["user-provided", "supported-profile"]
-          : ["supported-profile"],
-      }),
-    );
+    if (longByUserDuration && expectedHours !== null) {
+      essential.push(
+        buildWaterItem({
+          expectedHours,
+          distance,
+          gain,
+          duration,
+          difficulty: trail.difficulty.value,
+          hotConditions,
+          sourceLabels: hotConditions
+            ? ["user-provided", "supported-profile", "forecast-based", "inferred"]
+            : ["user-provided", "supported-profile", "inferred"],
+        }),
+      );
+    } else {
+      essential.push(
+        item({
+          name: "Water",
+          question: "How much water should I bring?",
+          recommendation:
+            "Bring 2-3 liters per adult. Do not treat this as a group total.",
+          why: `Longer effort (${distance} mi, ${duration}) needs steady hydration. Use the higher end for heat, full sun, slower pacing, or if an adult is carrying backup water for kids.`,
+          sourceLabels: ["supported-profile"],
+        }),
+      );
+    }
   } else {
     essential.push(
       item({
@@ -650,19 +826,33 @@ export function generatePackingRecommendation(
     );
   }
 
-  essential.push(
-    item({
-      name: "Food",
-      question: "How much food should I bring?",
-      recommendation: shortByProfile
-        ? "Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks."
-        : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.",
-      why: shortByProfile
-        ? `This is a shorter ${duration.toLowerCase()} hike, but quick trail fuel still helps with breaks and delays.`
-        : `Plan for ${duration} on trail, so lunch plus snacks is more practical than a single small snack.`,
-      sourceLabels: ["supported-profile"],
-    }),
-  );
+  if (expectedHours !== null && expectedHours >= 6) {
+    essential.push(
+      buildFoodItem({
+        expectedHours,
+        distance,
+        gain,
+        duration,
+        difficulty: trail.difficulty.value,
+        weatherConditions: weather.conditions,
+        sourceLabels: ["user-provided", "supported-profile", "inferred"],
+      }),
+    );
+  } else {
+    essential.push(
+      item({
+        name: "Food",
+        question: "How much food should I bring?",
+        recommendation: shortByProfile
+          ? "Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks."
+          : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.",
+        why: shortByProfile
+          ? `This is a shorter ${duration.toLowerCase()} hike, but quick trail fuel still helps with breaks and delays.`
+          : `Plan for ${duration} on trail, so lunch plus snacks is more practical than a single small snack.`,
+        sourceLabels: ["supported-profile"],
+      }),
+    );
+  }
 
   const headlampDecision = buildHeadlampDecision(
     weather,
@@ -695,15 +885,15 @@ export function generatePackingRecommendation(
   }
 
   essential.push(
-      item({
-        name: "Bear spray",
-        question: "Do I need bear spray, and where do I get it?",
-        recommendation:
-          "Carry bear spray where it is immediately reachable, not buried in your pack. Bring an EPA-registered can before hiking, or rent/buy one before you reach the trailhead.",
-        why:
-          "NPS recommends carrying bear spray in Grand Teton. Bear Aware lists current Jackson and Jackson Hole Airport pickup/drop-off options.",
-        sourceLabels: ["official"],
-        sourceUrl: GRTE_BEAR_SAFETY_URL,
+    item({
+      name: "Bear spray",
+      question: "Do I need bear spray, and where do I get it?",
+      recommendation:
+        "Carry bear spray where it is immediately reachable, not buried in your pack. Plan on one EPA-registered can per adult, and rent or buy it before you reach the trailhead.",
+      why:
+        "Grand Teton NPS says visitors in bear country should carry EPA-approved bear spray where it is quickly accessible. One can per adult keeps each adult covered if the group separates, and Bear Aware lists current Jackson and Jackson Hole Airport pickup/drop-off options.",
+      sourceLabels: ["official", "inferred"],
+      sourceUrl: GRTE_BEAR_SAFETY_URL,
       links: [
         { label: "NPS bear spray guidance", url: GRTE_BEAR_SAFETY_URL },
         { label: "Bear Aware rental locations", url: BEAR_AWARE_LOCATIONS_URL },
@@ -738,8 +928,10 @@ export function generatePackingRecommendation(
       item({
         name: "Sun protection",
         question: "What sun protection should I bring?",
-        answer:
-          "Bring sunscreen, sunglasses, and a brimmed hat. Alpine sun can still be strong on mild days, especially near lakes, rock, snow patches, or exposed shoreline.",
+        recommendation:
+          "Bring sunscreen, sunglasses, a brimmed hat, and a lightweight UPF or long-sleeve sun shirt.",
+        why:
+          "Alpine sun can still be strong on mild days, especially near lakes, rock, snow patches, or exposed shoreline. A breathable sun shirt protects skin without relying only on reapplying sunscreen.",
         sourceLabels: ["forecast-based", "inferred"],
       }),
     );
@@ -751,7 +943,7 @@ export function generatePackingRecommendation(
 
   if (hotConditions) {
     const waterIndex = essential.findIndex((item) => item.name === "Water");
-    if (waterIndex !== -1) {
+    if (waterIndex !== -1 && !longByUserDuration) {
       const existingWater = essential[waterIndex];
       const recommendation =
         "Bring 2-3 liters per adult. Do not treat this as a group total.";
@@ -957,28 +1149,43 @@ export function generateManualEntryRecommendation(
   }
 
   const essential: PackingItem[] = [
-    item({
-      name: "Water",
-      question: "How much water should I bring?",
-      recommendation: longerByManualFacts
-        ? "Bring 2-3 liters per adult. Do not treat this as a group total."
-        : "Bring 1-2 liters per person. Do not treat this as a group total.",
-      why: longerByManualFacts
-        ? "Your entered distance or elevation suggests more than a short outing. Use the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids."
-        : "TrailPack has only a limited manual profile. Use the higher end if the hike is hot, exposed, slow, or longer than expected.",
-      sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
-    }),
-    item({
-      name: "Food",
-      question: "How much food should I bring?",
-      recommendation: longerByManualFacts
-        ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks."
-        : "Bring 1-2 easy trail snacks per person as a baseline, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.",
-      why: longerByManualFacts
-        ? "Your entered trail facts suggest more than a short outing."
-        : "The manual fallback is intentionally conservative while trail distance and effort are still incomplete.",
-      sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
-    }),
+    expectedHours !== null && expectedHours >= 5
+      ? buildWaterItem({
+          expectedHours,
+          distance: distanceMiles ?? undefined,
+          gain: elevationGainFeet ?? undefined,
+          hotConditions: false,
+          sourceLabels: ["user-provided", "missing", "inferred"],
+        })
+      : item({
+          name: "Water",
+          question: "How much water should I bring?",
+          recommendation: longerByManualFacts
+            ? "Bring 2-3 liters per adult. Do not treat this as a group total."
+            : "Bring 1-2 liters per person. Do not treat this as a group total.",
+          why: longerByManualFacts
+            ? "Your entered distance or elevation suggests more than a short outing. Use the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids."
+            : "TrailPack has only a limited manual profile. Use the higher end if the hike is hot, exposed, slow, or longer than expected.",
+          sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
+        }),
+    expectedHours !== null && expectedHours >= 6
+      ? buildFoodItem({
+          expectedHours,
+          distance: distanceMiles ?? undefined,
+          gain: elevationGainFeet ?? undefined,
+          sourceLabels: ["user-provided", "missing", "inferred"],
+        })
+      : item({
+          name: "Food",
+          question: "How much food should I bring?",
+          recommendation: longerByManualFacts
+            ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks."
+            : "Bring 1-2 easy trail snacks per person as a baseline, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.",
+          why: longerByManualFacts
+            ? "Your entered trail facts suggest more than a short outing."
+            : "The manual fallback is intentionally conservative while trail distance and effort are still incomplete.",
+          sourceLabels: longerByManualFacts ? ["user-provided", "inferred"] : ["missing", "inferred"],
+        }),
     item({
       name: "Trail footwear",
       question: "What footwear setup fits this hike?",
@@ -989,8 +1196,10 @@ export function generateManualEntryRecommendation(
     item({
       name: "Sun protection",
       question: "What sun protection should I bring?",
-      answer:
-        "Bring sunscreen, sunglasses, and a brimmed hat. The manual fallback does not have a source-backed forecast yet, so TrailPack keeps basic sun protection in the list.",
+      recommendation:
+        "Bring sunscreen, sunglasses, a brimmed hat, and a lightweight UPF or long-sleeve sun shirt.",
+      why:
+        "The manual fallback does not have a source-backed forecast yet, so TrailPack keeps basic sun protection in the list. A breathable sun shirt protects skin without relying only on reapplying sunscreen.",
       sourceLabels: ["inferred"],
     }),
     item({
@@ -1021,17 +1230,6 @@ export function generateManualEntryRecommendation(
 
   if (isRegionalBugSeason(userInput.plannedDate)) {
     optional.push(buildInsectRepellentItem(userInput.plannedDate));
-  }
-
-  if (expectedHours !== null && expectedHours >= 5) {
-    essential[0] = item({
-      name: "Water",
-      question: "How much water should I bring?",
-      recommendation:
-        "Bring 2-3 liters per adult. Do not treat this as a group total.",
-      why: `Your planned time out is about ${expectedHours} hr. Use the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids.`,
-      sourceLabels: ["user-provided", "missing"],
-    });
   }
 
   if (expectedHours !== null && expectedHours >= 6) {
