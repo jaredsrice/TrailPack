@@ -19,6 +19,22 @@ const NO_ALERTS: AlertContext = {
   label: "unavailable",
 };
 
+const TAGGART_2026_TRAIL_WORK: AlertContext = {
+  hasActiveAlerts: true,
+  alerts: [
+    {
+      title: "Taggart Trail 2026 construction closure",
+      description:
+        "NPS says a section of the Taggart Trail will be closed in 2026 for trail improvements. Check the current route before leaving.",
+      severity: "closure",
+      source: "NPS",
+      sourceUrl: "https://www.nps.gov/thingstodo/taggartlake.htm",
+    },
+  ],
+  label: "official",
+  retrievalStatus: "saved-fixture",
+};
+
 export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
   "jenny-lake-loop": {
     weather: {
@@ -68,7 +84,7 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
         retrievalStatus: "saved-fixture",
       },
     },
-    alerts: NO_ALERTS,
+    alerts: TAGGART_2026_TRAIL_WORK,
   },
   "string-lake-loop": {
     weather: {

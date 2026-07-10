@@ -38,6 +38,13 @@ export const NPS_HIKE_SMART_URL =
   "https://www.nps.gov/articles/hiking-safety.htm";
 
 /**
+ * NPS general water guidance for filtering, purifying, or boiling backcountry
+ * water before drinking it.
+ */
+export const NPS_WATER_TREATMENT_URL =
+  "https://www.nps.gov/subjects/camping/what-to-bring.htm";
+
+/**
  * Parse an expected-duration free-text field into a conservative number of hours.
  *
  * Deterministic, keyword/number based only. Supported forms:
@@ -538,6 +545,50 @@ function formatHours(hours: number): string {
   return Number.isInteger(hours) ? hours.toFixed(0) : hours.toFixed(1);
 }
 
+function buildUnusualDurationItem({
+  expectedHours,
+  trail,
+}: {
+  expectedHours: number;
+  trail: TrailProfile;
+}): PackingItem {
+  return item({
+    name: "Trip timing check",
+    question: "Does my planned time match this trail?",
+    recommendation:
+      "Check this before packing: confirm whether this time is a typo, a long stop plan, a side trip, a closure detour, or a non-standard route.",
+    why:
+      `You entered about ${formatHours(expectedHours)} hr, but the NPS profile for ${trail.name} is ${trail.estimatedDuration.value}. ` +
+      "Food, water, and headlamp guidance below assumes your entered time is real. If it is not, shorten the duration input before relying on the rest of this list.",
+    sourceLabels: ["user-provided", "supported-profile", "inferred"],
+  });
+}
+
+function buildWaterLogisticsItem({
+  expectedHours,
+  sourceLabels,
+}: {
+  expectedHours: number;
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Water refill or treatment plan",
+    question: "What does refill or water treatment mean?",
+    recommendation:
+      "Start with the water you can realistically carry. If this plan depends on refilling, confirm a water source before leaving and bring a filter, purification tablets, or a way to boil water.",
+    why:
+      `For an about ${formatHours(expectedHours)} hr plan, TrailPack may estimate more total water than most hikers can comfortably carry from the trailhead. Do not count lake, stream, or spigot water unless you have verified it is available and have a way to make it safe to drink.`,
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "official", "inferred"]),
+    sourceUrl: NPS_WATER_TREATMENT_URL,
+    links: [
+      {
+        label: "NPS water treatment basics",
+        url: NPS_WATER_TREATMENT_URL,
+      },
+    ],
+  });
+}
+
 function difficultyLevel(difficulty?: string): "easy" | "moderate" | "hard" | "unknown" {
   const normalized = difficulty?.toLowerCase() ?? "";
   if (
@@ -633,8 +684,8 @@ function buildWaterItem({
     name: "Water",
     question: "How much water should I bring?",
     recommendation:
-      `Bring ${minimumLiters}-${worstCaseLiters} liters per adult. ` +
-      "For the upper end, plan a reliable refill or water treatment option instead of assuming you can comfortably carry all of it. Do not treat this as a group total.",
+      `Plan for ${minimumLiters}-${worstCaseLiters} liters per adult total. ` +
+      "Start with a realistic carry amount and identify a reliable refill or water treatment plan before leaving; do not assume you can comfortably carry the upper end. Do not treat this as a group total.",
     why:
       `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes water from time first, then raises the upper range for ${rangeDrivers || "available route and weather risk"}. It checked ${effortContext || "the available hike context"}.` +
       `${heatText} Use the low end for cool, shaded, efficient travel and the high end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids.`,
@@ -714,6 +765,7 @@ export function generatePackingRecommendation(
   const duration = trail.estimatedDuration.value;
 
   const expectedHours = parseExpectedHours(userInput.expectedDuration);
+  const profileHours = parseExpectedHours(duration);
   const conditions = analyzeTrailConditions(userInput.trailConditions);
   const shortByProfile = distance <= 3.5 && gain <= 500;
   const hotConditions =
@@ -785,9 +837,26 @@ export function generatePackingRecommendation(
 
   const longByProfile = distance >= 5 || gain >= 800;
   const longByUserDuration = expectedHours !== null && expectedHours >= 5;
+  const unusualDuration =
+    expectedHours !== null &&
+    profileHours !== null &&
+    expectedHours >= 4 &&
+    expectedHours >= profileHours * 2;
+
+  if (unusualDuration && expectedHours !== null && profileHours !== null) {
+    essential.push(
+      buildUnusualDurationItem({
+        expectedHours,
+        trail,
+      }),
+    );
+  }
 
   if (longByProfile || longByUserDuration) {
     if (longByUserDuration && expectedHours !== null) {
+      const waterSourceLabels: PackingItem["sourceLabels"] = hotConditions
+        ? ["user-provided", "supported-profile", "forecast-based", "inferred"]
+        : ["user-provided", "supported-profile", "inferred"];
       essential.push(
         buildWaterItem({
           expectedHours,
@@ -796,9 +865,13 @@ export function generatePackingRecommendation(
           duration,
           difficulty: trail.difficulty.value,
           hotConditions,
-          sourceLabels: hotConditions
-            ? ["user-provided", "supported-profile", "forecast-based", "inferred"]
-            : ["user-provided", "supported-profile", "inferred"],
+          sourceLabels: waterSourceLabels,
+        }),
+      );
+      essential.push(
+        buildWaterLogisticsItem({
+          expectedHours,
+          sourceLabels: waterSourceLabels,
         }),
       );
     } else {
@@ -866,7 +939,11 @@ export function generatePackingRecommendation(
       item({
         name: "Headlamp",
         question: "Do I need a headlamp?",
-        answer: `${headlampDecision.reason} A small headlamp is more reliable than counting on a phone battery for trail light.`,
+        recommendation:
+          headlampDecision.placement === "essential"
+            ? "Bring a small headlamp."
+            : "Pack a small headlamp as a backup.",
+        why: `${headlampDecision.reason} A small headlamp is more reliable than counting on a phone battery for trail light.`,
         reason: headlampDecision.reason,
         sourceLabels: headlampDecision.sourceLabels,
       }),
@@ -874,11 +951,14 @@ export function generatePackingRecommendation(
   }
 
   if (expectedHours !== null && expectedHours >= 6) {
-    optional.push(
+    const foodReserveTarget = expectedHours >= 8 ? essential : optional;
+    foodReserveTarget.push(
       item({
         name: "Extra food reserve",
         question: "How much extra food should I add for a long day?",
-        answer: `Add at least one extra substantial snack per person beyond lunch and your normal trail snacks for an about ${expectedHours} hr day. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.`,
+        recommendation: `Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about ${formatHours(expectedHours)} hr day.`,
+        why:
+          "This is your delay buffer for slow pacing, weather, a missed turn, or a longer-than-planned exit. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
@@ -985,9 +1065,11 @@ export function generatePackingRecommendation(
       item({
         name: "Traction devices (microspikes)",
         question: "Do I need traction?",
-        answer:
-          "Yes if your trail report is accurate. You reported snow or ice, so microspikes help on slick shaded sections, packed snow, or icy bridges where regular shoe tread can slide.",
-        sourceLabels: ["user-provided"],
+        recommendation:
+          "Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.",
+        why:
+          "You reported snow or ice. Microspikes are small metal traction devices that stretch over footwear and bite into packed snow or ice better than regular tread. Buy or rent them from an outdoor gear shop before reaching the trailhead; TrailPack does not know a verified rental counter on this route.",
+        sourceLabels: ["user-provided", "inferred"],
       }),
     );
     optional.push(
@@ -1056,13 +1138,24 @@ export function generatePackingRecommendation(
     );
   }
 
-  optional.push(
+  const coldLayerNeeded =
+    weather.conditions.includes("cold") ||
+    weather.conditions.includes("snow") ||
+    (weather.temperatureF?.high ?? Number.POSITIVE_INFINITY) <= 50;
+  const layerTarget = coldLayerNeeded ? essential : optional;
+  layerTarget.push(
     item({
       name: "Light jacket or warm layer",
-      question: "Do I need a warm layer in summer?",
-      answer:
-        "In summer, make this a light jacket, fleece, wind shirt, or rain shell, not a heavy winter coat. Elevation near 6,900 ft, shade, wind, rain, or an evening finish can feel cooler than the valley.",
-      sourceLabels: ["supported-profile", "inferred"],
+      question: "Do I need an extra layer?",
+      recommendation: coldLayerNeeded
+        ? "Bring an insulating warm layer plus a rain or wind shell."
+        : "Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.",
+      why: coldLayerNeeded
+        ? `The forecast says: ${weather.summary} Grand Teton weather can change quickly, and cold, wind, snow, or a slow exit can make a thin backup layer inadequate.`
+        : "Elevation near 6,900 ft, shade, wind, rain, or an evening finish can feel cooler than the valley even in summer.",
+      sourceLabels: coldLayerNeeded
+        ? ["forecast-based", "inferred"]
+        : ["supported-profile", "inferred"],
     }),
   );
 
@@ -1118,6 +1211,11 @@ export function generateManualEntryRecommendation(
       ? "Your entered distance or elevation suggests more than a short outing, so grip and support matter more."
       : "The manual fallback does not have a complete source-backed trail profile, so footwear guidance stays conservative.",
   ];
+  const manualWaterSourceLabels: PackingItem["sourceLabels"] = [
+    "user-provided",
+    "missing",
+    "inferred",
+  ];
 
   if (conditions.muddyOrWet) {
     manualFootwearSourceLabels.push("user-provided");
@@ -1155,7 +1253,7 @@ export function generateManualEntryRecommendation(
           distance: distanceMiles ?? undefined,
           gain: elevationGainFeet ?? undefined,
           hotConditions: false,
-          sourceLabels: ["user-provided", "missing", "inferred"],
+          sourceLabels: manualWaterSourceLabels,
         })
       : item({
           name: "Water",
@@ -1228,6 +1326,15 @@ export function generateManualEntryRecommendation(
   ];
   const missingDetails: string[] = [];
 
+  if (expectedHours !== null && expectedHours >= 5) {
+    essential.push(
+      buildWaterLogisticsItem({
+        expectedHours,
+        sourceLabels: manualWaterSourceLabels,
+      }),
+    );
+  }
+
   if (isRegionalBugSeason(userInput.plannedDate)) {
     optional.push(buildInsectRepellentItem(userInput.plannedDate));
   }
@@ -1242,12 +1349,15 @@ export function generateManualEntryRecommendation(
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
-    optional.push(
+    const manualFoodReserveTarget = expectedHours >= 8 ? essential : optional;
+    manualFoodReserveTarget.push(
       item({
         name: "Extra food reserve",
         question: "How much extra food should I add for a long day?",
-        answer:
-          "Add at least one extra substantial snack per person beyond lunch and normal trail snacks for a long unsupported-hike day. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
+        recommendation:
+          "Add at least one extra substantial snack per person beyond meals and normal trail snacks for a long unsupported-hike day.",
+        why:
+          "This is your delay buffer for slow pacing, weather, a missed turn, or a longer-than-planned exit. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
@@ -1258,9 +1368,11 @@ export function generateManualEntryRecommendation(
       item({
         name: "Traction devices (microspikes)",
         question: "Do I need traction?",
-        answer:
-          "Yes if your trail report is accurate. You reported snow or ice, so microspikes help on slick shaded sections, packed snow, or icy bridges where regular shoe tread can slide.",
-        sourceLabels: ["user-provided"],
+        recommendation:
+          "Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.",
+        why:
+          "You reported snow or ice. Microspikes are small metal traction devices that stretch over footwear and bite into packed snow or ice better than regular tread. Buy or rent them from an outdoor gear shop before reaching the trailhead; TrailPack does not know a verified rental counter for this manual route.",
+        sourceLabels: ["user-provided", "inferred"],
       }),
     );
   }

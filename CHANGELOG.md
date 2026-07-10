@@ -53,6 +53,18 @@ change as the project develops.
 - Bear-spray recommendation links for official NPS guidance and current Bear
   Aware rental-location information.
 - Seasonal optional insect-repellent guidance backed by NPS Hike Smart.
+- A saved Taggart Lake 2026 NPS trail-work alert fixture that appears in the
+  recommendation flow with official-source provenance.
+- A trip-timing check when a user-entered planned duration is far outside the
+  official supported-trail profile.
+- A Week 13/14 hiker-scenario stress report covering seasoned, casual/new, and
+  middle-of-the-road hiker lenses across all three supported trails.
+- A reusable `npm run scenario:stress` command that regenerates the hiker-scenario
+  stress report from the current recommendation engine.
+- A long-duration `Water refill or treatment plan` recommendation backed by NPS
+  water-treatment basics.
+- A Week 14 scope/status note that maps the current prototype against the
+  proposal, Week 12 requirements spec, and remaining 499A closeout tasks.
 
 ### Changed
 
@@ -110,6 +122,19 @@ change as the project develops.
 - Scaled long-day food and water recommendations from expected duration, with
   distance, elevation gain, difficulty, and hot/exposed weather reflected in the
   range and explanation.
+- Reframed long-day water ranges as total expected need per adult, with explicit
+  refill or treatment planning when the upper end is unrealistic to carry.
+- Split long-day water logistics into its own recommendation card so beginners
+  see what refill/treatment means without needing to infer it from the water
+  quantity.
+- Moved very-long-day extra food reserve into essentials while keeping shorter
+  long-day reserve food optional.
+- Made cold or snowy forecasts promote the warm-layer recommendation to
+  essentials without summer-specific wording.
+- Expanded snow/ice traction guidance to explain microspikes, shoe/boot fit,
+  and generic buy/rent planning without inventing a trail-specific rental source.
+- Styled abnormal-duration timing checks as a `Check first` warning card in the
+  packing list.
 - Expanded bear-spray guidance to recommend one can per adult while keeping
   official NPS support tied to EPA-approved, immediately accessible bear spray.
 - Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.

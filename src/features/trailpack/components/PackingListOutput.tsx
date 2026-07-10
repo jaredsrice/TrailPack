@@ -62,9 +62,16 @@ function ItemGroup({
         {items.map((item) => (
           <li
             key={item.name}
-            className="rounded-lg border border-slate-100 bg-slate-50 p-4"
+            className={itemCardClassName(item.name)}
           >
-            <p className="text-sm font-semibold text-slate-900">{item.name}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-sm font-semibold text-slate-900">{item.name}</p>
+              {item.name === "Trip timing check" ? (
+                <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">
+                  Check first
+                </span>
+              ) : null}
+            </div>
             <div className="mt-2 space-y-3 text-sm leading-6 text-slate-700">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -110,4 +117,12 @@ function ItemGroup({
       </ul>
     </div>
   );
+}
+
+function itemCardClassName(itemName: string): string {
+  if (itemName === "Trip timing check") {
+    return "rounded-lg border border-amber-300 bg-amber-50 p-4";
+  }
+
+  return "rounded-lg border border-slate-100 bg-slate-50 p-4";
 }

@@ -6,6 +6,7 @@ import {
   generatePackingRecommendation,
   GRTE_BEAR_SAFETY_URL,
   NPS_HIKE_SMART_URL,
+  NPS_WATER_TREATMENT_URL,
   isOfficialNpsAlert,
   parseExpectedHours,
   type UserHikeInput,
@@ -212,18 +213,49 @@ describe("duration rule", () => {
   it("scales food and water for an 18 hour supported-trail day", () => {
     const rec = build({ expectedDuration: "18 hrs" });
 
+    const timing = itemNamed(rec, "Trip timing check");
+    expect(timing.recommendation).toMatch(/check this before packing/i);
+    expect(timing.recommendation).toMatch(/closure detour|non-standard route/i);
+    expect(timing.why).toMatch(/18 hr/i);
+    expect(timing.why).toMatch(/3-5 Hours/i);
+
     const water = itemNamed(rec, "Water");
-    expect(water.recommendation).toMatch(/9-14 liters per adult/i);
-    expect(water.recommendation).toMatch(/water treatment/i);
+    expect(water.recommendation).toMatch(/9-14 liters per adult total/i);
+    expect(water.recommendation).toMatch(/refill or water treatment/i);
+    expect(water.recommendation).toMatch(/comfortably carry the upper end/i);
     expect(water.why).toMatch(/18 hr/i);
     expect(water.why).toMatch(/distance|1040 ft|moderate/i);
+
+    const logistics = itemNamed(rec, "Water refill or treatment plan");
+    expect(logistics.recommendation).toMatch(/filter|purification tablets|boil/i);
+    expect(logistics.why).toMatch(/verified/i);
+    expect(logistics.why).not.toMatch(/Jenny Lake has water|String Lake has water|Taggart Lake has water/i);
+    expect(logistics.sourceLabels).toContain("official");
+    expect(logistics.sourceUrl).toBe(NPS_WATER_TREATMENT_URL);
 
     const food = itemNamed(rec, "Food");
     expect(food.recommendation).toMatch(/2 meals/i);
     expect(food.recommendation).toMatch(/6-8 trail snacks per person/i);
     expect(food.why).toMatch(/18 hr/i);
     expect(food.why).toMatch(/7\.1 mi|1040 ft|moderate/i);
-    expect(names(rec.optional)).toContain("Extra food reserve");
+    expect(names(rec.essential)).toContain("Extra food reserve");
+    expect(names(rec.optional)).not.toContain("Extra food reserve");
+  });
+
+  it("flags planned times that are far outside the supported trail profile", () => {
+    const rec = generatePackingRecommendation(
+      TAGGART_LAKE,
+      DEMO_CONTEXTS["taggart-lake"].weather,
+      NO_ALERTS,
+      { expectedDuration: "7 hours" },
+    );
+
+    const timing = itemNamed(rec, "Trip timing check");
+    expect(names(rec.essential)).toContain("Trip timing check");
+    expect(timing.recommendation).toMatch(/check this before packing/i);
+    expect(timing.why).toMatch(/7 hr/i);
+    expect(timing.why).toMatch(/1-2 Hours/i);
+    expect(timing.recommendation).toMatch(/side trip|non-standard route/i);
   });
 
   it("raises the long-day water upper range for hot or exposed weather", () => {
@@ -244,6 +276,11 @@ describe("trail-condition rules", () => {
   it("adds traction devices when snow or ice is reported", () => {
     const rec = build({ trailConditions: "icy switchbacks" });
     expect(names(rec.essential)).toContain("Traction devices (microspikes)");
+    const traction = itemNamed(rec, "Traction devices (microspikes)");
+    expect(traction.recommendation).toMatch(/pull-on traction/i);
+    expect(traction.recommendation).toMatch(/fit your shoes or boots/i);
+    expect(traction.why).toMatch(/small metal traction devices/i);
+    expect(traction.why).toMatch(/buy or rent/i);
   });
 
   it("adds waterproof footwear when mud is reported", () => {
@@ -602,9 +639,26 @@ describe("question-answer recommendation copy", () => {
     expect(poles.answer).toMatch(/knee|descent/i);
 
     const layer = itemNamed(rec, "Light jacket or warm layer");
-    expect(layer.question).toBe("Do I need a warm layer in summer?");
-    expect(layer.answer).toMatch(/summer/i);
+    expect(layer.question).toBe("Do I need an extra layer?");
+    expect(layer.recommendation).toMatch(/light jacket|fleece|wind shirt|rain shell/i);
     expect(layer.answer).toMatch(/light jacket|wind|rain shell/i);
+  });
+
+  it("makes the warm layer essential in cold or snowy weather without summer wording", () => {
+    const coldWeather: WeatherContext = {
+      ...CLEAR_WEATHER,
+      summary: "Cold with patchy snow and gusty wind on shaded trail sections.",
+      temperatureF: { high: 38, low: 24, current: 32 },
+      conditions: ["cold", "snow", "wind"],
+    };
+    const rec = build({ trailConditions: "patchy snow and ice" }, coldWeather);
+
+    const layer = itemNamed(rec, "Light jacket or warm layer");
+    expect(names(rec.essential)).toContain("Light jacket or warm layer");
+    expect(layer.recommendation).toMatch(/insulating warm layer/i);
+    expect(layer.recommendation).toMatch(/rain or wind shell/i);
+    expect(layer.why).toMatch(/cold|snow|wind/i);
+    expect(layer.answer).not.toMatch(/summer/i);
   });
 
   it("sizes short-hike food as snacks per person", () => {
@@ -682,6 +736,7 @@ describe("manual entry fallback", () => {
     });
     expect(names(rec.essential)).toContain("Headlamp");
     expect(names(rec.essential)).toContain("Traction devices (microspikes)");
+    expect(names(rec.essential)).toContain("Water refill or treatment plan");
     expect(names(rec.optional)).toContain("Extra food reserve");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
     expect(names(rec.optional)).not.toContain("Extra dry socks");
@@ -720,10 +775,17 @@ describe("manual entry fallback", () => {
     const water = itemNamed(rec, "Water");
     expect(water.recommendation).toMatch(/9-14 liters per adult/i);
     expect(water.recommendation).toMatch(/water treatment/i);
+    const logistics = itemNamed(rec, "Water refill or treatment plan");
+    expect(logistics.recommendation).toMatch(/filter|purification tablets|boil/i);
+    expect(logistics.why).toMatch(/verified/i);
+    expect(logistics.sourceUrl).toBe(NPS_WATER_TREATMENT_URL);
 
     const food = itemNamed(rec, "Food");
     expect(food.recommendation).toMatch(/2 meals/i);
     expect(food.recommendation).toMatch(/6-8 trail snacks per person/i);
+
+    expect(names(rec.essential)).toContain("Extra food reserve");
+    expect(names(rec.optional)).not.toContain("Extra food reserve");
   });
 
   it("adds a route-planning item for point-to-point manual hikes", () => {
@@ -784,6 +846,24 @@ describe("source provenance", () => {
     expect(alertItem?.sourceUrl).toBe(
       "https://www.nps.gov/grte/planyourvisit/conditions.htm",
     );
+  });
+
+  it("surfaces the saved Taggart 2026 NPS trail-work alert", () => {
+    const scenario = DEMO_CONTEXTS["taggart-lake"];
+    const rec = generatePackingRecommendation(
+      TAGGART_LAKE,
+      scenario.weather,
+      scenario.alerts,
+      {},
+    );
+
+    const alertItem = rec.essential.find(
+      (item) => item.name === "Review active alerts before leaving",
+    );
+    expect(alertItem).toBeDefined();
+    expect(alertItem?.sourceLabels).toContain("official");
+    expect(alertItem?.sourceUrl).toBe("https://www.nps.gov/thingstodo/taggartlake.htm");
+    expect(alertItem?.answer).toMatch(/Taggart Trail 2026 construction closure/i);
   });
 
   it("does not label the alert item official when no alert has a URL", () => {

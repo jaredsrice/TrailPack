@@ -29,8 +29,8 @@ in Grand Teton National Park.
 
 - `Jenny Lake Loop` - longer moderate loop with a known NPS versus USGS
   elevation-gain conflict that stays visibly labeled in the UI.
-- `Taggart Lake` - short easy out-and-back trail with official NPS values and a
-  close USGS geometry match.
+- `Taggart Lake` - short easy out-and-back trail with official NPS values, a
+  close USGS geometry match, and saved 2026 NPS trail-work alert context.
 - `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a hot,
   exposed saved demo weather scenario for Week 10 evaluation.
 
@@ -41,7 +41,8 @@ in Grand Teton National Park.
 - **USGS** provides public federal data for trail geometry and computed elevation
   estimates when official values are missing or need comparison.
 - **User input** can add conservative recommendations for long trips, snow, ice,
-  mud, or wet conditions.
+  mud, wet conditions, and planned times that are far outside the official trail
+  profile.
 - **Bear Aware** is linked as a current regional bear-spray rental-location
   reference when the official NPS bear-spray recommendation is shown.
 
@@ -104,7 +105,8 @@ keeping saved demo fixtures available for deterministic demos:
 The main UI still uses saved demo scenarios by default so the CSE 499A demo
 remains stable when live services are unavailable. Supported trail pages show
 the current weather, civil-twilight, and NPS alert state before the packing list,
-including the saved no-active-alert fixture state.
+including saved no-active-alert fixture states and the saved Taggart Lake 2026
+trail-work alert fixture.
 
 ## Recommendation Style
 
@@ -117,7 +119,13 @@ only when they want it. The rule engine keeps concrete quantities, food and
 water ranges for long planned days, first-aid examples, shoe tradeoffs, socks or
 gaiter guidance for wet or snowy conditions, seasonal insect-repellent guidance,
 sun-shirt options, and bear-spray rental links visible before any AI text is
-displayed.
+displayed. When a planned duration is much longer than the official trail
+profile, TrailPack adds a visually distinct timing check before the rest of the
+list. Long-day water ranges are framed as total per-adult need and add a
+separate refill/treatment planning card when the upper end would be unrealistic
+to carry. Snow or ice reports add traction guidance that explains what
+microspikes are, why regular tread may not be enough, and that any buy/rent
+planning should happen before reaching the trailhead.
 
 ## Guarded AI Review Fixture
 
@@ -145,11 +153,13 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run scenario:stress
 ```
 
 The test suite covers trail values, packing rules, duration parsing, trail-condition
 phrasing, question-answer recommendation copy, guarded AI validation, and
-official-source validation.
+official-source validation. The scenario stress command regenerates the Week
+13/14 hiker-lens report from the current rule engine.
 
 ## Current Limits
 
@@ -165,9 +175,10 @@ official-source validation.
   it does not call a live AI provider yet.
 - Automatic NPS page collection and USGS processing are planned but are not yet
   part of this prototype.
-- Planned date can affect seasonal insect-repellent guidance. Start time can
-  change headlamp guidance when daylight context is available. Notes are stored
-  as context but do not yet change the list.
+- Planned date can affect seasonal insect-repellent guidance. Expected duration
+  can change water, food, headlamp, extra-food, and unusual-timing guidance.
+  Start time can change headlamp guidance when daylight context is available.
+  Notes are stored as context but do not yet change the list.
 - `npm audit` reports a moderate PostCSS issue bundled inside Next.js. The known
   attack requires processing untrusted CSS, which TrailPack does not do. A forced
   audit fix would install an incompatible Next.js version, so the project is
