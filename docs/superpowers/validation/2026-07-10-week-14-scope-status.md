@@ -86,6 +86,9 @@ most actionable issues:
 - Overall alerts now cover unusual duration, heat/sun exposure, wet weather,
   cold/snow context, and active NPS alerts. Affected recommendation rows show
   context markers such as `Heat`, `Wet`, `Duration`, or `Official alert`.
+- Bear spray and active-alert review rows now render in a first-position
+  `Critical Safety` group, and alert-affected rows now use stronger visual
+  styling plus an `Alert changes this` marker.
 - Extra dry socks now appear as a separate optional row with blister and
   cold/wet-foot rationale.
 - Salt support now separates `Electrolytes` from `Salty snacks`: high-heat

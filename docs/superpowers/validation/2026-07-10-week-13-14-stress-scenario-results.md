@@ -121,11 +121,11 @@ Review this TrailPack output as someone with basic hiking experience but limited
 
 - Jenny Lake Loop / Saved demo baseline:
   - Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Normal clear day with start time:
   - Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Jenny Lake Loop / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
@@ -134,7 +134,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Snow or ice with cold weather:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -152,11 +152,11 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - String Lake Loop / Saved demo baseline:
   - Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - String Lake Loop / Normal clear day with start time:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - String Lake Loop / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
@@ -166,7 +166,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Snow or ice with cold weather:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+  - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -329,7 +329,7 @@ Trip alerts: Rain / wet trail.
 Key outputs:
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
@@ -340,7 +340,7 @@ Key outputs:
 Hiker lens read:
 - Seasoned: No lens-specific issue found in this scenario.
 - Casual: Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
@@ -358,7 +358,7 @@ Trip alerts: none.
 Key outputs:
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
@@ -369,7 +369,7 @@ Key outputs:
 Hiker lens read:
 - Seasoned: No lens-specific issue found in this scenario.
 - Casual: Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
@@ -416,7 +416,7 @@ Trip alerts: Rain / wet trail; Cold / snow.
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
@@ -429,7 +429,7 @@ Hiker lens read:
 - Seasoned: Good: snow/ice becomes traction plus footwear support, and the app now explains what microspikes are.
 - Seasoned: Good: cold or snow promotes the layer to essential instead of treating it like a summer comfort item.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -520,7 +520,7 @@ Trip alerts: Heat / sun exposure.
 Key outputs:
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
@@ -531,7 +531,7 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Casual: Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
@@ -549,7 +549,7 @@ Trip alerts: none.
 Key outputs:
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
@@ -560,7 +560,7 @@ Key outputs:
 Hiker lens read:
 - Seasoned: No lens-specific issue found in this scenario.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to 3 hours plus route difficulty/weather where available.
 
@@ -607,7 +607,7 @@ Trip alerts: Rain / wet trail; Cold / snow.
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
@@ -620,7 +620,7 @@ Hiker lens read:
 - Seasoned: Good: snow/ice becomes traction plus footwear support, and the app now explains what microspikes are.
 - Seasoned: Good: cold or snow promotes the layer to essential instead of treating it like a summer comfort item.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
+- Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.

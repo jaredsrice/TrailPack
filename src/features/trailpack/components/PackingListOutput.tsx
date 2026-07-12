@@ -6,14 +6,18 @@ import type {
 import { SourceBadge } from "./SourceBadge";
 
 type Priority = "Essential" | "Optional";
-type PrioritizedItem = PackingItem & { priority: Priority };
+type PrioritizedItem = PackingItem & {
+  priority: Priority;
+  alertImpactTags: string[];
+  isCritical: boolean;
+};
 
 const GROUP_ORDER = [
+  "Critical Safety",
   "Food & Water",
   "Footwear & Traction",
   "Clothing & Weather",
   "Safety & Navigation",
-  "Wildlife & Alerts",
   "Comfort & Backups",
 ] as const;
 
@@ -147,7 +151,9 @@ function RecommendationGroup({
     <section>
       <div className="flex items-baseline justify-between gap-3">
         <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-        <span className="text-sm text-slate-500">{items.length} items</span>
+        <span className="text-sm text-slate-500">
+          {items.length} {items.length === 1 ? "item" : "items"}
+        </span>
       </div>
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
@@ -159,11 +165,15 @@ function RecommendationGroup({
 }
 
 function RecommendationRow({ item }: { item: PrioritizedItem }) {
+  const rowClassName = recommendationRowClassName(item);
+  const accentClassName = recommendationAccentClassName(item);
+
   return (
     <li>
-      <details className="group rounded-lg border border-slate-200 bg-slate-50">
+      <details className={`group overflow-hidden rounded-lg border ${rowClassName}`}>
         <summary className="cursor-pointer list-none p-4 [&::-webkit-details-marker]:hidden">
           <div className="flex gap-3">
+            <span className={`w-1.5 shrink-0 rounded-full ${accentClassName}`} />
             <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-600 transition-transform group-open:rotate-45">
               +
             </span>
@@ -171,8 +181,16 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-semibold text-slate-950">{item.name}</p>
                 <PriorityBadge priority={item.priority} />
+                {item.isCritical ? <StatusBadge tone="critical" label="Critical safety" /> : null}
+                {item.alertImpactTags.length > 0 ? (
+                  <StatusBadge tone="alert" label="Alert changes this" />
+                ) : null}
                 {item.affectedBy?.map((tag) => (
-                  <ContextChip key={`${item.name}-${tag}`} label={tag} />
+                  <ContextChip
+                    key={`${item.name}-${tag}`}
+                    label={tag}
+                    active={item.alertImpactTags.includes(tag)}
+                  />
                 ))}
               </div>
               <p className="mt-2 text-sm leading-6 text-slate-700">
@@ -240,7 +258,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
 function PriorityBadge({ priority }: { priority: Priority }) {
   const className =
     priority === "Essential"
-      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+      ? "border-emerald-300 bg-emerald-700 text-white shadow-sm"
       : "border-slate-200 bg-white text-slate-600";
 
   return (
@@ -250,12 +268,73 @@ function PriorityBadge({ priority }: { priority: Priority }) {
   );
 }
 
-function ContextChip({ label }: { label: string }) {
+function StatusBadge({
+  tone,
+  label,
+}: {
+  tone: "alert" | "critical";
+  label: string;
+}) {
+  const className =
+    tone === "critical"
+      ? "border-red-300 bg-red-700 text-white"
+      : "border-amber-300 bg-amber-200 text-amber-950";
+
   return (
-    <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-900">
+    <span className={`rounded-full border px-2 py-0.5 text-xs font-bold ${className}`}>
       {label}
     </span>
   );
+}
+
+function ContextChip({
+  label,
+  active = false,
+}: {
+  label: string;
+  active?: boolean;
+}) {
+  const className = active
+    ? "border-amber-300 bg-amber-200 text-amber-950"
+    : "border-amber-200 bg-amber-50 text-amber-900";
+
+  return (
+    <span className={`rounded-full border px-2 py-0.5 text-xs font-medium ${className}`}>
+      {label}
+    </span>
+  );
+}
+
+function recommendationRowClassName(item: PrioritizedItem): string {
+  if (item.isCritical) {
+    return "border-red-300 bg-red-50 shadow-sm";
+  }
+
+  if (item.alertImpactTags.length > 0) {
+    return "border-amber-300 bg-amber-50 shadow-sm";
+  }
+
+  if (item.priority === "Essential") {
+    return "border-emerald-300 bg-emerald-50 shadow-sm";
+  }
+
+  return "border-slate-200 bg-slate-50";
+}
+
+function recommendationAccentClassName(item: PrioritizedItem): string {
+  if (item.isCritical) {
+    return "bg-red-600";
+  }
+
+  if (item.alertImpactTags.length > 0) {
+    return "bg-amber-500";
+  }
+
+  if (item.priority === "Essential") {
+    return "bg-emerald-600";
+  }
+
+  return "bg-slate-300";
 }
 
 function groupRecommendationItems(recommendation: PackingRecommendation): Array<{
@@ -265,16 +344,17 @@ function groupRecommendationItems(recommendation: PackingRecommendation): Array<
   const grouped = new Map<GroupTitle, PrioritizedItem[]>(
     GROUP_ORDER.map((title) => [title, []]),
   );
+  const activeAlertTags = new Set(
+    recommendation.tripAlerts.flatMap((alert) => alert.affectedBy),
+  );
 
   const prioritized: PrioritizedItem[] = [
-    ...recommendation.essential.map((item) => ({
-      ...item,
-      priority: "Essential" as const,
-    })),
-    ...recommendation.optional.map((item) => ({
-      ...item,
-      priority: "Optional" as const,
-    })),
+    ...recommendation.essential.map((item) =>
+      prioritizeItem(item, "Essential", activeAlertTags),
+    ),
+    ...recommendation.optional.map((item) =>
+      prioritizeItem(item, "Optional", activeAlertTags),
+    ),
   ];
 
   for (const item of prioritized) {
@@ -285,6 +365,21 @@ function groupRecommendationItems(recommendation: PackingRecommendation): Array<
     title,
     items: sortGroupItems(title, grouped.get(title) ?? []),
   })).filter((group) => group.items.length > 0);
+}
+
+function prioritizeItem(
+  item: PackingItem,
+  priority: Priority,
+  activeAlertTags: Set<string>,
+): PrioritizedItem {
+  const affectedBy = item.affectedBy ?? [];
+
+  return {
+    ...item,
+    priority,
+    alertImpactTags: affectedBy.filter((tag) => activeAlertTags.has(tag)),
+    isCritical: item.name === "Bear spray",
+  };
 }
 
 function sortGroupItems(title: GroupTitle, items: PrioritizedItem[]): PrioritizedItem[] {
@@ -359,7 +454,7 @@ function groupForItem(itemName: string): GroupTitle {
   if (
     ["Bear spray", "Review active alerts before leaving"].includes(itemName)
   ) {
-    return "Wildlife & Alerts";
+    return "Critical Safety";
   }
 
   return "Comfort & Backups";

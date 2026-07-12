@@ -111,8 +111,12 @@ change as the project develops.
 - Replaced the two-column packing-card layout with grouped accordion rows so
   related recommendations stay visually close while `Essential` and `Optional`
   remain visible as row badges.
+- Added a first-position `Critical Safety` recommendation group for bear spray
+  and active-alert review rows.
 - Added affected-by markers to recommendation rows so overall alerts can connect
   to specific items without adding more text to the quick-scan view.
+- Strengthened essential and alert-affected row styling so required items and
+  alert-driven changes stand out more clearly in the scan view.
 - Split accordion content so users can scan the clear action before expanding
   the supporting trip context, sources, and context notes.
 - Moved dry-sock guidance out of `Trail footwear` and into a separate optional
@@ -129,6 +133,8 @@ change as the project develops.
 - Scaled long-day food and water recommendations from expected duration, with
   distance, elevation gain, difficulty, and hot/exposed weather reflected in the
   range and explanation.
+- Reworded long-day food rationale so route context, forecast context, and the
+  lower-versus-higher snack range read as hiker-facing guidance.
 - Reframed long-day water as a realistic frontcountry carry range, with `3-4`
   liters per adult for very long supported-trail days instead of indefinitely
   scaling by time.

@@ -230,6 +230,18 @@ function uniqueStrings(values: string[]): string[] {
   return Array.from(new Set(values));
 }
 
+function formatWordList(values: string[]): string {
+  if (values.length <= 1) {
+    return values[0] ?? "";
+  }
+
+  if (values.length === 2) {
+    return `${values[0]} and ${values[1]}`;
+  }
+
+  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`;
+}
+
 function getTimezoneSuffix(isoValue?: string): string {
   const match = isoValue?.match(/(Z|[+-]\d{2}:\d{2})$/);
   return match?.[1] ?? "";
@@ -855,13 +867,16 @@ function buildFoodItem({
     snackMinimum + 1,
     Math.ceil(expectedHours / 2.5) + routeSnackBump + heatSnackBump,
   );
-  const effortContext = [
+  const routeContext = [
     distance !== undefined ? `${distance} mi` : null,
     gain !== undefined ? `${gain} ft gain` : null,
     difficultyRating !== "unknown" ? `${difficultyRating} difficulty` : null,
-    duration ? `${duration} profile estimate` : null,
-    weatherConditions && weatherConditions.length > 0 ? `${weatherConditions.join(", ")} weather` : null,
-  ].filter(Boolean).join(", ");
+    duration ? `${duration.toLowerCase()} profile estimate` : null,
+  ].filter((value): value is string => Boolean(value));
+  const weatherContext =
+    weatherConditions && weatherConditions.length > 0
+      ? formatWordList(weatherConditions)
+      : "";
   const snackDrivers = [
     routeSnackBump > 0 ? "harder route effort" : null,
     heatSnackBump > 0 ? "heat" : null,
@@ -874,9 +889,11 @@ function buildFoodItem({
       `Pack ${meals} ${meals === 1 ? "meal" : "meals"} plus ` +
       `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.`,
     why:
-      `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes food from time first, then checks ${effortContext || "the available hike context"}.` +
-      `${snackDrivers ? ` The upper snack count rises for ${snackDrivers}.` : ""} ` +
-      "Use the lower end if the day stays on schedule; use the higher end for slow pacing, kids, weather delays, or a longer-than-planned exit.",
+      `For about ${formatHours(expectedHours)} hr out, start with enough food for the planned time plus a delay buffer. ` +
+      `${routeContext.length > 0 ? `Route context: ${formatWordList(routeContext)}. ` : ""}` +
+      `${weatherContext ? `Forecast context: ${weatherContext}. ` : ""}` +
+      `${snackDrivers ? `The higher snack count is there for ${snackDrivers}. ` : ""}` +
+      "Use the lower end for an efficient, on-schedule day; use the higher end for slow pacing, kids, weather delays, or a longer-than-planned exit.",
     affectedBy: uniqueStrings([
       "Duration",
       heatSnackBump > 0 ? "Heat" : null,
@@ -1202,10 +1219,10 @@ export function generatePackingRecommendation(
         question: "How much food should I bring?",
         recommendation: shortByProfile
           ? "Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks."
-          : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.",
+          : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.",
         why: shortByProfile
-          ? `This is a shorter ${duration.toLowerCase()} hike, but quick trail fuel still helps with breaks and delays.`
-          : `Plan for ${duration} on trail, so lunch plus snacks is more practical than a single small snack.`,
+          ? `This route is listed at ${duration.toLowerCase()}, but quick trail fuel still helps with breaks and delays.`
+          : `This route is listed at ${duration.toLowerCase()}, so lunch plus snacks is more practical than a single small snack.`,
         sourceLabels: ["supported-profile"],
       }),
     );
@@ -1591,7 +1608,7 @@ export function generateManualEntryRecommendation(
           name: "Food",
           question: "How much food should I bring?",
           recommendation: longerByManualFacts
-            ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks."
+            ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts."
             : "Bring 1-2 easy trail snacks per person as a baseline, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.",
           why: longerByManualFacts
             ? "Your entered trail facts suggest more than a short outing."
