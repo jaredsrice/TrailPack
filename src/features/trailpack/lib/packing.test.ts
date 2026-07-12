@@ -213,21 +213,27 @@ describe("duration rule", () => {
   it("scales food and water for an 18 hour supported-trail day", () => {
     const rec = build({ expectedDuration: "18 hrs" });
 
-    const timing = itemNamed(rec, "Trip timing check");
-    expect(timing.recommendation).toMatch(/check this before packing/i);
-    expect(timing.recommendation).toMatch(/closure detour|non-standard route/i);
-    expect(timing.why).toMatch(/18 hr/i);
-    expect(timing.why).toMatch(/3-5 Hours/i);
+    const timing = rec.tripAlerts.find((alert) => alert.id === "unusual-duration");
+    expect(timing).toBeDefined();
+    expect(timing?.summary).toMatch(/18 hr/i);
+    expect(timing?.summary).toMatch(/3-5 Hours/i);
+    expect(timing?.summary).toMatch(/side trip|closure detour|non-standard route/i);
 
     const water = itemNamed(rec, "Water");
-    expect(water.recommendation).toMatch(/9-14 liters per adult total/i);
-    expect(water.recommendation).toMatch(/refill or water treatment/i);
-    expect(water.recommendation).toMatch(/comfortably carry the upper end/i);
+    expect(water.recommendation).toMatch(/3-4 liters per adult/i);
+    expect(water.recommendation).toMatch(/Drink according to thirst/i);
     expect(water.why).toMatch(/18 hr/i);
     expect(water.why).toMatch(/distance|1040 ft|moderate/i);
+    expect(water.contextNotes).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "Long-day limit" }),
+      ]),
+    );
 
-    const logistics = itemNamed(rec, "Water refill or treatment plan");
+    const logistics = itemNamed(rec, "Water filter or treatment backup");
+    expect(names(rec.optional)).toContain("Water filter or treatment backup");
     expect(logistics.recommendation).toMatch(/filter|purification tablets|boil/i);
+    expect(logistics.recommendation).toMatch(/Optional/i);
     expect(logistics.why).toMatch(/verified/i);
     expect(logistics.why).not.toMatch(/Jenny Lake has water|String Lake has water|Taggart Lake has water/i);
     expect(logistics.sourceLabels).toContain("official");
@@ -250,12 +256,12 @@ describe("duration rule", () => {
       { expectedDuration: "7 hours" },
     );
 
-    const timing = itemNamed(rec, "Trip timing check");
-    expect(names(rec.essential)).toContain("Trip timing check");
-    expect(timing.recommendation).toMatch(/check this before packing/i);
-    expect(timing.why).toMatch(/7 hr/i);
-    expect(timing.why).toMatch(/1-2 Hours/i);
-    expect(timing.recommendation).toMatch(/side trip|non-standard route/i);
+    const timing = rec.tripAlerts.find((alert) => alert.id === "unusual-duration");
+    expect(names(rec.essential)).not.toContain("Trip timing check");
+    expect(timing).toBeDefined();
+    expect(timing?.summary).toMatch(/7 hr/i);
+    expect(timing?.summary).toMatch(/1-2 Hours/i);
+    expect(timing?.summary).toMatch(/side trip|non-standard route/i);
   });
 
   it("raises the long-day water upper range for hot or exposed weather", () => {
@@ -267,8 +273,9 @@ describe("duration rule", () => {
     );
 
     const water = itemNamed(rec, "Water");
-    expect(water.recommendation).toMatch(/9-18 liters per adult/i);
-    expect(water.why).toMatch(/heat|exposed|sweat/i);
+    expect(water.recommendation).toMatch(/3-4 liters per adult/i);
+    expect(water.why).toMatch(/heat|full sun/i);
+    expect(rec.tripAlerts.map((alert) => alert.id)).toContain("heat-sun");
   });
 });
 
@@ -287,17 +294,19 @@ describe("trail-condition rules", () => {
     const rec = build({ trailConditions: "muddy sections" });
     expect(names(rec.essential)).toContain("Trail footwear");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
-    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    expect(names(rec.optional)).toContain("Extra dry socks");
     const footwear = itemNamed(rec, "Trail footwear");
     expect(footwear.answer).toMatch(/waterproof hiking shoes|gaiters/i);
-    expect(footwear.answer).toMatch(/dry pair of socks/i);
+    const socks = itemNamed(rec, "Extra dry socks");
+    expect(socks.recommendation).toMatch(/Pack one dry pair/i);
+    expect(socks.why).toMatch(/blister risk/i);
   });
 
   it("does not add traction for dry conditions", () => {
     const rec = build({ trailConditions: "dry and clear" });
     expect(names(rec.essential)).not.toContain("Traction devices (microspikes)");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
-    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    expect(names(rec.optional)).toContain("Extra dry socks");
   });
 });
 
@@ -574,12 +583,14 @@ describe("question-answer recommendation copy", () => {
     const shoes = itemNamed(rec, "Trail footwear");
     expect(shoes.question).toBe("What footwear setup fits this hike?");
     expect(shoes.recommendation).toMatch(/trail runners|hiking shoes/i);
-    expect(shoes.recommendation).toMatch(/dry pair of socks/i);
     expect(shoes.why).toMatch(/7\.1 mi|1040 ft|moderate/i);
-    expect(shoes.why).toMatch(/blister/i);
     expect(shoes.answer).toMatch(/trail runners|hiking shoes/i);
     expect(shoes.answer).toMatch(/tennis shoes/i);
-    expect(shoes.answer).toMatch(/dry pair of socks/i);
+
+    const socks = itemNamed(rec, "Extra dry socks");
+    expect(socks.question).toBe("Should I bring extra socks?");
+    expect(socks.recommendation).toMatch(/Pack one dry pair/i);
+    expect(socks.why).toMatch(/Wet socks increase friction and blister risk/i);
 
     const water = itemNamed(rec, "Water");
     expect(water.question).toBe("How much water should I bring?");
@@ -675,18 +686,18 @@ describe("question-answer recommendation copy", () => {
     expect(food.answer).toMatch(/per person/i);
   });
 
-  it("folds wet or snowy footwear details into the footwear recommendation", () => {
+  it("keeps wet or snowy sock guidance as a nearby optional item", () => {
     const rec = build({ trailConditions: "muddy with patchy snow" });
 
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
-    expect(names(rec.optional)).not.toContain("Extra dry socks");
+    expect(names(rec.optional)).toContain("Extra dry socks");
     const footwear = itemNamed(rec, "Trail footwear");
     expect(footwear.recommendation).toMatch(/waterproof hiking shoes|gaiters/i);
-    expect(footwear.recommendation).toMatch(/dry pair/i);
-    expect(footwear.why).toMatch(/mud|snow|blister/i);
+    expect(footwear.why).toMatch(/mud|snow|backup socks/i);
     expect(footwear.answer).toMatch(/waterproof hiking shoes|gaiters/i);
-    expect(footwear.answer).toMatch(/dry pair/i);
-    expect(footwear.answer).toMatch(/blister/i);
+    const socks = itemNamed(rec, "Extra dry socks");
+    expect(socks.recommendation).toMatch(/rain, mud, snow/i);
+    expect(socks.why).toMatch(/blister risk/i);
   });
 
   it("keeps user-facing item names as recommendation topics, not visible questions", () => {
@@ -736,11 +747,11 @@ describe("manual entry fallback", () => {
     });
     expect(names(rec.essential)).toContain("Headlamp");
     expect(names(rec.essential)).toContain("Traction devices (microspikes)");
-    expect(names(rec.essential)).toContain("Water refill or treatment plan");
+    expect(names(rec.optional)).toContain("Water filter or treatment backup");
     expect(names(rec.optional)).toContain("Extra food reserve");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
-    expect(names(rec.optional)).not.toContain("Extra dry socks");
-    expect(itemNamed(rec, "Trail footwear").answer).toMatch(/dry pair of socks/i);
+    expect(names(rec.optional)).toContain("Extra dry socks");
+    expect(itemNamed(rec, "Extra dry socks").why).toMatch(/blister risk/i);
     const joined = rec.missingDetails.join(" ");
     expect(joined).not.toMatch(/expected time/i);
     expect(joined).not.toMatch(/trail conditions/i);
@@ -773,9 +784,10 @@ describe("manual entry fallback", () => {
     });
 
     const water = itemNamed(rec, "Water");
-    expect(water.recommendation).toMatch(/9-14 liters per adult/i);
-    expect(water.recommendation).toMatch(/water treatment/i);
-    const logistics = itemNamed(rec, "Water refill or treatment plan");
+    expect(water.recommendation).toMatch(/3-4 liters per adult/i);
+    expect(water.recommendation).toMatch(/Drink according to thirst/i);
+    const logistics = itemNamed(rec, "Water filter or treatment backup");
+    expect(names(rec.optional)).toContain("Water filter or treatment backup");
     expect(logistics.recommendation).toMatch(/filter|purification tablets|boil/i);
     expect(logistics.why).toMatch(/verified/i);
     expect(logistics.sourceUrl).toBe(NPS_WATER_TREATMENT_URL);

@@ -110,22 +110,22 @@ trail-work alert fixture.
 
 ## Recommendation Style
 
-Packing items are rendered as recommendation-topic cards. The rule engine still
-tracks the question each card answers, but the UI shows clean topics such as
-`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. Each card then
-separates the clear action under `Recommendation` from the supporting context
-under `Why`, so users can skim the packing action first and read the evidence
-only when they want it. The rule engine keeps concrete quantities, food and
-water ranges for long planned days, first-aid examples, shoe tradeoffs, socks or
-gaiter guidance for wet or snowy conditions, seasonal insect-repellent guidance,
-sun-shirt options, and bear-spray rental links visible before any AI text is
-displayed. When a planned duration is much longer than the official trail
-profile, TrailPack adds a visually distinct timing check before the rest of the
-list. Long-day water ranges are framed as total per-adult need and add a
-separate refill/treatment planning card when the upper end would be unrealistic
-to carry. Snow or ice reports add traction guidance that explains what
-microspikes are, why regular tread may not be enough, and that any buy/rent
-planning should happen before reaching the trailhead.
+Packing items are rendered as grouped accordion rows. The rule engine still
+tracks the question each row answers, but the UI shows clean topics such as
+`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. The first line
+is the clear action; the supporting `Why`, source labels, and context notes stay
+inside the dropdown so users can skim quickly or read more when needed.
+
+Overall alerts appear above the packing list for plan-level issues such as heat,
+wet weather, active NPS alerts, or an unusual planned duration. Affected rows
+then show small markers such as `Heat`, `Wet`, `Duration`, or `Official alert`
+so users can see which recommendations changed because of the alert. Long-day
+water now uses realistic frontcountry carry ranges and explicitly says to drink
+according to thirst. Water filter or treatment guidance is an optional backup
+unless the user plans to refill from an unverified source. Extra dry socks are a
+separate optional row with blister and warmth rationale, while snow or ice still
+adds traction guidance that explains what microspikes are and why regular tread
+may not be enough.
 
 ## Guarded AI Review Fixture
 

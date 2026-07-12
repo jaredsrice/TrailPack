@@ -45,8 +45,9 @@ behavior. Manual entry remains available for unsupported hikes.
   trail conditions. The app now gives generic water-treatment and traction
   planning guidance, while route-specific logistics remain future work unless
   verified data exists.
-- Treat abnormal planned durations as a warning signal. The app now flags these
-  as `Check first` instead of silently treating them like normal day hikes.
+- Treat abnormal planned durations and weather risks as trip-level warning
+  signals. The app now shows overall alerts and marks affected recommendation
+  rows instead of burying plan-level warnings inside one gear item.
 
 ## Must-Have Requirements Status
 
@@ -55,7 +56,7 @@ behavior. Manual entry remains available for unsupported hikes.
 | MH-01 Supported Hike Input Workflow | Met | Jenny Lake Loop, Taggart Lake, String Lake Loop, supported trail selection, and manual fallback are implemented. Manual distance, elevation gain, route type, expected duration, and trail conditions affect output. |
 | MH-02 Weather And Official Alert Context | Met | Saved demo contexts, live route handlers, visible context states, daylight fixtures, unavailable handling, and the Taggart 2026 NPS trail-work alert fixture are implemented. |
 | MH-03 Rule-Based Baseline Packing List | Met | Essential and optional packing output works without AI for every supported profile and manual entry. |
-| MH-04 Recommendation Explanations And Source Labels | Met | Packing cards show recommendation, why, source labels, and official source links where supported. Official labels are guarded so they require a source URL. |
+| MH-04 Recommendation Explanations And Source Labels | Met | Accordion rows show the clear recommendation first, with why, context notes, source labels, and official source links available inside the dropdown. Official labels are guarded so they require a source URL. |
 | MH-05 Guarded AI Contract And Fallback Validation | Met by accepted fixture path | The app has a fixture-first guarded AI review path with validation and template fallback. Live AI remains optional under the requirements spec. |
 | MH-06 Fallback And Uncertainty Handling | Met | Manual fallback, missing-detail prompts, unavailable context states, AI fallback, and source labels are implemented and tested. |
 
@@ -77,14 +78,20 @@ The hiker-scenario review exposed that the packing list was becoming more
 specific but still had beginner-facing gaps. The current branch addresses the
 most actionable issues:
 
-- Long-day water now separates total expected need from realistic carry/refill
-  logistics.
-- A `Water refill or treatment plan` card explains filter, purification tablets,
-  or boiling without inventing route-specific water sources.
+- Long-day water now uses realistic frontcountry carry ranges instead of
+  indefinitely scaling by time.
+- A `Water filter or treatment backup` optional row explains filter,
+  purification tablets, or boiling without inventing route-specific water
+  sources.
+- Overall alerts now cover unusual duration, heat/sun exposure, wet weather,
+  cold/snow context, and active NPS alerts. Affected recommendation rows show
+  context markers such as `Heat`, `Wet`, `Duration`, or `Official alert`.
+- Extra dry socks now appear as a separate optional row with blister and
+  cold/wet-foot rationale.
 - Snow and ice guidance now explains what microspikes are and that fit/buy/rent
   planning should happen before the trailhead.
-- Abnormal duration now appears as a visually distinct `Check first` timing
-  warning.
+- Abnormal duration now appears as a trip-level alert rather than a packing
+  item.
 - Taggart Lake now surfaces the saved official 2026 NPS trail-work alert.
 - The scenario review is rerunnable with `npm run scenario:stress`.
 

@@ -166,9 +166,11 @@ function evaluateLens(run, lens) {
   const optional = itemMap(run.rec.optional);
   const all = itemMap(allItems(run.rec));
   const notes = [];
-  const hasTimingCheck = essential.has("Trip timing check");
+  const hasTimingAlert = run.rec.tripAlerts.some((alert) => alert.id === "unusual-duration");
+  const hasHeatAlert = run.rec.tripAlerts.some((alert) => alert.id === "heat-sun");
   const water = all.get("Water");
-  const waterPlan = all.get("Water refill or treatment plan");
+  const waterPlan = all.get("Water filter or treatment backup");
+  const socks = all.get("Extra dry socks");
   const food = all.get("Food");
   const headlampEssential = essential.has("Headlamp");
   const layerEssential = essential.has("Light jacket or warm layer");
@@ -176,19 +178,19 @@ function evaluateLens(run, lens) {
   const alert = essential.get("Review active alerts before leaving");
 
   if (lens === "seasoned") {
-    if (hasTimingCheck) {
+    if (hasTimingAlert) {
       notes.push(
-        "Good: the app challenges a duration that does not match the official trail profile instead of blindly normalizing it.",
+        "Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.",
       );
     }
-    if (water?.recommendation.includes("refill or water treatment")) {
+    if (water?.contextNotes?.some((note) => note.label === "Long-day limit")) {
       notes.push(
-        "Good: long-day water is framed as total need, not a claim that carrying the full upper range is realistic.",
+        "Good: long-day water is capped at a realistic frontcountry carry range instead of scaling into unrealistic multi-gallon totals.",
       );
     }
     if (waterPlan) {
       notes.push(
-        "Good: the refill/treatment card avoids inventing route-specific water sources and tells the hiker to verify availability.",
+        "Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.",
       );
     }
     if (traction) {
@@ -204,6 +206,9 @@ function evaluateLens(run, lens) {
     if (alert) {
       notes.push("Good: official trail-work context is visible before the user commits to the route.");
     }
+    if (hasHeatAlert) {
+      notes.push("Good: heat/sun exposure appears as a trip-level warning, not only as a water note.");
+    }
   }
 
   if (lens === "casual") {
@@ -213,26 +218,21 @@ function evaluateLens(run, lens) {
     if (food) {
       notes.push(`Food is concrete: ${food.recommendation}`);
     }
-    if (water?.recommendation.includes("water treatment")) {
-      if (waterPlan) {
-        notes.push(
-          `Water logistics are clearer: ${waterPlan.recommendation}`,
-        );
-      } else {
-        notes.push(
-          "Remaining question: the app still does not say where a refill exists or which treatment method to use.",
-        );
-      }
+    if (waterPlan) {
+      notes.push(`Water backup is clear and optional: ${waterPlan.recommendation}`);
     }
     if (traction) {
       notes.push(
         "Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.",
       );
     }
-    if (hasTimingCheck) {
+    if (hasTimingAlert) {
       notes.push(
         "Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.",
       );
+    }
+    if (socks) {
+      notes.push(`Sock guidance is visible: ${socks.recommendation}`);
     }
     if (headlampEssential) {
       notes.push("Good: headlamp is a direct instruction, not a paragraph that hides the action.");
@@ -250,7 +250,10 @@ function evaluateLens(run, lens) {
       notes.push("Good: poles are presented as optional support unless snow/ice changes the balance need.");
     }
     if (waterPlan) {
-      notes.push("Good: long-day water now includes a separate logistics decision instead of burying treatment in the water quantity.");
+      notes.push("Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.");
+    }
+    if (run.rec.tripAlerts.length > 0) {
+      notes.push(`Overall alerts: ${run.rec.tripAlerts.map((item) => item.title).join("; ")}.`);
     }
     if (run.rec.missingDetails.length > 0) {
       notes.push(`Still asks for: ${run.rec.missingDetails.join(" ")}`);
@@ -297,10 +300,10 @@ function runMatrix() {
 
 function findingSummary(runs) {
   const timingChecks = runs.filter((run) =>
-    run.rec.essential.some((item) => item.name === "Trip timing check"),
+    run.rec.tripAlerts.some((alert) => alert.id === "unusual-duration"),
   );
   const waterLogistics = runs.filter((run) =>
-    run.rec.essential.some((item) => item.name === "Water refill or treatment plan"),
+    run.rec.optional.some((item) => item.name === "Water filter or treatment backup"),
   );
   const veryLongReserveEssential = runs
     .filter((run) => run.scenario.id === "eighteen-hour-edge-case")
@@ -312,7 +315,7 @@ function findingSummary(runs) {
     .filter((run) => ["hot-exposed-long-day", "eighteen-hour-edge-case"].includes(run.scenario.id))
     .every((run) =>
       allItems(run.rec).some(
-        (item) => item.name === "Water" && item.recommendation.includes("refill or water treatment"),
+        (item) => item.name === "Water filter or treatment backup",
       ),
     );
   const taggartAlerts = runs
@@ -323,8 +326,8 @@ function findingSummary(runs) {
 
   return [
     `${runs.length} app scenarios were run: ${Object.keys(SUPPORTED_TRAILS).length} trails x ${templates.length} scenario templates.`,
-    `Trip timing check triggered in ${timingChecks.length} scenarios, mainly where user duration was far outside the official profile.`,
-    `Water refill/treatment logistics appeared in ${waterLogistics.length} long-duration scenarios.`,
+    `Unusual-duration trip alerts triggered in ${timingChecks.length} scenarios, mainly where user duration was far outside the official profile.`,
+    `Optional water filter/treatment backup appeared in ${waterLogistics.length} long-duration scenarios.`,
     veryLongReserveEssential
       ? "All 18-hour edge cases moved Extra food reserve into essentials."
       : "Issue: not every 18-hour edge case moved Extra food reserve into essentials.",
@@ -332,8 +335,8 @@ function findingSummary(runs) {
       ? "All snow/ice/cold scenarios promoted Light jacket or warm layer into essentials."
       : "Issue: cold scenarios did not consistently promote the warm layer.",
     treatmentLanguage
-      ? "Hot/long and 18-hour cases all included refill or water treatment planning in water guidance."
-      : "Issue: some long-water cases still lacked refill/treatment planning.",
+      ? "Hot/long and 18-hour cases all included optional refill or water treatment backup planning."
+      : "Issue: some long-water cases still lacked optional refill/treatment planning.",
     taggartAlerts
       ? "Every Taggart scenario surfaced the saved official 2026 NPS trail-work alert."
       : "Issue: Taggart alert did not appear consistently.",
@@ -359,12 +362,13 @@ function renderReport(runs) {
   lines.push("");
   lines.push("## Critical Conclusions");
   lines.push("");
-  lines.push("- The current branch is much stronger than the prior stiff output for long-day food, water, headlamp, layers, Taggart alerts, abnormal duration handling, water logistics, and snow/ice traction explanation.");
-  lines.push("- The largest previous beginner-facing gap, water logistics, is now partly addressed by a separate refill/treatment card. The app still avoids naming route-specific water sources because those require verified source-backed data.");
+  lines.push("- The current branch is much stronger than the prior stiff output for long-day food, water, headlamp, layers, Taggart alerts, abnormal duration handling, optional water backup, and snow/ice traction explanation.");
+  lines.push("- Water is now framed as a realistic frontcountry carry amount, not an indefinitely scaled total. The app still avoids naming route-specific water sources because those require verified source-backed data.");
+  lines.push("- Weather and unusual-duration concerns now appear as overall alerts, while affected recommendation rows carry context markers such as Heat, Wet, Duration, or Official alert.");
   lines.push("- The snow/ice gear-literacy gap is now partly addressed: microspikes are described as pull-on metal traction that must fit the user's shoes or boots, with buy/rent guidance kept generic instead of inventing a route-specific rental location.");
   lines.push("- The seasoned-hiker lens accepts the no-invented-water-source direction. The correct next step would be verified route-specific water-source data, not freer copy.");
   lines.push("- The middle-of-the-road lens confirms the recommendations are now more tied to duration, weather, trail conditions, and official profile context instead of reading like the same list every time.");
-  lines.push("- The 18-hour scenarios remain edge-case warnings, not normal day-hike planning. The timing card now uses stronger warning copy and the UI marks it as `Check first`.");
+  lines.push("- The 18-hour scenarios remain edge-case warnings, not normal day-hike planning. The timing warning now lives in the overall alerts area instead of as a packing item.");
   lines.push("");
   lines.push("## Source-Backed Trail Context Used By The Lenses");
   lines.push("");
@@ -430,21 +434,20 @@ function renderReport(runs) {
       lines.push(`User input: duration ${run.scenario.userInput.expectedDuration ?? "none"}, start ${run.scenario.userInput.startTime ?? "none"}, conditions ${run.scenario.userInput.trailConditions ?? "none"}.`);
       lines.push(`Essential: ${listNames(run.rec.essential)}.`);
       lines.push(`Optional: ${listNames(run.rec.optional)}.`);
+      lines.push(`Trip alerts: ${run.rec.tripAlerts.map((alert) => alert.title).join("; ") || "none"}.`);
       lines.push("");
       lines.push("Key outputs:");
       lines.push(`- Water: ${briefItem(all.get("Water"))}`);
-      lines.push(`- Water logistics: ${briefItem(all.get("Water refill or treatment plan"))}`);
+      lines.push(`- Water backup: ${briefItem(all.get("Water filter or treatment backup"))}`);
       lines.push(`- Food: ${briefItem(all.get("Food"))}`);
       lines.push(`- Footwear: ${briefItem(all.get("Trail footwear"))}`);
+      lines.push(`- Extra socks: ${briefItem(all.get("Extra dry socks"))}`);
       lines.push(`- Traction: ${briefItem(all.get("Traction devices (microspikes)"))}`);
       lines.push(`- Headlamp: ${briefItem(all.get("Headlamp"))}`);
       lines.push(`- Extra food reserve: ${briefItem(all.get("Extra food reserve"))}`);
       lines.push(`- Layer: ${briefItem(all.get("Light jacket or warm layer"))}`);
       if (all.has("Review active alerts before leaving")) {
         lines.push(`- Alert: ${briefItem(all.get("Review active alerts before leaving"))}`);
-      }
-      if (all.has("Trip timing check")) {
-        lines.push(`- Timing check: ${briefItem(all.get("Trip timing check"))}`);
       }
       lines.push("");
       lines.push("Hiker lens read:");
@@ -465,7 +468,7 @@ function renderReport(runs) {
   lines.push("");
   lines.push("- Add verified route-specific water-source data before naming actual refill points. Until then, the current app should keep telling users to verify water and carry/treat accordingly.");
   lines.push("- Consider adding a small gear glossary or tooltip for microspikes, water filters, purification tablets, UPF clothing, and bear spray access.");
-  lines.push("- Consider adding UI tests for the `Check first` timing-warning card so the visual treatment remains stable.");
+  lines.push("- Consider adding UI tests for the overall alert area and affected-by chips so the visual treatment remains stable.");
   lines.push("");
 
   return `${lines.join("\n")}\n`;

@@ -83,6 +83,12 @@ function validDraft(): AiReviewDraft {
         sourceLabels: ["official", "inferred"],
       },
       {
+        itemName: "Extra dry socks",
+        explanation:
+          "The forecast context includes wet weather, so a dry sock backup is useful for blister prevention.",
+        sourceLabels: ["inferred"],
+      },
+      {
         itemName: "First-aid basics",
         explanation:
           "The rule-based list keeps a basic first-aid item for a longer day hike.",
