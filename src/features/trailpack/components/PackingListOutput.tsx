@@ -9,7 +9,7 @@ type Priority = "Essential" | "Optional";
 type PrioritizedItem = PackingItem & {
   priority: Priority;
   alertImpactTags: string[];
-  isCritical: boolean;
+  criticalKind: "trip-decision" | "required-preparedness" | null;
 };
 
 const GROUP_ORDER = [
@@ -30,6 +30,12 @@ const FOOD_WATER_ITEM_ORDER = new Map([
   ["Extra food reserve", 3],
   ["Electrolytes", 4],
   ["Salty snacks", 4],
+]);
+
+const CRITICAL_SAFETY_ITEM_ORDER = new Map([
+  ["Trip safety decision", 0],
+  ["Review active alerts before leaving", 1],
+  ["Bear spray", 2],
 ]);
 
 export function PackingListOutput({
@@ -181,7 +187,12 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-semibold text-slate-950">{item.name}</p>
                 <PriorityBadge priority={item.priority} />
-                {item.isCritical ? <StatusBadge tone="critical" label="Critical safety" /> : null}
+                {item.criticalKind === "trip-decision" ? (
+                  <StatusBadge tone="danger" label="Change plan" />
+                ) : null}
+                {item.criticalKind === "required-preparedness" ? (
+                  <StatusBadge tone="critical" label="Non-negotiable gear" />
+                ) : null}
                 {item.alertImpactTags.length > 0 ? (
                   <StatusBadge tone="alert" label="Alert changes this" />
                 ) : null}
@@ -272,11 +283,13 @@ function StatusBadge({
   tone,
   label,
 }: {
-  tone: "alert" | "critical";
+  tone: "alert" | "critical" | "danger";
   label: string;
 }) {
   const className =
-    tone === "critical"
+    tone === "danger"
+      ? "border-red-400 bg-red-800 text-white"
+      : tone === "critical"
       ? "border-red-300 bg-red-700 text-white"
       : "border-amber-300 bg-amber-200 text-amber-950";
 
@@ -306,7 +319,11 @@ function ContextChip({
 }
 
 function recommendationRowClassName(item: PrioritizedItem): string {
-  if (item.isCritical) {
+  if (item.criticalKind === "trip-decision") {
+    return "border-red-400 bg-red-50 shadow-md";
+  }
+
+  if (item.criticalKind === "required-preparedness") {
     return "border-red-300 bg-red-50 shadow-sm";
   }
 
@@ -322,7 +339,11 @@ function recommendationRowClassName(item: PrioritizedItem): string {
 }
 
 function recommendationAccentClassName(item: PrioritizedItem): string {
-  if (item.isCritical) {
+  if (item.criticalKind === "trip-decision") {
+    return "bg-red-800";
+  }
+
+  if (item.criticalKind === "required-preparedness") {
     return "bg-red-600";
   }
 
@@ -378,18 +399,29 @@ function prioritizeItem(
     ...item,
     priority,
     alertImpactTags: affectedBy.filter((tag) => activeAlertTags.has(tag)),
-    isCritical: item.name === "Bear spray",
+    criticalKind: criticalKindForItem(item),
   };
 }
 
 function sortGroupItems(title: GroupTitle, items: PrioritizedItem[]): PrioritizedItem[] {
+  if (title === "Critical Safety") {
+    return sortByItemOrder(items, CRITICAL_SAFETY_ITEM_ORDER);
+  }
+
   if (title !== "Food & Water") {
     return items;
   }
 
+  return sortByItemOrder(items, FOOD_WATER_ITEM_ORDER);
+}
+
+function sortByItemOrder(
+  items: PrioritizedItem[],
+  itemOrder: Map<string, number>,
+): PrioritizedItem[] {
   return [...items].sort((left, right) => {
-    const leftOrder = FOOD_WATER_ITEM_ORDER.get(left.name) ?? 99;
-    const rightOrder = FOOD_WATER_ITEM_ORDER.get(right.name) ?? 99;
+    const leftOrder = itemOrder.get(left.name) ?? 99;
+    const rightOrder = itemOrder.get(right.name) ?? 99;
     if (leftOrder !== rightOrder) {
       return leftOrder - rightOrder;
     }
@@ -400,6 +432,20 @@ function sortGroupItems(title: GroupTitle, items: PrioritizedItem[]): Prioritize
 
     return left.name.localeCompare(right.name);
   });
+}
+
+function criticalKindForItem(
+  item: PackingItem,
+): PrioritizedItem["criticalKind"] {
+  if (item.name === "Trip safety decision") {
+    return "trip-decision";
+  }
+
+  if (item.name === "Bear spray") {
+    return "required-preparedness";
+  }
+
+  return null;
 }
 
 function groupForItem(itemName: string): GroupTitle {
@@ -452,7 +498,11 @@ function groupForItem(itemName: string): GroupTitle {
   }
 
   if (
-    ["Bear spray", "Review active alerts before leaving"].includes(itemName)
+    [
+      "Trip safety decision",
+      "Bear spray",
+      "Review active alerts before leaving",
+    ].includes(itemName)
   ) {
     return "Critical Safety";
   }

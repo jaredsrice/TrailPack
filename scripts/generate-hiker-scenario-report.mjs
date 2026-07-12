@@ -80,6 +80,45 @@ const templates = [
       trailConditions: "unknown trail conditions and possible delayed exit",
     },
   },
+  {
+    id: "flash-flood-warning",
+    title: "Flash flood warning",
+    intent:
+      "Stress critical-danger language where changing the plan matters more than adding gear.",
+    weatherMode: "storm",
+    alertsMode: "flash-flood",
+    userInput: {
+      expectedDuration: "4 hours",
+      startTime: "11:00",
+      trailConditions: "rain in the area with low spots and creek crossings",
+    },
+  },
+  {
+    id: "severe-storm-lightning",
+    title: "Severe storm and lightning risk",
+    intent:
+      "Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.",
+    weatherMode: "storm",
+    alertsMode: "lightning",
+    userInput: {
+      expectedDuration: "5 hours",
+      startTime: "13:00",
+      trailConditions: "exposed sections with thunderstorm risk later in the day",
+    },
+  },
+  {
+    id: "extreme-heat-warning",
+    title: "Extreme heat warning",
+    intent:
+      "Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.",
+    weatherMode: "extreme-heat",
+    alertsMode: "extreme-heat",
+    userInput: {
+      expectedDuration: "6 hours",
+      startTime: "10:00",
+      trailConditions: "dry exposed trail with limited shade",
+    },
+  },
 ];
 
 const profileDurations = {
@@ -135,6 +174,28 @@ function weatherFor(mode, base) {
     };
   }
 
+  if (mode === "storm") {
+    return {
+      ...common,
+      summary: "Thunderstorms, heavy rain, and gusty wind may affect the hiking window.",
+      temperatureF: { high: 64, low: 44, current: 58 },
+      precipitationChance: 85,
+      windMph: 28,
+      conditions: ["rain", "wind", "storm"],
+    };
+  }
+
+  if (mode === "extreme-heat") {
+    return {
+      ...common,
+      summary: "Dangerous heat with exposed sun and very hot afternoon temperatures.",
+      temperatureF: { high: 101, low: 68, current: 93 },
+      precipitationChance: 5,
+      windMph: 8,
+      conditions: ["sun", "heat"],
+    };
+  }
+
   return {
     ...common,
     summary: "Hot, sunny, and exposed with dry trail conditions.",
@@ -142,6 +203,47 @@ function weatherFor(mode, base) {
     precipitationChance: 5,
     windMph: 10,
     conditions: ["sun", "heat", "wind"],
+  };
+}
+
+function alertsFor(mode, base) {
+  if (!mode) {
+    return base;
+  }
+
+  const sourceUrl = "https://www.nps.gov/grte/planyourvisit/conditions.htm";
+  const alertByMode = {
+    "flash-flood": {
+      title: "Flash Flood Warning",
+      description:
+        "Flash flooding is possible in drainages, low spots, and creek crossings. Avoid flooded crossings and low-lying areas.",
+      severity: "caution",
+    },
+    lightning: {
+      title: "Severe Thunderstorm Warning",
+      description:
+        "Severe thunderstorms with lightning, damaging wind, and heavy rain are possible during the hiking window.",
+      severity: "caution",
+    },
+    "extreme-heat": {
+      title: "Extreme Heat Warning",
+      description:
+        "Dangerous heat is expected. Heat illness risk can become serious during exposed hiking even with extra water.",
+      severity: "caution",
+    },
+  };
+  const alert = alertByMode[mode];
+
+  return {
+    hasActiveAlerts: true,
+    alerts: [
+      {
+        ...alert,
+        source: "NPS",
+        sourceUrl,
+      },
+    ],
+    label: "official",
   };
 }
 
@@ -168,6 +270,7 @@ function evaluateLens(run, lens) {
   const notes = [];
   const hasTimingAlert = run.rec.tripAlerts.some((alert) => alert.id === "unusual-duration");
   const hasHeatAlert = run.rec.tripAlerts.some((alert) => alert.id === "heat-sun");
+  const hasDangerAlert = run.rec.tripAlerts.some((alert) => alert.severity === "danger");
   const water = all.get("Water");
   const waterPlan = all.get("Water filter or treatment backup");
   const socks = all.get("Extra dry socks");
@@ -176,6 +279,7 @@ function evaluateLens(run, lens) {
   const layerEssential = essential.has("Light jacket or warm layer");
   const traction = essential.has("Traction devices (microspikes)");
   const alert = essential.get("Review active alerts before leaving");
+  const tripDecision = essential.get("Trip safety decision");
 
   if (lens === "seasoned") {
     if (hasTimingAlert) {
@@ -204,10 +308,15 @@ function evaluateLens(run, lens) {
       );
     }
     if (alert) {
-      notes.push("Good: official trail-work context is visible before the user commits to the route.");
+      notes.push("Good: official alert context is visible before the user commits to the route.");
     }
     if (hasHeatAlert) {
       notes.push("Good: heat/sun exposure appears as a trip-level warning, not only as a water note.");
+    }
+    if (tripDecision) {
+      notes.push(
+        `Good: trip-decision danger is separated from required gear, with a direct plan action: ${tripDecision.recommendation}`,
+      );
     }
   }
 
@@ -215,6 +324,9 @@ function evaluateLens(run, lens) {
     notes.push(
       `Clear action seen: ${water ? water.name + " - " + water.recommendation : "water guidance missing"}`,
     );
+    if (tripDecision) {
+      notes.push(`Non-negotiable plan decision is hard to miss: ${tripDecision.recommendation}`);
+    }
     if (food) {
       notes.push(`Food is concrete: ${food.recommendation}`);
     }
@@ -252,8 +364,14 @@ function evaluateLens(run, lens) {
     if (waterPlan) {
       notes.push("Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.");
     }
+    if (tripDecision) {
+      notes.push(`Trip decision: ${tripDecision.recommendation}`);
+    }
     if (run.rec.tripAlerts.length > 0) {
       notes.push(`Overall alerts: ${run.rec.tripAlerts.map((item) => item.title).join("; ")}.`);
+    }
+    if (hasDangerAlert && !tripDecision) {
+      notes.push("Issue: a danger-level trip alert appeared without a matching Trip safety decision row.");
     }
     if (run.rec.missingDetails.length > 0) {
       notes.push(`Still asks for: ${run.rec.missingDetails.join(" ")}`);
@@ -290,7 +408,7 @@ function runMatrix() {
         rec: generatePackingRecommendation(
           trail,
           weatherFor(template.weatherMode, base.weather),
-          base.alerts,
+          alertsFor(template.alertsMode, base.alerts),
           userInput,
         ),
       };
@@ -323,6 +441,16 @@ function findingSummary(runs) {
     .every((run) =>
       run.rec.essential.some((item) => item.name === "Review active alerts before leaving"),
     );
+  const criticalDangerRuns = runs.filter((run) =>
+    ["flash-flood-warning", "severe-storm-lightning", "extreme-heat-warning"].includes(
+      run.scenario.id,
+    ),
+  );
+  const criticalDangerCovered = criticalDangerRuns.every(
+    (run) =>
+      run.rec.essential.some((item) => item.name === "Trip safety decision") &&
+      run.rec.tripAlerts.some((alert) => alert.severity === "danger"),
+  );
 
   return [
     `${runs.length} app scenarios were run: ${Object.keys(SUPPORTED_TRAILS).length} trails x ${templates.length} scenario templates.`,
@@ -340,7 +468,10 @@ function findingSummary(runs) {
     taggartAlerts
       ? "Every Taggart scenario surfaced the saved official 2026 NPS trail-work alert."
       : "Issue: Taggart alert did not appear consistently.",
-    "Each app output was reviewed through three hiker scenarios, for 54 hiker-lens reads total.",
+    criticalDangerCovered
+      ? "All critical-danger scenarios produced both a danger-level trip alert and a Trip safety decision row."
+      : "Issue: at least one critical-danger scenario did not produce a matching trip decision.",
+    `Each app output was reviewed through three hiker scenarios, for ${runs.length * 3} hiker-lens reads total.`,
   ];
 }
 
@@ -364,6 +495,7 @@ function renderReport(runs) {
   lines.push("");
   lines.push("- The current branch is much stronger than the prior stiff output for long-day food, water, headlamp, layers, Taggart alerts, abnormal duration handling, optional water backup, and snow/ice traction explanation.");
   lines.push("- Water is now framed as a realistic frontcountry carry amount, not an indefinitely scaled total. The app still avoids naming route-specific water sources because those require verified source-backed data.");
+  lines.push("- Critical danger is now split from required preparedness: closures, flash flooding, lightning, and extreme heat create a Trip safety decision; bear spray remains non-negotiable gear for bear country.");
   lines.push("- Weather and unusual-duration concerns now appear as overall alerts, while affected recommendation rows carry context markers such as Heat, Wet, Duration, or Official alert.");
   lines.push("- The snow/ice gear-literacy gap is now partly addressed: microspikes are described as pull-on metal traction that must fit the user's shoes or boots, with buy/rent guidance kept generic instead of inventing a route-specific rental location.");
   lines.push("- The seasoned-hiker lens accepts the no-invented-water-source direction. The correct next step would be verified route-specific water-source data, not freer copy.");
@@ -437,6 +569,9 @@ function renderReport(runs) {
       lines.push(`Trip alerts: ${run.rec.tripAlerts.map((alert) => alert.title).join("; ") || "none"}.`);
       lines.push("");
       lines.push("Key outputs:");
+      if (all.has("Trip safety decision")) {
+        lines.push(`- Trip decision: ${briefItem(all.get("Trip safety decision"))}`);
+      }
       lines.push(`- Water: ${briefItem(all.get("Water"))}`);
       lines.push(`- Water backup: ${briefItem(all.get("Water filter or treatment backup"))}`);
       lines.push(`- Food: ${briefItem(all.get("Food"))}`);

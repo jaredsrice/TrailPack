@@ -503,6 +503,121 @@ export function analyzeTrailConditions(input?: string): TrailConditionFlags {
 }
 
 type AlertItem = AlertContext["alerts"][number];
+type TripDecisionDangerKind =
+  | "closure"
+  | "flash-flood"
+  | "lightning"
+  | "extreme-heat"
+  | "high-water"
+  | "wildfire-smoke"
+  | "avalanche";
+
+interface TripDecisionDanger {
+  kind: TripDecisionDangerKind;
+  title: string;
+  tag: string;
+  recommendation: string;
+  why: string;
+  summary: string;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+  sourceUrl?: string;
+  source: "alert" | "weather";
+}
+
+interface AlertDecisionRule {
+  kind: TripDecisionDangerKind;
+  tag: string;
+  title: string;
+  affectedBy?: string[];
+  matcher: (alert: AlertItem, text: string) => boolean;
+  recommendation: string;
+  why: string;
+}
+
+const ALERT_DECISION_RULES: AlertDecisionRule[] = [
+  {
+    kind: "closure",
+    tag: "Closure",
+    title: "Closed route or area",
+    matcher: (alert, text) =>
+      alert.severity === "closure" ||
+      /\b(closure|closed|do not enter|area closed|trail closed)\b/i.test(text),
+    recommendation:
+      "Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.",
+    why:
+      "A closure is a trip decision, not a packing problem. Gear does not make a closed section open or safe to use.",
+  },
+  {
+    kind: "flash-flood",
+    tag: "Flash flood",
+    title: "Flash flood danger",
+    affectedBy: ["Wet", "Weather"],
+    matcher: (_alert, text) => /\b(flash flood|flash flooding|flood warning)\b/i.test(text),
+    recommendation:
+      "Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.",
+    why:
+      "Flash flooding is a trip decision danger. Extra gear does not make fast water, flooded crossings, or drainage channels safe.",
+  },
+  {
+    kind: "lightning",
+    tag: "Lightning",
+    title: "Lightning or severe storm danger",
+    affectedBy: ["Wet", "Wind", "Weather"],
+    matcher: (_alert, text) =>
+      /\b(lightning|severe thunderstorm|thunderstorm warning|severe storm|damaging wind)\b/i.test(text),
+    recommendation:
+      "Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.",
+    why:
+      "Lightning and severe storms are not solved by packing an extra item. The safer decision is to avoid exposed trail time during the warning window.",
+  },
+  {
+    kind: "extreme-heat",
+    tag: "Extreme heat",
+    title: "Extreme heat danger",
+    affectedBy: ["Heat"],
+    matcher: (_alert, text) =>
+      /\b(extreme heat|excessive heat|heat warning|dangerous heat|heat advisory)\b/i.test(text),
+    recommendation:
+      "Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    why:
+      "Extreme heat is a trip decision danger. Water and electrolytes help, but they do not remove heat illness risk during dangerous heat.",
+  },
+  {
+    kind: "high-water",
+    tag: "High water",
+    title: "High water danger",
+    affectedBy: ["Wet"],
+    matcher: (_alert, text) =>
+      /\b(high water|rising water|swift water|fast water|dangerous crossing|creek crossing|stream crossing)\b/i.test(text),
+    recommendation:
+      "Do not enter swift or high water. Reroute, wait, or turn back if the route depends on an unsafe crossing.",
+    why:
+      "High water is a route decision, not a gear checklist item. A normal day hike can become unsafe if a crossing is moving fast or rising.",
+  },
+  {
+    kind: "wildfire-smoke",
+    tag: "Wildfire / smoke",
+    title: "Wildfire or smoke danger",
+    matcher: (_alert, text) =>
+      /\b(wildfire|fire closure|evacuation|heavy smoke|smoke advisory|air quality)\b/i.test(text),
+    recommendation:
+      "Do not hike into a closure, evacuation area, or heavy-smoke warning. Choose another route or wait for safer conditions.",
+    why:
+      "Wildfire and heavy smoke can change both access and health risk. This is a plan decision before it is a packing decision.",
+  },
+  {
+    kind: "avalanche",
+    tag: "Avalanche",
+    title: "Avalanche danger",
+    affectedBy: ["Snow/Ice"],
+    matcher: (_alert, text) => /\b(avalanche|slide danger|snow slide)\b/i.test(text),
+    recommendation:
+      "Do not continue into avalanche terrain without the right forecast, training, partners, and rescue gear. Choose a safer route.",
+    why:
+      "Avalanche danger is outside normal day-hike packing guidance. The safer decision is to avoid the terrain unless you are prepared for avalanche travel.",
+  },
+];
 
 /**
  * An alert may back an "official" label only when it is an NPS alert whose
@@ -530,6 +645,91 @@ export function isOfficialNpsAlert(alert: AlertItem): boolean {
 
   const host = parsed.hostname.toLowerCase();
   return host === "nps.gov" || host.endsWith(".nps.gov");
+}
+
+function alertText(alert: AlertItem): string {
+  return `${alert.title} ${alert.description}`.toLowerCase();
+}
+
+function alertTitles(alerts: AlertItem[]): string {
+  return alerts.map((alert) => alert.title).join("; ");
+}
+
+function firstOfficialAlertSourceUrl(alerts: AlertItem[]): string | undefined {
+  return alerts.find(isOfficialNpsAlert)?.sourceUrl;
+}
+
+function sourceLabelsForMatchedAlerts(alerts: AlertItem[]): PackingItem["sourceLabels"] {
+  return alerts.length > 0 && alerts.every(isOfficialNpsAlert)
+    ? ["official", "inferred"]
+    : ["unavailable", "inferred"];
+}
+
+function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger | null {
+  if (!alerts.hasActiveAlerts || alerts.alerts.length === 0) {
+    return null;
+  }
+
+  for (const rule of ALERT_DECISION_RULES) {
+    const matchedAlerts = alerts.alerts.filter((alert) => rule.matcher(alert, alertText(alert)));
+    if (matchedAlerts.length === 0) {
+      continue;
+    }
+
+    const titles = alertTitles(matchedAlerts);
+    return {
+      kind: rule.kind,
+      title: rule.title,
+      tag: rule.tag,
+      recommendation: rule.recommendation,
+      why: rule.why,
+      summary: `${rule.title}: ${titles}. ${rule.recommendation}`,
+      affectedBy: uniqueStrings([
+        "Critical danger",
+        rule.tag,
+        ...(rule.affectedBy ?? []),
+        "Official alert",
+      ]),
+      sourceLabels: sourceLabelsForMatchedAlerts(matchedAlerts),
+      sourceUrl: firstOfficialAlertSourceUrl(matchedAlerts),
+      source: "alert",
+    };
+  }
+
+  return null;
+}
+
+function buildWeatherTripDecisionDanger(weather: WeatherContext): TripDecisionDanger | null {
+  const high = weather.temperatureF?.high ?? Number.NEGATIVE_INFINITY;
+  const current = weather.temperatureF?.current ?? Number.NEGATIVE_INFINITY;
+  if (high < 95 && current < 95) {
+    return null;
+  }
+
+  return {
+    kind: "extreme-heat",
+    title: "Extreme heat danger",
+    tag: "Extreme heat",
+    recommendation:
+      "Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    why:
+      "Extreme heat is a trip decision danger. Water and electrolytes help, but they do not remove heat illness risk during dangerous heat.",
+    summary:
+      "Extreme heat can make the planned hike unsafe even with extra water. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    affectedBy: ["Critical danger", "Extreme heat", "Heat"],
+    sourceLabels: ["forecast-based", "inferred"],
+    source: "weather",
+  };
+}
+
+function buildTripDecisionDanger({
+  alerts,
+  weather,
+}: {
+  alerts: AlertContext;
+  weather: WeatherContext;
+}): TripDecisionDanger | null {
+  return buildAlertTripDecisionDanger(alerts) ?? buildWeatherTripDecisionDanger(weather);
 }
 
 function formatTrailStats(trail: TrailProfile): string {
@@ -610,13 +810,27 @@ function buildUnusualDurationAlert({
 function buildWeatherTripAlerts({
   weather,
   hotConditions,
+  dangerousHeatConditions,
+  suppressHeatTripAlert,
 }: {
   weather: WeatherContext;
   hotConditions: boolean;
+  dangerousHeatConditions: boolean;
+  suppressHeatTripAlert: boolean;
 }): TripAlert[] {
   const tripAlerts: TripAlert[] = [];
 
-  if (hotConditions) {
+  if (!suppressHeatTripAlert && dangerousHeatConditions) {
+    tripAlerts.push({
+      id: "dangerous-heat",
+      title: "Dangerous heat",
+      summary:
+        "Dangerous heat can make the planned hike unsafe even with extra water. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+      severity: "danger",
+      affectedBy: ["Critical danger", "Extreme heat", "Heat"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  } else if (!suppressHeatTripAlert && hotConditions) {
     tripAlerts.push({
       id: "heat-sun",
       title: "Heat / sun exposure",
@@ -655,25 +869,55 @@ function buildWeatherTripAlerts({
   return tripAlerts;
 }
 
-function buildActiveAlertTripAlert(alerts: AlertContext): TripAlert | null {
+function buildActiveAlertTripAlert(
+  alerts: AlertContext,
+  tripDecisionDanger: TripDecisionDanger | null,
+): TripAlert | null {
   if (!alerts.hasActiveAlerts || alerts.alerts.length === 0) {
     return null;
   }
 
   const allAlertsOfficial = alerts.alerts.every(isOfficialNpsAlert);
   const closure = alerts.alerts.some((alert) => alert.severity === "closure");
-  const alertTitles = alerts.alerts.map((alert) => alert.title).join("; ");
+  const titles = alertTitles(alerts.alerts);
+  const alertDanger = tripDecisionDanger?.source === "alert" ? tripDecisionDanger : null;
 
   return {
     id: "active-alerts",
-    title: closure ? "Active closure or trail alert" : "Active trail alert",
-    summary:
-      `Current alert context includes: ${alertTitles}. Review it before leaving because closures, maintenance, high water, or wildlife activity can change the route and packing plan.`,
-    severity: closure ? "danger" : "caution",
-    affectedBy: ["Official alert"],
+    title: alertDanger
+      ? alertDanger.title
+      : closure
+        ? "Active closure or trail alert"
+        : "Active trail alert",
+    summary: alertDanger
+      ? alertDanger.summary
+      : `Current alert context includes: ${titles}. Review it before leaving because closures, maintenance, high water, or wildlife activity can change the route and packing plan.`,
+    severity: alertDanger || closure ? "danger" : "caution",
+    affectedBy: alertDanger?.affectedBy ?? ["Official alert"],
     sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
     sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
   };
+}
+
+function buildTripSafetyDecisionItem(danger: TripDecisionDanger): PackingItem {
+  const sourceUrl = danger.sourceLabels.includes("official") ? danger.sourceUrl : undefined;
+
+  return item({
+    name: "Trip safety decision",
+    question: "Is this hike safe to start?",
+    recommendation: danger.recommendation,
+    why:
+      `${danger.why} This is different from non-negotiable gear like bear spray: the safer action may be to delay, reroute, shorten, turn back, or not start.`,
+    affectedBy: danger.affectedBy,
+    contextNotes: [
+      {
+        label: "Decision type",
+        text: "Trip decision danger means changing the plan may matter more than adding gear.",
+      },
+    ],
+    sourceLabels: danger.sourceLabels,
+    sourceUrl,
+  });
 }
 
 function buildWaterLogisticsItem({
@@ -1055,7 +1299,17 @@ export function generatePackingRecommendation(
     weather.conditions.includes("heat") ||
     (weather.temperatureF?.high ?? 0) >= 85 ||
     (weather.temperatureF?.current ?? 0) >= 85;
-  const tripAlerts = buildWeatherTripAlerts({ weather, hotConditions });
+  const dangerousHeatConditions =
+    (weather.temperatureF?.high ?? 0) >= 95 ||
+    (weather.temperatureF?.current ?? 0) >= 95;
+  const tripDecisionDanger = buildTripDecisionDanger({ alerts, weather });
+  const tripAlerts = buildWeatherTripAlerts({
+    weather,
+    hotConditions,
+    dangerousHeatConditions,
+    suppressHeatTripAlert:
+      tripDecisionDanger?.source === "alert" && tripDecisionDanger.kind === "extreme-heat",
+  });
   const bugSeasonDate =
     userInput.plannedDate ?? weather.plannedDate ?? weather.daylight?.date;
 
@@ -1433,7 +1687,7 @@ export function generatePackingRecommendation(
   );
 
   if (alerts.hasActiveAlerts) {
-    const activeAlert = buildActiveAlertTripAlert(alerts);
+    const activeAlert = buildActiveAlertTripAlert(alerts, tripDecisionDanger);
     if (activeAlert) {
       tripAlerts.push(activeAlert);
     }
@@ -1443,17 +1697,21 @@ export function generatePackingRecommendation(
     // aggregate cannot claim official provenance.
     const allAlertsOfficial =
       alerts.alerts.length > 0 && alerts.alerts.every(isOfficialNpsAlert);
-    const alertTitles = alerts.alerts.map((alert) => alert.title).join("; ");
+    const titles = alertTitles(alerts.alerts);
     essential.push(
       item({
         name: "Review active alerts before leaving",
         question: "Are there active NPS alerts I should check?",
-        answer: `Review active alerts before leaving: ${alertTitles}. Closures, high water, wildlife activity, or maintenance can change the route and the packing plan.`,
+        answer: `Review active alerts before leaving: ${titles}. Closures, high water, wildlife activity, or maintenance can change the route and the packing plan.`,
         affectedBy: ["Official alert"],
         sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
         sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
       }),
     );
+  }
+
+  if (tripDecisionDanger) {
+    essential.push(buildTripSafetyDecisionItem(tripDecisionDanger));
   }
 
   if (gain >= 1000 && !conditions.snowOrIce) {

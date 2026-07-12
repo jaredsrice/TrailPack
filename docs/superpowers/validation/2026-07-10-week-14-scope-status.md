@@ -45,9 +45,10 @@ behavior. Manual entry remains available for unsupported hikes.
   trail conditions. The app now gives generic water-treatment and traction
   planning guidance, while route-specific logistics remain future work unless
   verified data exists.
-- Treat abnormal planned durations and weather risks as trip-level warning
-  signals. The app now shows overall alerts and marks affected recommendation
-  rows instead of burying plan-level warnings inside one gear item.
+- Treat abnormal planned durations, weather risks, and official danger alerts as
+  trip-level signals. Critical dangers such as closure, flash flood, lightning,
+  and extreme heat now create a trip-safety decision instead of being handled
+  like ordinary packing adjustments.
 
 ## Must-Have Requirements Status
 
@@ -84,11 +85,12 @@ most actionable issues:
   purification tablets, or boiling without inventing route-specific water
   sources.
 - Overall alerts now cover unusual duration, heat/sun exposure, wet weather,
-  cold/snow context, and active NPS alerts. Affected recommendation rows show
-  context markers such as `Heat`, `Wet`, `Duration`, or `Official alert`.
-- Bear spray and active-alert review rows now render in a first-position
-  `Critical Safety` group, and alert-affected rows now use stronger visual
-  styling plus an `Alert changes this` marker.
+  cold/snow context, active NPS alerts, and critical danger conditions. Affected
+  recommendation rows show context markers such as `Heat`, `Wet`, `Duration`,
+  or `Official alert`.
+- Trip safety decisions, bear spray, and active-alert review rows now render in
+  a first-position `Critical Safety` group. Trip decisions get a `Change plan`
+  marker, while bear spray remains `Non-negotiable gear`.
 - Extra dry socks now appear as a separate optional row with blister and
   cold/wet-foot rationale.
 - Salt support now separates `Electrolytes` from `Salty snacks`: high-heat
@@ -112,9 +114,10 @@ Current verification commands pass:
 - `npm run scenario:stress`
 - `git diff --check`
 
-The hiker scenario report covers 18 app scenarios across three supported trails
+The hiker scenario report covers 27 app scenarios across three supported trails
 and reviews each output through three hiker lenses: seasoned, casual/new, and
-middle-of-the-road.
+middle-of-the-road. The added stress templates cover flash flood, severe storm
+and lightning, and extreme heat warnings.
 
 ## Work Left For 499A
 

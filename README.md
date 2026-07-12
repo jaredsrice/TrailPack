@@ -111,25 +111,32 @@ trail-work alert fixture.
 ## Recommendation Style
 
 Packing items are rendered as grouped accordion rows, with `Critical Safety`
-first when bear spray or active alerts are present. The rule engine still tracks
-the question each row answers, but the UI shows clean topics such as
-`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. The first line
-is the clear action; the supporting `Why`, source labels, and context notes stay
-inside the dropdown so users can skim quickly or read more when needed.
+first when bear spray, active alerts, or trip-decision dangers are present. The
+rule engine still tracks the question each row answers, but the UI shows clean
+topics such as `Trip safety decision`, `Trail footwear`, `Water`, `Food`,
+`Headlamp`, and `Bear spray`. The first line is the clear action; the supporting
+`Why`, source labels, and context notes stay inside the dropdown so users can
+skim quickly or read more when needed.
 
 Overall alerts appear above the packing list for plan-level issues such as heat,
 wet weather, active NPS alerts, or an unusual planned duration. Affected rows
 then show stronger row styling plus an `Alert changes this` marker alongside
 context tags such as `Heat`, `Wet`, `Duration`, or `Official alert`, so users can
-see which recommendations changed because of the alert. Long-day
-water now uses realistic frontcountry carry ranges and explicitly says to drink
-according to thirst. Water filter or treatment guidance is an optional backup
-unless the user plans to refill from an unverified source. Extra dry socks are a
-separate optional row with blister and warmth rationale, while snow or ice still
-adds traction guidance that explains what microspikes are and why regular tread
-may not be enough. Salt support is split into `Electrolytes` and `Salty snacks`
-so hot/exposed sustained effort can promote electrolytes while long non-hot days
-can promote salty food, with the alternate still shown as optional.
+see which recommendations changed because of the alert. Critical danger is
+separated from required preparedness: closures, flash flooding, lightning, high
+water, wildfire or heavy smoke, avalanche language, and dangerous heat can create
+a `Trip safety decision` with a `Change plan` marker, while bear spray remains
+`Non-negotiable gear` for bear-country preparedness.
+
+Long-day water now uses realistic frontcountry carry ranges and explicitly says
+to drink according to thirst. Water filter or treatment guidance is an optional
+backup unless the user plans to refill from an unverified source. Extra dry socks
+are a separate optional row with blister and warmth rationale, while snow or ice
+still adds traction guidance that explains what microspikes are and why regular
+tread may not be enough. Salt support is split into `Electrolytes` and
+`Salty snacks` so hot/exposed sustained effort can promote electrolytes while
+long non-hot days can promote salty food, with the alternate still shown as
+optional.
 
 ## Guarded AI Review Fixture
 

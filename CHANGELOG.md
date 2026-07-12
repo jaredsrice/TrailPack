@@ -61,6 +61,8 @@ change as the project develops.
   middle-of-the-road hiker lenses across all three supported trails.
 - A reusable `npm run scenario:stress` command that regenerates the hiker-scenario
   stress report from the current recommendation engine.
+- A trip-decision danger classifier for closures, flash flooding, lightning,
+  extreme heat, high water, wildfire or heavy smoke, and avalanche language.
 - An optional `Water filter or treatment backup` recommendation backed by NPS
   water-treatment basics.
 - A separate optional `Extra dry socks` row with blister and cold/wet-foot
@@ -111,12 +113,14 @@ change as the project develops.
 - Replaced the two-column packing-card layout with grouped accordion rows so
   related recommendations stay visually close while `Essential` and `Optional`
   remain visible as row badges.
-- Added a first-position `Critical Safety` recommendation group for bear spray
-  and active-alert review rows.
+- Added a first-position `Critical Safety` recommendation group for trip-safety
+  decisions, bear spray, and active-alert review rows.
 - Added affected-by markers to recommendation rows so overall alerts can connect
   to specific items without adding more text to the quick-scan view.
 - Strengthened essential and alert-affected row styling so required items and
   alert-driven changes stand out more clearly in the scan view.
+- Split critical safety styling into `Change plan` for trip-decision dangers and
+  `Non-negotiable gear` for required preparedness such as bear spray.
 - Split accordion content so users can scan the clear action before expanding
   the supporting trip context, sources, and context notes.
 - Moved dry-sock guidance out of `Trail footwear` and into a separate optional
@@ -154,6 +158,9 @@ change as the project develops.
 - Expanded bear-spray guidance to recommend one can per adult while keeping
   official NPS support tied to EPA-approved, immediately accessible bear spray.
 - Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
+- Expanded the hiker-scenario stress report with flash-flood, severe-storm, and
+  extreme-heat templates so critical-danger behavior is checked across all three
+  supported trails.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.

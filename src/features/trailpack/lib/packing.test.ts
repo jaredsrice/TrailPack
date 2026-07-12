@@ -58,6 +58,15 @@ const JENNY_SUMMER_DAYLIGHT_WEATHER: WeatherContext = {
   },
 };
 
+const EXTREME_HEAT_WEATHER: WeatherContext = {
+  ...CLEAR_WEATHER,
+  summary: "Extreme heat warning with exposed sun and very hot afternoon temperatures.",
+  temperatureF: { high: 101, low: 68, current: 93 },
+  precipitationChance: 0,
+  conditions: ["sun", "heat"],
+  label: "forecast-based",
+};
+
 function build(userInput: UserHikeInput = {}, weather: WeatherContext = CLEAR_WEATHER) {
   return generatePackingRecommendation(JENNY_LAKE_LOOP, weather, NO_ALERTS, userInput);
 }
@@ -885,6 +894,130 @@ describe("source provenance", () => {
     expect(alertItem?.sourceUrl).toBe(
       "https://www.nps.gov/grte/planyourvisit/conditions.htm",
     );
+  });
+
+  it("separates required preparedness from trip-decision danger", () => {
+    const rec = build();
+
+    expect(names(rec.essential)).toContain("Bear spray");
+    expect(names(rec.essential)).not.toContain("Trip safety decision");
+
+    const bearSpray = itemNamed(rec, "Bear spray");
+    expect(bearSpray.recommendation).toMatch(/Carry bear spray/i);
+    expect(bearSpray.why).not.toMatch(/delay|reroute|do not start/i);
+  });
+
+  it("adds a trip safety decision for flash flood warnings", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Flash Flood Warning",
+          description:
+            "Flash flooding is possible in drainages, low spots, and creek crossings.",
+          severity: "caution",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+      ],
+      label: "official",
+    };
+
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const decision = itemNamed(rec, "Trip safety decision");
+    const alert = rec.tripAlerts.find((item) => item.id === "active-alerts");
+
+    expect(alert?.severity).toBe("danger");
+    expect(alert?.title).toMatch(/Flash flood/i);
+    expect(alert?.affectedBy).toEqual(
+      expect.arrayContaining(["Critical danger", "Flash flood", "Official alert"]),
+    );
+    expect(decision.recommendation).toMatch(/Do not start/i);
+    expect(decision.recommendation).toMatch(/Delay|turn back/i);
+    expect(decision.why).toMatch(/gear does not make/i);
+    expect(decision.why).toMatch(/different from non-negotiable gear like bear spray/i);
+    expect(decision.affectedBy).toEqual(
+      expect.arrayContaining(["Critical danger", "Flash flood", "Official alert"]),
+    );
+    expect(decision.sourceLabels).toContain("official");
+    expect(decision.sourceUrl).toBe("https://www.nps.gov/grte/planyourvisit/conditions.htm");
+  });
+
+  it("adds a trip safety decision for closure alerts", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Trail closure near Hidden Falls",
+          description: "Section closed for maintenance.",
+          severity: "closure",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+      ],
+      label: "official",
+    };
+
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const decision = itemNamed(rec, "Trip safety decision");
+
+    expect(decision.recommendation).toMatch(/Do not start the closed route/i);
+    expect(decision.why).toMatch(/A closure is a trip decision/i);
+    expect(names(rec.essential)).toContain("Review active alerts before leaving");
+  });
+
+  it("adds a forecast-based trip safety decision for dangerous heat", () => {
+    const rec = generatePackingRecommendation(
+      JENNY_LAKE_LOOP,
+      EXTREME_HEAT_WEATHER,
+      NO_ALERTS,
+      { expectedDuration: "4 hours" },
+    );
+    const decision = itemNamed(rec, "Trip safety decision");
+    const dangerAlert = rec.tripAlerts.find((item) => item.id === "dangerous-heat");
+
+    expect(dangerAlert?.severity).toBe("danger");
+    expect(dangerAlert?.affectedBy).toEqual(
+      expect.arrayContaining(["Critical danger", "Extreme heat", "Heat"]),
+    );
+    expect(decision.recommendation).toMatch(/Do not treat extra water/i);
+    expect(decision.recommendation).toMatch(/Start much earlier|move the hike/i);
+    expect(decision.sourceLabels).toContain("forecast-based");
+    expect(decision.sourceLabels).not.toContain("official");
+    expect(names(rec.essential)).not.toContain("Review active alerts before leaving");
+  });
+
+  it("uses official extreme heat alerts without duplicating the forecast heat alert", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Extreme Heat Warning",
+          description:
+            "Dangerous heat is expected. Heat illness risk can become serious during exposed hiking even with extra water.",
+          severity: "caution",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+      ],
+      label: "official",
+    };
+
+    const rec = generatePackingRecommendation(
+      JENNY_LAKE_LOOP,
+      EXTREME_HEAT_WEATHER,
+      alerts,
+      { expectedDuration: "4 hours" },
+    );
+    const activeAlert = rec.tripAlerts.find((item) => item.id === "active-alerts");
+    const decision = itemNamed(rec, "Trip safety decision");
+
+    expect(activeAlert?.title).toMatch(/Extreme heat danger/i);
+    expect(activeAlert?.affectedBy).toEqual(
+      expect.arrayContaining(["Critical danger", "Extreme heat", "Heat", "Official alert"]),
+    );
+    expect(rec.tripAlerts.some((item) => item.id === "dangerous-heat")).toBe(false);
+    expect(decision.sourceLabels).toContain("official");
   });
 
   it("surfaces the saved Taggart 2026 NPS trail-work alert", () => {
