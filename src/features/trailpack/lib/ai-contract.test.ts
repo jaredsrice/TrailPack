@@ -101,6 +101,12 @@ function validDraft(): AiReviewDraft {
         sourceLabels: ["official", "inferred"],
       },
       {
+        itemName: "Power bank / extra battery",
+        explanation:
+          "The longer profile makes backup power useful if a phone, GPS, or rechargeable headlamp is part of the navigation or light plan.",
+        sourceLabels: ["supported-profile", "official", "inferred"],
+      },
+      {
         itemName: "Trekking poles",
         explanation:
           "The supported trail profile includes enough elevation gain for poles to be useful on descent.",

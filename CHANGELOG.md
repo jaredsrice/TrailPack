@@ -160,6 +160,8 @@ change as the project develops.
 - Promoted navigation to an essential `Navigation / offline map` item backed by
   NPS Ten Essentials, with offline map or GPS route, battery, and physical backup
   guidance.
+- Added a `Power bank / extra battery` row for longer trips where a phone, GPS,
+  or rechargeable headlamp may be part of navigation or lighting.
 - Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
 - Expanded the hiker-scenario stress report with flash-flood, severe-storm, and
   extreme-heat templates so critical-danger behavior is checked across all three

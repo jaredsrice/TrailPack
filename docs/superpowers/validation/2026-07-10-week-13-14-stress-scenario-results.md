@@ -22,7 +22,7 @@ This report is generated from `npm run scenario:stress`, which calls `generatePa
 
 - The current branch is much stronger than the prior stiff output for long-day food, water, headlamp, layers, Taggart alerts, abnormal duration handling, optional water backup, and snow/ice traction explanation.
 - Water is now framed as a realistic frontcountry carry amount, not an indefinitely scaled total. The app still avoids naming route-specific water sources because those require verified source-backed data.
-- Critical danger is now split from required preparedness: closures, flash flooding, lightning, and extreme heat create a Trip safety decision; bear spray remains non-negotiable gear for bear country.
+- Critical danger is now split from safety-critical gear: closures, flash flooding, lightning, and extreme heat create a Trip safety decision; bear spray and navigation remain safety-critical gear.
 - Weather and unusual-duration concerns now appear as overall alerts, while affected recommendation rows carry context markers such as Heat, Wet, Duration, or Official alert.
 - The snow/ice gear-literacy gap is now partly addressed: microspikes are described as pull-on metal traction that must fit the user's shoes or boots, with buy/rent guidance kept generic instead of inventing a route-specific rental location.
 - The seasoned-hiker lens accepts the no-invented-water-source direction. The correct next step would be verified route-specific water-source data, not freer copy.
@@ -197,18 +197,18 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Jenny Lake Loop / Flash flood warning:
   - Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -247,42 +247,42 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - String Lake Loop / Flash flood warning:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Taggart Lake / Saved demo baseline:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Taggart Lake / Normal clear day with start time:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Taggart Lake / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Snow or ice with cold weather:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
@@ -290,14 +290,14 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Hot, exposed long day:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Taggart Lake / 18-hour edge case:
   - Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -305,20 +305,20 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Taggart Lake / Flash flood warning:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -491,7 +491,7 @@ Official profile in app: 7.1 mi, 1040 ft gain, 3-5 hours, Moderate.
 
 Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Sun protection, First-aid basics.
 Optional: Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail.
 
@@ -503,6 +503,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -520,7 +521,7 @@ Hiker lens read:
 
 Intent: Expected day-hike behavior with duration and daylight context.
 User input: duration 4 hours, start 09:00, conditions dry and clear.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics.
 Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: none.
 
@@ -532,6 +533,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -547,7 +549,7 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail.
 
@@ -559,6 +561,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 7 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -578,7 +581,7 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow.
 
@@ -590,6 +593,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring an insulating warm layer plus a rain or wind shell.
 
@@ -611,7 +615,7 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Trekking poles, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure.
 
@@ -623,6 +627,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 8 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -643,7 +648,7 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Rain shell, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Sun protection, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
@@ -655,6 +660,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Bring a small headlamp.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 18 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -678,7 +684,7 @@ Hiker lens read:
 
 Intent: Stress critical-danger language where changing the plan matters more than adding gear.
 User input: duration 4 hours, start 11:00, conditions rain in the area with low spots and creek crossings.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Flash flood danger.
 
@@ -691,6 +697,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Flash Flood Warning.
@@ -699,7 +706,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
@@ -710,9 +717,9 @@ Hiker lens read:
 
 ### Severe storm and lightning risk
 
-Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
+Intent: Stress exposed-route decision-making, overall alerts, and clear plan-changing safety decisions.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
@@ -725,6 +732,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Severe Thunderstorm Warning.
@@ -734,7 +742,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -749,7 +757,7 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Trekking poles, Light jacket or warm layer.
 Trip alerts: Extreme heat danger.
 
@@ -762,6 +770,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 6 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Extreme Heat Warning.
@@ -771,7 +780,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -803,6 +812,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -832,6 +842,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -846,7 +857,7 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
@@ -858,6 +869,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 7 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -878,7 +890,7 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow.
 
@@ -890,6 +902,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring an insulating warm layer plus a rain or wind shell.
 
@@ -911,7 +924,7 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
@@ -923,6 +936,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 8 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -944,7 +958,7 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics.
 Optional: Water filter or treatment backup, Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
@@ -956,6 +970,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Bring a small headlamp.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 18 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 
@@ -992,6 +1007,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Flash Flood Warning.
@@ -1000,7 +1016,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
@@ -1010,9 +1026,9 @@ Hiker lens read:
 
 ### Severe storm and lightning risk
 
-Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
+Intent: Stress exposed-route decision-making, overall alerts, and clear plan-changing safety decisions.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
@@ -1025,6 +1041,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Severe Thunderstorm Warning.
@@ -1034,7 +1051,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -1048,7 +1065,7 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Unusual duration; Extreme heat danger.
 
@@ -1061,6 +1078,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 6 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Extreme Heat Warning.
@@ -1071,7 +1089,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1104,6 +1122,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1112,7 +1131,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
@@ -1138,6 +1157,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1146,7 +1166,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to 2 hours plus route difficulty/weather where available.
@@ -1158,7 +1178,7 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Closed route or area.
 
@@ -1171,6 +1191,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 7 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1181,7 +1202,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1197,7 +1218,7 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow; Unusual duration; Closed route or area.
 
@@ -1210,6 +1231,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring an insulating warm layer plus a rain or wind shell.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1222,7 +1244,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
@@ -1239,7 +1261,7 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration; Closed route or area.
 
@@ -1252,6 +1274,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 8 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1263,7 +1286,7 @@ Hiker lens read:
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1279,7 +1302,7 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
 Trip alerts: Unusual duration; Closed route or area.
 
@@ -1292,6 +1315,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Bring a small headlamp.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 18 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -1303,7 +1327,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1333,6 +1357,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: not shown
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Flash Flood Warning.
@@ -1342,7 +1367,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -1353,9 +1378,9 @@ Hiker lens read:
 
 ### Severe storm and lightning risk
 
-Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
+Intent: Stress exposed-route decision-making, overall alerts, and clear plan-changing safety decisions.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Lightning or severe storm danger.
 
@@ -1368,6 +1393,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: not shown
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Severe Thunderstorm Warning.
@@ -1378,7 +1404,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1393,7 +1419,7 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Unusual duration; Extreme heat danger.
 
@@ -1406,6 +1432,7 @@ Key outputs:
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
+- Power backup: Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.
 - Extra food reserve: Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about 6 hr day.
 - Layer: Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.
 - Alert: Review active alerts before leaving: Extreme Heat Warning.
@@ -1416,7 +1443,7 @@ Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Non-negotiable plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.

@@ -496,6 +496,7 @@ function groupForItem(itemName: string): GroupTitle {
     [
       "Headlamp",
       "First-aid basics",
+      "Power bank / extra battery",
       "Route plan or shuttle check",
     ].includes(itemName)
   ) {

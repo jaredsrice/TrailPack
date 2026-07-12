@@ -142,7 +142,15 @@ describe("duration rule", () => {
   it("adds a headlamp and extra food for a long planned day (>= 6h) when daylight context is missing", () => {
     const rec = build({ expectedDuration: "7 hours" });
     expect(names(rec.essential)).toContain("Headlamp");
+    expect(names(rec.essential)).toContain("Power bank / extra battery");
     expect(names(rec.optional)).toContain("Extra food reserve");
+
+    const battery = itemNamed(rec, "Power bank / extra battery");
+    expect(battery.recommendation).toMatch(/power bank|spare battery/i);
+    expect(battery.recommendation).toMatch(/phone|GPS|rechargeable headlamp/i);
+    expect(battery.why).toMatch(/NPS Ten Essentials/i);
+    expect(battery.why).toMatch(/7 hr/i);
+    expect(battery.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
   });
 
   it("does not make a headlamp essential when summer daylight covers the plan", () => {
@@ -206,6 +214,18 @@ describe("duration rule", () => {
     const rec = build({ expectedDuration: "2 hours" });
     expect(names(rec.essential)).not.toContain("Headlamp");
     expect(names(rec.optional)).not.toContain("Extra food");
+  });
+
+  it("does not add a separate power backup row for a short supported hike", () => {
+    const rec = generatePackingRecommendation(
+      TAGGART_LAKE,
+      CLEAR_WEATHER,
+      NO_ALERTS,
+      { expectedDuration: "2 hours" },
+    );
+
+    expect(names(rec.essential)).toContain("Navigation / offline map");
+    expect(names(rec.essential)).not.toContain("Power bank / extra battery");
   });
 
   it("does not add long-day equipment for '1 hour 30 minutes'", () => {
@@ -685,6 +705,12 @@ describe("question-answer recommendation copy", () => {
     expect(navigation.why).toMatch(/NPS Ten Essentials/i);
     expect(navigation.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
 
+    const battery = itemNamed(rec, "Power bank / extra battery");
+    expect(battery.question).toBe("Do I need backup power?");
+    expect(battery.recommendation).toMatch(/power bank|charging cable|spare battery/i);
+    expect(battery.why).toMatch(/extra battery/i);
+    expect(battery.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
+
     const poles = itemNamed(rec, "Trekking poles");
     expect(poles.question).toBe("Are trekking poles recommended for this route?");
     expect(poles.recommendation).toMatch(/optional/i);
@@ -788,6 +814,7 @@ describe("manual entry fallback", () => {
       trailConditions: "icy and muddy",
     });
     expect(names(rec.essential)).toContain("Headlamp");
+    expect(names(rec.essential)).toContain("Power bank / extra battery");
     expect(names(rec.essential)).toContain("Traction devices (microspikes)");
     expect(names(rec.optional)).toContain("Water filter or treatment backup");
     expect(names(rec.optional)).toContain("Extra food reserve");
@@ -874,6 +901,18 @@ describe("source provenance", () => {
     expect(navigation?.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
   });
 
+  it("backs the long-day power backup item with the official NPS Ten Essentials source", () => {
+    const rec = build();
+    const battery = rec.essential.find(
+      (item) => item.name === "Power bank / extra battery",
+    );
+
+    expect(battery).toBeDefined();
+    expect(battery?.sourceLabels).toContain("official");
+    expect(battery?.sourceLabels).toContain("inferred");
+    expect(battery?.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
+  });
+
   it("only labels items official when they carry a source URL", () => {
     const rec = build();
     for (const item of [...rec.essential, ...rec.optional]) {
@@ -948,7 +987,7 @@ describe("source provenance", () => {
     expect(decision.recommendation).toMatch(/Do not start/i);
     expect(decision.recommendation).toMatch(/Delay|turn back/i);
     expect(decision.why).toMatch(/gear does not make/i);
-    expect(decision.why).toMatch(/different from non-negotiable gear like bear spray/i);
+    expect(decision.why).toMatch(/different from safety-critical gear like bear spray/i);
     expect(decision.affectedBy).toEqual(
       expect.arrayContaining(["Critical danger", "Flash flood", "Official alert"]),
     );

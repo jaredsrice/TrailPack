@@ -91,6 +91,9 @@ most actionable issues:
 - Trip safety decisions, safety-critical gear, and active-alert review rows now
   render in a first-position `Critical Safety` group. Trip decisions get a
   `Change plan` marker, while bear spray and navigation get `Safety-critical`.
+- Longer trips now add a separate `Power bank / extra battery` row so phone,
+  GPS, or rechargeable-headlamp dependence is visible without cluttering the
+  top critical-safety group.
 - Extra dry socks now appear as a separate optional row with blister and
   cold/wet-foot rationale.
 - Salt support now separates `Electrolytes` from `Salty snacks`: high-heat

@@ -914,7 +914,7 @@ function buildTripSafetyDecisionItem(danger: TripDecisionDanger): PackingItem {
     question: "Is this hike safe to start?",
     recommendation: danger.recommendation,
     why:
-      `${danger.why} This is different from non-negotiable gear like bear spray: the safer action may be to delay, reroute, shorten, turn back, or not start.`,
+      `${danger.why} This is different from safety-critical gear like bear spray: the safer action may be to delay, reroute, shorten, turn back, or not start.`,
     affectedBy: danger.affectedBy,
     contextNotes: [
       {
@@ -943,6 +943,35 @@ function buildNavigationItem(): PackingItem {
       },
     ],
     sourceLabels: ["official", "inferred"],
+    sourceUrl: NPS_TEN_ESSENTIALS_URL,
+    links: [{ label: "NPS Ten Essentials", url: NPS_TEN_ESSENTIALS_URL }],
+  });
+}
+
+function buildPowerBackupItem({
+  expectedHours,
+  sourceLabels,
+}: {
+  expectedHours: number | null;
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  const durationContext =
+    expectedHours !== null
+      ? `An about ${formatHours(expectedHours)} hr plan gives a phone, GPS, or rechargeable headlamp more time to drain.`
+      : "A longer route gives a phone, GPS, or rechargeable headlamp more time to drain.";
+
+  return item({
+    name: "Power bank / extra battery",
+    question: "Do I need backup power?",
+    recommendation:
+      "Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.",
+    why:
+      `NPS Ten Essentials specifically say to pack an extra battery for your phone when using downloaded maps or GPS. ${durationContext}`,
+    affectedBy: uniqueStrings([
+      "Route finding",
+      expectedHours !== null ? "Duration" : null,
+    ].filter((value): value is string => Boolean(value))),
+    sourceLabels: uniqueSourceLabels(sourceLabels),
     sourceUrl: NPS_TEN_ESSENTIALS_URL,
     links: [{ label: "NPS Ten Essentials", url: NPS_TEN_ESSENTIALS_URL }],
   });
@@ -1603,6 +1632,18 @@ export function generatePackingRecommendation(
   );
 
   essential.push(buildNavigationItem());
+  if (longByProfile || longByUserDuration) {
+    essential.push(
+      buildPowerBackupItem({
+        expectedHours,
+        sourceLabels: uniqueSourceLabels([
+          expectedHours !== null ? "user-provided" : "supported-profile",
+          "official",
+          "inferred",
+        ]),
+      }),
+    );
+  }
 
   if (weather.conditions.includes("rain") || (weather.precipitationChance ?? 0) >= 40) {
     essential.push(
@@ -1939,6 +1980,19 @@ export function generateManualEntryRecommendation(
     }),
     buildNavigationItem(),
   ];
+  if (longerByManualFacts || (expectedHours !== null && expectedHours >= 5)) {
+    essential.push(
+      buildPowerBackupItem({
+        expectedHours,
+        sourceLabels: uniqueSourceLabels([
+          expectedHours !== null ? "user-provided" : null,
+          longerByManualFacts ? "user-provided" : null,
+          "official",
+          "inferred",
+        ].filter((value): value is PackingItem["sourceLabels"][number] => Boolean(value))),
+      }),
+    );
+  }
   const optional: PackingItem[] = [
     item({
       name: "Light rain or wind shell",

@@ -97,7 +97,7 @@ const templates = [
     id: "severe-storm-lightning",
     title: "Severe storm and lightning risk",
     intent:
-      "Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.",
+      "Stress exposed-route decision-making, overall alerts, and clear plan-changing safety decisions.",
     weatherMode: "storm",
     alertsMode: "lightning",
     userInput: {
@@ -325,7 +325,7 @@ function evaluateLens(run, lens) {
       `Clear action seen: ${water ? water.name + " - " + water.recommendation : "water guidance missing"}`,
     );
     if (tripDecision) {
-      notes.push(`Non-negotiable plan decision is hard to miss: ${tripDecision.recommendation}`);
+      notes.push(`Change-plan decision is hard to miss: ${tripDecision.recommendation}`);
     }
     if (food) {
       notes.push(`Food is concrete: ${food.recommendation}`);
@@ -495,7 +495,7 @@ function renderReport(runs) {
   lines.push("");
   lines.push("- The current branch is much stronger than the prior stiff output for long-day food, water, headlamp, layers, Taggart alerts, abnormal duration handling, optional water backup, and snow/ice traction explanation.");
   lines.push("- Water is now framed as a realistic frontcountry carry amount, not an indefinitely scaled total. The app still avoids naming route-specific water sources because those require verified source-backed data.");
-  lines.push("- Critical danger is now split from required preparedness: closures, flash flooding, lightning, and extreme heat create a Trip safety decision; bear spray remains non-negotiable gear for bear country.");
+  lines.push("- Critical danger is now split from safety-critical gear: closures, flash flooding, lightning, and extreme heat create a Trip safety decision; bear spray and navigation remain safety-critical gear.");
   lines.push("- Weather and unusual-duration concerns now appear as overall alerts, while affected recommendation rows carry context markers such as Heat, Wet, Duration, or Official alert.");
   lines.push("- The snow/ice gear-literacy gap is now partly addressed: microspikes are described as pull-on metal traction that must fit the user's shoes or boots, with buy/rent guidance kept generic instead of inventing a route-specific rental location.");
   lines.push("- The seasoned-hiker lens accepts the no-invented-water-source direction. The correct next step would be verified route-specific water-source data, not freer copy.");
@@ -579,6 +579,7 @@ function renderReport(runs) {
       lines.push(`- Extra socks: ${briefItem(all.get("Extra dry socks"))}`);
       lines.push(`- Traction: ${briefItem(all.get("Traction devices (microspikes)"))}`);
       lines.push(`- Headlamp: ${briefItem(all.get("Headlamp"))}`);
+      lines.push(`- Power backup: ${briefItem(all.get("Power bank / extra battery"))}`);
       lines.push(`- Extra food reserve: ${briefItem(all.get("Extra food reserve"))}`);
       lines.push(`- Layer: ${briefItem(all.get("Light jacket or warm layer"))}`);
       if (all.has("Review active alerts before leaving")) {

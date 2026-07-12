@@ -130,8 +130,10 @@ navigation use the `Safety-critical` marker.
 
 The list includes NPS Ten Essentials influence without turning the entire top
 section into a catch-all bucket. Navigation is essential and source-backed by NPS
-Ten Essentials; food, water, sun protection, layers, rain shell, headlamp, and
-first aid remain in their normal scan groups unless trip context promotes them.
+Ten Essentials; longer trips also add `Power bank / extra battery` when a phone,
+GPS, or rechargeable headlamp may be part of navigation or lighting. Food, water,
+sun protection, layers, rain shell, headlamp, and first aid remain in their
+normal scan groups unless trip context promotes them.
 
 Long-day water now uses realistic frontcountry carry ranges and explicitly says
 to drink according to thirst. Water filter or treatment guidance is an optional
