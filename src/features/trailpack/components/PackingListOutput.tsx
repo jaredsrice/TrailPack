@@ -19,6 +19,15 @@ const GROUP_ORDER = [
 
 type GroupTitle = (typeof GROUP_ORDER)[number];
 
+const FOOD_WATER_ITEM_ORDER = new Map([
+  ["Water", 0],
+  ["Water filter or treatment backup", 1],
+  ["Food", 2],
+  ["Extra food reserve", 3],
+  ["Electrolytes", 4],
+  ["Salty snacks", 4],
+]);
+
 export function PackingListOutput({
   recommendation,
 }: {
@@ -274,8 +283,28 @@ function groupRecommendationItems(recommendation: PackingRecommendation): Array<
 
   return GROUP_ORDER.map((title) => ({
     title,
-    items: grouped.get(title) ?? [],
+    items: sortGroupItems(title, grouped.get(title) ?? []),
   })).filter((group) => group.items.length > 0);
+}
+
+function sortGroupItems(title: GroupTitle, items: PrioritizedItem[]): PrioritizedItem[] {
+  if (title !== "Food & Water") {
+    return items;
+  }
+
+  return [...items].sort((left, right) => {
+    const leftOrder = FOOD_WATER_ITEM_ORDER.get(left.name) ?? 99;
+    const rightOrder = FOOD_WATER_ITEM_ORDER.get(right.name) ?? 99;
+    if (leftOrder !== rightOrder) {
+      return leftOrder - rightOrder;
+    }
+
+    if (left.priority !== right.priority) {
+      return left.priority === "Essential" ? -1 : 1;
+    }
+
+    return left.name.localeCompare(right.name);
+  });
 }
 
 function groupForItem(itemName: string): GroupTitle {
@@ -283,7 +312,8 @@ function groupForItem(itemName: string): GroupTitle {
     [
       "Water",
       "Food",
-      "Electrolytes or salty snack",
+      "Electrolytes",
+      "Salty snacks",
       "Water filter or treatment backup",
       "Extra food reserve",
     ].includes(itemName)

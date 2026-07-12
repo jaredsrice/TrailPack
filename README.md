@@ -125,7 +125,9 @@ according to thirst. Water filter or treatment guidance is an optional backup
 unless the user plans to refill from an unverified source. Extra dry socks are a
 separate optional row with blister and warmth rationale, while snow or ice still
 adds traction guidance that explains what microspikes are and why regular tread
-may not be enough.
+may not be enough. Salt support is split into `Electrolytes` and `Salty snacks`
+so hot/exposed sustained effort can promote electrolytes while long non-hot days
+can promote salty food, with the alternate still shown as optional.
 
 ## Guarded AI Review Fixture
 

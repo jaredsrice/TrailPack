@@ -39,6 +39,20 @@ export const NPS_HIKE_SMART_URL =
   "https://www.nps.gov/articles/hiking-safety.htm";
 
 /**
+ * NPS heat guidance calls out salty snacks as a way to replace electrolytes
+ * lost through sweat.
+ */
+export const NPS_HEAT_ILLNESS_URL =
+  "https://www.nps.gov/articles/heat-illness.htm";
+
+/**
+ * CDC/NIOSH heat-stress guidance covers electrolyte fluids for longer periods
+ * of sweating in hot conditions.
+ */
+export const CDC_HEAT_STRESS_RECOMMENDATIONS_URL =
+  "https://www.cdc.gov/niosh/heat-stress/recommendations/index.html";
+
+/**
  * NPS general water guidance for filtering, purifying, or boiling backcountry
  * water before drinking it.
  */
@@ -858,7 +872,7 @@ function buildFoodItem({
     question: "How much food should I bring?",
     recommendation:
       `Pack ${meals} ${meals === 1 ? "meal" : "meals"} plus ` +
-      `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.`,
+      `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.`,
     why:
       `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes food from time first, then checks ${effortContext || "the available hike context"}.` +
       `${snackDrivers ? ` The upper snack count rises for ${snackDrivers}.` : ""} ` +
@@ -870,6 +884,132 @@ function buildFoodItem({
     ].filter((value): value is string => Boolean(value))),
     sourceLabels: uniqueSourceLabels(sourceLabels),
   });
+}
+
+function buildElectrolytesItem({
+  primary,
+  affectedBy,
+  sourceLabels,
+}: {
+  primary: boolean;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Electrolytes",
+    question: "Do I need electrolytes?",
+    recommendation: primary
+      ? "Bring an electrolyte option, such as packets, tablets, powder, or a sports drink."
+      : "Optional backup: bring electrolyte packets, tablets, powder, or a sports drink if you sweat heavily, prefer a drink mix, or may be out longer than planned.",
+    why: primary
+      ? "Hot, exposed, or sustained sweating can mean replacing salt matters as much as adding more plain water. Count sports drink as part of your fluid, and do not use electrolytes as a reason to force extra water."
+      : "For this plan, salty food is enough for most hikers. Electrolytes are a convenient alternate if food is hard to eat, sweating is heavier than expected, or the day runs long.",
+    affectedBy: uniqueStrings(affectedBy),
+    contextNotes: [
+      {
+        label: "Overdrinking caution",
+        text: "Electrolytes do not make unlimited water safe. Drink according to thirst.",
+      },
+    ],
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "inferred"]),
+    links: [
+      {
+        label: "CDC/NIOSH heat stress guidance",
+        url: CDC_HEAT_STRESS_RECOMMENDATIONS_URL,
+      },
+    ],
+  });
+}
+
+function buildSaltySnacksItem({
+  primary,
+  affectedBy,
+  sourceLabels,
+}: {
+  primary: boolean;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Salty snacks",
+    question: "Should I pack salty snacks?",
+    recommendation: primary
+      ? "Include at least one salty snack per person, such as pretzels, salted nuts, jerky, chips, crackers, or salty trail mix."
+      : "Optional backup: pack a salty snack if you prefer food over drink mix or someone in the group dislikes electrolyte products.",
+    why: primary
+      ? "Long days need food first, and salty snacks help replace salt lost through sweat while also adding calories. This is the practical default when the hike is long but not a high-heat electrolyte scenario."
+      : "Electrolytes are the clearer recommendation for this hot or exposed plan, but salty food is still a practical fallback because it provides salt plus calories.",
+    affectedBy: uniqueStrings(affectedBy),
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "official", "inferred"]),
+    sourceUrl: NPS_HEAT_ILLNESS_URL,
+    links: [
+      {
+        label: "NPS heat illness guidance",
+        url: NPS_HEAT_ILLNESS_URL,
+      },
+    ],
+  });
+}
+
+function buildSaltSupportItems({
+  expectedHours,
+  profileHours,
+  highHeatConditions,
+  sourceLabels,
+}: {
+  expectedHours: number | null;
+  profileHours: number | null;
+  highHeatConditions: boolean;
+  sourceLabels: PackingItem["sourceLabels"];
+}): { essential: PackingItem[]; optional: PackingItem[] } {
+  const plannedHours = expectedHours ?? profileHours;
+  const longByUserDuration = expectedHours !== null && expectedHours >= 6;
+  const sustainedHighHeat = highHeatConditions && plannedHours !== null && plannedHours >= 3;
+
+  if (!longByUserDuration && !sustainedHighHeat) {
+    return { essential: [], optional: [] };
+  }
+
+  const affectedBy = uniqueStrings([
+    sustainedHighHeat ? "Heat" : null,
+    longByUserDuration ? "Duration" : null,
+  ].filter((value): value is string => Boolean(value)));
+
+  if (sustainedHighHeat) {
+    return {
+      essential: [
+        buildElectrolytesItem({
+          primary: true,
+          affectedBy,
+          sourceLabels,
+        }),
+      ],
+      optional: [
+        buildSaltySnacksItem({
+          primary: false,
+          affectedBy,
+          sourceLabels,
+        }),
+      ],
+    };
+  }
+
+  return {
+    essential: [
+      buildSaltySnacksItem({
+        primary: true,
+        affectedBy,
+        sourceLabels,
+      }),
+    ],
+    optional: [
+      buildElectrolytesItem({
+        primary: false,
+        affectedBy,
+        sourceLabels,
+      }),
+    ],
+  };
 }
 
 export function generatePackingRecommendation(
@@ -894,6 +1034,10 @@ export function generatePackingRecommendation(
     weather.conditions.includes("heat") ||
     (weather.temperatureF?.high ?? 0) >= 80 ||
     (weather.temperatureF?.current ?? 0) >= 75;
+  const highHeatConditions =
+    weather.conditions.includes("heat") ||
+    (weather.temperatureF?.high ?? 0) >= 85 ||
+    (weather.temperatureF?.current ?? 0) >= 85;
   const tripAlerts = buildWeatherTripAlerts({ weather, hotConditions });
   const bugSeasonDate =
     userInput.plannedDate ?? weather.plannedDate ?? weather.daylight?.date;
@@ -1109,6 +1253,20 @@ export function generatePackingRecommendation(
     );
   }
 
+  const saltSourceLabels: PackingItem["sourceLabels"] = uniqueSourceLabels([
+    expectedHours !== null ? "user-provided" : "supported-profile",
+    highHeatConditions ? "forecast-based" : null,
+    "inferred",
+  ].filter((value): value is PackingItem["sourceLabels"][number] => Boolean(value)));
+  const saltSupport = buildSaltSupportItems({
+    expectedHours,
+    profileHours,
+    highHeatConditions,
+    sourceLabels: saltSourceLabels,
+  });
+  essential.push(...saltSupport.essential);
+  optional.push(...saltSupport.optional);
+
   essential.push(
     item({
       name: "Bear spray",
@@ -1203,26 +1361,6 @@ export function generatePackingRecommendation(
           "Wear a breathable long-sleeve sun shirt or light layer if you burn easily or will spend hours in exposed sun. It should be light and ventilated, not a heavy warm layer.",
         affectedBy: ["Heat"],
         sourceLabels: ["forecast-based", "inferred"],
-      }),
-    );
-  }
-
-  if (hotConditions || (expectedHours !== null && expectedHours >= 6)) {
-    optional.push(
-      item({
-        name: "Electrolytes or salty snack",
-        question: "Do I need electrolytes?",
-        recommendation:
-          "Bring electrolyte tabs, a salty snack, or a sports drink for a long, warm, or sweaty day.",
-        why:
-          "Electrolytes and salty food help replace salt lost through sweat. Count sports drink as part of your fluid, and do not use electrolytes as a reason to force extra water.",
-        affectedBy: uniqueStrings([
-          hotConditions ? "Heat" : null,
-          expectedHours !== null && expectedHours >= 6 ? "Duration" : null,
-        ].filter((value): value is string => Boolean(value))),
-        sourceLabels: hotConditions
-          ? ["forecast-based", "inferred"]
-          : ["user-provided", "inferred"],
       }),
     );
   }
@@ -1555,6 +1693,15 @@ export function generateManualEntryRecommendation(
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
+
+    const saltSupport = buildSaltSupportItems({
+      expectedHours,
+      profileHours: null,
+      highHeatConditions: false,
+      sourceLabels: ["user-provided", "missing", "inferred"],
+    });
+    essential.push(...saltSupport.essential);
+    optional.push(...saltSupport.optional);
   }
 
   if (conditions.snowOrIce) {

@@ -129,7 +129,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Jenny Lake Loop / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Snow or ice with cold weather:
@@ -140,12 +140,12 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Hot, exposed long day:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Jenny Lake Loop / 18-hour edge case:
   - Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -160,7 +160,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - String Lake Loop / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -172,13 +172,13 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Hot, exposed long day:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - String Lake Loop / 18-hour edge case:
   - Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -193,7 +193,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Taggart Lake / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
@@ -206,13 +206,13 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Hot, exposed long day:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Taggart Lake / 18-hour edge case:
   - Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+  - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -230,7 +230,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Jenny Lake Loop / Wet, rainy, slower day:
   - Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Rain / wet trail.
@@ -241,26 +241,26 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Overall alerts: Rain / wet trail; Cold / snow.
 - Jenny Lake Loop / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Heat / sun exposure.
 - Jenny Lake Loop / 18-hour edge case:
   - Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Rain / wet trail; Unusual duration.
 - String Lake Loop / Saved demo baseline:
   - Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Overall alerts: Heat / sun exposure.
   - Still asks for: Current trail conditions (muddy, icy, snow) are not known from official data alone. Your expected time out improves food, water, and daylight/headlamp guidance. Your start time would improve daylight and headlamp guidance.
 - String Lake Loop / Normal clear day with start time:
   - Trip tie-in: water and food are tied to 3 hours plus route difficulty/weather where available.
 - String Lake Loop / Wet, rainy, slower day:
   - Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Rain / wet trail; Unusual duration.
 - String Lake Loop / Snow or ice with cold weather:
@@ -270,12 +270,12 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Overall alerts: Rain / wet trail; Cold / snow.
 - String Lake Loop / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Heat / sun exposure; Unusual duration.
 - String Lake Loop / 18-hour edge case:
   - Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Heat / sun exposure; Unusual duration.
 - Taggart Lake / Saved demo baseline:
@@ -289,7 +289,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Wet, rainy, slower day:
   - Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Rain / wet trail; Unusual duration; Active closure or trail alert.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -301,13 +301,13 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Heat / sun exposure; Unusual duration; Active closure or trail alert.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / 18-hour edge case:
   - Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-  - Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+  - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Overall alerts: Unusual duration; Active closure or trail alert.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -378,14 +378,14 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Insect repellent, Electrolytes or salty snack, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
@@ -396,11 +396,11 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Rain / wet trail.
@@ -442,14 +442,14 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Light rain or wind shell, Insect repellent, Breathable sun layer, Electrolytes or salty snack, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Trekking poles, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure.
 
 Key outputs:
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
@@ -461,11 +461,11 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Middle: Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Heat / sun exposure.
@@ -474,14 +474,14 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Bear spray, Rain shell, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Electrolytes or salty snack, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Rain shell, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
 Key outputs:
 - Water: Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
@@ -494,13 +494,13 @@ Hiker lens read:
 - Seasoned: Good: long-day water is capped at a realistic frontcountry carry range instead of scaling into unrealistic multi-gallon totals.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Casual: Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Casual: Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Middle: Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Rain / wet trail; Unusual duration.
@@ -513,8 +513,8 @@ Official profile in app: 3.7 mi, 540 ft gain, 2-3 Hours, Easy.
 
 Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
-Essential: Trail footwear, Water, Food, Bear spray, Sun protection, First-aid basics.
-Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Breathable sun layer, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Sun protection, First-aid basics.
+Optional: Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure.
 
 Key outputs:
@@ -534,7 +534,7 @@ Hiker lens read:
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Overall alerts: Heat / sun exposure.
 - Middle: Still asks for: Current trail conditions (muddy, icy, snow) are not known from official data alone. Your expected time out improves food, water, and daylight/headlamp guidance. Your start time would improve daylight and headlamp guidance.
 
@@ -568,14 +568,14 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Insect repellent, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
@@ -587,12 +587,12 @@ Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Rain / wet trail; Unusual duration.
 
@@ -633,14 +633,14 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Light rain or wind shell, Insect repellent, Breathable sun layer, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
 Key outputs:
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
@@ -653,12 +653,12 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Middle: Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Heat / sun exposure; Unusual duration.
 
@@ -666,14 +666,14 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Light rain or wind shell, Insect repellent, Breathable sun layer, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
 Key outputs:
 - Water: Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
@@ -687,13 +687,13 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Casual: Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 2 meals plus 6-9 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Casual: Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Middle: Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Heat / sun exposure; Unusual duration.
 
@@ -764,14 +764,14 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Insect repellent, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Active closure or trail alert.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
@@ -785,12 +785,12 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official trail-work context is visible before the user commits to the route.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Rain / wet trail; Unusual duration; Active closure or trail alert.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -837,14 +837,14 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Light rain or wind shell, Insect repellent, Breathable sun layer, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration; Active closure or trail alert.
 
 Key outputs:
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy.
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
@@ -859,12 +859,12 @@ Hiker lens read:
 - Seasoned: Good: official trail-work context is visible before the user commits to the route.
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Middle: Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Heat / sun exposure; Unusual duration; Active closure or trail alert.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
@@ -873,14 +873,14 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving.
-Optional: Water filter or treatment backup, Extra dry socks, Light rain or wind shell, Insect repellent, Electrolytes or salty snack, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving.
+Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Light rain or wind shell, Insect repellent, Offline map, Light jacket or warm layer.
 Trip alerts: Unusual duration; Active closure or trail alert.
 
 Key outputs:
 - Water: Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
-- Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy.
 - Extra socks: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Traction: not shown
@@ -895,13 +895,13 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official trail-work context is visible before the user commits to the route.
 - Casual: Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.
+- Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Casual: Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Middle: Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
-- Middle: Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.
+- Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Overall alerts: Unusual duration; Active closure or trail alert.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.

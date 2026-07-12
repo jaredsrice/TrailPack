@@ -88,6 +88,9 @@ most actionable issues:
   context markers such as `Heat`, `Wet`, `Duration`, or `Official alert`.
 - Extra dry socks now appear as a separate optional row with blister and
   cold/wet-foot rationale.
+- Salt support now separates `Electrolytes` from `Salty snacks`: high-heat
+  sustained efforts promote electrolytes, while long non-hot days promote salty
+  food and keep electrolytes optional.
 - Snow and ice guidance now explains what microspikes are and that fit/buy/rent
   planning should happen before the trailhead.
 - Abnormal duration now appears as a trip-level alert rather than a packing

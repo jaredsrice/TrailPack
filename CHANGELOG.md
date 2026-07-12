@@ -134,6 +134,9 @@ change as the project develops.
   scaling by time.
 - Moved refill/treatment guidance into an optional backup row unless the hiker
   plans to refill from an unverified source.
+- Split the old blended electrolyte/salty-snack guidance into separate
+  `Electrolytes` and `Salty snacks` rows so one salt source is promoted based on
+  heat and duration while the alternate stays optional.
 - Moved very-long-day extra food reserve into essentials while keeping shorter
   long-day reserve food optional.
 - Made cold or snowy forecasts promote the warm-layer recommendation to

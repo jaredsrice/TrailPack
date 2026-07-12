@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   analyzeTrailConditions,
   BEAR_AWARE_LOCATIONS_URL,
+  CDC_HEAT_STRESS_RECOMMENDATIONS_URL,
   generateManualEntryRecommendation,
   generatePackingRecommendation,
   GRTE_BEAR_SAFETY_URL,
+  NPS_HEAT_ILLNESS_URL,
   NPS_HIKE_SMART_URL,
   NPS_WATER_TREATMENT_URL,
   isOfficialNpsAlert,
@@ -469,10 +471,33 @@ describe("scenario polish", () => {
     expect(names(rec.essential)).toContain("Water");
     const water = itemNamed(rec, "Water");
     expect(water.answer).toMatch(/2-3 liters per adult/i);
-    expect(names(rec.optional)).toContain("Electrolytes or salty snack");
+    expect(names(rec.essential)).toContain("Electrolytes");
+    expect(names(rec.optional)).toContain("Salty snacks");
+    expect(names(rec.optional)).not.toContain("Electrolytes");
+    expect(itemNamed(rec, "Electrolytes").links).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ url: CDC_HEAT_STRESS_RECOMMENDATIONS_URL }),
+      ]),
+    );
+    expect(itemNamed(rec, "Salty snacks").sourceUrl).toBe(NPS_HEAT_ILLNESS_URL);
     expect(names(rec.optional)).toContain("Breathable sun layer");
     const firstAid = rec.essential.find((item) => item.name === "First-aid basics");
     expect(firstAid?.reason).not.toMatch(/full-day loop/i);
+  });
+
+  it("uses salty snacks as the primary salt source for a long non-hot day", () => {
+    const rec = generatePackingRecommendation(
+      JENNY_LAKE_LOOP,
+      DEMO_CONTEXTS["jenny-lake-loop"].weather,
+      NO_ALERTS,
+      { expectedDuration: "12 hours" },
+    );
+
+    expect(names(rec.essential)).toContain("Salty snacks");
+    expect(names(rec.optional)).toContain("Electrolytes");
+    expect(names(rec.essential)).not.toContain("Electrolytes");
+    expect(itemNamed(rec, "Salty snacks").recommendation).toMatch(/at least one salty snack/i);
+    expect(itemNamed(rec, "Electrolytes").recommendation).toMatch(/Optional backup/i);
   });
 });
 
@@ -751,6 +776,8 @@ describe("manual entry fallback", () => {
     expect(names(rec.optional)).toContain("Extra food reserve");
     expect(names(rec.optional)).not.toContain("Waterproof footwear or gaiters");
     expect(names(rec.optional)).toContain("Extra dry socks");
+    expect(names(rec.essential)).toContain("Salty snacks");
+    expect(names(rec.optional)).toContain("Electrolytes");
     expect(itemNamed(rec, "Extra dry socks").why).toMatch(/blister risk/i);
     const joined = rec.missingDetails.join(" ");
     expect(joined).not.toMatch(/expected time/i);

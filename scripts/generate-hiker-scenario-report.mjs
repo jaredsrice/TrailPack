@@ -243,8 +243,8 @@ function evaluateLens(run, lens) {
     notes.push(
       `Trip tie-in: water and food are tied to ${run.scenario.userInput.expectedDuration ?? "the trail profile"} plus route difficulty/weather where available.`,
     );
-    if (optional.has("Electrolytes or salty snack")) {
-      notes.push("Good: hot/exposed conditions add salt/electrolyte support instead of only increasing water.");
+    if (all.has("Electrolytes") || all.has("Salty snacks")) {
+      notes.push("Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.");
     }
     if (optional.has("Trekking poles") || essential.has("Trekking poles")) {
       notes.push("Good: poles are presented as optional support unless snow/ice changes the balance need.");
