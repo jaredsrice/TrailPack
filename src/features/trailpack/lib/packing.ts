@@ -4,6 +4,7 @@ import type {
   PackingRecommendation,
   RouteType,
   TrailProfile,
+  TripAlert,
   WeatherContext,
 } from "@/features/trailpack/types";
 
@@ -36,6 +37,34 @@ export const BEAR_AWARE_LOCATIONS_URL = "https://bearaware.com/locations/";
  */
 export const NPS_HIKE_SMART_URL =
   "https://www.nps.gov/articles/hiking-safety.htm";
+
+/**
+ * NPS Ten Essentials list navigation as a basic safety system: map, compass,
+ * GPS, downloaded map/app, physical backup, and extra phone battery.
+ */
+export const NPS_TEN_ESSENTIALS_URL =
+  "https://www.nps.gov/articles/10essentials.htm";
+
+/**
+ * NPS heat guidance calls out salty snacks as a way to replace electrolytes
+ * lost through sweat.
+ */
+export const NPS_HEAT_ILLNESS_URL =
+  "https://www.nps.gov/articles/heat-illness.htm";
+
+/**
+ * CDC/NIOSH heat-stress guidance covers electrolyte fluids for longer periods
+ * of sweating in hot conditions.
+ */
+export const CDC_HEAT_STRESS_RECOMMENDATIONS_URL =
+  "https://www.cdc.gov/niosh/heat-stress/recommendations/index.html";
+
+/**
+ * NPS general water guidance for filtering, purifying, or boiling backcountry
+ * water before drinking it.
+ */
+export const NPS_WATER_TREATMENT_URL =
+  "https://www.nps.gov/subjects/camping/what-to-bring.htm";
 
 /**
  * Parse an expected-duration free-text field into a conservative number of hours.
@@ -202,6 +231,22 @@ function item(input: PackingItemInput): PackingItem {
 
 function uniqueSourceLabels(labels: PackingItem["sourceLabels"]): PackingItem["sourceLabels"] {
   return Array.from(new Set(labels));
+}
+
+function uniqueStrings(values: string[]): string[] {
+  return Array.from(new Set(values));
+}
+
+function formatWordList(values: string[]): string {
+  if (values.length <= 1) {
+    return values[0] ?? "";
+  }
+
+  if (values.length === 2) {
+    return `${values[0]} and ${values[1]}`;
+  }
+
+  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`;
 }
 
 function getTimezoneSuffix(isoValue?: string): string {
@@ -465,6 +510,121 @@ export function analyzeTrailConditions(input?: string): TrailConditionFlags {
 }
 
 type AlertItem = AlertContext["alerts"][number];
+type TripDecisionDangerKind =
+  | "closure"
+  | "flash-flood"
+  | "lightning"
+  | "extreme-heat"
+  | "high-water"
+  | "wildfire-smoke"
+  | "avalanche";
+
+interface TripDecisionDanger {
+  kind: TripDecisionDangerKind;
+  title: string;
+  tag: string;
+  recommendation: string;
+  why: string;
+  summary: string;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+  sourceUrl?: string;
+  source: "alert" | "weather";
+}
+
+interface AlertDecisionRule {
+  kind: TripDecisionDangerKind;
+  tag: string;
+  title: string;
+  affectedBy?: string[];
+  matcher: (alert: AlertItem, text: string) => boolean;
+  recommendation: string;
+  why: string;
+}
+
+const ALERT_DECISION_RULES: AlertDecisionRule[] = [
+  {
+    kind: "closure",
+    tag: "Closure",
+    title: "Closed route or area",
+    matcher: (alert, text) =>
+      alert.severity === "closure" ||
+      /\b(closure|closed|do not enter|area closed|trail closed)\b/i.test(text),
+    recommendation:
+      "Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.",
+    why:
+      "A closure is a trip decision, not a packing problem. Gear does not make a closed section open or safe to use.",
+  },
+  {
+    kind: "flash-flood",
+    tag: "Flash flood",
+    title: "Flash flood danger",
+    affectedBy: ["Wet", "Weather"],
+    matcher: (_alert, text) => /\b(flash flood|flash flooding|flood warning)\b/i.test(text),
+    recommendation:
+      "Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.",
+    why:
+      "Flash flooding is a trip decision danger. Extra gear does not make fast water, flooded crossings, or drainage channels safe.",
+  },
+  {
+    kind: "lightning",
+    tag: "Lightning",
+    title: "Lightning or severe storm danger",
+    affectedBy: ["Wet", "Wind", "Weather"],
+    matcher: (_alert, text) =>
+      /\b(lightning|severe thunderstorm|thunderstorm warning|severe storm|damaging wind)\b/i.test(text),
+    recommendation:
+      "Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.",
+    why:
+      "Lightning and severe storms are not solved by packing an extra item. The safer decision is to avoid exposed trail time during the warning window.",
+  },
+  {
+    kind: "extreme-heat",
+    tag: "Extreme heat",
+    title: "Extreme heat danger",
+    affectedBy: ["Heat"],
+    matcher: (_alert, text) =>
+      /\b(extreme heat|excessive heat|heat warning|dangerous heat|heat advisory)\b/i.test(text),
+    recommendation:
+      "Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    why:
+      "Extreme heat is a trip decision danger. Water and electrolytes help, but they do not remove heat illness risk during dangerous heat.",
+  },
+  {
+    kind: "high-water",
+    tag: "High water",
+    title: "High water danger",
+    affectedBy: ["Wet"],
+    matcher: (_alert, text) =>
+      /\b(high water|rising water|swift water|fast water|dangerous crossing|creek crossing|stream crossing)\b/i.test(text),
+    recommendation:
+      "Do not enter swift or high water. Reroute, wait, or turn back if the route depends on an unsafe crossing.",
+    why:
+      "High water is a route decision, not a gear checklist item. A normal day hike can become unsafe if a crossing is moving fast or rising.",
+  },
+  {
+    kind: "wildfire-smoke",
+    tag: "Wildfire / smoke",
+    title: "Wildfire or smoke danger",
+    matcher: (_alert, text) =>
+      /\b(wildfire|fire closure|evacuation|heavy smoke|smoke advisory|air quality)\b/i.test(text),
+    recommendation:
+      "Do not hike into a closure, evacuation area, or heavy-smoke warning. Choose another route or wait for safer conditions.",
+    why:
+      "Wildfire and heavy smoke can change both access and health risk. This is a plan decision before it is a packing decision.",
+  },
+  {
+    kind: "avalanche",
+    tag: "Avalanche",
+    title: "Avalanche danger",
+    affectedBy: ["Snow/Ice"],
+    matcher: (_alert, text) => /\b(avalanche|slide danger|snow slide)\b/i.test(text),
+    recommendation:
+      "Do not continue into avalanche terrain without the right forecast, training, partners, and rescue gear. Choose a safer route.",
+    why:
+      "Avalanche danger is outside normal day-hike packing guidance. The safer decision is to avoid the terrain unless you are prepared for avalanche travel.",
+  },
+];
 
 /**
  * An alert may back an "official" label only when it is an NPS alert whose
@@ -494,6 +654,91 @@ export function isOfficialNpsAlert(alert: AlertItem): boolean {
   return host === "nps.gov" || host.endsWith(".nps.gov");
 }
 
+function alertText(alert: AlertItem): string {
+  return `${alert.title} ${alert.description}`.toLowerCase();
+}
+
+function alertTitles(alerts: AlertItem[]): string {
+  return alerts.map((alert) => alert.title).join("; ");
+}
+
+function firstOfficialAlertSourceUrl(alerts: AlertItem[]): string | undefined {
+  return alerts.find(isOfficialNpsAlert)?.sourceUrl;
+}
+
+function sourceLabelsForMatchedAlerts(alerts: AlertItem[]): PackingItem["sourceLabels"] {
+  return alerts.length > 0 && alerts.every(isOfficialNpsAlert)
+    ? ["official", "inferred"]
+    : ["unavailable", "inferred"];
+}
+
+function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger | null {
+  if (!alerts.hasActiveAlerts || alerts.alerts.length === 0) {
+    return null;
+  }
+
+  for (const rule of ALERT_DECISION_RULES) {
+    const matchedAlerts = alerts.alerts.filter((alert) => rule.matcher(alert, alertText(alert)));
+    if (matchedAlerts.length === 0) {
+      continue;
+    }
+
+    const titles = alertTitles(matchedAlerts);
+    return {
+      kind: rule.kind,
+      title: rule.title,
+      tag: rule.tag,
+      recommendation: rule.recommendation,
+      why: rule.why,
+      summary: `${rule.title}: ${titles}. ${rule.recommendation}`,
+      affectedBy: uniqueStrings([
+        "Critical danger",
+        rule.tag,
+        ...(rule.affectedBy ?? []),
+        "Official alert",
+      ]),
+      sourceLabels: sourceLabelsForMatchedAlerts(matchedAlerts),
+      sourceUrl: firstOfficialAlertSourceUrl(matchedAlerts),
+      source: "alert",
+    };
+  }
+
+  return null;
+}
+
+function buildWeatherTripDecisionDanger(weather: WeatherContext): TripDecisionDanger | null {
+  const high = weather.temperatureF?.high ?? Number.NEGATIVE_INFINITY;
+  const current = weather.temperatureF?.current ?? Number.NEGATIVE_INFINITY;
+  if (high < 95 && current < 95) {
+    return null;
+  }
+
+  return {
+    kind: "extreme-heat",
+    title: "Extreme heat danger",
+    tag: "Extreme heat",
+    recommendation:
+      "Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    why:
+      "Extreme heat is a trip decision danger. Water and electrolytes help, but they do not remove heat illness risk during dangerous heat.",
+    summary:
+      "Extreme heat can make the planned hike unsafe even with extra water. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+    affectedBy: ["Critical danger", "Extreme heat", "Heat"],
+    sourceLabels: ["forecast-based", "inferred"],
+    source: "weather",
+  };
+}
+
+function buildTripDecisionDanger({
+  alerts,
+  weather,
+}: {
+  alerts: AlertContext;
+  weather: WeatherContext;
+}): TripDecisionDanger | null {
+  return buildAlertTripDecisionDanger(alerts) ?? buildWeatherTripDecisionDanger(weather);
+}
+
 function formatTrailStats(trail: TrailProfile): string {
   return `${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}`;
 }
@@ -511,6 +756,18 @@ function enforceOfficialProvenance(item: PackingItem): PackingItem {
   const withoutOfficial = item.sourceLabels.filter((label) => label !== "official");
   return {
     ...item,
+    sourceLabels: withoutOfficial.length > 0 ? withoutOfficial : ["unavailable"],
+  };
+}
+
+function enforceOfficialProvenanceOnAlert(alert: TripAlert): TripAlert {
+  if (!alert.sourceLabels.includes("official") || alert.sourceUrl) {
+    return alert;
+  }
+
+  const withoutOfficial = alert.sourceLabels.filter((label) => label !== "official");
+  return {
+    ...alert,
     sourceLabels: withoutOfficial.length > 0 ? withoutOfficial : ["unavailable"],
   };
 }
@@ -536,6 +793,246 @@ function buildInsectRepellentItem(plannedDate?: string): PackingItem {
 
 function formatHours(hours: number): string {
   return Number.isInteger(hours) ? hours.toFixed(0) : hours.toFixed(1);
+}
+
+function buildUnusualDurationAlert({
+  expectedHours,
+  trail,
+}: {
+  expectedHours: number;
+  trail: TrailProfile;
+}): TripAlert {
+  return {
+    id: "unusual-duration",
+    title: "Unusual duration",
+    summary:
+      `You entered about ${formatHours(expectedHours)} hr, but the NPS profile for ${trail.name} is ${trail.estimatedDuration.value}. ` +
+      "TrailPack is treating this as a side trip, long stop plan, closure detour, or non-standard route unless you shorten the input.",
+    severity: "caution",
+    affectedBy: ["Duration"],
+    sourceLabels: ["user-provided", "supported-profile", "inferred"],
+  };
+}
+
+function buildWeatherTripAlerts({
+  weather,
+  hotConditions,
+  dangerousHeatConditions,
+  suppressHeatTripAlert,
+}: {
+  weather: WeatherContext;
+  hotConditions: boolean;
+  dangerousHeatConditions: boolean;
+  suppressHeatTripAlert: boolean;
+}): TripAlert[] {
+  const tripAlerts: TripAlert[] = [];
+
+  if (!suppressHeatTripAlert && dangerousHeatConditions) {
+    tripAlerts.push({
+      id: "dangerous-heat",
+      title: "Dangerous heat",
+      summary:
+        "Dangerous heat can make the planned hike unsafe even with extra water. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.",
+      severity: "danger",
+      affectedBy: ["Critical danger", "Extreme heat", "Heat"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  } else if (!suppressHeatTripAlert && hotConditions) {
+    tripAlerts.push({
+      id: "heat-sun",
+      title: "Heat / sun exposure",
+      summary:
+        "Warm or exposed conditions can make the route feel harder than the mileage suggests. Start earlier, shorten the route, or turn back if heat builds; extra water helps but does not remove heat risk.",
+      severity: "caution",
+      affectedBy: ["Heat"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  }
+
+  if (weather.conditions.includes("rain") || (weather.precipitationChance ?? 0) >= 40) {
+    tripAlerts.push({
+      id: "rain-wet-trail",
+      title: "Rain / wet trail",
+      summary:
+        "Wet weather can change footing, layers, socks, and pace. Keep rain protection accessible and expect slick rocks, roots, or muddy sections.",
+      severity: "caution",
+      affectedBy: ["Weather", "Wet"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  }
+
+  if (weather.conditions.includes("snow") || weather.conditions.includes("cold")) {
+    tripAlerts.push({
+      id: "cold-snow",
+      title: "Cold / snow",
+      summary:
+        "Cold, snow, or wind can turn a normal day hike into a slower and colder outing. Treat traction, layers, and dry socks as more important than they are on a dry summer day.",
+      severity: "caution",
+      affectedBy: ["Weather", "Snow/Ice"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  }
+
+  return tripAlerts;
+}
+
+function buildActiveAlertTripAlert(
+  alerts: AlertContext,
+  tripDecisionDanger: TripDecisionDanger | null,
+): TripAlert | null {
+  if (!alerts.hasActiveAlerts || alerts.alerts.length === 0) {
+    return null;
+  }
+
+  const allAlertsOfficial = alerts.alerts.every(isOfficialNpsAlert);
+  const closure = alerts.alerts.some((alert) => alert.severity === "closure");
+  const titles = alertTitles(alerts.alerts);
+  const alertDanger = tripDecisionDanger?.source === "alert" ? tripDecisionDanger : null;
+
+  return {
+    id: "active-alerts",
+    title: alertDanger
+      ? alertDanger.title
+      : closure
+        ? "Active closure or trail alert"
+        : "Active trail alert",
+    summary: alertDanger
+      ? alertDanger.summary
+      : `Current alert context includes: ${titles}. Review it before leaving because closures, maintenance, high water, or wildlife activity can change the route and packing plan.`,
+    severity: alertDanger || closure ? "danger" : "caution",
+    affectedBy: alertDanger?.affectedBy ?? ["Official alert"],
+    sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
+    sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
+  };
+}
+
+function buildTripSafetyDecisionItem(danger: TripDecisionDanger): PackingItem {
+  const sourceUrl = danger.sourceLabels.includes("official") ? danger.sourceUrl : undefined;
+
+  return item({
+    name: "Trip safety decision",
+    question: "Is this hike safe to start?",
+    recommendation: danger.recommendation,
+    why:
+      `${danger.why} This is different from safety-critical gear like bear spray: the safer action may be to delay, reroute, shorten, turn back, or not start.`,
+    affectedBy: danger.affectedBy,
+    contextNotes: [
+      {
+        label: "Decision type",
+        text: "Trip decision danger means changing the plan may matter more than adding gear.",
+      },
+    ],
+    sourceLabels: danger.sourceLabels,
+    sourceUrl,
+  });
+}
+
+function buildNavigationItem(): PackingItem {
+  return item({
+    name: "Navigation / offline map",
+    question: "What navigation should I carry?",
+    recommendation:
+      "Save an offline map or GPS route before leaving, and bring enough battery to use it. A paper map or compass is the best backup if you have one.",
+    why:
+      "NPS Ten Essentials list navigation as map, compass, and GPS. NPS says a downloaded phone or GPS map can help, but you should know how to use it, bring a physical backup, and pack extra battery.",
+    affectedBy: ["Route finding"],
+    contextNotes: [
+      {
+        label: "Activity-dependent add-on",
+        text: "A satellite messenger or locator can be useful for remote trips, but TrailPack does not treat it as required for every short frontcountry hike.",
+      },
+    ],
+    sourceLabels: ["official", "inferred"],
+    sourceUrl: NPS_TEN_ESSENTIALS_URL,
+    links: [{ label: "NPS Ten Essentials", url: NPS_TEN_ESSENTIALS_URL }],
+  });
+}
+
+function buildPowerBackupItem({
+  expectedHours,
+  sourceLabels,
+}: {
+  expectedHours: number | null;
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  const durationContext =
+    expectedHours !== null
+      ? `An about ${formatHours(expectedHours)} hr plan gives a phone, GPS, or rechargeable headlamp more time to drain.`
+      : "A longer route gives a phone, GPS, or rechargeable headlamp more time to drain.";
+
+  return item({
+    name: "Power bank / extra battery",
+    question: "Do I need backup power?",
+    recommendation:
+      "Bring a small power bank, charging cable, or spare battery if your phone, GPS, or rechargeable headlamp is part of your navigation or light plan.",
+    why:
+      `NPS Ten Essentials specifically say to pack an extra battery for your phone when using downloaded maps or GPS. ${durationContext}`,
+    affectedBy: uniqueStrings([
+      "Route finding",
+      expectedHours !== null ? "Duration" : null,
+    ].filter((value): value is string => Boolean(value))),
+    sourceLabels: uniqueSourceLabels(sourceLabels),
+    sourceUrl: NPS_TEN_ESSENTIALS_URL,
+    links: [{ label: "NPS Ten Essentials", url: NPS_TEN_ESSENTIALS_URL }],
+  });
+}
+
+function buildWaterLogisticsItem({
+  expectedHours,
+  sourceLabels,
+}: {
+  expectedHours: number;
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Water filter or treatment backup",
+    question: "What does refill or water treatment mean?",
+    recommendation:
+      "Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.",
+    why:
+      `For an about ${formatHours(expectedHours)} hr plan, TrailPack recommends a realistic carry amount first. Do not count lake, stream, or spigot water unless you have verified it is available and have a way to make it safe to drink.`,
+    affectedBy: ["Duration", "Refill uncertainty"],
+    contextNotes: [
+      {
+        label: "Water safety",
+        text: "Clear natural water is not automatically safe. Treat any unverified source before drinking from it.",
+      },
+    ],
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "official", "inferred"]),
+    sourceUrl: NPS_WATER_TREATMENT_URL,
+    links: [
+      {
+        label: "NPS water treatment basics",
+        url: NPS_WATER_TREATMENT_URL,
+      },
+    ],
+  });
+}
+
+function buildExtraSocksItem({
+  affectedBy,
+  wetOrSnowy,
+  longDay,
+}: {
+  affectedBy: string[];
+  wetOrSnowy: boolean;
+  longDay: boolean;
+}): PackingItem {
+  const conditionText = wetOrSnowy
+    ? "when rain, mud, snow, or wet trail sections are possible."
+    : longDay
+      ? "on all-day hikes where hot spots have more time to turn into blisters."
+      : "as a small backup if your feet get wet or a shoe starts rubbing.";
+
+  return item({
+    name: "Extra dry socks",
+    question: "Should I bring extra socks?",
+    recommendation: `Pack one dry pair of socks ${conditionText}`,
+    why:
+      "Wet socks increase friction and blister risk. In cold, rain, snow, or creek splash, a dry pair also helps keep feet warmer and makes the walk out more comfortable.",
+    affectedBy: uniqueStrings(affectedBy),
+    sourceLabels: ["inferred"],
+  });
 }
 
 function difficultyLevel(difficulty?: string): "easy" | "moderate" | "hard" | "unknown" {
@@ -574,70 +1071,68 @@ function buildWaterItem({
   sourceLabels: PackingItem["sourceLabels"];
 }): PackingItem {
   const difficultyRating = difficultyLevel(difficulty);
-  const distanceMaxBump =
-    distance !== undefined && distance >= 10
-      ? 0.1
-      : distance !== undefined && distance >= 5
-        ? 0.05
-        : 0;
-  const gainMaxBump =
-    gain !== undefined && gain >= 2000
-      ? 0.15
-      : gain !== undefined && gain >= 800
-        ? 0.1
-        : 0;
-  const difficultyMaxBump =
-    difficultyRating === "hard" ? 0.1 : difficultyRating === "moderate" ? 0.05 : 0;
-  const manualEffortMaxBump =
-    difficultyRating === "unknown" &&
-    ((distance !== undefined && distance >= 5) || (gain !== undefined && gain >= 800))
-      ? 0.05
-      : 0;
-  const weatherMaxBump = hotConditions ? 0.4 : 0;
-  const minimumRate =
-    0.5 +
-    (distance !== undefined && distance >= 12 ? 0.05 : 0) +
-    (gain !== undefined && gain >= 2000 ? 0.05 : 0) +
-    (difficultyRating === "hard" ? 0.05 : 0);
-  const worstCaseRate =
-    0.55 +
-    distanceMaxBump +
-    gainMaxBump +
-    difficultyMaxBump +
-    manualEffortMaxBump +
-    weatherMaxBump;
-  const minimumLiters = Math.max(1, Math.ceil(expectedHours * minimumRate));
-  const worstCaseLiters = Math.max(
-    minimumLiters + 1,
-    Math.ceil(expectedHours * worstCaseRate),
-  );
+  const hardEffort =
+    (distance !== undefined && distance >= 10) ||
+    (gain !== undefined && gain >= 1500) ||
+    difficultyRating === "hard";
+  const veryLongDay = expectedHours >= 10;
+  const longDay = expectedHours >= 6;
+  let minimumLiters = longDay ? 2 : 1.5;
+  let worstCaseLiters = longDay ? 3 : 2.5;
+
+  if (veryLongDay) {
+    minimumLiters = 3;
+    worstCaseLiters = 4;
+  } else if (hotConditions || hardEffort) {
+    minimumLiters = 2.5;
+    worstCaseLiters = 4;
+  }
+
+  if (expectedHours >= 5 && expectedHours < 6) {
+    minimumLiters = 2;
+    worstCaseLiters = hotConditions ? 3 : 3;
+  }
+
   const effortContext = [
     distance !== undefined ? `${distance} mi` : null,
     gain !== undefined ? `${gain} ft gain` : null,
     difficultyRating !== "unknown" ? `${difficultyRating} difficulty` : null,
     duration ? `${duration} profile estimate` : null,
   ].filter(Boolean).join(", ");
-  const rangeDrivers = [
-    distanceMaxBump > 0 ? "distance" : null,
-    gainMaxBump > 0 ? "elevation gain" : null,
-    difficultyMaxBump > 0 ? "difficulty" : null,
-    manualEffortMaxBump > 0 ? "entered route effort" : null,
-    hotConditions ? "heat or exposed sun" : null,
-  ].filter(Boolean).join(", ");
-
-  const heatText = hotConditions
-    ? " Heat or exposed sun pushes the worst-case end higher because sweat loss rises."
-    : "";
+  const affectedBy = [
+    "Duration",
+    hotConditions ? "Heat" : null,
+    hardEffort ? "Route effort" : null,
+  ].filter((value): value is string => Boolean(value));
+  const contextNotes = [
+    {
+      label: "Carry vs drink",
+      text: "This is how much water to have available, not a requirement to drink every drop. Drink according to thirst.",
+    },
+    hotConditions
+      ? {
+          label: "Weather effect",
+          text: "Heat or exposed sun makes the higher end more reasonable, but it does not remove heat risk by itself.",
+        }
+      : null,
+    veryLongDay
+      ? {
+          label: "Long-day limit",
+          text: "TrailPack stops increasing the carry number indefinitely. If you expect to need more than this, verify a refill, shorten the route, or start earlier.",
+        }
+      : null,
+  ].filter((value): value is { label: string; text: string } => Boolean(value));
 
   return item({
     name: "Water",
     question: "How much water should I bring?",
     recommendation:
-      `Bring ${minimumLiters}-${worstCaseLiters} liters per adult. ` +
-      "For the upper end, plan a reliable refill or water treatment option instead of assuming you can comfortably carry all of it. Do not treat this as a group total.",
+      `Carry ${minimumLiters}-${worstCaseLiters} liters per adult. ` +
+      "Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.",
     why:
-      `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes water from time first, then raises the upper range for ${rangeDrivers || "available route and weather risk"}. It checked ${effortContext || "the available hike context"}.` +
-      `${heatText} Use the low end for cool, shaded, efficient travel and the high end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids.`,
+      `Your planned time out is about ${formatHours(expectedHours)} hr. TrailPack checked ${effortContext || "the available hike context"} and recommends a realistic frontcountry carry range instead of scaling water indefinitely by time. Use the lower end for cool, shaded, efficient travel and the higher end for heat, full sun, slow pacing, or if an adult is carrying backup water for kids.`,
+    affectedBy: uniqueStrings(affectedBy),
+    contextNotes,
     sourceLabels: uniqueSourceLabels(sourceLabels),
   });
 }
@@ -673,13 +1168,16 @@ function buildFoodItem({
     snackMinimum + 1,
     Math.ceil(expectedHours / 2.5) + routeSnackBump + heatSnackBump,
   );
-  const effortContext = [
+  const routeContext = [
     distance !== undefined ? `${distance} mi` : null,
     gain !== undefined ? `${gain} ft gain` : null,
     difficultyRating !== "unknown" ? `${difficultyRating} difficulty` : null,
-    duration ? `${duration} profile estimate` : null,
-    weatherConditions && weatherConditions.length > 0 ? `${weatherConditions.join(", ")} weather` : null,
-  ].filter(Boolean).join(", ");
+    duration ? `${duration.toLowerCase()} profile estimate` : null,
+  ].filter((value): value is string => Boolean(value));
+  const weatherContext =
+    weatherConditions && weatherConditions.length > 0
+      ? formatWordList(weatherConditions)
+      : "";
   const snackDrivers = [
     routeSnackBump > 0 ? "harder route effort" : null,
     heatSnackBump > 0 ? "heat" : null,
@@ -690,13 +1188,146 @@ function buildFoodItem({
     question: "How much food should I bring?",
     recommendation:
       `Pack ${meals} ${meals === 1 ? "meal" : "meals"} plus ` +
-      `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, nuts, and salty snacks.`,
+      `${snackMinimum}-${snackWorstCase} trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.`,
     why:
-      `Your planned time out is about ${formatHours(expectedHours)} hr, so TrailPack sizes food from time first, then checks ${effortContext || "the available hike context"}.` +
-      `${snackDrivers ? ` The upper snack count rises for ${snackDrivers}.` : ""} ` +
-      "Use the lower end if the day stays on schedule; use the higher end for slow pacing, kids, weather delays, or a longer-than-planned exit.",
+      `For about ${formatHours(expectedHours)} hr out, start with enough food for the planned time plus a delay buffer. ` +
+      `${routeContext.length > 0 ? `Route context: ${formatWordList(routeContext)}. ` : ""}` +
+      `${weatherContext ? `Forecast context: ${weatherContext}. ` : ""}` +
+      `${snackDrivers ? `The higher snack count is there for ${snackDrivers}. ` : ""}` +
+      "Use the lower end for an efficient, on-schedule day; use the higher end for slow pacing, kids, weather delays, or a longer-than-planned exit.",
+    affectedBy: uniqueStrings([
+      "Duration",
+      heatSnackBump > 0 ? "Heat" : null,
+      routeSnackBump > 0 ? "Route effort" : null,
+    ].filter((value): value is string => Boolean(value))),
     sourceLabels: uniqueSourceLabels(sourceLabels),
   });
+}
+
+function buildElectrolytesItem({
+  primary,
+  affectedBy,
+  sourceLabels,
+}: {
+  primary: boolean;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Electrolytes",
+    question: "Do I need electrolytes?",
+    recommendation: primary
+      ? "Bring an electrolyte option, such as packets, tablets, powder, or a sports drink."
+      : "Optional backup: bring electrolyte packets, tablets, powder, or a sports drink if you sweat heavily, prefer a drink mix, or may be out longer than planned.",
+    why: primary
+      ? "Hot, exposed, or sustained sweating can mean replacing salt matters as much as adding more plain water. Count sports drink as part of your fluid, and do not use electrolytes as a reason to force extra water."
+      : "For this plan, salty food is enough for most hikers. Electrolytes are a convenient alternate if food is hard to eat, sweating is heavier than expected, or the day runs long.",
+    affectedBy: uniqueStrings(affectedBy),
+    contextNotes: [
+      {
+        label: "Overdrinking caution",
+        text: "Electrolytes do not make unlimited water safe. Drink according to thirst.",
+      },
+    ],
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "inferred"]),
+    links: [
+      {
+        label: "CDC/NIOSH heat stress guidance",
+        url: CDC_HEAT_STRESS_RECOMMENDATIONS_URL,
+      },
+    ],
+  });
+}
+
+function buildSaltySnacksItem({
+  primary,
+  affectedBy,
+  sourceLabels,
+}: {
+  primary: boolean;
+  affectedBy: string[];
+  sourceLabels: PackingItem["sourceLabels"];
+}): PackingItem {
+  return item({
+    name: "Salty snacks",
+    question: "Should I pack salty snacks?",
+    recommendation: primary
+      ? "Include at least one salty snack per person, such as pretzels, salted nuts, jerky, chips, crackers, or salty trail mix."
+      : "Optional backup: pack a salty snack if you prefer food over drink mix or someone in the group dislikes electrolyte products.",
+    why: primary
+      ? "Long days need food first, and salty snacks help replace salt lost through sweat while also adding calories. This is the practical default when the hike is long but not a high-heat electrolyte scenario."
+      : "Electrolytes are the clearer recommendation for this hot or exposed plan, but salty food is still a practical fallback because it provides salt plus calories.",
+    affectedBy: uniqueStrings(affectedBy),
+    sourceLabels: uniqueSourceLabels([...sourceLabels, "official", "inferred"]),
+    sourceUrl: NPS_HEAT_ILLNESS_URL,
+    links: [
+      {
+        label: "NPS heat illness guidance",
+        url: NPS_HEAT_ILLNESS_URL,
+      },
+    ],
+  });
+}
+
+function buildSaltSupportItems({
+  expectedHours,
+  profileHours,
+  highHeatConditions,
+  sourceLabels,
+}: {
+  expectedHours: number | null;
+  profileHours: number | null;
+  highHeatConditions: boolean;
+  sourceLabels: PackingItem["sourceLabels"];
+}): { essential: PackingItem[]; optional: PackingItem[] } {
+  const plannedHours = expectedHours ?? profileHours;
+  const longByUserDuration = expectedHours !== null && expectedHours >= 6;
+  const sustainedHighHeat = highHeatConditions && plannedHours !== null && plannedHours >= 3;
+
+  if (!longByUserDuration && !sustainedHighHeat) {
+    return { essential: [], optional: [] };
+  }
+
+  const affectedBy = uniqueStrings([
+    sustainedHighHeat ? "Heat" : null,
+    longByUserDuration ? "Duration" : null,
+  ].filter((value): value is string => Boolean(value)));
+
+  if (sustainedHighHeat) {
+    return {
+      essential: [
+        buildElectrolytesItem({
+          primary: true,
+          affectedBy,
+          sourceLabels,
+        }),
+      ],
+      optional: [
+        buildSaltySnacksItem({
+          primary: false,
+          affectedBy,
+          sourceLabels,
+        }),
+      ],
+    };
+  }
+
+  return {
+    essential: [
+      buildSaltySnacksItem({
+        primary: true,
+        affectedBy,
+        sourceLabels,
+      }),
+    ],
+    optional: [
+      buildElectrolytesItem({
+        primary: false,
+        affectedBy,
+        sourceLabels,
+      }),
+    ],
+  };
 }
 
 export function generatePackingRecommendation(
@@ -714,12 +1345,33 @@ export function generatePackingRecommendation(
   const duration = trail.estimatedDuration.value;
 
   const expectedHours = parseExpectedHours(userInput.expectedDuration);
+  const profileHours = parseExpectedHours(duration);
   const conditions = analyzeTrailConditions(userInput.trailConditions);
   const shortByProfile = distance <= 3.5 && gain <= 500;
   const hotConditions =
     weather.conditions.includes("heat") ||
     (weather.temperatureF?.high ?? 0) >= 80 ||
     (weather.temperatureF?.current ?? 0) >= 75;
+  const highHeatConditions =
+    weather.conditions.includes("heat") ||
+    (weather.temperatureF?.high ?? 0) >= 85 ||
+    (weather.temperatureF?.current ?? 0) >= 85;
+  const dangerousHeatConditions =
+    (weather.temperatureF?.high ?? 0) >= 95 ||
+    (weather.temperatureF?.current ?? 0) >= 95;
+  const tripDecisionDanger = buildTripDecisionDanger({ alerts, weather });
+  const tripAlerts = buildWeatherTripAlerts({
+    weather,
+    hotConditions,
+    dangerousHeatConditions,
+    suppressHeatTripAlert:
+      tripDecisionDanger?.source === "alert" && tripDecisionDanger.kind === "extreme-heat",
+  });
+  const wetWeatherConditions =
+    weather.conditions.includes("rain") ||
+    weather.conditions.includes("snow") ||
+    (weather.precipitationChance ?? 0) >= 40;
+  const wetAlertContext = tripDecisionDanger?.affectedBy.includes("Wet") ?? false;
   const bugSeasonDate =
     userInput.plannedDate ?? weather.plannedDate ?? weather.daylight?.date;
 
@@ -755,20 +1407,26 @@ export function generatePackingRecommendation(
     );
   }
 
+  if (wetWeatherConditions || wetAlertContext) {
+    if (wetWeatherConditions) {
+      footwearSourceLabels.push("forecast-based");
+    }
+    footwearRecommendationParts.push(
+      "If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.",
+    );
+    footwearWhyParts.push(
+      "Wet or alert-driven footing risk makes smooth casual soles less dependable.",
+    );
+  }
+
   if (weather.conditions.includes("rain") || weather.conditions.includes("snow")) {
     footwearSourceLabels.push("forecast-based");
-    footwearRecommendationParts.push(
-      "Pack one dry pair of socks.",
-    );
     footwearWhyParts.push(
-      "The weather context includes wet conditions, and wet feet increase blister risk.",
+      "The weather context includes wet conditions, so dry backup socks are listed separately below.",
     );
   } else if (conditions.muddyOrWet || conditions.snowOrIce) {
-    footwearRecommendationParts.push(
-      "Pack one dry pair of socks.",
-    );
     footwearWhyParts.push(
-      "Wet or snowy trail sections increase blister risk, and dry socks are a simple backup.",
+      "Wet or snowy trail sections make backup socks more useful, so they are listed separately below.",
     );
   }
   footwearSourceLabels.push("inferred");
@@ -779,15 +1437,40 @@ export function generatePackingRecommendation(
       question: "What footwear setup fits this hike?",
       recommendation: footwearRecommendationParts.join(" "),
       why: footwearWhyParts.join(" "),
+      affectedBy: uniqueStrings([
+        conditions.muddyOrWet ? "Wet" : null,
+        conditions.snowOrIce ? "Snow/Ice" : null,
+        weather.conditions.includes("rain") || weather.conditions.includes("snow")
+          ? "Weather"
+          : null,
+        wetAlertContext ? "Official alert" : null,
+      ].filter((value): value is string => Boolean(value))),
       sourceLabels: uniqueSourceLabels(footwearSourceLabels),
     }),
   );
 
   const longByProfile = distance >= 5 || gain >= 800;
   const longByUserDuration = expectedHours !== null && expectedHours >= 5;
+  const unusualDuration =
+    expectedHours !== null &&
+    profileHours !== null &&
+    expectedHours >= 4 &&
+    expectedHours >= profileHours * 2;
+
+  if (unusualDuration && expectedHours !== null && profileHours !== null) {
+    tripAlerts.push(
+      buildUnusualDurationAlert({
+        expectedHours,
+        trail,
+      }),
+    );
+  }
 
   if (longByProfile || longByUserDuration) {
     if (longByUserDuration && expectedHours !== null) {
+      const waterSourceLabels: PackingItem["sourceLabels"] = hotConditions
+        ? ["user-provided", "supported-profile", "forecast-based", "inferred"]
+        : ["user-provided", "supported-profile", "inferred"];
       essential.push(
         buildWaterItem({
           expectedHours,
@@ -796,9 +1479,13 @@ export function generatePackingRecommendation(
           duration,
           difficulty: trail.difficulty.value,
           hotConditions,
-          sourceLabels: hotConditions
-            ? ["user-provided", "supported-profile", "forecast-based", "inferred"]
-            : ["user-provided", "supported-profile", "inferred"],
+          sourceLabels: waterSourceLabels,
+        }),
+      );
+      optional.push(
+        buildWaterLogisticsItem({
+          expectedHours,
+          sourceLabels: waterSourceLabels,
         }),
       );
     } else {
@@ -826,6 +1513,22 @@ export function generatePackingRecommendation(
     );
   }
 
+  optional.push(
+    buildExtraSocksItem({
+      affectedBy: [
+        weather.conditions.includes("rain") || conditions.muddyOrWet ? "Wet" : null,
+        weather.conditions.includes("snow") || conditions.snowOrIce ? "Snow/Ice" : null,
+        expectedHours !== null && expectedHours >= 6 ? "Duration" : null,
+      ].filter((value): value is string => Boolean(value)),
+      wetOrSnowy:
+        weather.conditions.includes("rain") ||
+        weather.conditions.includes("snow") ||
+        conditions.muddyOrWet ||
+        conditions.snowOrIce,
+      longDay: expectedHours !== null && expectedHours >= 6,
+    }),
+  );
+
   if (expectedHours !== null && expectedHours >= 6) {
     essential.push(
       buildFoodItem({
@@ -845,10 +1548,10 @@ export function generatePackingRecommendation(
         question: "How much food should I bring?",
         recommendation: shortByProfile
           ? "Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks."
-          : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks.",
+          : "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.",
         why: shortByProfile
-          ? `This is a shorter ${duration.toLowerCase()} hike, but quick trail fuel still helps with breaks and delays.`
-          : `Plan for ${duration} on trail, so lunch plus snacks is more practical than a single small snack.`,
+          ? `This route is listed at ${duration.toLowerCase()}, but quick trail fuel still helps with breaks and delays.`
+          : `This route is listed at ${duration.toLowerCase()}, so lunch plus snacks is more practical than a single small snack.`,
         sourceLabels: ["supported-profile"],
       }),
     );
@@ -866,23 +1569,49 @@ export function generatePackingRecommendation(
       item({
         name: "Headlamp",
         question: "Do I need a headlamp?",
-        answer: `${headlampDecision.reason} A small headlamp is more reliable than counting on a phone battery for trail light.`,
+        recommendation:
+          headlampDecision.placement === "essential"
+            ? "Bring a small headlamp."
+            : "Pack a small headlamp as a backup.",
+        why: `${headlampDecision.reason} A small headlamp is more reliable than counting on a phone battery for trail light.`,
         reason: headlampDecision.reason,
+        affectedBy: uniqueStrings([
+          expectedHours !== null && expectedHours >= 6 ? "Duration" : null,
+          userInput.startTime ? "Daylight" : null,
+        ].filter((value): value is string => Boolean(value))),
         sourceLabels: headlampDecision.sourceLabels,
       }),
     );
   }
 
   if (expectedHours !== null && expectedHours >= 6) {
-    optional.push(
+    const foodReserveTarget = expectedHours >= 8 ? essential : optional;
+    foodReserveTarget.push(
       item({
         name: "Extra food reserve",
         question: "How much extra food should I add for a long day?",
-        answer: `Add at least one extra substantial snack per person beyond lunch and your normal trail snacks for an about ${expectedHours} hr day. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.`,
+        recommendation: `Add at least one extra substantial snack per person beyond meals and normal trail snacks for an about ${formatHours(expectedHours)} hr day.`,
+        why:
+          "This is your delay buffer for slow pacing, weather, a missed turn, or a longer-than-planned exit. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
+        affectedBy: ["Duration"],
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
   }
+
+  const saltSourceLabels: PackingItem["sourceLabels"] = uniqueSourceLabels([
+    expectedHours !== null ? "user-provided" : "supported-profile",
+    highHeatConditions ? "forecast-based" : null,
+    "inferred",
+  ].filter((value): value is PackingItem["sourceLabels"][number] => Boolean(value)));
+  const saltSupport = buildSaltSupportItems({
+    expectedHours,
+    profileHours,
+    highHeatConditions,
+    sourceLabels: saltSourceLabels,
+  });
+  essential.push(...saltSupport.essential);
+  optional.push(...saltSupport.optional);
 
   essential.push(
     item({
@@ -892,6 +1621,7 @@ export function generatePackingRecommendation(
         "Carry bear spray where it is immediately reachable, not buried in your pack. Plan on one EPA-registered can per adult, and rent or buy it before you reach the trailhead.",
       why:
         "Grand Teton NPS says visitors in bear country should carry EPA-approved bear spray where it is quickly accessible. One can per adult keeps each adult covered if the group separates, and Bear Aware lists current Jackson and Jackson Hole Airport pickup/drop-off options.",
+      affectedBy: ["Wildlife"],
       sourceLabels: ["official", "inferred"],
       sourceUrl: GRTE_BEAR_SAFETY_URL,
       links: [
@@ -901,6 +1631,20 @@ export function generatePackingRecommendation(
     }),
   );
 
+  essential.push(buildNavigationItem());
+  if (longByProfile || longByUserDuration) {
+    essential.push(
+      buildPowerBackupItem({
+        expectedHours,
+        sourceLabels: uniqueSourceLabels([
+          expectedHours !== null ? "user-provided" : "supported-profile",
+          "official",
+          "inferred",
+        ]),
+      }),
+    );
+  }
+
   if (weather.conditions.includes("rain") || (weather.precipitationChance ?? 0) >= 40) {
     essential.push(
       item({
@@ -908,6 +1652,7 @@ export function generatePackingRecommendation(
         question: "Do I need a jacket or shell?",
         recommendation: "Bring a light rain shell.",
         why: `The forecast says: ${weather.summary} A shell keeps rain and wind off without needing a heavy summer layer.`,
+        affectedBy: ["Weather", "Wet"],
         sourceLabels: ["forecast-based"],
       }),
     );
@@ -932,6 +1677,7 @@ export function generatePackingRecommendation(
           "Bring sunscreen, sunglasses, a brimmed hat, and a lightweight UPF or long-sleeve sun shirt.",
         why:
           "Alpine sun can still be strong on mild days, especially near lakes, rock, snow patches, or exposed shoreline. A breathable sun shirt protects skin without relying only on reapplying sunscreen.",
+        affectedBy: hotConditions ? ["Heat"] : ["Weather"],
         sourceLabels: ["forecast-based", "inferred"],
       }),
     );
@@ -955,25 +1701,25 @@ export function generatePackingRecommendation(
         why,
         answer: `${recommendation} ${why}`,
         reason: `${recommendation} ${why}`,
+        affectedBy: uniqueStrings([...(existingWater.affectedBy ?? []), "Heat"]),
+        contextNotes: [
+          ...(existingWater.contextNotes ?? []),
+          {
+            label: "Weather effect",
+            text: "Warm exposed conditions make the higher end more reasonable, but extra water does not remove heat risk by itself.",
+          },
+        ],
         sourceLabels: uniqueSourceLabels([...existingWater.sourceLabels, "forecast-based"]),
       };
     }
 
     optional.push(
       item({
-        name: "Electrolytes or salty snack",
-        question: "Do I need electrolytes?",
-        answer:
-          "Bring electrolyte tabs, a salty snack, or a sports drink if you expect to sweat. They help replace salt on hot, exposed hiking days and make it easier to keep drinking water.",
-        sourceLabels: ["forecast-based", "inferred"],
-      }),
-    );
-    optional.push(
-      item({
         name: "Breathable sun layer",
         question: "What should I wear for hot sun?",
         answer:
           "Wear a breathable long-sleeve sun shirt or light layer if you burn easily or will spend hours in exposed sun. It should be light and ventilated, not a heavy warm layer.",
+        affectedBy: ["Heat"],
         sourceLabels: ["forecast-based", "inferred"],
       }),
     );
@@ -985,9 +1731,12 @@ export function generatePackingRecommendation(
       item({
         name: "Traction devices (microspikes)",
         question: "Do I need traction?",
-        answer:
-          "Yes if your trail report is accurate. You reported snow or ice, so microspikes help on slick shaded sections, packed snow, or icy bridges where regular shoe tread can slide.",
-        sourceLabels: ["user-provided"],
+        recommendation:
+          "Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.",
+        why:
+          "You reported snow or ice. Microspikes are small metal traction devices that stretch over footwear and bite into packed snow or ice better than regular tread. Buy or rent them from an outdoor gear shop before reaching the trailhead; TrailPack does not know a verified rental counter on this route.",
+        affectedBy: ["Snow/Ice", "Trail conditions"],
+        sourceLabels: ["user-provided", "inferred"],
       }),
     );
     optional.push(
@@ -998,21 +1747,11 @@ export function generatePackingRecommendation(
           "Use trekking poles if you have them, but do not treat them as a replacement for microspikes.",
         why:
           "You reported snow or ice. Poles add balance on slick sections and descents, while microspikes handle traction.",
+        affectedBy: ["Snow/Ice", "Trail conditions"],
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
   }
-
-  optional.push(
-    item({
-      name: "Offline map",
-      question: "Do I need a map if I have my phone?",
-      recommendation: "Save an offline map before leaving.",
-      why:
-        "Cell service can be limited in mountain areas. Do not depend on live service for route finding, pickup timing, or checking your return path.",
-      sourceLabels: ["inferred"],
-    }),
-  );
 
   essential.push(
     item({
@@ -1026,21 +1765,31 @@ export function generatePackingRecommendation(
   );
 
   if (alerts.hasActiveAlerts) {
+    const activeAlert = buildActiveAlertTripAlert(alerts, tripDecisionDanger);
+    if (activeAlert) {
+      tripAlerts.push(activeAlert);
+    }
+
     // The aggregate item may only be "official" when EVERY active alert is a
     // verified NPS alert. A single unverified/third-party alert means the whole
     // aggregate cannot claim official provenance.
     const allAlertsOfficial =
       alerts.alerts.length > 0 && alerts.alerts.every(isOfficialNpsAlert);
-    const alertTitles = alerts.alerts.map((alert) => alert.title).join("; ");
+    const titles = alertTitles(alerts.alerts);
     essential.push(
       item({
         name: "Review active alerts before leaving",
         question: "Are there active NPS alerts I should check?",
-        answer: `Review active alerts before leaving: ${alertTitles}. Closures, high water, wildlife activity, or maintenance can change the route and the packing plan.`,
+        answer: `Review active alerts before leaving: ${titles}. Closures, high water, wildlife activity, or maintenance can change the route and the packing plan.`,
+        affectedBy: ["Official alert"],
         sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
         sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
       }),
     );
+  }
+
+  if (tripDecisionDanger) {
+    essential.push(buildTripSafetyDecisionItem(tripDecisionDanger));
   }
 
   if (gain >= 1000 && !conditions.snowOrIce) {
@@ -1051,18 +1800,31 @@ export function generatePackingRecommendation(
         recommendation:
           "Trekking poles are optional, but bring them if you like extra balance or knee support.",
         why: `${gain} ft of elevation gain means descents can be harder on knees. Poles help with balance, steady pacing, rocky steps, and long downhill sections.`,
+        affectedBy: ["Route effort"],
         sourceLabels: ["supported-profile", "inferred"],
       }),
     );
   }
 
-  optional.push(
+  const coldLayerNeeded =
+    weather.conditions.includes("cold") ||
+    weather.conditions.includes("snow") ||
+    (weather.temperatureF?.high ?? Number.POSITIVE_INFINITY) <= 50;
+  const layerTarget = coldLayerNeeded ? essential : optional;
+  layerTarget.push(
     item({
       name: "Light jacket or warm layer",
-      question: "Do I need a warm layer in summer?",
-      answer:
-        "In summer, make this a light jacket, fleece, wind shirt, or rain shell, not a heavy winter coat. Elevation near 6,900 ft, shade, wind, rain, or an evening finish can feel cooler than the valley.",
-      sourceLabels: ["supported-profile", "inferred"],
+      question: "Do I need an extra layer?",
+      recommendation: coldLayerNeeded
+        ? "Bring an insulating warm layer plus a rain or wind shell."
+        : "Bring a light jacket, fleece, wind shirt, or rain shell; not a heavy winter coat.",
+      why: coldLayerNeeded
+        ? `The forecast says: ${weather.summary} Grand Teton weather can change quickly, and cold, wind, snow, or a slow exit can make a thin backup layer inadequate.`
+        : "Elevation near 6,900 ft, shade, wind, rain, or an evening finish can feel cooler than the valley even in summer.",
+      affectedBy: coldLayerNeeded ? ["Weather"] : undefined,
+      sourceLabels: coldLayerNeeded
+        ? ["forecast-based", "inferred"]
+        : ["supported-profile", "inferred"],
     }),
   );
 
@@ -1088,6 +1850,7 @@ export function generatePackingRecommendation(
     trailId: trail.id,
     trailName: trail.name,
     generatedAt: new Date().toISOString(),
+    tripAlerts: tripAlerts.map(enforceOfficialProvenanceOnAlert),
     essential: essential.map(enforceOfficialProvenance),
     optional: optional.map(enforceOfficialProvenance),
     missingDetails,
@@ -1118,6 +1881,11 @@ export function generateManualEntryRecommendation(
       ? "Your entered distance or elevation suggests more than a short outing, so grip and support matter more."
       : "The manual fallback does not have a complete source-backed trail profile, so footwear guidance stays conservative.",
   ];
+  const manualWaterSourceLabels: PackingItem["sourceLabels"] = [
+    "user-provided",
+    "missing",
+    "inferred",
+  ];
 
   if (conditions.muddyOrWet) {
     manualFootwearSourceLabels.push("user-provided");
@@ -1140,11 +1908,8 @@ export function generateManualEntryRecommendation(
   }
 
   if (conditions.muddyOrWet || conditions.snowOrIce) {
-    manualFootwearRecommendationParts.push(
-      "Pack one dry pair of socks.",
-    );
     manualFootwearWhyParts.push(
-      "Wet or snowy trail sections increase blister risk, and dry socks are a simple backup.",
+      "Wet or snowy trail sections make backup socks more useful, so they are listed separately below.",
     );
   }
 
@@ -1155,7 +1920,7 @@ export function generateManualEntryRecommendation(
           distance: distanceMiles ?? undefined,
           gain: elevationGainFeet ?? undefined,
           hotConditions: false,
-          sourceLabels: ["user-provided", "missing", "inferred"],
+          sourceLabels: manualWaterSourceLabels,
         })
       : item({
           name: "Water",
@@ -1179,7 +1944,7 @@ export function generateManualEntryRecommendation(
           name: "Food",
           question: "How much food should I bring?",
           recommendation: longerByManualFacts
-            ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, or salty snacks."
+            ? "Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts."
             : "Bring 1-2 easy trail snacks per person as a baseline, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.",
           why: longerByManualFacts
             ? "Your entered trail facts suggest more than a short outing."
@@ -1191,6 +1956,10 @@ export function generateManualEntryRecommendation(
       question: "What footwear setup fits this hike?",
       recommendation: manualFootwearRecommendationParts.join(" "),
       why: manualFootwearWhyParts.join(" "),
+      affectedBy: uniqueStrings([
+        conditions.muddyOrWet ? "Wet" : null,
+        conditions.snowOrIce ? "Snow/Ice" : null,
+      ].filter((value): value is string => Boolean(value))),
       sourceLabels: uniqueSourceLabels(manualFootwearSourceLabels),
     }),
     item({
@@ -1209,15 +1978,22 @@ export function generateManualEntryRecommendation(
         "Carry blister pads or moleskin, a few adhesive bandages, antiseptic wipes, pain reliever, personal medications, and any allergy or asthma supplies. These basics are useful even before the hike stats are complete.",
       sourceLabels: ["inferred"],
     }),
+    buildNavigationItem(),
   ];
+  if (longerByManualFacts || (expectedHours !== null && expectedHours >= 5)) {
+    essential.push(
+      buildPowerBackupItem({
+        expectedHours,
+        sourceLabels: uniqueSourceLabels([
+          expectedHours !== null ? "user-provided" : null,
+          longerByManualFacts ? "user-provided" : null,
+          "official",
+          "inferred",
+        ].filter((value): value is PackingItem["sourceLabels"][number] => Boolean(value))),
+      }),
+    );
+  }
   const optional: PackingItem[] = [
-    item({
-      name: "Offline map",
-      question: "Do I need a map if I have my phone?",
-      answer:
-        "Save an offline map before leaving. Unsupported hikes may have weaker trail data in TrailPack, and cell service can be limited in mountain areas.",
-      sourceLabels: ["inferred"],
-    }),
     item({
       name: "Light rain or wind shell",
       question: "Do I need a jacket or shell?",
@@ -1227,6 +2003,27 @@ export function generateManualEntryRecommendation(
     }),
   ];
   const missingDetails: string[] = [];
+
+  if (expectedHours !== null && expectedHours >= 5) {
+    optional.push(
+      buildWaterLogisticsItem({
+        expectedHours,
+        sourceLabels: manualWaterSourceLabels,
+      }),
+    );
+  }
+
+  optional.push(
+    buildExtraSocksItem({
+      affectedBy: [
+        conditions.muddyOrWet ? "Wet" : null,
+        conditions.snowOrIce ? "Snow/Ice" : null,
+        expectedHours !== null && expectedHours >= 6 ? "Duration" : null,
+      ].filter((value): value is string => Boolean(value)),
+      wetOrSnowy: conditions.muddyOrWet || conditions.snowOrIce,
+      longDay: expectedHours !== null && expectedHours >= 6,
+    }),
+  );
 
   if (isRegionalBugSeason(userInput.plannedDate)) {
     optional.push(buildInsectRepellentItem(userInput.plannedDate));
@@ -1239,18 +2036,32 @@ export function generateManualEntryRecommendation(
         question: "Do I need a headlamp?",
         recommendation: "Bring a small headlamp.",
         why: `An unsupported hike planned for about ${expectedHours} hr can run late, and this manual fallback does not have source-backed civil twilight timing yet.`,
+        affectedBy: ["Duration"],
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
-    optional.push(
+    const manualFoodReserveTarget = expectedHours >= 8 ? essential : optional;
+    manualFoodReserveTarget.push(
       item({
         name: "Extra food reserve",
         question: "How much extra food should I add for a long day?",
-        answer:
-          "Add at least one extra substantial snack per person beyond lunch and normal trail snacks for a long unsupported-hike day. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
+        recommendation:
+          "Add at least one extra substantial snack per person beyond meals and normal trail snacks for a long unsupported-hike day.",
+        why:
+          "This is your delay buffer for slow pacing, weather, a missed turn, or a longer-than-planned exit. Choose calorie-dense food you will actually eat, such as a bar, nuts, jerky, dried fruit, or a salty snack.",
+        affectedBy: ["Duration"],
         sourceLabels: ["user-provided", "inferred"],
       }),
     );
+
+    const saltSupport = buildSaltSupportItems({
+      expectedHours,
+      profileHours: null,
+      highHeatConditions: false,
+      sourceLabels: ["user-provided", "missing", "inferred"],
+    });
+    essential.push(...saltSupport.essential);
+    optional.push(...saltSupport.optional);
   }
 
   if (conditions.snowOrIce) {
@@ -1258,9 +2069,12 @@ export function generateManualEntryRecommendation(
       item({
         name: "Traction devices (microspikes)",
         question: "Do I need traction?",
-        answer:
-          "Yes if your trail report is accurate. You reported snow or ice, so microspikes help on slick shaded sections, packed snow, or icy bridges where regular shoe tread can slide.",
-        sourceLabels: ["user-provided"],
+        recommendation:
+          "Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.",
+        why:
+          "You reported snow or ice. Microspikes are small metal traction devices that stretch over footwear and bite into packed snow or ice better than regular tread. Buy or rent them from an outdoor gear shop before reaching the trailhead; TrailPack does not know a verified rental counter for this manual route.",
+        affectedBy: ["Snow/Ice", "Trail conditions"],
+        sourceLabels: ["user-provided", "inferred"],
       }),
     );
   }
@@ -1317,6 +2131,7 @@ export function generateManualEntryRecommendation(
     trailId: "manual-entry",
     trailName: "Manual hike entry",
     generatedAt: new Date().toISOString(),
+    tripAlerts: [],
     essential: essential.map(enforceOfficialProvenance),
     optional: optional.map(enforceOfficialProvenance),
     missingDetails,

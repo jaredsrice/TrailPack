@@ -53,6 +53,22 @@ change as the project develops.
 - Bear-spray recommendation links for official NPS guidance and current Bear
   Aware rental-location information.
 - Seasonal optional insect-repellent guidance backed by NPS Hike Smart.
+- A saved Taggart Lake 2026 NPS trail-work alert fixture that appears in the
+  recommendation flow with official-source provenance.
+- Overall trip alerts for unusual duration, heat/sun exposure, wet weather,
+  cold/snow conditions, and active NPS trail alerts.
+- A Week 13/14 hiker-scenario stress report covering seasoned, casual/new, and
+  middle-of-the-road hiker lenses across all three supported trails.
+- A reusable `npm run scenario:stress` command that regenerates the hiker-scenario
+  stress report from the current recommendation engine.
+- A trip-decision danger classifier for closures, flash flooding, lightning,
+  extreme heat, high water, wildfire or heavy smoke, and avalanche language.
+- An optional `Water filter or treatment backup` recommendation backed by NPS
+  water-treatment basics.
+- A separate optional `Extra dry socks` row with blister and cold/wet-foot
+  rationale.
+- A Week 14 scope/status note that maps the current prototype against the
+  proposal, Week 12 requirements spec, and remaining 499A closeout tasks.
 
 ### Changed
 
@@ -94,10 +110,21 @@ change as the project develops.
   spray access, trekking poles, socks, headlamp timing, and summer layers.
 - Refined packing card headings so the UI shows clean recommendation topics
   while the underlying item data keeps the hidden question each answer addresses.
-- Split packing card content into `Recommendation` and `Why` sections so users
-  can scan the clear action before reading the supporting trip context.
-- Merged wet-footwear, tennis-shoe, gaiter, and dry-sock guidance into the single
-  `Trail footwear` recommendation instead of showing separate foot-related cards.
+- Replaced the two-column packing-card layout with grouped accordion rows so
+  related recommendations stay visually close while `Essential` and `Optional`
+  remain visible as row badges.
+- Added a first-position `Critical Safety` recommendation group for trip-safety
+  decisions, safety-critical gear, and active-alert review rows.
+- Added affected-by markers to recommendation rows so overall alerts can connect
+  to specific items without adding more text to the quick-scan view.
+- Strengthened essential and alert-affected row styling so required items and
+  alert-driven changes stand out more clearly in the scan view.
+- Split critical safety styling into `Change plan` for trip-decision dangers and
+  `Safety-critical` for gear whose absence materially changes basic trip safety.
+- Split accordion content so users can scan the clear action before expanding
+  the supporting trip context, sources, and context notes.
+- Moved dry-sock guidance out of `Trail footwear` and into a separate optional
+  row so the sock recommendation is easier to notice.
 - Added a date-gated `Insect repellent` optional card for regional bug season
   rather than making bug spray a permanent essential.
 - Updated trip-detail copy so the planned date is described as seasonal
@@ -110,9 +137,35 @@ change as the project develops.
 - Scaled long-day food and water recommendations from expected duration, with
   distance, elevation gain, difficulty, and hot/exposed weather reflected in the
   range and explanation.
+- Reworded long-day food rationale so route context, forecast context, and the
+  lower-versus-higher snack range read as hiker-facing guidance.
+- Reframed long-day water as a realistic frontcountry carry range, with `3-4`
+  liters per adult for very long supported-trail days instead of indefinitely
+  scaling by time.
+- Moved refill/treatment guidance into an optional backup row unless the hiker
+  plans to refill from an unverified source.
+- Split the old blended electrolyte/salty-snack guidance into separate
+  `Electrolytes` and `Salty snacks` rows so one salt source is promoted based on
+  heat and duration while the alternate stays optional.
+- Moved very-long-day extra food reserve into essentials while keeping shorter
+  long-day reserve food optional.
+- Made cold or snowy forecasts promote the warm-layer recommendation to
+  essentials without summer-specific wording.
+- Expanded snow/ice traction guidance to explain microspikes, shoe/boot fit,
+  and generic buy/rent planning without inventing a trail-specific rental source.
+- Moved abnormal-duration warnings into the overall alerts area instead of
+  treating the warning as packing gear.
 - Expanded bear-spray guidance to recommend one can per adult while keeping
   official NPS support tied to EPA-approved, immediately accessible bear spray.
+- Promoted navigation to an essential `Navigation / offline map` item backed by
+  NPS Ten Essentials, with offline map or GPS route, battery, and physical backup
+  guidance.
+- Added a `Power bank / extra battery` row for longer trips where a phone, GPS,
+  or rechargeable headlamp may be part of navigation or lighting.
 - Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
+- Expanded the hiker-scenario stress report with flash-flood, severe-storm, and
+  extreme-heat templates so critical-danger behavior is checked across all three
+  supported trails.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.

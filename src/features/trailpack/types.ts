@@ -121,6 +121,12 @@ export interface AlertContext {
 export interface PackingItem {
   name: string;
   /**
+   * Short context markers shown beside the recommendation row, e.g. "Heat" or
+   * "Duration". These connect top-level trip alerts to specific packing items
+   * without making the quick recommendation text longer.
+   */
+  affectedBy?: string[];
+  /**
    * User-facing question this item answers, e.g. "How much water should I
    * bring?" Keeping this structured lets the UI avoid generic item cards.
    */
@@ -151,12 +157,27 @@ export interface PackingItem {
     label: string;
     url: string;
   }>;
+  contextNotes?: Array<{
+    label: string;
+    text: string;
+  }>;
+}
+
+export interface TripAlert {
+  id: string;
+  title: string;
+  summary: string;
+  severity: "info" | "caution" | "danger";
+  affectedBy: string[];
+  sourceLabels: SourceLabel[];
+  sourceUrl?: string;
 }
 
 export interface PackingRecommendation {
   trailId: string;
   trailName: string;
   generatedAt: string;
+  tripAlerts: TripAlert[];
   essential: PackingItem[];
   optional: PackingItem[];
   missingDetails: string[];

@@ -83,16 +83,28 @@ function validDraft(): AiReviewDraft {
         sourceLabels: ["official", "inferred"],
       },
       {
+        itemName: "Extra dry socks",
+        explanation:
+          "The forecast context includes wet weather, so a dry sock backup is useful for blister prevention.",
+        sourceLabels: ["inferred"],
+      },
+      {
         itemName: "First-aid basics",
         explanation:
           "The rule-based list keeps a basic first-aid item for a longer day hike.",
         sourceLabels: ["supported-profile", "inferred"],
       },
       {
-        itemName: "Offline map",
+        itemName: "Navigation / offline map",
         explanation:
-          "The rule engine keeps navigation as an inferred backup for mountain areas.",
-        sourceLabels: ["inferred"],
+          "NPS Ten Essentials support carrying map, compass, or GPS navigation with offline access and battery backup.",
+        sourceLabels: ["official", "inferred"],
+      },
+      {
+        itemName: "Power bank / extra battery",
+        explanation:
+          "The longer profile makes backup power useful if a phone, GPS, or rechargeable headlamp is part of the navigation or light plan.",
+        sourceLabels: ["supported-profile", "official", "inferred"],
       },
       {
         itemName: "Trekking poles",

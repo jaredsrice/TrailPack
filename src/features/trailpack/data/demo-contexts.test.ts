@@ -25,6 +25,18 @@ describe("demo contexts", () => {
       windMph: 8,
       conditions: ["sun"],
     });
+    expect(DEMO_CONTEXTS["taggart-lake"].alerts).toMatchObject({
+      hasActiveAlerts: true,
+      label: "official",
+      retrievalStatus: "saved-fixture",
+      alerts: [
+        {
+          title: "Taggart Trail 2026 construction closure",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/thingstodo/taggartlake.htm",
+        },
+      ],
+    });
   });
 
   it("stores the exact String Lake Loop scenario values", () => {
