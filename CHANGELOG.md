@@ -114,13 +114,13 @@ change as the project develops.
   related recommendations stay visually close while `Essential` and `Optional`
   remain visible as row badges.
 - Added a first-position `Critical Safety` recommendation group for trip-safety
-  decisions, bear spray, and active-alert review rows.
+  decisions, safety-critical gear, and active-alert review rows.
 - Added affected-by markers to recommendation rows so overall alerts can connect
   to specific items without adding more text to the quick-scan view.
 - Strengthened essential and alert-affected row styling so required items and
   alert-driven changes stand out more clearly in the scan view.
 - Split critical safety styling into `Change plan` for trip-decision dangers and
-  `Non-negotiable gear` for required preparedness such as bear spray.
+  `Safety-critical` for gear whose absence materially changes basic trip safety.
 - Split accordion content so users can scan the clear action before expanding
   the supporting trip context, sources, and context notes.
 - Moved dry-sock guidance out of `Trail footwear` and into a separate optional
@@ -157,6 +157,9 @@ change as the project develops.
   treating the warning as packing gear.
 - Expanded bear-spray guidance to recommend one can per adult while keeping
   official NPS support tied to EPA-approved, immediately accessible bear spray.
+- Promoted navigation to an essential `Navigation / offline map` item backed by
+  NPS Ten Essentials, with offline map or GPS route, battery, and physical backup
+  guidance.
 - Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
 - Expanded the hiker-scenario stress report with flash-flood, severe-storm, and
   extreme-heat templates so critical-danger behavior is checked across all three

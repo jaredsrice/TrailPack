@@ -88,9 +88,9 @@ most actionable issues:
   cold/snow context, active NPS alerts, and critical danger conditions. Affected
   recommendation rows show context markers such as `Heat`, `Wet`, `Duration`,
   or `Official alert`.
-- Trip safety decisions, bear spray, and active-alert review rows now render in
-  a first-position `Critical Safety` group. Trip decisions get a `Change plan`
-  marker, while bear spray remains `Non-negotiable gear`.
+- Trip safety decisions, safety-critical gear, and active-alert review rows now
+  render in a first-position `Critical Safety` group. Trip decisions get a
+  `Change plan` marker, while bear spray and navigation get `Safety-critical`.
 - Extra dry socks now appear as a separate optional row with blister and
   cold/wet-foot rationale.
 - Salt support now separates `Electrolytes` from `Salty snacks`: high-heat

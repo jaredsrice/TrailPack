@@ -491,15 +491,15 @@ Official profile in app: 7.1 mi, 1040 ft gain, 3-5 hours, Moderate.
 
 Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, Sun protection, First-aid basics.
-Optional: Extra dry socks, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Sun protection, First-aid basics.
+Optional: Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail.
 
 Key outputs:
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -520,8 +520,8 @@ Hiker lens read:
 
 Intent: Expected day-hike behavior with duration and daylight context.
 User input: duration 4 hours, start 09:00, conditions dry and clear.
-Essential: Trail footwear, Water, Food, Bear spray, Sun protection, First-aid basics.
-Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: none.
 
 Key outputs:
@@ -547,15 +547,15 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
@@ -578,15 +578,15 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles, Offline map.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
@@ -611,8 +611,8 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Trekking poles, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure.
 
 Key outputs:
@@ -643,15 +643,15 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Rain shell, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Rain shell, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
 Key outputs:
 - Water: Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Bring a small headlamp.
@@ -678,8 +678,8 @@ Hiker lens read:
 
 Intent: Stress critical-danger language where changing the plan matters more than adding gear.
 User input: duration 4 hours, start 11:00, conditions rain in the area with low spots and creek crossings.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Extra dry socks, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Flash flood danger.
 
 Key outputs:
@@ -687,7 +687,7 @@ Key outputs:
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -712,8 +712,8 @@ Hiker lens read:
 
 Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
 Key outputs:
@@ -721,7 +721,7 @@ Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -749,8 +749,8 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Trekking poles, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Trekking poles, Light jacket or warm layer.
 Trip alerts: Extreme heat danger.
 
 Key outputs:
@@ -791,8 +791,8 @@ Official profile in app: 3.7 mi, 540 ft gain, 2-3 Hours, Easy.
 
 Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Sun protection, First-aid basics.
-Optional: Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure.
 
 Key outputs:
@@ -820,8 +820,8 @@ Hiker lens read:
 
 Intent: Expected day-hike behavior with duration and daylight context.
 User input: duration 3 hours, start 09:00, conditions dry and clear.
-Essential: Trail footwear, Water, Food, Bear spray, Sun protection, First-aid basics.
-Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
 Trip alerts: none.
 
 Key outputs:
@@ -846,15 +846,15 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
@@ -878,15 +878,15 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles, Offline map.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
@@ -911,8 +911,8 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
 Key outputs:
@@ -944,8 +944,8 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics.
-Optional: Water filter or treatment backup, Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics.
+Optional: Water filter or treatment backup, Extra dry socks, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration.
 
 Key outputs:
@@ -979,8 +979,8 @@ Hiker lens read:
 
 Intent: Stress critical-danger language where changing the plan matters more than adding gear.
 User input: duration 4 hours, start 11:00, conditions rain in the area with low spots and creek crossings.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Extra dry socks, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Flash flood danger.
 
 Key outputs:
@@ -988,7 +988,7 @@ Key outputs:
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -1012,8 +1012,8 @@ Hiker lens read:
 
 Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
 Key outputs:
@@ -1021,7 +1021,7 @@ Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here.
+- Footwear: Wear supportive trail runners or hiking shoes with good tread. Basic tennis shoes can work on short, dry, low-gain walks, but grippy, supportive footwear is the better default here. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -1048,8 +1048,8 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Unusual duration; Extreme heat danger.
 
 Key outputs:
@@ -1091,8 +1091,8 @@ Official profile in app: 3 mi, 360 ft gain, 1-2 Hours, Easy.
 
 Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
-Essential: Trail footwear, Water, Food, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
 Trip alerts: Closed route or area.
 
 Key outputs:
@@ -1125,8 +1125,8 @@ Hiker lens read:
 
 Intent: Expected day-hike behavior with duration and daylight context.
 User input: duration 2 hours, start 09:00, conditions dry and clear.
-Essential: Trail footwear, Water, Food, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
 Trip alerts: Closed route or area.
 
 Key outputs:
@@ -1158,8 +1158,8 @@ Hiker lens read:
 
 Intent: Stress footwear, socks, jacket, food, water, and clarity under wet conditions.
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
-Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Closed route or area.
 
 Key outputs:
@@ -1167,7 +1167,7 @@ Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
-- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present.
+- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. Use waterproof hiking shoes, boots, or gaiters if the muddy sections are still present. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: Pack a small headlamp as a backup.
@@ -1197,8 +1197,8 @@ Hiker lens read:
 
 Intent: Stress traction, footwear, socks, layer placement, and non-summer wording.
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles, Offline map.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
 Trip alerts: Rain / wet trail; Cold / snow; Unusual duration; Closed route or area.
 
 Key outputs:
@@ -1206,7 +1206,7 @@ Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
-- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real.
+- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. Wear shoes or boots with enough structure and tread to pair with traction devices if the slick sections are real. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: Bring pull-on traction devices such as microspikes, and test that they fit your shoes or boots before the hike.
 - Headlamp: not shown
@@ -1239,8 +1239,8 @@ Hiker lens read:
 
 Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explanations.
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
-Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Heat / sun exposure; Unusual duration; Closed route or area.
 
 Key outputs:
@@ -1279,8 +1279,8 @@ Hiker lens read:
 
 Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, headlamp, and food reserve placement.
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
-Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Light rain or wind shell, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
 Trip alerts: Unusual duration; Closed route or area.
 
 Key outputs:
@@ -1320,8 +1320,8 @@ Hiker lens read:
 
 Intent: Stress critical-danger language where changing the plan matters more than adding gear.
 User input: duration 4 hours, start 11:00, conditions rain in the area with low spots and creek crossings.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Extra dry socks, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Flash flood danger.
 
 Key outputs:
@@ -1329,7 +1329,7 @@ Key outputs:
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
-- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy.
+- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -1355,8 +1355,8 @@ Hiker lens read:
 
 Intent: Stress exposed-route decision-making, overall alerts, and clear non-negotiable plan changes.
 User input: duration 5 hours, start 13:00, conditions exposed sections with thunderstorm risk later in the day.
-Essential: Trail footwear, Water, Food, Bear spray, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Lightning or severe storm danger.
 
 Key outputs:
@@ -1364,7 +1364,7 @@ Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
-- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy.
+- Footwear: Wear comfortable shoes with decent tread. Basic tennis shoes can work for a short, dry, low-gain trail, but grippier trail runners or hiking shoes are better if the trail is wet, rocky, or muddy. If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.
 - Extra socks: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Traction: not shown
 - Headlamp: not shown
@@ -1393,8 +1393,8 @@ Hiker lens read:
 
 Intent: Stress whether water/electrolyte guidance stays separate from a larger trip-safety decision.
 User input: duration 6 hours, start 10:00, conditions dry exposed trail with limited shade.
-Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
-Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Offline map, Light jacket or warm layer.
+Essential: Trail footwear, Water, Food, Electrolytes, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
+Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
 Trip alerts: Unusual duration; Extreme heat danger.
 
 Key outputs:

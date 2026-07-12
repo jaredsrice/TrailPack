@@ -95,10 +95,10 @@ function validDraft(): AiReviewDraft {
         sourceLabels: ["supported-profile", "inferred"],
       },
       {
-        itemName: "Offline map",
+        itemName: "Navigation / offline map",
         explanation:
-          "The rule engine keeps navigation as an inferred backup for mountain areas.",
-        sourceLabels: ["inferred"],
+          "NPS Ten Essentials support carrying map, compass, or GPS navigation with offline access and battery backup.",
+        sourceLabels: ["official", "inferred"],
       },
       {
         itemName: "Trekking poles",

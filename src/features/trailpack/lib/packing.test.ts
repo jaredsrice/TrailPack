@@ -8,6 +8,7 @@ import {
   GRTE_BEAR_SAFETY_URL,
   NPS_HEAT_ILLNESS_URL,
   NPS_HIKE_SMART_URL,
+  NPS_TEN_ESSENTIALS_URL,
   NPS_WATER_TREATMENT_URL,
   isOfficialNpsAlert,
   parseExpectedHours,
@@ -677,6 +678,13 @@ describe("question-answer recommendation copy", () => {
     expect(sunProtection.recommendation).toMatch(/UPF|long-sleeve sun shirt/i);
     expect(sunProtection.recommendation).toMatch(/sunscreen|sunglasses|hat/i);
 
+    const navigation = itemNamed(rec, "Navigation / offline map");
+    expect(navigation.question).toBe("What navigation should I carry?");
+    expect(navigation.recommendation).toMatch(/offline map|GPS route/i);
+    expect(navigation.recommendation).toMatch(/battery/i);
+    expect(navigation.why).toMatch(/NPS Ten Essentials/i);
+    expect(navigation.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
+
     const poles = itemNamed(rec, "Trekking poles");
     expect(poles.question).toBe("Are trekking poles recommended for this route?");
     expect(poles.recommendation).toMatch(/optional/i);
@@ -854,12 +862,16 @@ describe("source provenance", () => {
     expect(bearSpray?.sourceUrl).toBe(GRTE_BEAR_SAFETY_URL);
   });
 
-  it("does not label the offline-map item as official", () => {
+  it("backs the navigation item with the official NPS Ten Essentials source", () => {
     const rec = build();
-    const offlineMap = rec.optional.find((item) => item.name === "Offline map");
-    expect(offlineMap).toBeDefined();
-    expect(offlineMap?.sourceLabels).not.toContain("official");
-    expect(offlineMap?.sourceUrl).toBeUndefined();
+    const navigation = rec.essential.find(
+      (item) => item.name === "Navigation / offline map",
+    );
+
+    expect(navigation).toBeDefined();
+    expect(navigation?.sourceLabels).toContain("official");
+    expect(navigation?.sourceLabels).toContain("inferred");
+    expect(navigation?.sourceUrl).toBe(NPS_TEN_ESSENTIALS_URL);
   });
 
   it("only labels items official when they carry a source URL", () => {
@@ -925,6 +937,7 @@ describe("source provenance", () => {
 
     const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
     const decision = itemNamed(rec, "Trip safety decision");
+    const footwear = itemNamed(rec, "Trail footwear");
     const alert = rec.tripAlerts.find((item) => item.id === "active-alerts");
 
     expect(alert?.severity).toBe("danger");
@@ -939,6 +952,9 @@ describe("source provenance", () => {
     expect(decision.affectedBy).toEqual(
       expect.arrayContaining(["Critical danger", "Flash flood", "Official alert"]),
     );
+    expect(footwear.recommendation).toMatch(/grippier trail runners|hiking shoes/i);
+    expect(footwear.recommendation).toMatch(/flood|storm alerts/i);
+    expect(footwear.affectedBy).toContain("Official alert");
     expect(decision.sourceLabels).toContain("official");
     expect(decision.sourceUrl).toBe("https://www.nps.gov/grte/planyourvisit/conditions.htm");
   });

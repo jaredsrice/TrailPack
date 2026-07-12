@@ -39,6 +39,13 @@ export const NPS_HIKE_SMART_URL =
   "https://www.nps.gov/articles/hiking-safety.htm";
 
 /**
+ * NPS Ten Essentials list navigation as a basic safety system: map, compass,
+ * GPS, downloaded map/app, physical backup, and extra phone battery.
+ */
+export const NPS_TEN_ESSENTIALS_URL =
+  "https://www.nps.gov/articles/10essentials.htm";
+
+/**
  * NPS heat guidance calls out salty snacks as a way to replace electrolytes
  * lost through sweat.
  */
@@ -920,6 +927,27 @@ function buildTripSafetyDecisionItem(danger: TripDecisionDanger): PackingItem {
   });
 }
 
+function buildNavigationItem(): PackingItem {
+  return item({
+    name: "Navigation / offline map",
+    question: "What navigation should I carry?",
+    recommendation:
+      "Save an offline map or GPS route before leaving, and bring enough battery to use it. A paper map or compass is the best backup if you have one.",
+    why:
+      "NPS Ten Essentials list navigation as map, compass, and GPS. NPS says a downloaded phone or GPS map can help, but you should know how to use it, bring a physical backup, and pack extra battery.",
+    affectedBy: ["Route finding"],
+    contextNotes: [
+      {
+        label: "Activity-dependent add-on",
+        text: "A satellite messenger or locator can be useful for remote trips, but TrailPack does not treat it as required for every short frontcountry hike.",
+      },
+    ],
+    sourceLabels: ["official", "inferred"],
+    sourceUrl: NPS_TEN_ESSENTIALS_URL,
+    links: [{ label: "NPS Ten Essentials", url: NPS_TEN_ESSENTIALS_URL }],
+  });
+}
+
 function buildWaterLogisticsItem({
   expectedHours,
   sourceLabels,
@@ -1310,6 +1338,11 @@ export function generatePackingRecommendation(
     suppressHeatTripAlert:
       tripDecisionDanger?.source === "alert" && tripDecisionDanger.kind === "extreme-heat",
   });
+  const wetWeatherConditions =
+    weather.conditions.includes("rain") ||
+    weather.conditions.includes("snow") ||
+    (weather.precipitationChance ?? 0) >= 40;
+  const wetAlertContext = tripDecisionDanger?.affectedBy.includes("Wet") ?? false;
   const bugSeasonDate =
     userInput.plannedDate ?? weather.plannedDate ?? weather.daylight?.date;
 
@@ -1345,6 +1378,18 @@ export function generatePackingRecommendation(
     );
   }
 
+  if (wetWeatherConditions || wetAlertContext) {
+    if (wetWeatherConditions) {
+      footwearSourceLabels.push("forecast-based");
+    }
+    footwearRecommendationParts.push(
+      "If rain, wet tread, high water, or flood/storm alerts are in play, choose grippier trail runners or hiking shoes over basic tennis shoes.",
+    );
+    footwearWhyParts.push(
+      "Wet or alert-driven footing risk makes smooth casual soles less dependable.",
+    );
+  }
+
   if (weather.conditions.includes("rain") || weather.conditions.includes("snow")) {
     footwearSourceLabels.push("forecast-based");
     footwearWhyParts.push(
@@ -1369,6 +1414,7 @@ export function generatePackingRecommendation(
         weather.conditions.includes("rain") || weather.conditions.includes("snow")
           ? "Weather"
           : null,
+        wetAlertContext ? "Official alert" : null,
       ].filter((value): value is string => Boolean(value))),
       sourceLabels: uniqueSourceLabels(footwearSourceLabels),
     }),
@@ -1556,6 +1602,8 @@ export function generatePackingRecommendation(
     }),
   );
 
+  essential.push(buildNavigationItem());
+
   if (weather.conditions.includes("rain") || (weather.precipitationChance ?? 0) >= 40) {
     essential.push(
       item({
@@ -1663,17 +1711,6 @@ export function generatePackingRecommendation(
       }),
     );
   }
-
-  optional.push(
-    item({
-      name: "Offline map",
-      question: "Do I need a map if I have my phone?",
-      recommendation: "Save an offline map before leaving.",
-      why:
-        "Cell service can be limited in mountain areas. Do not depend on live service for route finding, pickup timing, or checking your return path.",
-      sourceLabels: ["inferred"],
-    }),
-  );
 
   essential.push(
     item({
@@ -1900,15 +1937,9 @@ export function generateManualEntryRecommendation(
         "Carry blister pads or moleskin, a few adhesive bandages, antiseptic wipes, pain reliever, personal medications, and any allergy or asthma supplies. These basics are useful even before the hike stats are complete.",
       sourceLabels: ["inferred"],
     }),
+    buildNavigationItem(),
   ];
   const optional: PackingItem[] = [
-    item({
-      name: "Offline map",
-      question: "Do I need a map if I have my phone?",
-      answer:
-        "Save an offline map before leaving. Unsupported hikes may have weaker trail data in TrailPack, and cell service can be limited in mountain areas.",
-      sourceLabels: ["inferred"],
-    }),
     item({
       name: "Light rain or wind shell",
       question: "Do I need a jacket or shell?",

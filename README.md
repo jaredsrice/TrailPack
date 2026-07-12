@@ -111,22 +111,27 @@ trail-work alert fixture.
 ## Recommendation Style
 
 Packing items are rendered as grouped accordion rows, with `Critical Safety`
-first when bear spray, active alerts, or trip-decision dangers are present. The
-rule engine still tracks the question each row answers, but the UI shows clean
-topics such as `Trip safety decision`, `Trail footwear`, `Water`, `Food`,
-`Headlamp`, and `Bear spray`. The first line is the clear action; the supporting
-`Why`, source labels, and context notes stay inside the dropdown so users can
-skim quickly or read more when needed.
+first when bear spray, navigation, active alerts, or trip-decision dangers are
+present. The rule engine still tracks the question each row answers, but the UI
+shows clean topics such as `Trip safety decision`, `Navigation / offline map`,
+`Trail footwear`, `Water`, `Food`, `Headlamp`, and `Bear spray`. The first line
+is the clear action; the supporting `Why`, source labels, and context notes stay
+inside the dropdown so users can skim quickly or read more when needed.
 
 Overall alerts appear above the packing list for plan-level issues such as heat,
 wet weather, active NPS alerts, or an unusual planned duration. Affected rows
 then show stronger row styling plus an `Alert changes this` marker alongside
 context tags such as `Heat`, `Wet`, `Duration`, or `Official alert`, so users can
 see which recommendations changed because of the alert. Critical danger is
-separated from required preparedness: closures, flash flooding, lightning, high
+separated from safety-critical gear: closures, flash flooding, lightning, high
 water, wildfire or heavy smoke, avalanche language, and dangerous heat can create
-a `Trip safety decision` with a `Change plan` marker, while bear spray remains
-`Non-negotiable gear` for bear-country preparedness.
+a `Trip safety decision` with a `Change plan` marker, while bear spray and
+navigation use the `Safety-critical` marker.
+
+The list includes NPS Ten Essentials influence without turning the entire top
+section into a catch-all bucket. Navigation is essential and source-backed by NPS
+Ten Essentials; food, water, sun protection, layers, rain shell, headlamp, and
+first aid remain in their normal scan groups unless trip context promotes them.
 
 Long-day water now uses realistic frontcountry carry ranges and explicitly says
 to drink according to thirst. Water filter or treatment guidance is an optional

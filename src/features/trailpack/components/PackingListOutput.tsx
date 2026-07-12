@@ -9,7 +9,7 @@ type Priority = "Essential" | "Optional";
 type PrioritizedItem = PackingItem & {
   priority: Priority;
   alertImpactTags: string[];
-  criticalKind: "trip-decision" | "required-preparedness" | null;
+  criticalKind: "trip-decision" | "safety-critical" | null;
 };
 
 const GROUP_ORDER = [
@@ -36,6 +36,7 @@ const CRITICAL_SAFETY_ITEM_ORDER = new Map([
   ["Trip safety decision", 0],
   ["Review active alerts before leaving", 1],
   ["Bear spray", 2],
+  ["Navigation / offline map", 3],
 ]);
 
 export function PackingListOutput({
@@ -61,6 +62,11 @@ export function PackingListOutput({
 
       <p className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
         {recommendation.confidenceNote}
+      </p>
+      <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-600">
+        Suggested list only, not a complete safety checklist. Adjust for your
+        group, health needs, experience, route changes, current conditions, and
+        official park guidance.
       </p>
 
       <TripAlerts alerts={recommendation.tripAlerts} />
@@ -190,8 +196,8 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                 {item.criticalKind === "trip-decision" ? (
                   <StatusBadge tone="danger" label="Change plan" />
                 ) : null}
-                {item.criticalKind === "required-preparedness" ? (
-                  <StatusBadge tone="critical" label="Non-negotiable gear" />
+                {item.criticalKind === "safety-critical" ? (
+                  <StatusBadge tone="critical" label="Safety-critical" />
                 ) : null}
                 {item.alertImpactTags.length > 0 ? (
                   <StatusBadge tone="alert" label="Alert changes this" />
@@ -323,7 +329,7 @@ function recommendationRowClassName(item: PrioritizedItem): string {
     return "border-red-400 bg-red-50 shadow-md";
   }
 
-  if (item.criticalKind === "required-preparedness") {
+  if (item.criticalKind === "safety-critical") {
     return "border-red-300 bg-red-50 shadow-sm";
   }
 
@@ -343,7 +349,7 @@ function recommendationAccentClassName(item: PrioritizedItem): string {
     return "bg-red-800";
   }
 
-  if (item.criticalKind === "required-preparedness") {
+  if (item.criticalKind === "safety-critical") {
     return "bg-red-600";
   }
 
@@ -441,8 +447,8 @@ function criticalKindForItem(
     return "trip-decision";
   }
 
-  if (item.name === "Bear spray") {
-    return "required-preparedness";
+  if (["Bear spray", "Navigation / offline map"].includes(item.name)) {
+    return "safety-critical";
   }
 
   return null;
@@ -489,7 +495,6 @@ function groupForItem(itemName: string): GroupTitle {
   if (
     [
       "Headlamp",
-      "Offline map",
       "First-aid basics",
       "Route plan or shuttle check",
     ].includes(itemName)
@@ -501,6 +506,7 @@ function groupForItem(itemName: string): GroupTitle {
     [
       "Trip safety decision",
       "Bear spray",
+      "Navigation / offline map",
       "Review active alerts before leaving",
     ].includes(itemName)
   ) {
