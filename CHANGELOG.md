@@ -180,6 +180,8 @@ change as the project develops.
   date remains a context-only field.
 - Softened food and first-aid wording where the previous output overstated
   shorter scenarios.
+- Restored pre-dawn headlamp guidance when a supported-trail hiker provides only
+  a start time (without expected duration) and daylight context is available.
 
 ## [0.1.0] - 2026-06-14
 

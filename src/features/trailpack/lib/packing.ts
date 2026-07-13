@@ -346,19 +346,19 @@ function buildHeadlampDecision(
   const sunset = parseIsoDate(daylight?.sunset);
   const civilTwilightEnd = parseIsoDate(daylight?.civilTwilightEnd);
 
+  if (start && civilTwilightBegin && start < civilTwilightBegin) {
+    const twilightBegin = formatClock(daylight?.civilTwilightBegin);
+    return {
+      placement: "essential",
+      reason: twilightBegin
+        ? `Your planned start is before civil twilight begins around ${twilightBegin}, so you need your own light at the trailhead.`
+        : "Your planned start is before usable morning light, so you need your own light at the trailhead.",
+      sourceLabels: ["user-provided", "daylight", "inferred"],
+    };
+  }
+
   if (start && expectedHours !== null && civilTwilightEnd) {
     const finish = new Date(start.getTime() + expectedHours * 60 * 60 * 1000);
-    if (civilTwilightBegin && start < civilTwilightBegin) {
-      const twilightBegin = formatClock(daylight?.civilTwilightBegin);
-      return {
-        placement: "essential",
-        reason: twilightBegin
-          ? `Your planned start is before civil twilight begins around ${twilightBegin}, so you need your own light at the trailhead.`
-          : "Your planned start is before usable morning light, so you need your own light at the trailhead.",
-        sourceLabels: ["user-provided", "daylight", "inferred"],
-      };
-    }
-
     if (finish > civilTwilightEnd) {
       const twilightEnd = formatClock(daylight?.civilTwilightEnd);
       return {
