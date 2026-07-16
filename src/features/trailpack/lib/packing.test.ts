@@ -210,6 +210,14 @@ describe("duration rule", () => {
     expect(headlamp?.sourceLabels).toEqual(["user-provided", "daylight", "inferred"]);
   });
 
+  it("makes a headlamp essential for a pre-dawn start even without expected duration", () => {
+    const rec = build({ startTime: "4:30" }, JENNY_SUMMER_DAYLIGHT_WEATHER);
+
+    const headlamp = rec.essential.find((item) => item.name === "Headlamp");
+    expect(headlamp?.reason).toMatch(/before civil twilight/i);
+    expect(headlamp?.sourceLabels).toEqual(["user-provided", "daylight", "inferred"]);
+  });
+
   it("does not add a headlamp for a short planned day", () => {
     const rec = build({ expectedDuration: "2 hours" });
     expect(names(rec.essential)).not.toContain("Headlamp");
