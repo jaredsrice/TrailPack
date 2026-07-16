@@ -4,7 +4,7 @@ TrailPack turns trail information and trip conditions into a clear hiking
 packing list. It explains why each item is recommended and where the supporting
 data came from.
 
-Version `0.1.0` is a CSE 499 technical prototype. The packing list uses fixed
+Version `0.1.0` is the completed CSE 499A technical prototype. The packing list uses fixed
 rules, so the same input always produces the same packing decisions. A guarded
 saved AI-style review fixture can summarize the rule-based result, but it cannot
 add, remove, or relabel packing items.
@@ -204,11 +204,16 @@ official-source validation. The scenario stress command regenerates the Week
 
 ## Next Project Focus
 
-- Keep tightening the Week 13/14 feedback loop around recommendation specificity,
-  incomplete-data fallback behavior, and saved demo scenarios.
-- Keep broader trail-data expansion, live AI calls, and account/profile work
-  deferred until the Week 14 CSE 499B planning pass prioritizes the next backlog
-  items.
+- CSE 499A is closed with all six Week 12 must-have requirements complete. The
+  final evidence is in
+  [`docs/superpowers/validation/2026-07-16-cse-499a-closeout.md`](docs/superpowers/validation/2026-07-16-cse-499a-closeout.md).
+- CSE 499B will add permission-compliant public trail lookup, a constrained live
+  AI provider using the existing guardrails, and Google login with private saved
+  results while preserving guest access.
+- Cybersecurity testing and remediation are planned after those 499B features
+  reach a stable release candidate; they were not run during the 499A closeout.
+- Vercel remains the intended hosting platform, but a reachable live deployment
+  must be confirmed during the first 499B week instead of inferred from the repo.
 
 ## Technology
 
@@ -230,5 +235,7 @@ Next.js, React, TypeScript, Tailwind CSS, and Vitest.
 - [`docs/data/`](docs/data/) - data feasibility and source decisions
 - [`docs/superpowers/`](docs/superpowers/) - saved planning and design artifacts for implementation work
 - [`docs/superpowers/validation/`](docs/superpowers/validation/) - saved milestone validation notes and proposal-alignment checks
+- [`docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`](docs/superpowers/specs/2026-07-16-cse-499b-requirements.md) - instructor-aligned continuation requirements
+- [`docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`](docs/superpowers/plans/2026-07-16-cse-499b-schedule.md) - fourteen-week CSE 499B schedule and gates
 - [`docs/ui/`](docs/ui/) - workflow, wireframes, and UI planning
 - [`CHANGELOG.md`](CHANGELOG.md) - version history and known issues

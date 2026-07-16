@@ -1,5 +1,10 @@
 # Week 14 Scope And Status
 
+Historical snapshot: this document was superseded by
+`docs/superpowers/validation/2026-07-16-cse-499a-closeout.md` and the CSE 499B
+requirements and schedule linked there. Its candidate backlog is not the current
+499B plan.
+
 Date: 2026-07-10
 Project: TrailPack
 Branch: `codex/stress-test-recommendations`
