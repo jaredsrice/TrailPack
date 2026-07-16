@@ -69,6 +69,14 @@ change as the project develops.
   rationale.
 - A Week 14 scope/status note that maps the current prototype against the
   proposal, Week 12 requirements spec, and remaining 499A closeout tasks.
+- A final CSE 499A closeout record covering requirement completion, automated
+  verification, desktop/mobile walkthrough evidence, known limits, and deferred
+  work.
+- An instructor-aligned CSE 499B requirements specification that reduces the old
+  six stretch items to public trail lookup, guarded live AI, and Google login
+  with saved results, plus a separate late security-verification requirement.
+- A fourteen-week CSE 499B schedule with feature gates, provider contingencies,
+  a release-candidate freeze, and deferred security testing.
 
 ### Changed
 
@@ -169,6 +177,8 @@ change as the project develops.
 - Passed the richer question, recommendation, why, and answer context through
   the guarded AI input contract and updated the saved Jenny Lake fixture to match
   the new rule-based item set.
+- Closed CSE 499A as a completed six-requirement baseline and replaced the older
+  499B candidate backlog with the July 16 requirements and schedule.
 
 ### Fixed
 
