@@ -4,6 +4,8 @@ TrailPack turns trail information and trip conditions into a clear hiking
 packing list. It explains why each item is recommended and where the supporting
 data came from.
 
+Production deployment: [https://trailpack-ten.vercel.app](https://trailpack-ten.vercel.app)
+
 Version `0.1.0` is the completed CSE 499A technical prototype. The packing list uses fixed
 rules, so the same input always produces the same packing decisions. A guarded
 saved AI-style review fixture can summarize the rule-based result, but it cannot
@@ -207,13 +209,24 @@ official-source validation. The scenario stress command regenerates the Week
 - CSE 499A is closed with all six Week 12 must-have requirements complete. The
   final evidence is in
   [`docs/superpowers/validation/2026-07-16-cse-499a-closeout.md`](docs/superpowers/validation/2026-07-16-cse-499a-closeout.md).
-- CSE 499B will add permission-compliant public trail lookup, a constrained live
-  AI provider using the existing guardrails, and Google login with private saved
-  results while preserving guest access.
+- CSE 499B Week 1 is complete. The current baseline, issue backlog, environment
+  inventory, public production URL, and deployment evidence are recorded in
+  [`docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md`](docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md).
+- The only active implementation track is
+  [B-01 public trail lookup](https://github.com/jaredsrice/TrailPack/issues/25).
+  The first slice will use bounded, user-submitted Nominatim search under its
+  public-service rate, caching, attribution, and no-autocomplete constraints.
+  The provider decision is documented in
+  [`docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`](docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md).
+- Later 499B work will add a constrained live AI provider using the existing
+  guardrails and Google login with private saved results while preserving guest
+  access.
 - Cybersecurity testing and remediation are planned after those 499B features
   reach a stable release candidate; they were not run during the 499A closeout.
-- Vercel remains the intended hosting platform, but a reachable live deployment
-  must be confirmed during the first 499B week instead of inferred from the repo.
+- The public Vercel production deployment is available at
+  [https://trailpack-ten.vercel.app](https://trailpack-ten.vercel.app). GitHub's
+  `main` branch is connected to the Vercel `trailpack` project, and the Week 1
+  deployment gate is closed.
 
 ## Technology
 

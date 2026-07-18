@@ -77,6 +77,16 @@ change as the project develops.
   with saved results, plus a separate late security-verification requirement.
 - A fourteen-week CSE 499B schedule with feature gates, provider contingencies,
   a release-candidate freeze, and deferred security testing.
+- A CSE 499B Week 1 baseline record covering the verified 499A commit, automated
+  checks, GitHub issue backlog, environment inventory, working-repository path,
+  and the completed Vercel deployment gate.
+- A CSE 499B public-trail source feasibility decision selecting bounded,
+  user-submitted Nominatim search for the first B-01 slice while recording its
+  rate, caching, attribution, no-autocomplete, provider-switching, provenance,
+  and fallback constraints.
+- A public Vercel production deployment at
+  `https://trailpack-ten.vercel.app`, verified with an HTTP `200` response and
+  the expected `TrailPack` page title.
 
 ### Changed
 
