@@ -31,6 +31,9 @@ yarn-error.log*
 # env files
 .env*
 
+# local private credentials and recovery material
+/.private/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
