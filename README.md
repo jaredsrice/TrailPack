@@ -24,8 +24,8 @@ Unsupported hikes can use the manual-entry fallback to get a limited baseline
 list. Manual distance, elevation gain, route type, expected duration, and trail
 conditions can make that fallback more specific.
 
-The current demo supports Jenny Lake Loop, Taggart Lake, and String Lake Loop
-in Grand Teton National Park.
+The current demo supports three curated profiles plus two verified public-source
+imports in Grand Teton National Park.
 
 ## Supported Demo Trails
 
@@ -35,6 +35,16 @@ in Grand Teton National Park.
   close USGS geometry match, and saved 2026 NPS trail-work alert context.
 - `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a hot,
   exposed saved demo weather scenario for Week 10 evaluation.
+- `Colter Bay Lakeshore Trail` - verified public-source import using official
+  NPS values and 15 reconciled NPS-origin USGS trail segments.
+- `Two Ocean Lake Loop` - verified public-source import using official NPS values
+  and three reconciled NPS-origin USGS trail segments whose total is within about
+  one percent of the official loop distance.
+
+The first three remain the curated CSE 499A catalog. The last two are the bounded
+CSE 499B Tetons-first import slice. Search and the Grand Teton park view label
+the distinction, and each imported profile retains retrieval status, source
+URLs, confidence notes, source feature IDs, and missing-field status.
 
 ## Data Sources
 
@@ -42,6 +52,13 @@ in Grand Teton National Park.
   difficulty, and estimated time.
 - **USGS** provides public federal data for trail geometry and computed elevation
   estimates when official values are missing or need comparison.
+- **OpenStreetMap Nominatim** was evaluated through an experimental CSE 499B
+  adapter and rejected as a supported TrailPack source after a 24-trail
+  reliability study. Its runtime adapter and route were removed; the validation
+  notes remain as negative feasibility evidence.
+- **AllTrails** is checked manually as a comparison-only plausibility signal for
+  reviewed imports. Its values do not enter the TrailPack recommendation model
+  and never override NPS or reconciled USGS evidence.
 - **User input** can add conservative recommendations for long trips, snow, ice,
   mud, wet conditions, and planned times that are far outside the official trail
   profile.
@@ -50,13 +67,15 @@ in Grand Teton National Park.
 
 Official NPS values stay visible even when a USGS calculation differs. TrailPack
 labels the difference instead of averaging the numbers or hiding the conflict.
+The same rule applies when AllTrails differs: the comparison can trigger review,
+but it is not promoted into an official or computed TrailPack value.
 
 The NPS API can provide alerts and park information, but it does not provide all
-the trail statistics TrailPack needs. A production version would collect those
-values from public NPS trail pages, keep the source URL and attribution, follow
-site access rules, and refresh cached results on a slow schedule instead of
-requesting the page for every user. USGS data would fill gaps or provide a
-clearly labeled computed estimate.
+the trail statistics TrailPack needs. The current import workflow reviews values
+from public NPS trail pages, retains the source URL, and reconciles USGS geometry
+before saving a profile. Future automation would follow site access rules and
+refresh cached results on a slow schedule instead of requesting agency pages for
+every user.
 
 This approach keeps the data traceable:
 
@@ -78,7 +97,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`,
-`Taggart`, or `String Lake`, and select one of the supported trails.
+`Taggart`, `String Lake`, `Colter Bay`, or `Two Ocean`, and select one of the
+supported trails.
 
 Live NPS alerts are optional during local development. To enable the server-side
 NPS alert route, add an API key to `.env.local`:
@@ -88,6 +108,10 @@ NPS_API_KEY=your-key-here
 ```
 
 Do not commit `.env.local` or any provider keys.
+
+The B-01 NPS/USGS import uses saved, reviewed source records and adds no runtime
+provider secret or configuration. The only current optional server secret is
+`NPS_API_KEY` for live alerts.
 
 ## External Context Routes
 
@@ -183,18 +207,23 @@ official-source validation. The scenario stress command regenerates the Week
 
 ## Current Limits
 
-- Jenny Lake Loop, Taggart Lake, and String Lake Loop are the complete supported
-  trail profiles in the current prototype.
+- The current verified catalog is limited to five Grand Teton trails: three
+  curated profiles and two reviewed NPS/USGS public-source imports. It is not a
+  nationwide lookup service.
 - Unsupported hikes can only use a limited manual fallback list. Direct distance,
   elevation gain, and route-type inputs improve that fallback, but source-backed
   trail profiles remain more complete.
+- Nominatim was rejected after finding the intended identity anywhere for only
+  14/24 study trails and first for only 12/24; its adapter and server route were
+  removed. Trails enter the current import catalog only after individual NPS and
+  USGS reconciliation.
 - The main UI still uses demo weather and alert contexts by default, although
   server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
   exist for the live-data path.
 - The guarded AI review uses a saved Jenny Lake fixture and template fallback;
   it does not call a live AI provider yet.
-- Automatic NPS page collection and USGS processing are planned but are not yet
-  part of this prototype.
+- Automatic NPS page collection and USGS processing are not part of this slice;
+  imports are reviewed and saved before release.
 - Planned date can affect seasonal insect-repellent guidance. Expected duration
   can change water, food, headlamp, extra-food, and unusual-timing guidance.
   Start time can change headlamp guidance when daylight context is available.
@@ -214,10 +243,19 @@ official-source validation. The scenario stress command regenerates the Week
   [`docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md`](docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md).
 - The only active implementation track is
   [B-01 public trail lookup](https://github.com/jaredsrice/TrailPack/issues/25).
-  The first slice will use bounded, user-submitted Nominatim search under its
-  public-service rate, caching, attribution, and no-autocomplete constraints.
-  The provider decision is documented in
-  [`docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`](docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md).
+  The bounded Tetons-first replacement is implemented with Colter Bay Lakeshore
+  Trail and Two Ocean Lake Loop as reviewed NPS/USGS imports, plus manual entry
+  for no-result searches. B-01 still needs UAT and an explicit decision about
+  whether the saved public-source import contingency satisfies the requirement's
+  original live-provider wording. The historical adapter verification is
+  recorded in
+  [`docs/superpowers/validation/2026-07-17-cse-499b-b01-adapter.md`](docs/superpowers/validation/2026-07-17-cse-499b-b01-adapter.md),
+  the revised provider decision is documented in
+  [`docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`](docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md),
+  and the full reliability evidence is in
+  [`docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md`](docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md).
+  The replacement implementation evidence is in
+  [`docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`](docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md).
 - Later 499B work will add a constrained live AI provider using the existing
   guardrails and Google login with private saved results while preserving guest
   access.
@@ -236,7 +274,7 @@ Next.js, React, TypeScript, Tailwind CSS, and Vitest.
 
 - [`src/app/`](src/app/) - Next.js route entrypoints and global styles
 - [`src/features/trailpack/components/`](src/features/trailpack/components/) - TrailPack UI modules
-- [`src/features/trailpack/data/`](src/features/trailpack/data/) - supported trail and demo-context fixtures
+- [`src/features/trailpack/data/`](src/features/trailpack/data/) - curated trails, verified public-source imports, and demo-context fixtures
 - [`src/features/trailpack/lib/`](src/features/trailpack/lib/) - search, packing, and flow logic
 - [`src/features/trailpack/types.ts`](src/features/trailpack/types.ts) - shared TrailPack domain types
 

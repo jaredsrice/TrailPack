@@ -1,9 +1,17 @@
 # TrailPack CSE 499B Week 1 Baseline
 
 Date: 2026-07-17  
-Status: Complete - Week 1 deployment gate closed  
+Decision update: 2026-07-20  
+Status: Week 1 deployment gate closed; B-01 Tetons-first source selected  
 Controlling requirements: `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`  
 Controlling schedule: `docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`
+
+> **Supersession notice:** The deployment and repository baseline below remains
+> valid. The original bounded Nominatim provider selection does not. A later
+> 24-trail evaluation rejected Nominatim as a supported B-01 source; see
+> `docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md`.
+> The replacement bounded NPS/USGS import is recorded in
+> `docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`.
 
 ## Re-Baseline Result
 
@@ -71,9 +79,10 @@ Current code references one server-side secret:
 
 - `NPS_API_KEY`: optional NPS alert retrieval.
 
-B-01 does not require a new secret for the selected bounded Nominatim path. It
-does require non-secret, server-side configuration for a switchable provider
-base URL and an identifying public project/contact URL.
+The rejected Nominatim prototype did not require a new secret. Its switchable
+base URL and identifying public project/contact URL are prototype settings, not
+production requirements, and its runtime code has been removed. The selected
+NPS/USGS import workflow adds no environment variables.
 
 Do not create AI provider, OAuth, or database credentials during B-01. Those
 belong to B-02 and B-03 after their provider and ownership decisions are
@@ -93,14 +102,22 @@ Only #25 is labeled `ready-for-agent`. The future requirements remain
 
 ## Public Trail Source Gate
 
-The first B-01 slice will use bounded, directly user-triggered Nominatim search
-under the public-service policy. The provider decision, operating constraints,
-live feasibility evidence, comparison, and fallback requirements are recorded
-in `docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`.
+The initial B-01 slice selected bounded, directly user-triggered Nominatim
+search, but the later 24-trail product-acceptance evaluation rejected it. The
+intended identity appeared anywhere for 14/24 trails, ranked first for 12/24,
+and appeared in 0/24 current location-scoped searches. The provider decision is
+superseded and the B-01 source gate is reopened.
+
+On 2026-07-20, the replacement gate selected a bounded, Tetons-first public
+source import. Colter Bay Lakeshore Trail and Two Ocean Lake Loop use verified
+NPS display facts plus reconciled NPS-origin USGS geometry and source feature
+IDs. Both are selectable in the existing search/park flow and generate the
+rule-based packing output. Unmatched trails continue to manual entry.
 
 Public Overpass instances are not selected as a required production backend.
 NPS remains official enrichment, RIDB remains a possible federal supplement,
-and the curated NPS-plus-USGS profiles keep priority over external results.
+and the curated and imported authoritative-plus-USGS profiles keep priority over
+unreviewed external results. Manual entry remains the required fallback.
 
 ## Proposal Alignment
 
@@ -121,14 +138,15 @@ documented continuation-scope change, not untracked implementation drift.
 |---|---|---|
 | Review 499B requirements and schedule | Complete | July 16 requirements, schedule, closeout, README, changelog, and proposal v9 reviewed |
 | Confirm code baseline | Complete | Local and GitHub commit match; full automated baseline passes |
-| Record environment and provider accounts | Complete for current B-01 scope | `NPS_API_KEY` plus proposed non-secret Nominatim configuration recorded without values |
+| Record environment and provider accounts | Complete for current B-01 scope | `NPS_API_KEY` remains optional; the saved NPS/USGS import adds no key or runtime provider configuration |
 | Open B-01 through B-04 issues | Complete | GitHub issues #25 through #28 |
-| Select or narrow the public source | Complete for first slice | Bounded Nominatim decision with policy and fallback constraints |
+| Select or narrow the public source | **Complete for bounded Tetons slice** | Nominatim rejected and removed; individually verified NPS/USGS import selected for Colter Bay Lakeshore and Two Ocean Lake Loop |
 | Confirm reachable deployment | Complete | Public production URL `https://trailpack-ten.vercel.app`; HTTP 200 and `TrailPack` title verified; GitHub production deployment succeeded |
 
 ## Next Action
 
-Implement #25 from the provider boundary through one attributed search result,
-missing-detail completion, rule-based packing output, and
-no-result/provider-failure fallback. Do not begin B-02 until #25 passes its
-acceptance and walkthrough criteria.
+Run B-01 UAT for both imported trails and the no-result manual fallback. Record
+whether the instructor accepts the saved public-source import contingency as the
+B-01 lookup implementation or still requires a live external provider. Do not
+begin B-02 until #25 passes that acceptance gate or receives an explicit scope
+decision.

@@ -11,6 +11,27 @@ change as the project develops.
 
 ### Added
 
+- A bounded Grand Teton public-source import catalog with Colter Bay Lakeshore
+  Trail and Two Ocean Lake Loop, using official NPS display values and
+  reconciled NPS-origin USGS geometry.
+- Trail-profile provenance fields for curated versus imported profile kind,
+  retrieval status and date, source records and feature IDs, confidence, and
+  explicit missing fields.
+- Search, park browsing, packing output, saved context, and live-weather path
+  support for the two imported trails while preserving no-result manual entry.
+- Focused tests for imported values and source IDs, search selection, catalog
+  coverage, packing generation, saved-context fallback, and park-code lookup.
+- A B-01 adapter validation record that separates passing technical adapter
+  checks from the provider's failed reliability decision.
+- A 24-trail authoritative/USGS/Nominatim comparison recording identity
+  coverage, route-distance reconciliation, exploratory 3DEP elevation results,
+  Nominatim failure rates, and the decision not to ship Nominatim.
+- A Grand Teton public-source import validation record documenting selected NPS
+  facts, exact USGS source features, distance reconciliation, deferred candidate
+  trails, B-01 fit, and remaining UAT scope.
+- A comparison-only AllTrails check for both new imports, including route,
+  distance, gain, duration, and difficulty differences without using AllTrails
+  as an application data source.
 - Taggart Lake and String Lake Loop as additional supported Grand Teton trail
   profiles alongside Jenny Lake Loop.
 - Deterministic saved demo weather and alert scenarios for each supported trail.
@@ -80,16 +101,28 @@ change as the project develops.
 - A CSE 499B Week 1 baseline record covering the verified 499A commit, automated
   checks, GitHub issue backlog, environment inventory, working-repository path,
   and the completed Vercel deployment gate.
-- A CSE 499B public-trail source feasibility decision selecting bounded,
-  user-submitted Nominatim search for the first B-01 slice while recording its
-  rate, caching, attribution, no-autocomplete, provider-switching, provenance,
-  and fallback constraints.
+- A CSE 499B public-trail source feasibility record covering the initial bounded
+  Nominatim experiment, its policy controls, and its later rejection after the
+  24-trail reliability evaluation.
 - A public Vercel production deployment at
   `https://trailpack-ten.vercel.app`, verified with an HTTP `200` response and
   the expected `TrailPack` page title.
 
 ### Changed
 
+- Rejected Nominatim as a supported B-01 source after it found the intended
+  identity anywhere for 14/24 study trails, ranked it first for 12/24, and found
+  0/24 with the current location-scoped query. Removed the experimental adapter,
+  route, provider types, and tests; retained the decision evidence in validation
+  notes.
+- Selected an individually reviewed NPS/USGS import workflow for the Tetons-first
+  B-01 slice. Official NPS values remain authoritative, USGS values stay labeled
+  as geometry comparisons, and trails that have not passed review use manual
+  entry.
+- Flagged the Two Ocean Lake elevation gain as conflicted: the newer NPS
+  trailhead page lists 400 ft, an older NPS activity page lists 700 ft, and the
+  comparison-only AllTrails listing reports 488 ft. TrailPack keeps the newer
+  official display value while exposing the unresolved discrepancy.
 - Reorganized the app code into a single `src/features/trailpack/` feature
   module and moved planning docs under `docs/data/` and `docs/ui/`.
 - Updated the main app flow so each supported trail uses its own saved demo

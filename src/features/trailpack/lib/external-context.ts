@@ -2,7 +2,7 @@ import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import {
   getSupportedParkForTrail,
   SUPPORTED_PARKS,
-  SUPPORTED_TRAILS,
+  TRAIL_CATALOG,
 } from "@/features/trailpack/data/supported-trails";
 import type { AlertContext, DaylightContext, WeatherContext } from "@/features/trailpack/types";
 
@@ -304,7 +304,7 @@ export async function fetchOpenMeteoWeatherContext(
   trailId: string,
   fetcher: Fetcher = fetch,
 ): Promise<WeatherContext | null> {
-  const trail = SUPPORTED_TRAILS[trailId];
+  const trail = TRAIL_CATALOG[trailId];
   const fallback = buildSavedWeatherFallback(trailId);
 
   if (!trail?.coordinates) {

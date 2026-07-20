@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
+  getTrailById,
   getTrailsForPark,
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
@@ -44,6 +45,8 @@ function suggestionBadge(type: SearchSuggestion["type"]): string {
       return "Supported park";
     case "trail":
       return "Supported trail";
+    case "public-trail":
+      return "Verified public trail";
     case "manual":
       return "Manual entry";
   }
@@ -121,8 +124,11 @@ export function TrailPackShell() {
       return;
     }
 
-    if (suggestion.type === "trail" && suggestion.trailId) {
-      const trail = SUPPORTED_TRAILS[suggestion.trailId];
+    if (
+      (suggestion.type === "trail" || suggestion.type === "public-trail") &&
+      suggestion.trailId
+    ) {
+      const trail = getTrailById(suggestion.trailId);
       if (!trail) {
         return;
       }
@@ -137,7 +143,7 @@ export function TrailPackShell() {
   }
 
   function handleTrailSelect(trailId: string) {
-    const trail = SUPPORTED_TRAILS[trailId];
+    const trail = getTrailById(trailId);
     if (!trail) {
       return;
     }
@@ -166,8 +172,9 @@ export function TrailPackShell() {
             Where would you like to go?
           </h1>
           <p className="mt-3 max-w-2xl text-base text-emerald-50/90">
-            Search a supported park or trail, then get a focused packing list built from
-            traceable trail stats and trip context.
+            Search a supported park, curated trail, or verified public-source import,
+            then get a focused packing list built from traceable trail stats and trip
+            context.
           </p>
 
           <div className="mt-8">
@@ -247,7 +254,9 @@ export function TrailPackShell() {
             <p className="mt-1 text-slate-600">{selectedPark.state}</p>
 
             <div className="mt-6">
-              <p className="text-sm font-semibold text-slate-800">Choose a supported trail</p>
+              <p className="text-sm font-semibold text-slate-800">
+                Choose a curated or verified public-source trail
+              </p>
               <div className="mt-3 flex flex-wrap gap-3">
                 {parkTrails.map((trail) => (
                   <button
@@ -257,6 +266,11 @@ export function TrailPackShell() {
                     className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-left transition hover:bg-emerald-100"
                   >
                     <p className="font-semibold text-emerald-950">{trail.name}</p>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wide text-emerald-700">
+                      {trail.profileKind === "public-source-import"
+                        ? "Verified NPS + USGS import"
+                        : "Curated profile"}
+                    </p>
                     <p className="mt-1 text-sm text-emerald-800">
                       {trail.distanceMiles.value} mi · {trail.elevationGainFeet.value} ft gain ·{" "}
                       {trail.difficulty.value}

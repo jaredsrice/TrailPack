@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { DEMO_CONTEXTS, getDemoScenario } from "@/features/trailpack/data/demo-contexts";
-import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
+import { TRAIL_CATALOG } from "@/features/trailpack/data/supported-trails";
 
 describe("demo contexts", () => {
   it("covers every supported trail", () => {
     expect(Object.keys(DEMO_CONTEXTS).sort()).toEqual(
-      Object.keys(SUPPORTED_TRAILS).sort(),
+      Object.keys(TRAIL_CATALOG).sort(),
     );
   });
 
@@ -48,6 +48,17 @@ describe("demo contexts", () => {
       conditions: ["sun", "heat", "wind"],
     });
   });
+
+  it("labels both public-source imports with deterministic saved context", () => {
+    for (const trailId of [
+      "colter-bay-lakeshore-trail",
+      "two-ocean-lake-loop",
+    ] as const) {
+      expect(DEMO_CONTEXTS[trailId].weather.retrievalStatus).toBe("saved-fixture");
+      expect(DEMO_CONTEXTS[trailId].weather.statusReason).toMatch(/deterministic/i);
+      expect(DEMO_CONTEXTS[trailId].alerts.retrievalStatus).toBe("saved-fixture");
+    }
+  });
 });
 
 describe("getDemoScenario", () => {
@@ -55,6 +66,12 @@ describe("getDemoScenario", () => {
     expect(getDemoScenario("jenny-lake-loop")).toBe(DEMO_CONTEXTS["jenny-lake-loop"]);
     expect(getDemoScenario("taggart-lake")).toBe(DEMO_CONTEXTS["taggart-lake"]);
     expect(getDemoScenario("string-lake-loop")).toBe(DEMO_CONTEXTS["string-lake-loop"]);
+    expect(getDemoScenario("colter-bay-lakeshore-trail")).toBe(
+      DEMO_CONTEXTS["colter-bay-lakeshore-trail"],
+    );
+    expect(getDemoScenario("two-ocean-lake-loop")).toBe(
+      DEMO_CONTEXTS["two-ocean-lake-loop"],
+    );
   });
 
   it("returns null for missing or unsupported trail ids", () => {

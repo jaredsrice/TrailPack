@@ -138,6 +138,25 @@ describe("external-context fallbacks", () => {
     expect(weather?.summary).toMatch(/Partly sunny/);
   });
 
+  it("uses imported-trail coordinates and falls back to its saved context", async () => {
+    const fetcher = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 503,
+      json: async () => ({}),
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext(
+      "two-ocean-lake-loop",
+      fetcher,
+    );
+    const requestedUrl = new URL(String(fetcher.mock.calls[0]?.[0]));
+
+    expect(requestedUrl.searchParams.get("latitude")).toBe("43.9096367");
+    expect(requestedUrl.searchParams.get("longitude")).toBe("-110.52399853");
+    expect(weather?.retrievalStatus).toBe("saved-fixture");
+    expect(weather?.summary).toMatch(/Two Ocean Lake/);
+  });
+
   it("attaches live civil-twilight context when weather and daylight calls succeed", async () => {
     const fetcher = vi.fn(async (input: RequestInfo | URL) => {
       const url = new URL(String(input));
@@ -232,6 +251,9 @@ describe("external-context fallbacks", () => {
 describe("resolveSupportedParkCode", () => {
   it("resolves the Grand Teton park code from a supported trail id", () => {
     expect(resolveSupportedParkCode({ trailId: "jenny-lake-loop" })).toBe("grte");
+    expect(resolveSupportedParkCode({ trailId: "colter-bay-lakeshore-trail" })).toBe(
+      "grte",
+    );
   });
 
   it("rejects unsupported trail ids and park codes", () => {

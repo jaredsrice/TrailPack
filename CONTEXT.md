@@ -11,9 +11,19 @@ A park TrailPack currently knows how to browse and narrow into supported trails.
 _Avoid_: destination, area, region
 
 **Supported trail**:
-A curated trail that TrailPack can route through its current end-to-end flow,
-from selection to packing output.
+A trail in TrailPack's verified catalog that can run through the current
+end-to-end flow, from selection to packing output.
 _Avoid_: hike, route, saved trail
+
+**Curated profile**:
+One of the original manually validated CSE 499A trail profiles.
+_Avoid_: hard-coded trail, default trail
+
+**Verified public-source import**:
+A trail added through the bounded NPS/USGS reconciliation workflow. NPS facts
+remain authoritative, USGS geometry remains a labeled comparison, and the saved
+profile retains source records, retrieval status, confidence, and missing fields.
+_Avoid_: live result, scraped trail, automatic import
 
 **Trail profile**:
 The normalized description of one supported trail, including display stats,

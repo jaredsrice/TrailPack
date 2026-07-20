@@ -5,18 +5,23 @@ export interface DemoScenario {
   alerts: AlertContext;
 }
 
-const SUPPORTED_TRAIL_IDS = [
+const TRAIL_CATALOG_IDS = [
   "jenny-lake-loop",
   "taggart-lake",
   "string-lake-loop",
+  "colter-bay-lakeshore-trail",
+  "two-ocean-lake-loop",
 ] as const;
 
-export type SupportedTrailId = (typeof SUPPORTED_TRAIL_IDS)[number];
+export type TrailCatalogId = (typeof TRAIL_CATALOG_IDS)[number];
 
 const NO_ALERTS: AlertContext = {
   hasActiveAlerts: false,
   alerts: [],
   label: "unavailable",
+  retrievalStatus: "saved-fixture",
+  statusReason:
+    "Saved demo fixture contains no active alerts; check live NPS alerts before the hike.",
 };
 
 const TAGGART_2026_TRAIL_WORK: AlertContext = {
@@ -35,7 +40,7 @@ const TAGGART_2026_TRAIL_WORK: AlertContext = {
   retrievalStatus: "saved-fixture",
 };
 
-export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
+export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
   "jenny-lake-loop": {
     weather: {
       plannedDate: "2026-06-15",
@@ -46,6 +51,8 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
       conditions: ["sun", "rain", "wind"],
       source: "open-meteo",
       label: "forecast-based",
+      retrievalStatus: "saved-fixture",
+      statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
       daylight: {
         date: "2026-06-15",
@@ -71,6 +78,8 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
       conditions: ["sun"],
       source: "open-meteo",
       label: "forecast-based",
+      retrievalStatus: "saved-fixture",
+      statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
       daylight: {
         date: "2026-06-15",
@@ -96,6 +105,62 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
       conditions: ["sun", "heat", "wind"],
       source: "open-meteo",
       label: "forecast-based",
+      retrievalStatus: "saved-fixture",
+      statusReason: "Saved weather fixture for deterministic TrailPack testing.",
+      timezone: "America/Denver",
+      daylight: {
+        date: "2026-06-15",
+        sunrise: "2026-06-15T05:38:37-06:00",
+        sunset: "2026-06-15T21:08:20-06:00",
+        civilTwilightBegin: "2026-06-15T05:04:20-06:00",
+        civilTwilightEnd: "2026-06-15T21:42:37-06:00",
+        dayLengthSeconds: 55783,
+        timezone: "America/Denver",
+        source: "sunrise-sunset",
+        retrievalStatus: "saved-fixture",
+      },
+    },
+    alerts: NO_ALERTS,
+  },
+  "colter-bay-lakeshore-trail": {
+    weather: {
+      plannedDate: "2026-06-15",
+      summary: "Mild saved demo conditions with mixed sun near Colter Bay.",
+      temperatureF: { high: 70, low: 45, current: 58 },
+      precipitationChance: 20,
+      windMph: 8,
+      conditions: ["sun"],
+      source: "open-meteo",
+      label: "forecast-based",
+      retrievalStatus: "saved-fixture",
+      statusReason: "Saved weather fixture for deterministic TrailPack testing.",
+      timezone: "America/Denver",
+      daylight: {
+        date: "2026-06-15",
+        sunrise: "2026-06-15T05:38:37-06:00",
+        sunset: "2026-06-15T21:08:20-06:00",
+        civilTwilightBegin: "2026-06-15T05:04:20-06:00",
+        civilTwilightEnd: "2026-06-15T21:42:37-06:00",
+        dayLengthSeconds: 55783,
+        timezone: "America/Denver",
+        source: "sunrise-sunset",
+        retrievalStatus: "saved-fixture",
+      },
+    },
+    alerts: NO_ALERTS,
+  },
+  "two-ocean-lake-loop": {
+    weather: {
+      plannedDate: "2026-06-15",
+      summary: "Sunny saved demo conditions with a cool start at Two Ocean Lake.",
+      temperatureF: { high: 75, low: 43, current: 56 },
+      precipitationChance: 10,
+      windMph: 10,
+      conditions: ["sun"],
+      source: "open-meteo",
+      label: "forecast-based",
+      retrievalStatus: "saved-fixture",
+      statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
       daylight: {
         date: "2026-06-15",
@@ -113,8 +178,8 @@ export const DEMO_CONTEXTS: Record<SupportedTrailId, DemoScenario> = {
   },
 };
 
-function isSupportedTrailId(trailId: string): trailId is SupportedTrailId {
-  return SUPPORTED_TRAIL_IDS.includes(trailId as SupportedTrailId);
+function isTrailCatalogId(trailId: string): trailId is TrailCatalogId {
+  return TRAIL_CATALOG_IDS.includes(trailId as TrailCatalogId);
 }
 
 export function getDemoScenario(trailId: string | null | undefined): DemoScenario | null {
@@ -122,7 +187,7 @@ export function getDemoScenario(trailId: string | null | undefined): DemoScenari
     return null;
   }
 
-  if (!isSupportedTrailId(trailId)) {
+  if (!isTrailCatalogId(trailId)) {
     return null;
   }
 
