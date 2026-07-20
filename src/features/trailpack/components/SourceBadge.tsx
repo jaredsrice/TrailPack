@@ -2,6 +2,7 @@ import type { SourceLabel } from "@/features/trailpack/types";
 
 const LABEL_STYLES: Record<SourceLabel, string> = {
   "supported-profile": "bg-emerald-50 text-emerald-800 border-emerald-200",
+  "public-source-import": "bg-teal-50 text-teal-800 border-teal-200",
   "user-provided": "bg-blue-50 text-blue-800 border-blue-200",
   "forecast-based": "bg-sky-50 text-sky-800 border-sky-200",
   daylight: "bg-cyan-50 text-cyan-800 border-cyan-200",
@@ -14,6 +15,7 @@ const LABEL_STYLES: Record<SourceLabel, string> = {
 
 const LABEL_TEXT: Record<SourceLabel, string> = {
   "supported-profile": "Supported profile",
+  "public-source-import": "Verified public import",
   "user-provided": "User-provided",
   "forecast-based": "Forecast-based",
   daylight: "Daylight",

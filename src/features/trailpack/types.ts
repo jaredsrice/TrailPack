@@ -1,5 +1,6 @@
 export type SourceLabel =
   | "supported-profile"
+  | "public-source-import"
   | "user-provided"
   | "forecast-based"
   | "daylight"
@@ -52,11 +53,33 @@ export interface SourceConfidence {
   lastChecked: string;
 }
 
+export type TrailProfileKind = "curated" | "public-source-import";
+
+export type TrailProfileField =
+  | "coordinates"
+  | "distanceMiles"
+  | "elevationGainFeet"
+  | "routeType"
+  | "estimatedDuration"
+  | "difficulty";
+
+export interface TrailSourceRecord {
+  source: Extract<DataSource, "NPS" | "USGS">;
+  role: "official-profile" | "geometry-comparison";
+  sourceUrl: string;
+  retrievedAt: string;
+  sourceRecordIds?: string[];
+  note?: string;
+}
+
 export interface TrailProfile {
   id: string;
   name: string;
   park: string;
   state: string;
+  profileKind: TrailProfileKind;
+  retrievalStatus: RetrievalStatus;
+  retrievedAt: string;
   coordinates?: {
     lat: number;
     lng: number;
@@ -70,6 +93,8 @@ export interface TrailProfile {
   elevationMaxFeet?: number;
   sourceConfidence: SourceConfidence;
   npsSourceUrl: string;
+  sourceRecords: TrailSourceRecord[];
+  missingFields: TrailProfileField[];
 }
 
 export interface WeatherContext {

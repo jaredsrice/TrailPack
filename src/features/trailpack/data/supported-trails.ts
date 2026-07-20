@@ -1,4 +1,8 @@
 import type { TrailProfile } from "@/features/trailpack/types";
+import { PUBLIC_TRAILS } from "./public-trails";
+
+const USGS_TRAILS_LAYER_URL =
+  "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37";
 
 export interface SupportedPark {
   id: string;
@@ -6,6 +10,7 @@ export interface SupportedPark {
   state: string;
   parkCode: string;
   trailIds: string[];
+  publicTrailIds: string[];
 }
 
 export const SUPPORTED_PARKS: SupportedPark[] = [
@@ -15,6 +20,7 @@ export const SUPPORTED_PARKS: SupportedPark[] = [
     state: "Wyoming",
     parkCode: "grte",
     trailIds: ["jenny-lake-loop", "taggart-lake", "string-lake-loop"],
+    publicTrailIds: ["colter-bay-lakeshore-trail", "two-ocean-lake-loop"],
   },
 ];
 
@@ -23,6 +29,9 @@ export const JENNY_LAKE_LOOP: TrailProfile = {
   name: "Jenny Lake Loop",
   park: "Grand Teton National Park",
   state: "Wyoming",
+  profileKind: "curated",
+  retrievalStatus: "saved-fixture",
+  retrievedAt: "2026-06-14",
   coordinates: {
     lat: 43.7514,
     lng: -110.7222,
@@ -71,6 +80,23 @@ export const JENNY_LAKE_LOOP: TrailProfile = {
     gainMatch: "conflict",
     lastChecked: "2026-06-14",
   },
+  sourceRecords: [
+    {
+      source: "NPS",
+      role: "official-profile",
+      sourceUrl: "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+      retrievedAt: "2026-06-14",
+      note: "Official display values for the supported profile.",
+    },
+    {
+      source: "USGS",
+      role: "geometry-comparison",
+      sourceUrl: USGS_TRAILS_LAYER_URL,
+      retrievedAt: "2026-06-14",
+      note: "Validated route geometry and exploratory 3DEP elevation comparison.",
+    },
+  ],
+  missingFields: [],
 };
 
 export const TAGGART_LAKE: TrailProfile = {
@@ -78,6 +104,9 @@ export const TAGGART_LAKE: TrailProfile = {
   name: "Taggart Lake",
   park: "Grand Teton National Park",
   state: "Wyoming",
+  profileKind: "curated",
+  retrievalStatus: "saved-fixture",
+  retrievedAt: "2026-06-17",
   distanceMiles: {
     value: 3.0,
     source: "NPS",
@@ -115,6 +144,23 @@ export const TAGGART_LAKE: TrailProfile = {
     gainMatch: "unknown",
     lastChecked: "2026-06-17",
   },
+  sourceRecords: [
+    {
+      source: "NPS",
+      role: "official-profile",
+      sourceUrl: "https://www.nps.gov/thingstodo/taggartlake.htm",
+      retrievedAt: "2026-06-17",
+      note: "Official display values for the supported profile.",
+    },
+    {
+      source: "USGS",
+      role: "geometry-comparison",
+      sourceUrl: USGS_TRAILS_LAYER_URL,
+      retrievedAt: "2026-06-17",
+      note: "Validated route geometry used for the distance comparison.",
+    },
+  ],
+  missingFields: [],
 };
 
 export const STRING_LAKE_LOOP: TrailProfile = {
@@ -122,6 +168,9 @@ export const STRING_LAKE_LOOP: TrailProfile = {
   name: "String Lake Loop",
   park: "Grand Teton National Park",
   state: "Wyoming",
+  profileKind: "curated",
+  retrievalStatus: "saved-fixture",
+  retrievedAt: "2026-06-17",
   distanceMiles: {
     value: 3.7,
     source: "NPS",
@@ -159,6 +208,23 @@ export const STRING_LAKE_LOOP: TrailProfile = {
     gainMatch: "unknown",
     lastChecked: "2026-06-17",
   },
+  sourceRecords: [
+    {
+      source: "NPS",
+      role: "official-profile",
+      sourceUrl: "https://www.nps.gov/thingstodo/stringlake.htm",
+      retrievedAt: "2026-06-17",
+      note: "Official display values for the supported profile.",
+    },
+    {
+      source: "USGS",
+      role: "geometry-comparison",
+      sourceUrl: USGS_TRAILS_LAYER_URL,
+      retrievedAt: "2026-06-17",
+      note: "Validated route geometry used for the distance comparison.",
+    },
+  ],
+  missingFields: [],
 };
 
 export const SUPPORTED_TRAILS: Record<string, TrailProfile> = {
@@ -167,19 +233,30 @@ export const SUPPORTED_TRAILS: Record<string, TrailProfile> = {
   "taggart-lake": TAGGART_LAKE,
 };
 
+export const TRAIL_CATALOG: Record<string, TrailProfile> = {
+  ...SUPPORTED_TRAILS,
+  ...PUBLIC_TRAILS,
+};
+
+export function getTrailById(trailId: string): TrailProfile | null {
+  return TRAIL_CATALOG[trailId] ?? null;
+}
+
 export function getTrailsForPark(parkId: string): TrailProfile[] {
   const park = SUPPORTED_PARKS.find((entry) => entry.id === parkId);
   if (!park) {
     return [];
   }
 
-  return park.trailIds
-    .map((trailId) => SUPPORTED_TRAILS[trailId])
+  return [...park.trailIds, ...park.publicTrailIds]
+    .map((trailId) => TRAIL_CATALOG[trailId])
     .filter((trail): trail is TrailProfile => Boolean(trail));
 }
 
 export function getSupportedParkForTrail(trailId: string): SupportedPark | null {
   return (
-    SUPPORTED_PARKS.find((park) => park.trailIds.includes(trailId)) ?? null
+    SUPPORTED_PARKS.find((park) =>
+      [...park.trailIds, ...park.publicTrailIds].includes(trailId),
+    ) ?? null
   );
 }

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
+import { TRAIL_CATALOG } from "@/features/trailpack/data/supported-trails";
 import { fetchOpenMeteoWeatherContext } from "@/features/trailpack/lib/external-context";
 
 export async function GET(request: NextRequest) {
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  if (!SUPPORTED_TRAILS[trailId]) {
+  if (!TRAIL_CATALOG[trailId]) {
     return NextResponse.json(
       { error: "Unsupported trailId query parameter." },
       { status: 400 },

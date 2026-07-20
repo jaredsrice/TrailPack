@@ -1,6 +1,10 @@
-import { SUPPORTED_PARKS, SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
+import {
+  getSupportedParkForTrail,
+  SUPPORTED_PARKS,
+  TRAIL_CATALOG,
+} from "@/features/trailpack/data/supported-trails";
 
-export type SuggestionType = "park" | "trail" | "manual";
+export type SuggestionType = "park" | "trail" | "public-trail" | "manual";
 
 export interface SearchSuggestion {
   id: string;
@@ -27,12 +31,8 @@ export function getSearchSuggestions(query: string): SearchSuggestion[] {
   const suggestions: SearchSuggestion[] = [];
 
   for (const park of SUPPORTED_PARKS) {
-    if (
-      park.name.toLowerCase().includes(normalized) ||
-      park.state.toLowerCase().includes(normalized) ||
-      normalized.includes("teton") ||
-      normalized.includes("jenny")
-    ) {
+    const searchablePark = `${park.name} ${park.state}`.toLowerCase();
+    if (searchablePark.includes(normalized)) {
       suggestions.push({
         id: `park-${park.id}`,
         type: "park",
@@ -43,20 +43,19 @@ export function getSearchSuggestions(query: string): SearchSuggestion[] {
     }
   }
 
-  for (const trail of Object.values(SUPPORTED_TRAILS)) {
-    if (
-      trail.name.toLowerCase().includes(normalized) ||
-      trail.park.toLowerCase().includes(normalized) ||
-      normalized.includes("jenny") ||
-      normalized.includes("loop")
-    ) {
+  for (const trail of Object.values(TRAIL_CATALOG)) {
+    const searchableTrail = `${trail.name} ${trail.park} ${trail.state}`.toLowerCase();
+    if (searchableTrail.includes(normalized)) {
+      const isPublicImport = trail.profileKind === "public-source-import";
       suggestions.push({
         id: `trail-${trail.id}`,
-        type: "trail",
+        type: isPublicImport ? "public-trail" : "trail",
         title: trail.name,
-        subtitle: `Supported trail · ${trail.park}`,
+        subtitle: isPublicImport
+          ? `Verified NPS + USGS import · ${trail.park}`
+          : `Supported trail · ${trail.park}`,
         trailId: trail.id,
-        parkId: SUPPORTED_PARKS.find((park) => park.trailIds.includes(trail.id))?.id,
+        parkId: getSupportedParkForTrail(trail.id)?.id,
       });
     }
   }

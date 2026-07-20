@@ -7,7 +7,7 @@ import type {
   WeatherContext,
 } from "@/features/trailpack/types";
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
-import { SUPPORTED_TRAILS } from "@/features/trailpack/data/supported-trails";
+import { TRAIL_CATALOG } from "@/features/trailpack/data/supported-trails";
 
 export interface AiContractPackingItem {
   name: string;
@@ -171,7 +171,7 @@ export function validateAiReviewDraft(
     validationReasons.push("AI review made an unsupported safety claim.");
   }
 
-  const otherTrail = Object.values(SUPPORTED_TRAILS).find(
+  const otherTrail = Object.values(TRAIL_CATALOG).find(
     (trail) =>
       trail.id !== input.trail.id && draftText.includes(trail.name.toLowerCase()),
   );

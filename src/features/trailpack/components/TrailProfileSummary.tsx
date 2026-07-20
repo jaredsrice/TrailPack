@@ -16,7 +16,13 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
             {trail.park} · {trail.state}
           </p>
         </div>
-        <SourceBadge label="supported-profile" />
+        <SourceBadge
+          label={
+            trail.profileKind === "public-source-import"
+              ? "public-source-import"
+              : "supported-profile"
+          }
+        />
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -68,19 +74,38 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           </p>
           <p>{trail.sourceConfidence.summary}</p>
           <p>
-            <span className="font-medium text-slate-800">NPS source:</span>{" "}
-            <a
-              href={trail.npsSourceUrl}
-              className="text-emerald-700 underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {trail.npsSourceUrl}
-            </a>
+            <span className="font-medium text-slate-800">Retrieval:</span>{" "}
+            {trail.retrievalStatus.replaceAll("-", " ")} on {trail.retrievedAt}
           </p>
           <p>
             <span className="font-medium text-slate-800">Last checked:</span>{" "}
             {trail.sourceConfidence.lastChecked}
+          </p>
+          <div>
+            <p className="font-medium text-slate-800">Source records:</p>
+            <ul className="mt-1 space-y-2">
+              {trail.sourceRecords.map((record) => (
+                <li key={`${record.source}-${record.role}-${record.sourceUrl}`}>
+                  <a
+                    href={record.sourceUrl}
+                    className="text-emerald-700 underline"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {record.source}
+                  </a>{" "}
+                  · {record.role.replaceAll("-", " ")} · retrieved {record.retrievedAt}
+                  {record.sourceRecordIds?.length ? (
+                    <span> · source feature IDs {record.sourceRecordIds.join(", ")}</span>
+                  ) : null}
+                  {record.note ? <span className="block text-slate-500">{record.note}</span> : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p>
+            <span className="font-medium text-slate-800">Missing planning fields:</span>{" "}
+            {trail.missingFields.length > 0 ? trail.missingFields.join(", ") : "None"}
           </p>
           {trail.elevationMinFeet && trail.elevationMaxFeet ? (
             <p>

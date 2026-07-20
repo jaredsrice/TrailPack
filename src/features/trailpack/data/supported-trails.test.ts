@@ -5,6 +5,8 @@ import {
   SUPPORTED_PARKS,
   SUPPORTED_TRAILS,
   TAGGART_LAKE,
+  TRAIL_CATALOG,
+  getTrailsForPark,
 } from "@/features/trailpack/data/supported-trails";
 
 describe("supported trail inventory", () => {
@@ -13,12 +15,21 @@ describe("supported trail inventory", () => {
     expect(SUPPORTED_PARKS[0]).toMatchObject({
       id: "grand-teton",
       trailIds: ["jenny-lake-loop", "taggart-lake", "string-lake-loop"],
+      publicTrailIds: ["colter-bay-lakeshore-trail", "two-ocean-lake-loop"],
     });
     expect(Object.keys(SUPPORTED_TRAILS)).toEqual([
       "jenny-lake-loop",
       "string-lake-loop",
       "taggart-lake",
     ]);
+    expect(Object.keys(TRAIL_CATALOG)).toEqual([
+      "jenny-lake-loop",
+      "string-lake-loop",
+      "taggart-lake",
+      "colter-bay-lakeshore-trail",
+      "two-ocean-lake-loop",
+    ]);
+    expect(getTrailsForPark("grand-teton")).toHaveLength(5);
   });
 });
 
