@@ -10,7 +10,8 @@ Version `0.1.0` is the completed CSE 499A technical prototype. The packing list
 uses fixed rules, so the same input always produces the same packing decisions.
 A guarded review can summarize the rule-based result, but it cannot add, remove,
 reprioritize, or relabel packing items. The current UI remains fixture-first
-while the CSE 499B live-provider boundary is verified separately.
+while the CSE 499B live-provider boundary remains optional and independently
+validated.
 
 ## How It Works
 
@@ -195,18 +196,21 @@ Validation rejects AI text that:
 
 - adds or omits rule-based packing items
 - changes source labels
+- adds, removes, reorders, or rewrites rule-engine missing details
 - references another supported trail as if it were the selected hike
 - makes unsupported safety claims
 
 If validation fails or a saved fixture is unavailable, TrailPack displays
 template fallback text generated from the rule-based recommendation.
 
-The CSE 499B B-02 provider boundary adds an optional server-side Gemini REST
-call using structured JSON output. Before any provider call, TrailPack minimizes
-the payload to trail, weather, alert, bounded trip-condition, and rule-based
-packing context. The unrestricted `notes` field is never sent. Provider output
-must pass runtime schema parsing and the same packing-set, source-label,
-cross-trail, and safety validation used by the saved fixture.
+The CSE 499B B-02 provider boundary adds an optional server-side Gemini
+Interactions API call using structured JSON output with `store: false`. Before
+any provider call, TrailPack minimizes the payload to trail, weather, alert,
+bounded trip-condition, and rule-based packing context. The unrestricted
+`notes` field is never sent. Provider output must pass runtime schema parsing
+and the same packing-set, source-label, missing-detail, cross-trail, and safety
+validation used by the saved fixture. Provider work is bounded to 12 seconds;
+timeouts preserve the unchanged rule-based fallback.
 
 The default model is the generally available `gemini-3.5-flash`, selected
 for structured-output support and its low-cost/free-tier path. Google states
@@ -214,8 +218,8 @@ that free-tier content may be used to improve its products, while paid-tier
 content is not. TrailPack therefore keeps the provider payload non-personal and
 minimal; a paid tier should be used if the project's data policy later requires
 the stronger provider-side handling commitment. See the official
-[model](https://ai.google.dev/gemini-api/docs/generate-content/whats-new-gemini-3.5),
-[structured-output](https://ai.google.dev/gemini-api/docs/structured-output),
+[Interactions API](https://ai.google.dev/gemini-api/docs/interactions-overview),
+[API-key](https://ai.google.dev/gemini-api/docs/api-key),
 and [pricing](https://ai.google.dev/gemini-api/docs/pricing) documentation.
 
 The Week 7 UI calls the live route only after the user selects **Run guarded live
@@ -257,9 +261,10 @@ official-source validation. The scenario stress command regenerates the Week
   server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
   exist for the live-data path.
 - The guarded AI panel starts with the saved Jenny Lake fixture and can call the
-  server-only Gemini route on demand. Until `GEMINI_API_KEY` is approved for the
-  Vercel Preview environment, the live control returns the labeled missing-key
-  fallback rather than a live accepted response.
+  server-only Gemini route on demand. `GEMINI_API_KEY` is configured as an
+  encrypted Preview-only variable and has produced repeatable accepted
+  responses. Production intentionally has no Gemini key and returns the labeled
+  missing-key fallback.
 - Automatic NPS page collection and USGS processing are not part of this slice;
   imports are reviewed and saved before release.
 - Planned date can affect seasonal insect-repellent guidance. Expected duration
@@ -284,11 +289,11 @@ official-source validation. The scenario stress command regenerates the Week
   [`docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`](docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md).
 - The only active implementation track is
   [B-02 guarded live AI](https://github.com/jaredsrice/TrailPack/issues/26).
-  The Week 6 provider boundary and Week 7 guarded-refinement UI are implemented
-  on its feature branch. Next is a Preview-only Gemini credential, one accepted
-  live response, and the Week 8 accepted/rejected/unavailable demo matrix.
-- B-03 Google login and private saved results remains blocked on B-02. Guest
-  access stays required.
+  Its provider boundary, guarded-refinement UI, deterministic failure matrix,
+  and repeatable Preview acceptance path are complete on the feature branch.
+  Next is PR review and merge.
+- B-03 Google login and private saved results becomes the next active track
+  after B-02 merges. Guest access stays required.
 - Cybersecurity testing and remediation are planned after those 499B features
   reach a stable release candidate; they were not run during the 499A closeout.
 - The public Vercel production deployment is available at

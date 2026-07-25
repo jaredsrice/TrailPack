@@ -36,8 +36,9 @@ function validDraft(): AiReviewDraft {
     tripSummary:
       "Jenny Lake Loop is a longer Grand Teton day hike with forecast-based rain and wind signals, so the rule-based list emphasizes steady hydration, weather protection, and basic safety items.",
     missingDataReview: [
-      "Current trail surface conditions are not known from official data alone.",
-      "Expected time out was not provided.",
+      "Current trail conditions (muddy, icy, snow) are not known from official data alone.",
+      "Your expected time out improves food, water, and daylight/headlamp guidance.",
+      "Your start time would improve daylight and headlamp guidance.",
     ],
     itemExplanationDrafts: [
       {
@@ -156,6 +157,21 @@ describe("guarded AI contract", () => {
 
     expect(result.status).toBe("rejected");
     expect(result.validationReasons.join(" ")).toMatch(/unknown packing item/i);
+  });
+
+  it("rejects a draft that rewrites or invents missing details", () => {
+    const draft = validDraft();
+    draft.missingDataReview = [
+      ...draft.missingDataReview,
+      "A user profile and hiker preferences were not provided.",
+    ];
+
+    const result = validateAiReviewDraft(buildInput(), draft);
+
+    expect(result.status).toBe("rejected");
+    expect(result.validationReasons.join(" ")).toMatch(
+      /changed the rule-based missing-details list/i,
+    );
   });
 
   it("rejects unsupported safety claims", () => {

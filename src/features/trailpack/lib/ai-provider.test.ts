@@ -7,6 +7,7 @@ import {
   type AiReviewDraft,
 } from "@/features/trailpack/lib/ai-contract";
 import {
+  DEFAULT_AI_TIMEOUT_MS,
   DEFAULT_GEMINI_MODEL,
   requestLiveAiReview,
 } from "@/features/trailpack/lib/ai-provider";
@@ -45,12 +46,12 @@ function savedDraft(): AiReviewDraft {
 function geminiResponse(draft: unknown, status = 200): Response {
   return new Response(
     JSON.stringify({
-      candidates: [
+      id: "interaction-test",
+      status: "completed",
+      steps: [
         {
-          content: {
-            parts: [{ text: JSON.stringify(draft) }],
-            role: "model",
-          },
+          type: "model_output",
+          content: [{ type: "text", text: JSON.stringify(draft) }],
         },
       ],
     }),
@@ -71,6 +72,10 @@ function asFetch(
 }
 
 describe("live AI provider boundary", () => {
+  it("keeps the default live-provider wait bounded", () => {
+    expect(DEFAULT_AI_TIMEOUT_MS).toBe(12_000);
+  });
+
   it("accepts a structured response only after the existing guardrails pass", async () => {
     const fetchImpl = asFetch(async () => geminiResponse(savedDraft()));
 
@@ -200,6 +205,16 @@ describe("live AI provider boundary", () => {
               status: "INVALID_ARGUMENT",
               details: [
                 {
+                  "@type": "type.googleapis.com/google.rpc.BadRequest",
+                  fieldViolations: [
+                    {
+                      field:
+                        "response_format.schema.type",
+                      description: "private field description",
+                    },
+                  ],
+                },
+                {
                   "@type": "type.googleapis.com/google.rpc.ErrorInfo",
                   reason: "API_KEY_INVALID",
                   domain: "googleapis.com",
@@ -222,13 +237,53 @@ describe("live AI provider boundary", () => {
         "TrailPack Gemini provider request failed.",
         {
           httpStatus: 400,
+          providerEnvelope: "nested-error",
           providerStatus: "INVALID_ARGUMENT",
           providerReason: "API_KEY_INVALID",
+          invalidFields: ["response_format.schema.type"],
         },
       );
       expect(JSON.stringify(warn.mock.calls)).not.toContain(
         "private upstream details",
       );
+      expect(JSON.stringify(warn.mock.calls)).not.toContain(
+        "private field description",
+      );
+      expect(JSON.stringify(warn.mock.calls)).not.toContain("test-key");
+    } finally {
+      warn.mockRestore();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("classifies an array-wrapped API-key error without logging its message", async () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const privateMessage =
+      "API key not valid. Private provider details must stay hidden.";
+    const fetchImpl = asFetch(async () =>
+      Response.json(
+        [{ error: { code: "api_key_invalid", message: privateMessage } }],
+        { status: 400 },
+      ),
+    );
+
+    try {
+      const result = await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl,
+      });
+
+      expect(result.outcome).toBe("provider-error");
+      expect(warn).toHaveBeenCalledWith(
+        "TrailPack Gemini provider request failed.",
+        {
+          httpStatus: 400,
+          providerEnvelope: "json-array",
+          providerReason: "API_KEY_INVALID",
+        },
+      );
+      expect(JSON.stringify(warn.mock.calls)).not.toContain(privateMessage);
       expect(JSON.stringify(warn.mock.calls)).not.toContain("test-key");
     } finally {
       warn.mockRestore();
@@ -247,12 +302,22 @@ describe("live AI provider boundary", () => {
 
     const requestInit = vi.mocked(fetchImpl).mock.calls[0][1];
     const requestBody = JSON.parse(String(requestInit?.body));
-    const prompt = requestBody.contents[0].parts[0].text;
+    const prompt = requestBody.input;
     expect(prompt).not.toContain(privateNote);
     expect(prompt).not.toContain('"notes"');
     expect(prompt).toContain('"tripDetails"');
-    expect(requestBody.generationConfig.responseFormat.text).toMatchObject({
-      mimeType: "application/json",
+    expect(prompt).toContain(
+      "Copy packing.missingDetails exactly into missingDataReview",
+    );
+    expect(requestBody).toMatchObject({
+      model: DEFAULT_GEMINI_MODEL,
+      store: false,
+      response_format: {
+        type: "text",
+        mime_type: "application/json",
+      },
+    });
+    expect(requestBody.response_format).toMatchObject({
       schema: {
         type: "object",
         required: [
@@ -262,6 +327,6 @@ describe("live AI provider boundary", () => {
         ],
       },
     });
-    expect(requestBody.generationConfig).not.toHaveProperty("temperature");
+    expect(requestBody).not.toHaveProperty("generation_config");
   });
 });

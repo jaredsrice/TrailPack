@@ -184,6 +184,12 @@ export function validateAiReviewDraft(
     }
   }
 
+  if (!sameStrings(draft.missingDataReview, input.packing.missingDetails)) {
+    validationReasons.push(
+      "AI review changed the rule-based missing-details list.",
+    );
+  }
+
   const draftText = collectDraftText(draft).toLowerCase();
   if (hasUnsupportedSafetyClaim(draftText)) {
     validationReasons.push("AI review made an unsupported safety claim.");
@@ -271,6 +277,14 @@ function sameLabels(left: SourceLabel[], right: SourceLabel[]): boolean {
   }
 
   return left.every((label, index) => label === right[index]);
+}
+
+function sameStrings(left: string[], right: string[]): boolean {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
 }
 
 function collectDraftText(draft: AiReviewDraft): string {

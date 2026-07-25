@@ -9,12 +9,29 @@ import { parseAiReviewDraft } from "@/features/trailpack/lib/ai-contract-runtime
 import type { SourceLabel } from "@/features/trailpack/types";
 
 export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
-export const DEFAULT_AI_TIMEOUT_MS = 7_000;
+export const DEFAULT_AI_TIMEOUT_MS = 12_000;
 
-const GEMINI_API_ROOT =
-  "https://generativelanguage.googleapis.com/v1beta/models";
+const GEMINI_INTERACTIONS_ENDPOINT =
+  "https://generativelanguage.googleapis.com/v1beta/interactions";
 const MAX_PROVIDER_RESPONSE_LENGTH = 256_000;
 const MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH = 8_192;
+
+type ProviderErrorEnvelope =
+  | "nested-error"
+  | "flat-error"
+  | "json-array"
+  | "json-null"
+  | "json-primitive"
+  | "non-json"
+  | "oversized";
+
+interface SafeProviderFailureDiagnostic {
+  httpStatus: number;
+  providerEnvelope?: ProviderErrorEnvelope;
+  providerStatus?: string;
+  providerReason?: string;
+  invalidFields?: string[];
+}
 
 const SOURCE_LABELS: SourceLabel[] = [
   "supported-profile",
@@ -41,7 +58,7 @@ const AI_REVIEW_RESPONSE_SCHEMA = {
       type: "array",
       items: { type: "string" },
       description:
-        "Concise statements about missing details already identified in the supplied context.",
+        "An exact copy of packing.missingDetails, in the same order; use an empty array when none are supplied.",
     },
     itemExplanationDrafts: {
       type: "array",
@@ -109,14 +126,14 @@ export async function requestLiveAiReview(
 
   try {
     const response = await (options.fetchImpl ?? fetch)(
-      `${GEMINI_API_ROOT}/${encodeURIComponent(model)}:generateContent`,
+      GEMINI_INTERACTIONS_ENDPOINT,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey,
         },
-        body: JSON.stringify(buildGeminiRequest(input)),
+        body: JSON.stringify(buildGeminiInteractionRequest(input, model)),
         signal: controller.signal,
       },
     );
@@ -201,63 +218,104 @@ async function logSafeGeminiFailure(response: Response): Promise<void> {
     return;
   }
 
-  const diagnostic: {
-    httpStatus: number;
-    providerStatus?: string;
-    providerReason?: string;
-  } = {
+  const diagnostic: SafeProviderFailureDiagnostic = {
     httpStatus: response.status,
   };
 
   try {
     const responseText = await response.clone().text();
-    if (responseText.length <= MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH) {
+    if (responseText.length > MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH) {
+      diagnostic.providerEnvelope = "oversized";
+    } else {
       const responseBody: unknown = JSON.parse(responseText);
-      if (isRecord(responseBody) && isRecord(responseBody.error)) {
-        diagnostic.providerStatus = safeProviderCode(
-          responseBody.error.status,
-        );
-
-        if (Array.isArray(responseBody.error.details)) {
-          const errorInfo = responseBody.error.details.find(
-            (detail) =>
-              isRecord(detail) &&
-              typeof detail["@type"] === "string" &&
-              detail["@type"].endsWith("ErrorInfo"),
-          );
-          if (isRecord(errorInfo)) {
-            diagnostic.providerReason = safeProviderCode(errorInfo.reason);
-          }
+      if (isRecord(responseBody)) {
+        diagnostic.providerEnvelope = isRecord(responseBody.error)
+          ? "nested-error"
+          : "flat-error";
+        readSafeProviderErrorRecord(responseBody, diagnostic);
+      } else if (Array.isArray(responseBody)) {
+        diagnostic.providerEnvelope = "json-array";
+        const firstError = responseBody.find(isRecord);
+        if (firstError) {
+          readSafeProviderErrorRecord(firstError, diagnostic);
         }
+      } else if (responseBody === null) {
+        diagnostic.providerEnvelope = "json-null";
+      } else {
+        diagnostic.providerEnvelope = "json-primitive";
+        diagnostic.providerReason = classifyProviderMessage(responseBody);
       }
     }
   } catch {
-    // The HTTP status alone is enough for safe operational diagnosis.
+    diagnostic.providerEnvelope = "non-json";
   }
 
   console.warn("TrailPack Gemini provider request failed.", diagnostic);
 }
 
-function buildGeminiRequest(input: AiContractInput) {
+function readSafeProviderErrorRecord(
+  envelope: Record<string, unknown>,
+  diagnostic: SafeProviderFailureDiagnostic,
+): void {
+  const errorBody = isRecord(envelope.error) ? envelope.error : envelope;
+  diagnostic.providerStatus = safeProviderCode(errorBody.status);
+  diagnostic.providerReason =
+    safeProviderCode(errorBody.reason) ??
+    safeProviderCode(errorBody.type) ??
+    safeProviderCode(errorBody.code) ??
+    safeProviderCode(envelope.error) ??
+    classifyProviderMessage(errorBody.message);
+
+  if (!Array.isArray(errorBody.details)) {
+    return;
+  }
+
+  const invalidFields = errorBody.details
+    .filter(
+      (detail) =>
+        isRecord(detail) &&
+        typeof detail["@type"] === "string" &&
+        detail["@type"].endsWith("BadRequest") &&
+        Array.isArray(detail.fieldViolations),
+    )
+    .flatMap((detail) =>
+      isRecord(detail) && Array.isArray(detail.fieldViolations)
+        ? detail.fieldViolations
+        : [],
+    )
+    .filter(isRecord)
+    .map((violation) => safeProviderField(violation.field))
+    .filter((field): field is string => Boolean(field));
+
+  if (invalidFields.length > 0) {
+    diagnostic.invalidFields = [...new Set(invalidFields)].slice(0, 8);
+  }
+
+  const errorInfo = errorBody.details.find(
+    (detail) =>
+      isRecord(detail) &&
+      typeof detail["@type"] === "string" &&
+      detail["@type"].endsWith("ErrorInfo"),
+  );
+  if (isRecord(errorInfo)) {
+    diagnostic.providerReason =
+      safeProviderCode(errorInfo.reason) ?? diagnostic.providerReason;
+  }
+}
+
+function buildGeminiInteractionRequest(
+  input: AiContractInput,
+  model: string,
+) {
   return {
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text: buildPrompt(input),
-          },
-        ],
-      },
-    ],
-    generationConfig: {
-      responseFormat: {
-        text: {
-          mimeType: "application/json",
-          schema: AI_REVIEW_RESPONSE_SCHEMA,
-        },
-      },
+    model,
+    input: buildPrompt(input),
+    response_format: {
+      type: "text",
+      mime_type: "application/json",
+      schema: AI_REVIEW_RESPONSE_SCHEMA,
     },
+    store: false,
   };
 }
 
@@ -310,6 +368,7 @@ function buildPrompt(input: AiContractInput): string {
     "Return exactly one JSON object matching the supplied response schema.",
     "Explain every supplied packing item exactly once.",
     "Copy every itemName and sourceLabels array exactly, including label order.",
+    "Copy packing.missingDetails exactly into missingDataReview, including order; use [] when it is empty.",
     "Do not add, remove, reprioritize, or rename packing items.",
     "Do not invent trail, weather, alert, medical, or safety facts.",
     "Do not claim the hike or packing list is safe, guaranteed, risk-free, or complete.",
@@ -375,23 +434,21 @@ async function readGeminiDraft(response: Response) {
 }
 
 function extractGeneratedText(value: unknown): string | null {
-  if (!isRecord(value) || !Array.isArray(value.candidates)) {
+  if (
+    !isRecord(value) ||
+    value.status !== "completed" ||
+    !Array.isArray(value.steps)
+  ) {
     return null;
   }
 
-  const firstCandidate = value.candidates[0];
-  if (!isRecord(firstCandidate) || !isRecord(firstCandidate.content)) {
-    return null;
-  }
-
-  const { parts } = firstCandidate.content;
-  if (!Array.isArray(parts)) {
-    return null;
-  }
-
-  const textParts = parts
+  const textParts = value.steps
     .filter(isRecord)
-    .map((part) => part.text)
+    .filter((step) => step.type === "model_output")
+    .flatMap((step) => (Array.isArray(step.content) ? step.content : []))
+    .filter(isRecord)
+    .filter((content) => content.type === "text")
+    .map((content) => content.text)
     .filter((text): text is string => typeof text === "string");
 
   return textParts.length > 0 ? textParts.join("") : null;
@@ -459,9 +516,39 @@ function optionalUserText(
 }
 
 function safeProviderCode(value: unknown): string | undefined {
-  return typeof value === "string" && /^[A-Z0-9_.-]{1,80}$/.test(value)
+  return typeof value === "string" && /^[A-Za-z0-9_.-]{1,80}$/.test(value)
+    ? value.toUpperCase()
+    : undefined;
+}
+
+function safeProviderField(value: unknown): string | undefined {
+  return typeof value === "string" &&
+    value.length <= 160 &&
+    /^[A-Za-z0-9_.[\]-]+$/.test(value)
     ? value
     : undefined;
+}
+
+function classifyProviderMessage(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value.toLowerCase();
+  if (
+    normalized.includes("api key not valid") ||
+    normalized.includes("api_key_invalid")
+  ) {
+    return "API_KEY_INVALID";
+  }
+  if (normalized.includes("invalid json payload")) {
+    return "INVALID_ARGUMENT";
+  }
+  if (normalized.trim() === "bad request") {
+    return "BAD_REQUEST";
+  }
+
+  return undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

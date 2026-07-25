@@ -12,7 +12,8 @@ change as the project develops.
 ### Added
 
 - A server-only B-02 Gemini provider boundary at
-  `POST /api/trailpack/ai-review`, using structured JSON output, a seven-second
+  `POST /api/trailpack/ai-review`, using the Interactions API, structured JSON
+  output, `store: false`, a 12-second
   timeout, bounded request and response parsing, and explicit accepted,
   rejected, timed-out, quota-limited, missing-key, invalid-response, and
   provider-error outcomes.
@@ -21,6 +22,11 @@ change as the project develops.
 - Mocked B-02 contract coverage for accepted, rejected, timeout, quota,
   missing-key, malformed-response, provider-error, privacy, route-validation,
   and oversized-request paths.
+- Exact missing-detail provenance validation so AI cannot add, omit, reorder, or
+  rewrite gaps identified by the rule engine.
+- Bounded Vercel diagnostics that retain provider status and invalid-field codes
+  without logging API keys, prompts, raw response bodies, or unrestricted
+  messages.
 - A user-triggered guarded live-review control that keeps the saved fixture as
   the initial demo state, calls the server route on demand, and labels accepted,
   rejected, timed-out, quota-limited, missing-key, invalid-response,
@@ -129,7 +135,11 @@ change as the project develops.
 
 - Corrected the guarded Gemini provider default from the undocumented
   `gemini-3.5-flash-lite` identifier to the current generally available
-  `gemini-3.5-flash` GenerateContent model.
+  `gemini-3.5-flash` model and migrated the direct REST boundary to the current
+  Interactions API.
+- Increased the bounded live-provider timeout from seven to 12 seconds after
+  three seven-second Preview requests safely timed out and three 12-second
+  requests were accepted without validation failures.
 - Expanded unsupported-safety-claim validation to reject broader safety
   guarantees, zero-risk language, and risk-free claims while preserving the
   deterministic rule-based fallback.

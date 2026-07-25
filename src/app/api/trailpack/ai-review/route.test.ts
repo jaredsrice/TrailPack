@@ -92,16 +92,19 @@ describe("POST /api/trailpack/ai-review", () => {
 
     const fetchMock = vi.fn(
       async (input: RequestInfo | URL, init?: RequestInit) => {
-        expect(String(input)).toContain(":generateContent");
+        expect(String(input)).toBe(
+          "https://generativelanguage.googleapis.com/v1beta/interactions",
+        );
         expect(init?.method).toBe("POST");
 
         return new Response(
           JSON.stringify({
-            candidates: [
+            id: "interaction-route-test",
+            status: "completed",
+            steps: [
               {
-                content: {
-                  parts: [{ text: JSON.stringify(draft) }],
-                },
+                type: "model_output",
+                content: [{ type: "text", text: JSON.stringify(draft) }],
               },
             ],
           }),
