@@ -2,6 +2,7 @@
 
 Date: 2026-07-25  
 Branch: `codex/b02-guarded-live-ai`  
+Verified code commit: `704b283`  
 Scope: MH-02 weather-context enhancement  
 Status: Implementation and protected Preview validation complete; production unchanged
 
@@ -41,7 +42,7 @@ rules, and guarded AI input from the same resolved weather context.
 | TypeScript | Pass | `npm run typecheck` |
 | Scenario stress matrix | Pass | `npm run scenario:stress` |
 | Production build | Pass | Next.js 15.5.19 compiled `/` and all three API routes |
-| Preview deployment | Pass | `dpl_Df9gYo1rsvzirDfbrdwW5hUWKGcb`, target `preview`, state `READY` |
+| Git-connected Preview deployment | Pass | Commit `704b283`; `dpl_CTFNdFBgHymZkDmpeVyWVfaqNLW8`, target `preview`, state `READY` |
 | Protected homepage | Pass | Authenticated Vercel CLI request returned HTTPS 200 and `<title>TrailPack</title>` |
 | Required Preview assets | Pass | All eight Next.js JS, CSS, and font assets referenced by the homepage returned success |
 | Current-day weather | Pass | HTTP 200, `live`, `open-meteo`, four periods dated 2026-07-25 |
@@ -52,8 +53,8 @@ rules, and guarded AI input from the same resolved weather context.
 | Firefox interaction | Pass | Selected Jenny Lake, observed saved loading state become live, chose July 28, and observed the date and all four periods refresh |
 | Framework overlay | Pass | No Next.js or other framework error overlay appeared in the Firefox rendered flow |
 
-The Vercel Preview is:
-`https://trailpack-aofzsi8gn-jared-s-rice.vercel.app`
+The Git-connected Vercel Preview is:
+`https://trailpack-1mh1xl713-jared-s-rice.vercel.app`
 
 Team Deployment Protection redirects unauthenticated requests to Vercel login.
 Endpoint checks used authenticated `vercel curl`; protection settings were not
@@ -69,9 +70,7 @@ AI remains an optional explanation layer.
 
 ## Remaining Release Checks
 
-1. Repeat the protected Preview smoke checks on the Git-connected deployment
-   after this commit is pushed.
-2. Perform a narrow mobile-width visual check when a Firefox-capable automation
+1. Perform a narrow mobile-width visual check when a Firefox-capable automation
    path is available.
-3. Repeat homepage, asset, current-date, selected-date, invalid-date, and log
+2. Repeat homepage, asset, current-date, selected-date, invalid-date, and log
    checks on production only after the branch is merged and Vercel deploys it.
