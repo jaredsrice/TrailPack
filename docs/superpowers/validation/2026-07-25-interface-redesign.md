@@ -3,8 +3,9 @@
 Date: 2026-07-25  
 Branch: `codex/b02-guarded-live-ai`  
 Source base: `5cd12bc`  
+Verified runtime commit: `9a53d51`  
 Scope: Full responsive interface redesign and location-aware park photography  
-Status: Local implementation and Firefox validation complete; protected Preview pending
+Status: Implementation and protected Preview validation complete; production unchanged
 
 ## Outcome
 
@@ -124,8 +125,21 @@ Final local screenshot evidence:
 | Park-photo mapping tests | Pass | Rotation uniqueness, trail preference, park fallback, and no false manual/default lock |
 | Scenario stress matrix | Pass | `npm run scenario:stress` regenerated the existing report |
 | Production build | Pass | Next.js 15.5.19 compiled `/` and all three API routes |
-| Git-connected Preview | Pending | Recorded after the implementation commit is pushed |
-| Protected Preview routes and assets | Pending | Authenticated checks follow the Git deployment |
-| Preview error logs | Pending | Checked after homepage and route probes |
+| Git-connected Preview | Pass | Commit `9a53d51`; `dpl_DVr3tCMvm6a7ho7z8Av82BvbX9nB`, target `preview`, state `READY` |
+| Protected homepage | Pass | Authenticated Vercel CLI request returned HTTPS 200 and `<title>TrailPack</title>` |
+| Required Next.js assets | Pass | Seven JavaScript chunks, one stylesheet, and two font files referenced by the homepage returned 200 |
+| Park photographs | Pass | All eleven shipped NPS image files returned 200 |
+| Current-day weather | Pass | HTTP 200, `live`, `open-meteo`, 24 periods, and matching daylight context |
+| Saved weather fallback | Pass | Out-of-range `2027-01-01` returned HTTP 200, `saved-fixture`, four periods, explicit reason, and no mismatched daylight |
+| Weather validation | Pass | Unsupported trail and impossible date each returned controlled HTTP 400 responses |
+| NPS alerts | Pass | Supported trail returned HTTP 200, `live`, `official`; unsupported trail returned controlled HTTP 400 |
+| AI route validation | Pass | Empty contract returned controlled HTTP 400 without invoking the provider |
+| Preview Firefox walkthrough | Pass | Protected homepage loaded directly in Firefox; Jenny selection locked the correct image and resolved from saved loading context to the live forecast |
+| Preview error logs | Pass | No error-level events after homepage, image, asset, weather, alert, and AI-validation probes |
 
-Production remains unchanged.
+The Git-connected protected Vercel Preview is:
+`https://trailpack-l4v3puhv2-jared-s-rice.vercel.app`
+
+Team Deployment Protection redirects unauthenticated requests to Vercel login.
+Endpoint checks used authenticated `vercel curl`; protection settings were not
+changed. Production remains unchanged.
