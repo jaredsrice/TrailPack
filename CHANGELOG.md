@@ -146,6 +146,9 @@ change as the project develops.
   refresh when the planned hike date changes. The resolved live-or-saved context
   drives both the deterministic packing rules and the guarded AI input, while
   loading, live, saved, and unavailable states remain visible.
+- Live weather now starts the optional AI panel from the clean deterministic
+  template fallback instead of revalidating a saved explanation fixture built
+  for different weather-driven packing items.
 - Corrected the guarded Gemini provider default from the undocumented
   `gemini-3.5-flash-lite` identifier to the current generally available
   `gemini-3.5-flash` model and migrated the direct REST boundary to the current

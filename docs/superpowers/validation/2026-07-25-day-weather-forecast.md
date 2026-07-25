@@ -31,6 +31,9 @@ rules, and guarded AI input from the same resolved weather context.
   date.
 - Client runtime parsing reconstructs only bounded weather, daylight, and
   forecast-period fields. Provider or route error bodies are not exposed.
+- Live weather does not reuse the saved Jenny Lake AI fixture from a different
+  packing set; the panel shows the clean deterministic template until a fresh
+  live review is requested.
 
 ## Verification
 

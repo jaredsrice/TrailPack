@@ -235,7 +235,9 @@ export function TrailPackShell() {
 
     return buildGuardedAiReview(
       aiInput,
-      getSavedAiReviewFixture(aiInput.trail.id),
+      aiInput.weather.retrievalStatus === "saved-fixture"
+        ? getSavedAiReviewFixture(aiInput.trail.id)
+        : null,
     );
   }, [aiInput]);
 

@@ -270,11 +270,12 @@ official-source validation. The scenario stress command regenerates the Week
   selected date outside the provider range uses a clearly labeled saved example.
   Main-flow NPS alerts remain saved fixtures even though the live NPS route is
   available independently.
-- The guarded AI panel starts with the saved Jenny Lake fixture and can call the
-  server-only Gemini route on demand. `GEMINI_API_KEY` is configured as an
-  encrypted Preview-only variable and has produced repeatable accepted
-  responses. Production intentionally has no Gemini key and returns the labeled
-  missing-key fallback.
+- The guarded AI panel uses the saved Jenny Lake fixture only with matching
+  saved weather. Live weather starts from the deterministic template fallback
+  until the user requests a fresh server-side Gemini review.
+  `GEMINI_API_KEY` is configured as an encrypted Preview-only variable and has
+  produced repeatable accepted responses. Production intentionally has no
+  Gemini key and returns the labeled missing-key fallback.
 - Automatic NPS page collection and USGS processing are not part of this slice;
   imports are reviewed and saved before release.
 - Planned date requests that day's weather when available and can affect both
