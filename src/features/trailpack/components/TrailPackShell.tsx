@@ -472,6 +472,7 @@ export function TrailPackShell() {
             weather={weather}
             alerts={selectedScenario.alerts}
             isWeatherLoading={isWeatherLoading}
+            startTime={userInput.startTime}
           />
         ) : null}
 

@@ -11,9 +11,12 @@ change as the project develops.
 
 ### Added
 
-- A responsive supported-trail day forecast with local 6 AM, 10 AM, 2 PM, and
-  6 PM temperature, apparent temperature, precipitation, condition, and wind
-  periods.
+- A responsive supported-trail day-forecast accordion with a four-highlight
+  view and a complete local hour-by-hour view of temperature, apparent
+  temperature, precipitation, condition, and wind.
+- A forecast trip timeline that marks first light, sunrise, sunset, last light,
+  and the user's planned start time, including a highlighted matching hourly
+  card.
 - Date-aware weather requests through
   `GET /api/trailpack/weather?trailId=...&date=YYYY-MM-DD`, including strict
   date validation, hourly Open-Meteo normalization, no-store responses, and

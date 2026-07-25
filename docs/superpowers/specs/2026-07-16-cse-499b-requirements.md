@@ -74,7 +74,7 @@ evidence must remain distinguishable.
 | Requirement | Status | Completion Evidence |
 |---|---|---|
 | MH-01 Supported Hike Input Workflow | Complete | Three supported Grand Teton profiles plus manual distance, elevation gain, route type, date, start time, duration, and condition input. |
-| MH-02 Weather And Official Alert Context | Complete and enhanced | Automatic date-aware Open-Meteo weather with a visible four-period day forecast; Sunrise-Sunset.org and NPS route handlers; saved fixtures; visible live, fallback, no-alert, and unavailable states. |
+| MH-02 Weather And Official Alert Context | Complete and enhanced | Automatic date-aware Open-Meteo weather with a collapsed four-highlight/full-hourly forecast, planned-start and daylight timeline markers, Sunrise-Sunset.org and NPS route handlers, saved fixtures, and visible live, fallback, no-alert, and unavailable states. |
 | MH-03 Rule-Based Baseline Packing List | Complete | Deterministic essential and optional output for supported profiles and manual fallback without AI. |
 | MH-04 Recommendation Explanations And Source Labels | Complete | Grouped accordion recommendations with clear actions, expandable reasons, context markers, and source labels. |
 | MH-05 Guarded AI Contract And Fallback Validation | Complete by accepted fixture path | Structured fixture-first review, validation, rejection behavior, and template fallback. Live AI was optional under the Week 12 contract. |

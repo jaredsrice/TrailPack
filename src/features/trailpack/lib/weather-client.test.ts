@@ -132,6 +132,37 @@ describe("weather response parser", () => {
     );
   });
 
+  it("accepts a complete 24-hour forecast and rejects oversized arrays", () => {
+    const fullDay = Array.from({ length: 24 }, (_, hour) => ({
+      time: `2026-07-28T${hour.toString().padStart(2, "0")}:00`,
+      temperatureF: 45 + hour,
+      apparentTemperatureF: 43 + hour,
+      precipitationChance: hour,
+      windMph: 3 + hour,
+      weatherCode: 1,
+      condition: "mostly clear",
+    }));
+
+    expect(
+      parseWeatherContextResponse({
+        ...WEATHER_RESPONSE,
+        forecastPeriods: fullDay,
+      })?.forecastPeriods,
+    ).toHaveLength(24);
+    expect(
+      parseWeatherContextResponse({
+        ...WEATHER_RESPONSE,
+        forecastPeriods: [
+          ...fullDay,
+          {
+            ...fullDay[0],
+            time: "2026-07-29T00:00",
+          },
+        ],
+      }),
+    ).toBeNull();
+  });
+
   it("rejects out-of-range forecast values", () => {
     expect(
       parseWeatherContextResponse({

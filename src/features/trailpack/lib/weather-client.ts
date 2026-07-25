@@ -22,7 +22,7 @@ const RETRIEVAL_STATUSES = new Set<RetrievalStatus>([
   "unavailable",
 ]);
 const MAX_STRING_LENGTH = 2_000;
-const MAX_FORECAST_PERIODS = 8;
+const MAX_FORECAST_PERIODS = 24;
 
 interface RequestTrailWeatherOptions {
   plannedDate?: string;

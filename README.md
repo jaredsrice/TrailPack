@@ -17,7 +17,8 @@ fallback. The CSE 499B AI provider remains optional and independently validated.
 
 1. Search for a supported park or trail.
 2. Review the official trail statistics and any computed estimates.
-3. Review a four-period day forecast, daylight, and NPS alert status.
+3. Review the short weather summary and, when useful, open the day-forecast
+   accordion for four highlights or the complete hour-by-hour timeline.
 4. Choose a hike date or add details such as start time, expected duration, or
    trail conditions.
 5. Receive an essential and optional packing list whose cards answer concrete
@@ -129,11 +130,12 @@ keeping saved demo fixtures available for deterministic demos:
 - `GET /api/trailpack/weather?trailId=jenny-lake-loop` loads the current
   Open-Meteo day forecast for a supported trail when coordinates are available.
   Add `&date=YYYY-MM-DD` to request a selected date. The normalized response
-  includes daily high/low context plus local 6 AM, 10 AM, 2 PM, and 6 PM
-  temperature, apparent temperature, precipitation probability, condition, and
-  wind periods when the provider supplies them. A successful request also loads
-  Sunrise-Sunset.org civil twilight. Provider failure or an unsupported forecast
-  date returns a clearly labeled saved example instead of an unhandled error.
+  includes daily high/low context plus the complete local hourly temperature,
+  apparent temperature, precipitation probability, condition, and wind timeline
+  when the provider supplies it. A successful request also loads
+  Sunrise-Sunset.org sunrise, sunset, and civil-twilight boundaries. Provider
+  failure or an unsupported forecast date returns a clearly labeled saved
+  example instead of an unhandled error.
 - `GET /api/trailpack/alerts?trailId=jenny-lake-loop` or
   `GET /api/trailpack/alerts?parkCode=grte` loads NPS alerts with the
   server-side `NPS_API_KEY`. If the key is missing or the provider request
@@ -148,10 +150,14 @@ The main UI automatically requests weather for the selected supported trail and
 uses the user-selected hike date when one is present. Saved four-period examples
 remain visible while the request is loading and when the provider is unavailable,
 with the retrieval state and fallback reason shown in the weather card. The
-resolved live-or-saved weather feeds the deterministic packing rules and guarded
-AI contract. NPS alert cards remain fixture-backed in the main flow, including
-the Taggart Lake 2026 trail-work alert, while the live NPS route stays available
-for independent testing.
+short forecast summary stays visible while the detailed day forecast is collapsed
+by default. Live responses let the user switch between 6 AM, 10 AM, 2 PM, and
+6 PM highlights and all 24 hourly periods. The expanded trip timeline marks
+first light, sunrise, sunset, last light, and the user's planned start time on
+the matching hourly card. The resolved live-or-saved weather feeds the
+deterministic packing rules and guarded AI contract. NPS alert cards remain
+fixture-backed in the main flow, including the Taggart Lake 2026 trail-work
+alert, while the live NPS route stays available for independent testing.
 
 ## Recommendation Style
 

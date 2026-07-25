@@ -295,6 +295,11 @@ describe("external-context fallbacks", () => {
   });
 
   it("requests the selected date and hourly forecast fields", async () => {
+    const hourlyTimes = Array.from(
+      { length: 24 },
+      (_, hour) =>
+        `2026-07-28T${hour.toString().padStart(2, "0")}:00`,
+    );
     const fetcher = vi.fn(async (input: RequestInfo | URL) => {
       const url = new URL(String(input));
 
@@ -320,17 +325,20 @@ describe("external-context fallbacks", () => {
               weather_code: [2],
             },
             hourly: {
-              time: [
-                "2026-07-28T06:00",
-                "2026-07-28T10:00",
-                "2026-07-28T14:00",
-                "2026-07-28T18:00",
-              ],
-              temperature_2m: [46, 63, 76, 69],
-              apparent_temperature: [43, 62, 75, 68],
-              precipitation_probability: [5, 10, 20, 15],
-              wind_speed_10m: [3, 6, 11, 8],
-              weather_code: [1, 1, 2, 2],
+              time: hourlyTimes,
+              temperature_2m: hourlyTimes.map((_, hour) =>
+                hour === 14 ? 76 : 46 + hour,
+              ),
+              apparent_temperature: hourlyTimes.map((_, hour) => 43 + hour),
+              precipitation_probability: hourlyTimes.map((_, hour) =>
+                Math.min(hour, 20),
+              ),
+              wind_speed_10m: hourlyTimes.map((_, hour) =>
+                Math.min(3 + hour, 11),
+              ),
+              weather_code: hourlyTimes.map((_, hour) =>
+                hour >= 12 ? 2 : 1,
+              ),
             },
           }),
         };
@@ -349,12 +357,14 @@ describe("external-context fallbacks", () => {
     });
 
     expect(weather?.plannedDate).toBe("2026-07-28");
-    expect(weather?.forecastPeriods).toHaveLength(4);
-    expect(weather?.forecastPeriods?.[2]).toMatchObject({
+    expect(weather?.forecastPeriods).toHaveLength(24);
+    expect(weather?.forecastPeriods?.[0]?.time).toBe("2026-07-28T00:00");
+    expect(weather?.forecastPeriods?.[14]).toMatchObject({
       time: "2026-07-28T14:00",
       temperatureF: 76,
       condition: "partly cloudy",
     });
+    expect(weather?.forecastPeriods?.[23]?.time).toBe("2026-07-28T23:00");
   });
 
   it("returns unavailable alert context when the NPS key is missing", async () => {

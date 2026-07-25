@@ -79,7 +79,7 @@ const RAIN_CODES = new Set([
   51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99,
 ]);
 const SNOW_CODES = new Set([71, 73, 75, 77, 85, 86]);
-const FORECAST_HOURS = [6, 10, 14, 18] as const;
+const MAX_HOURLY_FORECAST_PERIODS = 24;
 
 function firstNumber(values: number[] | undefined): number | undefined {
   const value = values?.[0];
@@ -139,11 +139,14 @@ function buildForecastPeriods(
   }
 
   const periods: WeatherForecastPeriod[] = [];
+  const datePrefix = `${plannedDate}T`;
 
-  for (const hour of FORECAST_HOURS) {
-    const time = `${plannedDate}T${hour.toString().padStart(2, "0")}:00`;
-    const index = hourly.time.indexOf(time);
-    if (index < 0) {
+  for (const [index, time] of hourly.time.entries()) {
+    if (
+      periods.length >= MAX_HOURLY_FORECAST_PERIODS ||
+      typeof time !== "string" ||
+      !time.startsWith(datePrefix)
+    ) {
       continue;
     }
 
