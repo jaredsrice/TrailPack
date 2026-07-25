@@ -3,8 +3,8 @@
 - Date: 2026-07-24
 - Requirement: B-02 advanced guarded AI recommendation refinement
 - Branch: `codex/b02-guarded-live-ai`
-- Status: Week 6 provider boundary implemented; live credential, UI integration,
-  and live acceptance demo remain pending
+- Status: Week 6 provider boundary implemented and feature preview verified;
+  live credential, UI integration, and live acceptance demo remain pending
 
 ## Scope Gate
 
@@ -107,7 +107,10 @@ called. No outcome can add, remove, reprioritize, or relabel baseline items.
 | Local production homepage | Pass | Terminal HTTP 200 with `<title>TrailPack</title>` |
 | Local missing-key fallback | Pass | HTTP 200, `no-store`, outcome `missing-key`, review status `fallback` |
 | Local invalid contract | Pass | Controlled HTTP 400 with no internal details |
-| Vercel preview missing-key fallback | Pending | Publish after all local checks pass |
+| Vercel branch deployment | Pass | Vercel reported Ready for commit `005eb86`; the branch preview remains protected by Vercel authentication |
+| Vercel preview homepage | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
+| Vercel preview missing-key fallback | Pass | Authenticated same-origin POST returned HTTP 200, `no-store`, outcome `missing-key`, and review status `fallback` |
+| Vercel preview invalid contract | Pass | Authenticated same-origin POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
 | Live accepted provider response | Pending | Requires an approved Gemini key; do not store one without confirmation |
 
 Focused coverage includes accepted, semantic rejection, timeout, quota, missing
@@ -116,16 +119,14 @@ oversized route input, and server-only provider configuration.
 
 ## Remaining B-02 Work
 
-1. Publish and verify the feature-branch Vercel preview with no Gemini key. The
-   route must return the labeled `missing-key` fallback.
-2. Obtain or approve a Gemini key and configure it for Preview only.
-3. Capture one live accepted response without recording the key, prompt, or
+1. Obtain or approve a Gemini key and configure it for Preview only.
+2. Capture one live accepted response without recording the key, prompt, or
    personal data.
-4. Implement the Week 7 UI that distinguishes accepted, rejected, and unchanged
+3. Implement the Week 7 UI that distinguishes accepted, rejected, and unchanged
    fallback text from the rule-based packing list.
-5. Run the Week 8 live accepted, rejected, timeout, quota, and missing-key demo
+4. Run the Week 8 live accepted, rejected, timeout, quota, and missing-key demo
    matrix before closing B-02.
-6. Review request-abuse controls before enabling paid or broadly available
+5. Review request-abuse controls before enabling paid or broadly available
    production traffic.
 
 B-02 is not complete at this boundary. This record proves the server contract
