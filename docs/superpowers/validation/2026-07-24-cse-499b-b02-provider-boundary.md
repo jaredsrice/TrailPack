@@ -144,11 +144,12 @@ missing-key fallback.
 | Local missing-key fallback | Pass | HTTP 200, `no-store`, outcome `missing-key`, review status `fallback` |
 | Local invalid contract | Pass | Controlled HTTP 400 with no internal details |
 | Vercel Preview build | Pass | Disposable deployment `dpl_8djehtFNTYqck4L74ucyXvt24S5T` reported Ready and built the dynamic AI route |
+| Git-connected Preview build | Pass | Commit `8870f6e` deployed Ready as `dpl_GQX5tyQ492wQ5eiUR4fQt3grB7pD` through the PR's Vercel check |
 | Vercel preview homepage and assets | Pass | Authenticated terminal checks returned HTTPS 200 with `<title>TrailPack</title>`; every referenced JavaScript, CSS, and font asset returned HTTP 200 |
 | Prior Week 6 preview UI smoke | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
 | Vercel preview missing-key fallback | Pass | Authenticated terminal POST returned HTTP 200, `no-store`, outcome `missing-key`, review status `fallback`, and one safe validation reason; no provider request was possible |
 | Vercel preview invalid contract | Pass | Authenticated terminal POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
-| Live accepted provider responses | Pass | Three of three 12-second Preview requests returned HTTP 200, outcome `accepted`, review status `accepted`, `gemini-3.5-flash`, zero validation reasons, and an exact empty missing-details list; observed route times were 11.73s, 8.35s, and 6.71s |
+| Live accepted provider responses | Pass with provider variability | The disposable Preview accepted three of three 12-second requests at 11.73s, 8.35s, and 6.71s. The exact Git-connected Preview accepted two of three and safely timed out once. All six returned HTTP 200; accepted responses used `gemini-3.5-flash`, had zero validation reasons, and copied the exact empty missing-details list |
 | Seven-second timeout comparison | Pass as fallback evidence | Three of three seven-second requests returned HTTP 200 with outcome `timed-out` and the unchanged rule-based fallback, demonstrating that the original limit was too aggressive |
 | Live response headers | Pass | HTTP/2 200, `Cache-Control: no-store`, JSON content type, HTTPS with strict transport security |
 | Vercel preview logs | Pass | Three info-level Preview POST records returned 200; the error-level query returned no entries |
@@ -180,12 +181,10 @@ missing profile or preference data that the rule engine had not identified.
 
 ## Remaining B-02 Work
 
-1. Push the completed branch and repeat the protected check against the
-   Git-connected Preview.
-2. Complete PR review and merge before treating B-03 as the active track.
-3. Use the deterministic rejection fixture to show the rejected response,
+1. Complete PR review and merge before treating B-03 as the active track.
+2. Use the deterministic rejection fixture to show the rejected response,
    validation reason, and unchanged fallback during the classroom demo.
-4. Review request-abuse controls before enabling paid or broadly available
+3. Review request-abuse controls before enabling paid or broadly available
    production traffic.
 
 B-02's implementation and Preview validation are complete on this branch.

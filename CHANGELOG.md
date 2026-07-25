@@ -139,7 +139,9 @@ change as the project develops.
   Interactions API.
 - Increased the bounded live-provider timeout from seven to 12 seconds after
   three seven-second Preview requests safely timed out and three 12-second
-  requests were accepted without validation failures.
+  requests were accepted without validation failures. A later three-request
+  Git-connected check accepted twice and safely fell back once, retaining a
+  responsive bound rather than treating provider availability as required.
 - Expanded unsupported-safety-claim validation to reject broader safety
   guarantees, zero-risk language, and risk-free claims while preserving the
   deterministic rule-based fallback.
