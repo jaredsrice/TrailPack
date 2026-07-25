@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Lora } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -7,9 +7,15 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const loraSerif = Lora({
+  variable: "--font-lora-serif",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "TrailPack",
-  description: "Rule-based hiking packing recommendations for supported trails.",
+  description:
+    "Traceable trail context and rule-based hiking packing guidance for supported trails.",
 };
 
 export default function RootLayout({
@@ -18,8 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} antialiased`}>{children}</body>
+    <html lang="en" className={`${geistSans.variable} ${loraSerif.variable}`}>
+      <body className="antialiased">
+        {children}
+      </body>
     </html>
   );
 }

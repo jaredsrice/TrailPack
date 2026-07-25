@@ -12,6 +12,10 @@ import type {
   WeatherForecastPeriod,
 } from "@/features/trailpack/types";
 import { SourceBadge } from "./SourceBadge";
+import {
+  TrailPackIcon,
+  type TrailPackIconName,
+} from "./TrailPackIcon";
 
 const FORECAST_HIGHLIGHT_HOURS = [6, 10, 14, 18] as const;
 
@@ -29,16 +33,27 @@ export function ContextStatusPanel({
   const status = buildContextStatus(weather, alerts);
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div>
-        <p className="text-sm font-medium text-slate-500">External context</p>
-        <h2 className="mt-1 text-xl font-semibold text-slate-900">
-          Weather and alert status
-        </h2>
+    <section
+      id="context-status"
+      className="context-section"
+      aria-labelledby="context-status-heading"
+    >
+      <div className="section-heading-row">
+        <div>
+          <p className="section-kicker">External context</p>
+          <h2 id="context-status-heading" className="section-title">
+            Weather and alert status
+          </h2>
+          <p className="section-subtitle">
+            Current planning context remains visibly separate from trail facts.
+          </p>
+        </div>
+        <TrailPackIcon name="weather" className="section-heading-icon" />
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="context-grid">
         <ContextCard
+          icon="weather"
           title="Weather"
           status={
             isWeatherLoading ? "Updating live forecast" : status.weather.status
@@ -56,6 +71,7 @@ export function ContextStatusPanel({
           <DayForecast startTime={startTime} weather={weather} />
         </ContextCard>
         <ContextCard
+          icon="alert"
           title="NPS alerts"
           status={status.alerts.status}
           summary={status.alerts.summary}
@@ -70,6 +86,7 @@ export function ContextStatusPanel({
 }
 
 function ContextCard({
+  icon,
   title,
   status,
   summary,
@@ -79,6 +96,7 @@ function ContextCard({
   notice,
   children,
 }: {
+  icon: TrailPackIconName;
   title: string;
   status: string;
   summary: string;
@@ -89,34 +107,34 @@ function ContextCard({
   children?: ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+    <div className="context-card">
+      <div className="context-card-heading">
+        <div className="context-card-title">
+          <TrailPackIcon name={icon} className="h-6 w-6" />
+          <div>
+            <p className="context-card-label">
             {title}
           </p>
-          <h3 className="mt-2 text-base font-semibold text-slate-900">{status}</h3>
+            <h3>{status}</h3>
+          </div>
         </div>
-        <span className="rounded-full bg-white px-3 py-1 text-xs text-slate-600">
+        <span className="retrieval-pill">
           {retrievalStatus}
         </span>
       </div>
 
-      <p className="mt-3 text-sm text-slate-600">{summary}</p>
+      <p className="context-summary">{summary}</p>
 
       {notice ? (
-        <p className="mt-3 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs leading-5 text-amber-900">
+        <p className="context-notice">
           {notice}
         </p>
       ) : null}
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="context-badges">
         <SourceBadge label={label} />
         {details.map((detail) => (
-          <span
-            key={detail}
-            className="rounded-full border border-slate-200 bg-white px-2 py-1 text-xs text-slate-600"
-          >
+          <span key={detail} className="context-detail-pill">
             {detail}
           </span>
         ))}
@@ -148,11 +166,11 @@ function DayForecast({
     selectedView === "hourly" && canShowHourly ? "hourly" : "highlights";
 
   return (
-    <details className="group mt-5 border-t border-slate-200 pt-1">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-md py-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-700">
+    <details className="forecast-details group">
+      <summary>
         <div>
-          <p className="text-sm font-semibold text-slate-900">Day forecast</p>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="forecast-details-title">Day forecast</p>
+          <p className="forecast-details-subtitle">
             {periods.length > 4
               ? `${periods.length} hourly periods available`
               : periods.length === 4
@@ -162,22 +180,20 @@ function DayForecast({
                   : "No detailed periods available"}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="forecast-summary-meta">
           {weather.plannedDate ? (
-            <p className="text-xs text-slate-500">
+            <p>
               {formatForecastDate(weather.plannedDate)}
             </p>
           ) : null}
-          <span
-            aria-hidden="true"
-            className="text-lg text-slate-500 transition-transform group-open:rotate-180"
-          >
-            ⌄
-          </span>
+          <TrailPackIcon
+            name="chevron"
+            className="h-5 w-5 transition-transform group-open:rotate-180"
+          />
         </div>
       </summary>
 
-      <div className="pb-1 pt-2">
+      <div className="forecast-details-content">
         {periods.length > 0 ? (
           <>
             <ForecastTimelineSummary markers={timelineMarkers} />
@@ -185,7 +201,7 @@ function DayForecast({
             {canShowHourly ? (
               <div
                 aria-label="Forecast detail"
-                className="inline-flex rounded-lg bg-slate-200 p-1"
+                className="forecast-view-toggle"
                 role="group"
               >
                 <ForecastViewButton
@@ -200,7 +216,7 @@ function DayForecast({
                 />
               </div>
             ) : (
-              <p className="rounded-md bg-white px-3 py-2 text-xs leading-5 text-slate-500">
+              <p className="forecast-availability-note">
                 This saved fallback includes representative times. Full hourly
                 detail appears when a live forecast is available.
               </p>
@@ -213,7 +229,7 @@ function DayForecast({
             )}
           </>
         ) : (
-          <p className="rounded-md bg-white px-3 py-2 text-xs text-slate-500">
+          <p className="forecast-availability-note">
             A detailed day timeline is unavailable for this weather response.
           </p>
         )}
@@ -234,10 +250,10 @@ function ForecastViewButton({
   return (
     <button
       aria-pressed={isSelected}
-      className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${
+      className={`forecast-view-button ${
         isSelected
-          ? "bg-white text-slate-900 shadow-sm"
-          : "text-slate-600 hover:text-slate-900"
+          ? "is-selected"
+          : ""
       }`}
       onClick={onClick}
       type="button"
@@ -253,22 +269,19 @@ function ForecastHighlights({
   periods: WeatherForecastPeriod[];
 }) {
   return (
-    <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
+    <div className="forecast-highlight-grid">
       {periods.map((period) => (
-        <div
-          key={period.time}
-          className="rounded-lg border border-slate-200 bg-white p-3"
-        >
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        <div key={period.time} className="forecast-highlight">
+          <p className="forecast-period-label">
             {periodName(period.time)}
           </p>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="forecast-period-time">
             {formatForecastTime(period.time)}
           </p>
-          <p className="mt-3 text-2xl font-semibold text-slate-900">
+          <p className="forecast-temperature">
             {formatTemperature(period.temperatureF)}
           </p>
-          <p className="mt-1 min-h-10 text-sm capitalize text-slate-700">
+          <p className="forecast-condition">
             {period.condition}
           </p>
           <ForecastPeriodDetails period={period} />
@@ -288,11 +301,11 @@ function ForecastTimelineSummary({
   }
 
   return (
-    <div className="mb-3 rounded-lg border border-sky-100 bg-sky-50 p-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-sky-900">
+    <div className="forecast-timeline">
+      <p className="forecast-timeline-label">
         Trip timeline
       </p>
-      <div className="mt-2 flex flex-wrap gap-2">
+      <div className="forecast-timeline-markers">
         {markers.map((marker) => (
           <TimelineMarkerBadge key={marker.id} marker={marker} />
         ))}

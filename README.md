@@ -28,6 +28,21 @@ Unsupported hikes can use the manual-entry fallback to get a limited baseline
 list. Manual distance, elevation gain, route type, expected duration, and trail
 conditions can make that fallback more specific.
 
+## Visual Trail Context
+
+The unselected homepage rotates through seven official National Park Service
+photographs to give the planning flow a real sense of place without implying
+that a generic scene depicts the user's hike. The rotation can be paused and
+stops automatically when reduced motion is preferred.
+
+Selecting Grand Teton National Park locks the showcase to a park scene.
+Selecting one of the five supported trails instead shows that trail or the most
+specific verified NPS location photograph available. Manual entry keeps the
+general park rotation because TrailPack has no verified identity for an
+unsupported hike. Every photograph includes a visible NPS credit and official
+source link; the complete provenance record is in
+[`docs/ui/2026-07-25-national-park-image-sources.md`](docs/ui/2026-07-25-national-park-image-sources.md).
+
 The current demo supports three curated profiles plus two verified public-source
 imports in Grand Teton National Park.
 

@@ -4,6 +4,7 @@ import type {
   TripAlert,
 } from "@/features/trailpack/types";
 import { SourceBadge } from "./SourceBadge";
+import { TrailPackIcon } from "./TrailPackIcon";
 
 type Priority = "Essential" | "Optional";
 type PrioritizedItem = PackingItem & {
@@ -47,31 +48,42 @@ export function PackingListOutput({
   const groups = groupRecommendationItems(recommendation);
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <section
+      id="packing-list"
+      className="packing-section"
+      aria-labelledby="packing-list-heading"
+    >
+      <div className="section-heading-row">
         <div>
-          <p className="text-sm font-medium text-slate-500">Today&apos;s TrailPack</p>
-          <h2 className="mt-1 text-2xl font-semibold text-slate-900">
+          <p className="section-kicker">Today&apos;s TrailPack</p>
+          <h2 id="packing-list-heading" className="section-title">
             {recommendation.trailName}
           </h2>
+          <p className="section-subtitle">
+            Ordered by decision impact, with each recommendation tied to its
+            rule and source context.
+          </p>
         </div>
-        <p className="rounded-full bg-slate-100 px-3 py-1 text-xs text-slate-600">
+        <p className="generated-at">
           Rule-based list · {new Date(recommendation.generatedAt).toLocaleString()}
         </p>
       </div>
 
-      <p className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+      <p className="packing-confidence">
         {recommendation.confidenceNote}
       </p>
-      <p className="mt-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-600">
-        Suggested list only, not a complete safety checklist. Adjust for your
-        group, health needs, experience, route changes, current conditions, and
-        official park guidance.
-      </p>
+      <div className="packing-safety-note">
+        <TrailPackIcon name="shield" className="h-5 w-5 shrink-0" />
+        <p>
+          Suggested list only, not a complete safety checklist. Adjust for your
+          group, health needs, experience, route changes, current conditions,
+          and official park guidance.
+        </p>
+      </div>
 
       <TripAlerts alerts={recommendation.tripAlerts} />
 
-      <div className="mt-6 space-y-6">
+      <div className="packing-groups">
         {groups.map((group) => (
           <RecommendationGroup
             key={group.title}
@@ -82,11 +94,11 @@ export function PackingListOutput({
       </div>
 
       {recommendation.missingDetails.length > 0 ? (
-        <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <h3 className="text-sm font-semibold text-amber-900">
+        <div className="packing-missing-details">
+          <h3>
             Missing details that could improve this list
           </h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-900">
+          <ul>
             {recommendation.missingDetails.map((detail) => (
               <li key={detail}>{detail}</li>
             ))}
@@ -103,30 +115,31 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
   }
 
   return (
-    <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50 p-4">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-amber-950">Overall alerts</h3>
-        <span className="text-xs font-medium text-amber-900">
+    <div className="trip-alerts">
+      <div className="trip-alerts-heading">
+        <h3>
+          <TrailPackIcon name="alert" className="h-5 w-5" />
+          Overall alerts
+        </h3>
+        <span>
           {alerts.length} {alerts.length === 1 ? "alert" : "alerts"}
         </span>
       </div>
-      <ul className="mt-3 space-y-3">
+      <ul className="trip-alert-list">
         {alerts.map((alert) => (
           <li
             key={alert.id}
             className={`rounded-md border px-3 py-3 ${alertClassName(alert.severity)}`}
           >
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border text-xs font-bold">
-                !
-              </span>
+            <div className="trip-alert-title">
+              <TrailPackIcon name="alert" className="h-4 w-4" />
               <p className="text-sm font-semibold">{alert.title}</p>
               {alert.affectedBy.map((tag) => (
                 <ContextChip key={`${alert.id}-${tag}`} label={tag} />
               ))}
             </div>
-            <p className="mt-2 text-sm leading-6">{alert.summary}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+            <p className="trip-alert-summary">{alert.summary}</p>
+            <div className="trip-alert-sources">
               {alert.sourceLabels.map((label) => (
                 <SourceBadge key={`${alert.id}-${label}`} label={label} />
               ))}
@@ -135,7 +148,7 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
                   href={alert.sourceUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs text-emerald-700 underline"
+                  className="source-link"
                 >
                   Source
                 </a>
@@ -161,13 +174,13 @@ function RecommendationGroup({
 
   return (
     <section>
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-        <span className="text-sm text-slate-500">
+      <div className="packing-group-heading">
+        <h3>{title}</h3>
+        <span>
           {items.length} {items.length === 1 ? "item" : "items"}
         </span>
       </div>
-      <ul className="mt-3 space-y-2">
+      <ul className="packing-item-list">
         {items.map((item) => (
           <RecommendationRow key={`${item.priority}-${item.name}`} item={item} />
         ))}
@@ -182,12 +195,15 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
 
   return (
     <li>
-      <details className={`group overflow-hidden rounded-lg border ${rowClassName}`}>
-        <summary className="cursor-pointer list-none p-4 [&::-webkit-details-marker]:hidden">
-          <div className="flex gap-3">
-            <span className={`w-1.5 shrink-0 rounded-full ${accentClassName}`} />
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-sm font-semibold text-slate-600 transition-transform group-open:rotate-45">
-              +
+      <details className={`packing-item group ${rowClassName}`}>
+        <summary>
+          <div className="packing-item-summary">
+            <span className={`packing-item-accent ${accentClassName}`} />
+            <span className="packing-item-expand">
+              <TrailPackIcon
+                name="plus"
+                className="h-4 w-4 transition-transform group-open:rotate-45"
+              />
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
@@ -210,28 +226,28 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                   />
                 ))}
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-700">
+              <p className="packing-item-recommendation">
                 {item.recommendation}
               </p>
             </div>
           </div>
         </summary>
-        <div className="border-t border-slate-200 px-4 pb-4 pt-3 text-sm leading-6 text-slate-700">
+        <div className="packing-item-details">
           <div>
-            <p className="text-xs font-semibold uppercase text-slate-500">
+            <p className="packing-detail-label">
               Why
             </p>
-            <p className="mt-1">{item.why}</p>
+            <p>{item.why}</p>
           </div>
 
           {item.contextNotes && item.contextNotes.length > 0 ? (
-            <div className="mt-3 space-y-2">
+            <div className="packing-context-notes">
               {item.contextNotes.map((note) => (
                 <div
                   key={`${item.name}-${note.label}`}
-                  className="rounded-md border border-slate-200 bg-white px-3 py-2"
+                  className="packing-context-note"
                 >
-                  <p className="text-xs font-semibold uppercase text-slate-500">
+                  <p className="packing-detail-label">
                     {note.label}
                   </p>
                   <p className="mt-1">{note.text}</p>
@@ -240,7 +256,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
             </div>
           ) : null}
 
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="packing-item-sources">
             {item.sourceLabels.map((label) => (
               <SourceBadge key={`${item.name}-${label}`} label={label} />
             ))}
@@ -250,7 +266,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                 href={link.url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-emerald-700 underline"
+                className="source-link"
               >
                 {link.label}
               </a>
@@ -260,7 +276,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                 href={item.sourceUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-emerald-700 underline"
+                className="source-link"
               >
                 Source
               </a>

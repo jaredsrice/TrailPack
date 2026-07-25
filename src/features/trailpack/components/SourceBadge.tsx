@@ -29,7 +29,7 @@ const LABEL_TEXT: Record<SourceLabel, string> = {
 export function SourceBadge({ label }: { label: SourceLabel }) {
   return (
     <span
-      className={`inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${LABEL_STYLES[label]}`}
+      className={`source-badge inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${LABEL_STYLES[label]}`}
     >
       {LABEL_TEXT[label]}
     </span>

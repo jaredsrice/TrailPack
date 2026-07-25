@@ -6,6 +6,7 @@ import {
   getAiReviewPresentation,
   type AiReviewDisplayTone,
 } from "@/features/trailpack/lib/ai-review-display";
+import { TrailPackIcon } from "./TrailPackIcon";
 
 interface AiReviewPanelProps {
   review: GuardedAiReviewResult;
@@ -32,28 +33,34 @@ export function AiReviewPanel({
   });
 
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <section
+      id="ai-review"
+      className="ai-review-section"
+      aria-labelledby="ai-review-heading"
+    >
+      <div className="section-heading-row">
         <div>
-          <p className="text-sm font-medium text-slate-500">
+          <p className="section-kicker">
             Optional explanation layer
           </p>
-          <h2 className="mt-1 text-xl font-semibold text-slate-900">
+          <h2 id="ai-review-heading" className="section-title">
             Guarded AI review
           </h2>
+          <p className="section-subtitle">
+            Explanations may change; the rule-based list above does not.
+          </p>
         </div>
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${toneBadgeClassName(
+        <span className={`ai-status-badge ${toneBadgeClassName(
             presentation.tone,
-          )}`}
-        >
+          )}`}>
+          <TrailPackIcon name="sparkles" className="h-4 w-4" />
           {presentation.badge}
         </span>
       </div>
 
       <div
         aria-live="polite"
-        className={`mt-4 rounded-lg border px-4 py-3 ${tonePanelClassName(
+        className={`ai-status-panel ${tonePanelClassName(
           presentation.tone,
         )}`}
       >
@@ -65,29 +72,29 @@ export function AiReviewPanel({
         ) : null}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3">
+      <div className="ai-action-row">
         <button
           type="button"
           onClick={onRequestLive}
           disabled={isLoading}
-          className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-wait disabled:bg-slate-400"
+          className="ai-review-button"
         >
           {isLoading ? "Checking live AI..." : "Run guarded live review"}
         </button>
-        <p className="max-w-xl text-xs leading-5 text-slate-500">
+        <p>
           Optional: this checks explanation text only. It cannot add, remove,
           reprioritize, or relabel anything in the rule-based list above.
         </p>
       </div>
 
-      <p className="mt-4 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+      <p className="ai-trip-summary">
         {review.review.tripSummary}
       </p>
 
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="ai-review-grid">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">Missing-data review</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-600">
+          <h3>Missing-data review</h3>
+          <ul>
             {review.review.missingDataReview.map((detail) => (
               <li key={detail}>{detail}</li>
             ))}
@@ -95,26 +102,30 @@ export function AiReviewPanel({
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">Validation result</h3>
+          <h3>Validation result</h3>
           {review.validationReasons.length > 0 ? (
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-amber-800">
+            <ul className="text-amber-800">
               {review.validationReasons.map((reason) => (
                 <li key={reason}>{reason}</li>
               ))}
             </ul>
           ) : (
-            <p className="mt-2 text-sm text-slate-600">
+            <p>
               The review matched the rule-based packing items and source labels.
             </p>
           )}
         </div>
       </div>
 
-      <details className="mt-5 rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
-        <summary className="cursor-pointer text-sm font-semibold text-slate-900">
-          Item explanation drafts
+      <details className="ai-explanation-details group">
+        <summary>
+          <span>Item explanation drafts</span>
+          <TrailPackIcon
+            name="chevron"
+            className="h-5 w-5 transition-transform group-open:rotate-180"
+          />
         </summary>
-        <ul className="mt-3 space-y-3 text-sm text-slate-700">
+        <ul>
           {review.review.itemExplanationDrafts.map((item) => (
             <li key={item.itemName}>
               <p className="font-medium text-slate-900">{item.itemName}</p>

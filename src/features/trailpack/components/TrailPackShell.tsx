@@ -34,7 +34,9 @@ import type { TrailProfile, WeatherContext } from "@/features/trailpack/types";
 import { AiReviewPanel } from "./AiReviewPanel";
 import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
+import { ParkPhotoShowcase } from "./ParkPhotoShowcase";
 import { PackingListOutput } from "./PackingListOutput";
+import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
 
 const QUICK_START_TRAIL_IDS = [
@@ -330,124 +332,148 @@ export function TrailPackShell() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      <section
-        className="relative overflow-hidden px-6 pb-12 pt-10 text-white"
-        style={{
-          background: "linear-gradient(135deg, var(--hero-from), var(--hero-to))",
-        }}
-      >
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-100">
-            TrailPack
-          </p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight md:text-5xl">
-            Where would you like to go?
-          </h1>
-          <p className="mt-3 max-w-2xl text-base text-emerald-50/90">
-            Search a supported park, curated trail, or verified public-source import,
-            then get a focused packing list built from traceable trail stats and trip
-            context.
-          </p>
+    <main className="trailpack-app">
+      <header className="site-masthead">
+        <div className="site-masthead-inner">
+          <a href="#main-content" className="brand-lockup" aria-label="TrailPack home">
+            <span className="brand-mark">
+              <TrailPackIcon name="logo" className="h-7 w-7" />
+            </span>
+            <span>TrailPack</span>
+          </a>
+          <p className="masthead-note">Rule-based packing guidance</p>
+        </div>
+      </header>
 
-          <div className="mt-8">
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                if (!event.target.value) {
-                  const next = buildClearedSearchState();
-                  setMode(next.mode);
-                  setSelectedParkId(next.selectedParkId);
-                  setSelectedTrail(next.selectedTrail);
-                  setUserInput(next.userInput);
-                }
-              }}
-              placeholder="Search a park or trail..."
-              className="w-full max-w-2xl rounded-full border border-white/20 bg-white px-6 py-4 text-base text-slate-800 shadow-lg outline-none ring-emerald-300 focus:ring-4"
-            />
+      <section className="home-hero" aria-labelledby="trailpack-heading">
+        <div className="home-hero-inner">
+          <div className="hero-search-column">
+            <p className="section-kicker">Plan with traceable trail context</p>
+            <h1 id="trailpack-heading" className="hero-heading">
+              Choose a trail.
+              <span>Prepare intelligently.</span>
+            </h1>
+            <p className="hero-description">
+              Search a supported park, curated trail, or verified public-source
+              import, then build a focused packing list from trail facts,
+              forecast context, and official alerts.
+            </p>
+
+            <label className="search-field">
+              <span className="sr-only">Search a park or trail</span>
+              <TrailPackIcon name="search" className="search-field-icon" />
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  if (!event.target.value) {
+                    const next = buildClearedSearchState();
+                    setMode(next.mode);
+                    setSelectedParkId(next.selectedParkId);
+                    setSelectedTrail(next.selectedTrail);
+                    setUserInput(next.userInput);
+                  }
+                }}
+                placeholder="Search a park or trail..."
+              />
+            </label>
+
+            {query.trim() ? (
+              <div className="search-results" aria-label="Search suggestions">
+                <p className="search-label">Suggestions</p>
+                <div className="suggestion-grid">
+                  {suggestions.map((suggestion) => (
+                    <button
+                      key={suggestion.id}
+                      type="button"
+                      onClick={() => handleSuggestionSelect(suggestion)}
+                      className={`suggestion-button ${
+                        suggestion.type === "manual" ? "is-manual" : ""
+                      }`}
+                    >
+                      <span className="suggestion-type">
+                        {suggestionBadge(suggestion.type)}
+                      </span>
+                      <span className="suggestion-title">{suggestion.title}</span>
+                      <span className="suggestion-subtitle">
+                        {suggestion.subtitle}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : mode === "search" ? (
+              <div className="quick-starts">
+                <p className="search-label">Quick starts</p>
+                <div className="quick-start-list">
+                  {QUICK_START_TRAIL_IDS.map((trailId) => {
+                    const trail = SUPPORTED_TRAILS[trailId];
+                    return (
+                      <button
+                        key={trail.id}
+                        type="button"
+                        onClick={() => handleTrailSelect(trail.id)}
+                        className="quick-start-button"
+                      >
+                        <TrailPackIcon name="trail" className="h-4 w-4" />
+                        <span>
+                          <strong>{trail.name}</strong>
+                          <small>
+                            {trail.distanceMiles.value} mi ·{" "}
+                            {trail.elevationGainFeet.value} ft
+                          </small>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
 
-          {query.trim() ? (
-            <div className="mt-6">
-              <p className="text-sm font-semibold text-emerald-100">Suggestions</p>
-              <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion.id}
-                    type="button"
-                    onClick={() => handleSuggestionSelect(suggestion)}
-                    className={`rounded-lg border px-4 py-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
-                      suggestion.type === "manual"
-                        ? "border-amber-300 bg-amber-50 text-slate-900"
-                        : "border-slate-200 bg-white text-slate-900"
-                    }`}
-                  >
-                    <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                      {suggestionBadge(suggestion.type)}
-                    </p>
-                    <p className="mt-1 font-semibold">{suggestion.title}</p>
-                    <p className="mt-1 text-sm text-slate-600">{suggestion.subtitle}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : mode === "search" ? (
-            <div className="mt-8">
-              <p className="text-sm font-semibold text-emerald-100">Start with a supported trail</p>
-              <div className="mt-3 grid gap-3 md:grid-cols-3">
-                {QUICK_START_TRAIL_IDS.map((trailId) => {
-                  const trail = SUPPORTED_TRAILS[trailId];
-                  return (
-                    <button
-                      key={trail.id}
-                      type="button"
-                      onClick={() => handleTrailSelect(trail.id)}
-                      className="rounded-lg border border-white/20 bg-white/95 px-4 py-3 text-left text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
-                    >
-                      <p className="font-semibold">{trail.name}</p>
-                      <p className="mt-1 text-sm text-slate-600">
-                        {trail.distanceMiles.value} mi · {trail.elevationGainFeet.value} ft gain
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ) : null}
+          <ParkPhotoShowcase
+            selectedParkId={selectedParkId}
+            selectedTrailId={selectedTrail?.id ?? null}
+          />
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl space-y-6 px-6 py-8">
+      <div id="main-content" className="content-flow">
         {mode === "park" && selectedPark ? (
-          <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="text-sm font-medium text-slate-500">Selected park</p>
-            <h2 className="mt-1 text-2xl font-semibold text-slate-900">{selectedPark.name}</h2>
-            <p className="mt-1 text-slate-600">{selectedPark.state}</p>
+          <section className="selection-band">
+            <div className="section-heading-row">
+              <div>
+                <p className="section-kicker">Selected park</p>
+                <h2 className="section-title">{selectedPark.name}</h2>
+                <p className="section-subtitle">{selectedPark.state}</p>
+              </div>
+              <TrailPackIcon name="trail" className="section-heading-icon" />
+            </div>
 
-            <div className="mt-6">
-              <p className="text-sm font-semibold text-slate-800">
+            <div className="park-trail-picker">
+              <p className="picker-label">
                 Choose a curated or verified public-source trail
               </p>
-              <div className="mt-3 flex flex-wrap gap-3">
+              <div className="park-trail-grid">
                 {parkTrails.map((trail) => (
                   <button
                     key={trail.id}
                     type="button"
                     onClick={() => handleTrailSelect(trail.id)}
-                    className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-left transition hover:bg-emerald-100"
+                    className="park-trail-button"
                   >
-                    <p className="font-semibold text-emerald-950">{trail.name}</p>
-                    <p className="mt-1 text-xs font-medium uppercase tracking-wide text-emerald-700">
+                    <span className="park-trail-name">{trail.name}</span>
+                    <span className="park-trail-source">
                       {trail.profileKind === "public-source-import"
                         ? "Verified NPS + USGS import"
                         : "Curated profile"}
-                    </p>
-                    <p className="mt-1 text-sm text-emerald-800">
-                      {trail.distanceMiles.value} mi · {trail.elevationGainFeet.value} ft gain ·{" "}
+                    </span>
+                    <span className="park-trail-stats">
+                      {trail.distanceMiles.value} mi ·{" "}
+                      {trail.elevationGainFeet.value} ft gain ·{" "}
                       {trail.difficulty.value}
-                    </p>
+                    </span>
                   </button>
                 ))}
               </div>
@@ -456,12 +482,16 @@ export function TrailPackShell() {
         ) : null}
 
         {mode === "manual" ? (
-          <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-amber-950">Manual hike entry</h2>
-            <p className="mt-2 text-sm text-amber-900">
-              Unsupported hikes use a limited fallback list. Distance, elevation gain, route type,
-              expected time out, and current conditions can make the fallback more specific.
-            </p>
+          <section className="manual-entry-notice">
+            <TrailPackIcon name="info" className="h-6 w-6 shrink-0" />
+            <div>
+              <h2>Manual hike entry</h2>
+              <p>
+                Unsupported hikes use a limited fallback list. Distance,
+                elevation gain, route type, expected time out, and current
+                conditions can make the fallback more specific.
+              </p>
+            </div>
           </section>
         ) : null}
 
@@ -508,6 +538,19 @@ export function TrailPackShell() {
           />
         ) : null}
       </div>
+
+      <footer className="site-footer">
+        <div>
+          <span className="footer-brand">
+            <TrailPackIcon name="logo" className="h-5 w-5" />
+            TrailPack
+          </span>
+          <p>
+            Planning guidance only. Confirm conditions and closures with official
+            park sources before leaving.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }

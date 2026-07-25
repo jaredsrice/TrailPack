@@ -11,6 +11,16 @@ change as the project develops.
 
 ### Added
 
+- A seven-park homepage photograph rotation using locally served, officially
+  sourced NPS photography, visible credits, official source links, pause/resume
+  controls, and reduced-motion behavior.
+- Trail- and park-aware image locking for Grand Teton and all five supported
+  trails, with manual entry deliberately retaining general park imagery rather
+  than claiming an unverified location match.
+- A versioned image-source ledger covering every shipped photograph, displayed
+  credit, official source page, usage basis, and location-mapping rule.
+- Reusable field-guide SVG icons and responsive visual primitives for trail
+  facts, weather, alerts, trip details, packing rows, and guarded AI status.
 - A responsive supported-trail day-forecast accordion with a four-highlight
   view and a complete local hour-by-hour view of temperature, apparent
   temperature, precipitation, condition, and wind.
@@ -145,6 +155,17 @@ change as the project develops.
 
 ### Changed
 
+- Redesigned the complete TrailPack planning flow as a contemporary national
+  park field guide with evergreen and alpine-blue bands, Lora editorial
+  headings, open information rails, subtle topographic texture, clearer source
+  hierarchy, and restrained sunrise accents.
+- Restyled trail provenance, weather and alert states, trip-detail controls,
+  safety-critical and alert-modified packing accordions, and the optional AI
+  review while preserving every deterministic rule, provider boundary,
+  validation contract, fallback state, and source label.
+- Reworked responsive behavior around comfortable 44-pixel controls and a
+  single-column mobile hierarchy without horizontal overflow or nested-card
+  crowding.
 - Supported-trail pages now request live Open-Meteo weather automatically and
   refresh when the planned hike date changes. The resolved live-or-saved context
   drives both the deterministic packing rules and the guarded AI input, while

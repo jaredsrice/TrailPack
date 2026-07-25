@@ -1,5 +1,9 @@
 import type { TrailProfile } from "@/features/trailpack/types";
 import { SourceBadge } from "./SourceBadge";
+import {
+  TrailPackIcon,
+  type TrailPackIconName,
+} from "./TrailPackIcon";
 
 function formatConfidence(status: TrailProfile["sourceConfidence"]["status"]): string {
   return status.replaceAll("_", " ");
@@ -7,12 +11,16 @@ function formatConfidence(status: TrailProfile["sourceConfidence"]["status"]): s
 
 export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <section
+      id="trail-profile"
+      className="trail-profile-section"
+      aria-labelledby="trail-profile-heading"
+    >
+      <div className="section-heading-row">
         <div>
-          <p className="text-sm font-medium text-slate-500">Selected trail</p>
-          <h2 className="mt-1 text-2xl font-semibold text-slate-900">{trail.name}</h2>
-          <p className="mt-1 text-slate-600">
+          <p className="section-kicker">Selected trail</p>
+          <h2 id="trail-profile-heading" className="section-title">{trail.name}</h2>
+          <p className="section-subtitle">
             {trail.park} · {trail.state}
           </p>
         </div>
@@ -25,8 +33,9 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
         />
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="profile-stat-grid">
         <StatCard
+          icon="distance"
           label="Distance"
           value={`${trail.distanceMiles.value} mi`}
           officialNote="Official (NPS)"
@@ -39,6 +48,7 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           computedNote={trail.distanceMiles.computedNote}
         />
         <StatCard
+          icon="elevation"
           label="Elevation gain"
           value={`${trail.elevationGainFeet.value.toLocaleString()} ft`}
           officialNote="Official (NPS)"
@@ -52,43 +62,53 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           conflict={trail.sourceConfidence.gainMatch === "conflict"}
         />
         <StatCard
+          icon="clock"
           label="Time"
           value={trail.estimatedDuration.value}
           sourceLabel={trail.estimatedDuration.label}
         />
         <StatCard
+          icon="difficulty"
           label="Difficulty"
           value={trail.difficulty.value}
           sourceLabel={trail.difficulty.label}
         />
       </div>
 
-      <details className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
-        <summary className="cursor-pointer text-sm font-semibold text-slate-800">
-          Sources &amp; Confidence
+      <details className="source-confidence-details group">
+        <summary>
+          <span className="source-confidence-title">
+            <TrailPackIcon name="source" className="h-5 w-5" />
+            <strong>Sources &amp; Confidence</strong>
+            <span>See provenance, update cadence, and conflict handling.</span>
+          </span>
+          <TrailPackIcon
+            name="chevron"
+            className="h-5 w-5 transition-transform group-open:rotate-180"
+          />
         </summary>
-        <div className="mt-3 space-y-2 text-sm text-slate-600">
+        <div className="source-confidence-content">
           <p>
-            <span className="font-medium text-slate-800">Confidence:</span>{" "}
+            <strong>Confidence:</strong>{" "}
             {formatConfidence(trail.sourceConfidence.status)}
           </p>
           <p>{trail.sourceConfidence.summary}</p>
           <p>
-            <span className="font-medium text-slate-800">Retrieval:</span>{" "}
+            <strong>Retrieval:</strong>{" "}
             {trail.retrievalStatus.replaceAll("-", " ")} on {trail.retrievedAt}
           </p>
           <p>
-            <span className="font-medium text-slate-800">Last checked:</span>{" "}
+            <strong>Last checked:</strong>{" "}
             {trail.sourceConfidence.lastChecked}
           </p>
           <div>
-            <p className="font-medium text-slate-800">Source records:</p>
-            <ul className="mt-1 space-y-2">
+            <p><strong>Source records:</strong></p>
+            <ul className="source-record-list">
               {trail.sourceRecords.map((record) => (
                 <li key={`${record.source}-${record.role}-${record.sourceUrl}`}>
                   <a
                     href={record.sourceUrl}
-                    className="text-emerald-700 underline"
+                    className="source-link"
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -98,18 +118,18 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
                   {record.sourceRecordIds?.length ? (
                     <span> · source feature IDs {record.sourceRecordIds.join(", ")}</span>
                   ) : null}
-                  {record.note ? <span className="block text-slate-500">{record.note}</span> : null}
+                  {record.note ? <span className="source-record-note">{record.note}</span> : null}
                 </li>
               ))}
             </ul>
           </div>
           <p>
-            <span className="font-medium text-slate-800">Missing planning fields:</span>{" "}
+            <strong>Missing planning fields:</strong>{" "}
             {trail.missingFields.length > 0 ? trail.missingFields.join(", ") : "None"}
           </p>
           {trail.elevationMinFeet && trail.elevationMaxFeet ? (
             <p>
-              <span className="font-medium text-slate-800">USGS elevation range:</span>{" "}
+              <strong>USGS elevation range:</strong>{" "}
               {trail.elevationMinFeet.toLocaleString()}–{trail.elevationMaxFeet.toLocaleString()} ft
             </p>
           ) : null}
@@ -120,6 +140,7 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
 }
 
 function StatCard({
+  icon,
   label,
   value,
   sourceLabel,
@@ -128,6 +149,7 @@ function StatCard({
   officialNote,
   conflict = false,
 }: {
+  icon: TrailPackIconName;
   label: string;
   value: string;
   sourceLabel: TrailProfile["distanceMiles"]["label"];
@@ -137,26 +159,30 @@ function StatCard({
   conflict?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-2 text-lg font-semibold text-slate-900">{value}</p>
-      <div className="mt-2 flex flex-wrap items-center gap-2">
-        <SourceBadge label={sourceLabel} />
-        {officialNote ? (
-          <span className="text-xs text-slate-500">{officialNote}</span>
+    <div className="profile-stat">
+      <TrailPackIcon name={icon} className="profile-stat-icon" />
+      <div>
+        <p className="profile-stat-label">{label}</p>
+        <p className="profile-stat-value">{value}</p>
+        <div className="profile-stat-source">
+          <SourceBadge label={sourceLabel} />
+          {officialNote ? <span>{officialNote}</span> : null}
+        </div>
+        {computed ? (
+          <p className="profile-stat-computed">
+            {computed}
+            {conflict ? (
+              <span className="profile-stat-conflict">
+                <TrailPackIcon name="alert" className="h-3.5 w-3.5" />
+                Conflicts with NPS
+              </span>
+            ) : null}
+          </p>
+        ) : null}
+        {computedNote ? (
+          <p className="profile-stat-note">{computedNote}</p>
         ) : null}
       </div>
-      {computed ? (
-        <p className="mt-2 text-xs text-slate-500">
-          {computed}
-          {conflict ? (
-            <span className="ml-1 font-medium text-amber-700">· conflicts with NPS</span>
-          ) : null}
-        </p>
-      ) : null}
-      {computedNote ? (
-        <p className="mt-1 text-xs text-slate-400">{computedNote}</p>
-      ) : null}
     </div>
   );
 }

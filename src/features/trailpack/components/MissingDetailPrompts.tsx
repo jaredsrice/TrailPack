@@ -1,4 +1,5 @@
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
+import { TrailPackIcon } from "./TrailPackIcon";
 
 interface MissingDetailPromptsProps {
   value: UserHikeInput;
@@ -12,16 +13,27 @@ export function MissingDetailPrompts({
   showManualFields = false,
 }: MissingDetailPromptsProps) {
   return (
-    <section className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Trip details</h2>
-      <p className="mt-1 text-sm text-slate-600">
-        Expected time out, seasonal date, and current conditions can change your packing list.
-        {showManualFields
-          ? " Manual trail facts improve the unsupported-hike fallback."
-          : " Notes stay as trip context for now."}
-      </p>
+    <section
+      id="trip-details"
+      className="trip-details-section"
+      aria-labelledby="trip-details-heading"
+    >
+      <div className="section-heading-row">
+        <div>
+          <p className="section-kicker">Refine the plan</p>
+          <h2 id="trip-details-heading" className="section-title">Trip details</h2>
+          <p className="section-subtitle">
+            Expected time out, seasonal date, and current conditions can change
+            your packing list.
+            {showManualFields
+              ? " Manual trail facts improve the unsupported-hike fallback."
+              : " Notes stay as trip context for now."}
+          </p>
+        </div>
+        <TrailPackIcon name="calendar" className="section-heading-icon" />
+      </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
+      <div className="trip-detail-grid">
         {showManualFields ? (
           <>
             <label className="block text-sm">
