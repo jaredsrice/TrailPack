@@ -55,7 +55,7 @@ function liveResult(
     outcome,
     provider: {
       name: "gemini",
-      model: "gemini-3.5-flash-lite",
+      model: "gemini-3.5-flash",
     },
     review: {
       status: accepted ? "accepted" : "fallback",

@@ -8,7 +8,7 @@ import {
 import { parseAiReviewDraft } from "@/features/trailpack/lib/ai-contract-runtime";
 import type { SourceLabel } from "@/features/trailpack/types";
 
-export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite";
+export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
 export const DEFAULT_AI_TIMEOUT_MS = 7_000;
 
 const GEMINI_API_ROOT =

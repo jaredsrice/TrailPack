@@ -29,7 +29,7 @@ still making every live outcome understandable.
 
 Use the Google Gemini Developer API through a direct server-side REST
 `generateContent` request. The default model is the generally available
-`gemini-3.5-flash-lite`; `GEMINI_MODEL` may override it with another bounded
+`gemini-3.5-flash`; `GEMINI_MODEL` may override it with another bounded
 Gemini model identifier.
 
 The choice fits the current proposal and project constraints:
@@ -45,7 +45,7 @@ The choice fits the current proposal and project constraints:
 Official references:
 
 - Model:
-  `https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite`
+  `https://ai.google.dev/gemini-api/docs/generate-content/whats-new-gemini-3.5`
 - Structured output:
   `https://ai.google.dev/gemini-api/docs/structured-output`
 - Pricing and data-use distinction:
@@ -64,7 +64,7 @@ provider decision before enabling the route for production users.
 - accepts at most 64,000 bytes
 - validates the complete `AiContractInput` runtime shape
 - reads `GEMINI_API_KEY` only on the server
-- defaults to `gemini-3.5-flash-lite`
+- defaults to `gemini-3.5-flash`
 - sends a structured-output schema with no deprecated sampling parameters
 - aborts provider work after seven seconds
 - rejects provider bodies larger than 256,000 characters

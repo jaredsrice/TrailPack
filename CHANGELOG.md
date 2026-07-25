@@ -127,6 +127,9 @@ change as the project develops.
 
 ### Changed
 
+- Corrected the guarded Gemini provider default from the undocumented
+  `gemini-3.5-flash-lite` identifier to the current generally available
+  `gemini-3.5-flash` GenerateContent model.
 - Expanded unsupported-safety-claim validation to reject broader safety
   guarantees, zero-risk language, and risk-free claims while preserving the
   deterministic rule-based fallback.

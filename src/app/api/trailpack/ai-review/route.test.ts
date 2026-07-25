@@ -111,7 +111,7 @@ describe("POST /api/trailpack/ai-review", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
     vi.stubEnv("GEMINI_API_KEY", "route-test-key");
-    vi.stubEnv("GEMINI_MODEL", "gemini-3.5-flash-lite");
+    vi.stubEnv("GEMINI_MODEL", "gemini-3.5-flash");
 
     const response = await POST(request(JSON.stringify(buildInput())));
     const body = await response.json();
@@ -121,7 +121,7 @@ describe("POST /api/trailpack/ai-review", () => {
       outcome: "accepted",
       provider: {
         name: "gemini",
-        model: "gemini-3.5-flash-lite",
+        model: "gemini-3.5-flash",
       },
       review: {
         status: "accepted",

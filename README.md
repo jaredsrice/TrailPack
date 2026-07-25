@@ -108,8 +108,8 @@ development. Add only the server-side credentials you intend to test to
 ```bash
 NPS_API_KEY=your-key-here
 GEMINI_API_KEY=your-key-here
-# Optional; defaults to gemini-3.5-flash-lite
-GEMINI_MODEL=gemini-3.5-flash-lite
+# Optional; defaults to gemini-3.5-flash
+GEMINI_MODEL=gemini-3.5-flash
 ```
 
 Do not commit `.env.local` or any provider keys.
@@ -208,13 +208,13 @@ packing context. The unrestricted `notes` field is never sent. Provider output
 must pass runtime schema parsing and the same packing-set, source-label,
 cross-trail, and safety validation used by the saved fixture.
 
-The default model is the generally available `gemini-3.5-flash-lite`, selected
+The default model is the generally available `gemini-3.5-flash`, selected
 for structured-output support and its low-cost/free-tier path. Google states
 that free-tier content may be used to improve its products, while paid-tier
 content is not. TrailPack therefore keeps the provider payload non-personal and
 minimal; a paid tier should be used if the project's data policy later requires
 the stronger provider-side handling commitment. See the official
-[model](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite),
+[model](https://ai.google.dev/gemini-api/docs/generate-content/whats-new-gemini-3.5),
 [structured-output](https://ai.google.dev/gemini-api/docs/structured-output),
 and [pricing](https://ai.google.dev/gemini-api/docs/pricing) documentation.
 
