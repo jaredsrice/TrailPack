@@ -14,6 +14,7 @@ export const DEFAULT_AI_TIMEOUT_MS = 7_000;
 const GEMINI_API_ROOT =
   "https://generativelanguage.googleapis.com/v1beta/models";
 const MAX_PROVIDER_RESPONSE_LENGTH = 256_000;
+const MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH = 8_192;
 
 const SOURCE_LABELS: SourceLabel[] = [
   "supported-profile",
@@ -139,6 +140,7 @@ export async function requestLiveAiReview(
     }
 
     if (!response.ok) {
+      await logSafeGeminiFailure(response);
       return fallbackResult(
         input,
         provider,
@@ -192,6 +194,48 @@ export async function requestLiveAiReview(
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function logSafeGeminiFailure(response: Response): Promise<void> {
+  if (!process.env.VERCEL_ENV) {
+    return;
+  }
+
+  const diagnostic: {
+    httpStatus: number;
+    providerStatus?: string;
+    providerReason?: string;
+  } = {
+    httpStatus: response.status,
+  };
+
+  try {
+    const responseText = await response.clone().text();
+    if (responseText.length <= MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH) {
+      const responseBody: unknown = JSON.parse(responseText);
+      if (isRecord(responseBody) && isRecord(responseBody.error)) {
+        diagnostic.providerStatus = safeProviderCode(
+          responseBody.error.status,
+        );
+
+        if (Array.isArray(responseBody.error.details)) {
+          const errorInfo = responseBody.error.details.find(
+            (detail) =>
+              isRecord(detail) &&
+              typeof detail["@type"] === "string" &&
+              detail["@type"].endsWith("ErrorInfo"),
+          );
+          if (isRecord(errorInfo)) {
+            diagnostic.providerReason = safeProviderCode(errorInfo.reason);
+          }
+        }
+      }
+    }
+  } catch {
+    // The HTTP status alone is enough for safe operational diagnosis.
+  }
+
+  console.warn("TrailPack Gemini provider request failed.", diagnostic);
 }
 
 function buildGeminiRequest(input: AiContractInput) {
@@ -412,6 +456,12 @@ function optionalUserText(
     .trim();
 
   return sanitized || undefined;
+}
+
+function safeProviderCode(value: unknown): string | undefined {
+  return typeof value === "string" && /^[A-Z0-9_.-]{1,80}$/.test(value)
+    ? value
+    : undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

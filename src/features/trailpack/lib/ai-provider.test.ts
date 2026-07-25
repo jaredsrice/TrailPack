@@ -187,6 +187,55 @@ describe("live AI provider boundary", () => {
     expect(JSON.stringify(result)).not.toContain("upstream internal details");
   });
 
+  it("logs only bounded provider status codes in Vercel", async () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fetchImpl = asFetch(
+      async () =>
+        Response.json(
+          {
+            error: {
+              code: 400,
+              message: "private upstream details",
+              status: "INVALID_ARGUMENT",
+              details: [
+                {
+                  "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+                  reason: "API_KEY_INVALID",
+                  domain: "googleapis.com",
+                },
+              ],
+            },
+          },
+          { status: 400 },
+        ),
+    );
+
+    try {
+      const result = await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl,
+      });
+
+      expect(result.outcome).toBe("provider-error");
+      expect(warn).toHaveBeenCalledWith(
+        "TrailPack Gemini provider request failed.",
+        {
+          httpStatus: 400,
+          providerStatus: "INVALID_ARGUMENT",
+          providerReason: "API_KEY_INVALID",
+        },
+      );
+      expect(JSON.stringify(warn.mock.calls)).not.toContain(
+        "private upstream details",
+      );
+      expect(JSON.stringify(warn.mock.calls)).not.toContain("test-key");
+    } finally {
+      warn.mockRestore();
+      vi.unstubAllEnvs();
+    }
+  });
+
   it("omits unrestricted notes from the minimized provider request", async () => {
     const privateNote = "private transportation and medical note";
     const fetchImpl = asFetch(async () => geminiResponse(savedDraft()));
