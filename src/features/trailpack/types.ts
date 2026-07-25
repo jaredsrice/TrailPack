@@ -97,6 +97,16 @@ export interface TrailProfile {
   missingFields: TrailProfileField[];
 }
 
+export interface WeatherForecastPeriod {
+  time: string;
+  temperatureF?: number;
+  apparentTemperatureF?: number;
+  precipitationChance?: number;
+  windMph?: number;
+  weatherCode?: number;
+  condition: string;
+}
+
 export interface WeatherContext {
   plannedDate?: string;
   timezone?: string;
@@ -114,6 +124,7 @@ export interface WeatherContext {
   retrievalStatus?: RetrievalStatus;
   statusReason?: string;
   daylight?: DaylightContext;
+  forecastPeriods?: WeatherForecastPeriod[];
 }
 
 export interface DaylightContext {

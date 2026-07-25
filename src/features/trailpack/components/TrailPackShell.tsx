@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
@@ -21,6 +21,7 @@ import {
   generatePackingRecommendation,
   type UserHikeInput,
 } from "@/features/trailpack/lib/packing";
+import { requestTrailWeather } from "@/features/trailpack/lib/weather-client";
 import {
   buildClearedSearchState,
   buildManualSelectionState,
@@ -29,7 +30,7 @@ import {
   type FlowMode,
 } from "@/features/trailpack/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
-import type { TrailProfile } from "@/features/trailpack/types";
+import type { TrailProfile, WeatherContext } from "@/features/trailpack/types";
 import { AiReviewPanel } from "./AiReviewPanel";
 import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
@@ -51,6 +52,38 @@ type LiveAiUiState =
       result: LiveAiReviewResult;
     }
   | { status: "error"; input: AiContractInput; message: string };
+
+type WeatherUiState =
+  | { status: "idle" }
+  | {
+      status: "loading" | "ready";
+      requestKey: string;
+      weather: WeatherContext;
+    };
+
+function alignSavedWeatherToDate(
+  weather: WeatherContext,
+  plannedDate: string | undefined,
+): WeatherContext {
+  if (!plannedDate || plannedDate === weather.plannedDate) {
+    return weather;
+  }
+
+  return {
+    ...weather,
+    plannedDate,
+    forecastPeriods: weather.forecastPeriods?.map((period) => ({
+      ...period,
+      time: period.time.includes("T")
+        ? `${plannedDate}${period.time.slice(period.time.indexOf("T"))}`
+        : period.time,
+    })),
+    daylight: undefined,
+    retrievalStatus: "saved-fixture",
+    statusReason:
+      "Saved example conditions are shown while TrailPack requests the selected day's live forecast.",
+  };
+}
 
 function suggestionBadge(type: SearchSuggestion["type"]): string {
   switch (type) {
@@ -74,48 +107,126 @@ export function TrailPackShell() {
   const [liveAiState, setLiveAiState] = useState<LiveAiUiState>({
     status: "idle",
   });
+  const [weatherState, setWeatherState] = useState<WeatherUiState>({
+    status: "idle",
+  });
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
   const selectedPark = SUPPORTED_PARKS.find((park) => park.id === selectedParkId);
   const selectedScenario = getDemoScenario(selectedTrail?.id);
+  const savedWeather = useMemo(
+    () =>
+      selectedScenario
+        ? alignSavedWeatherToDate(
+            selectedScenario.weather,
+            userInput.plannedDate,
+          )
+        : null,
+    [selectedScenario, userInput.plannedDate],
+  );
+  const weatherRequestKey =
+    selectedTrail && savedWeather
+      ? `${selectedTrail.id}:${userInput.plannedDate ?? "today"}`
+      : null;
+  const hasCurrentWeatherState =
+    weatherRequestKey !== null &&
+    weatherState.status !== "idle" &&
+    weatherState.requestKey === weatherRequestKey;
+  const weather = hasCurrentWeatherState
+    ? weatherState.weather
+    : savedWeather;
+  const isWeatherLoading =
+    hasCurrentWeatherState && weatherState.status === "loading";
+
+  useEffect(() => {
+    if (!weatherRequestKey || !selectedTrail || !savedWeather) {
+      setWeatherState({ status: "idle" });
+      return;
+    }
+
+    const controller = new AbortController();
+    let active = true;
+
+    setWeatherState({
+      status: "loading",
+      requestKey: weatherRequestKey,
+      weather: savedWeather,
+    });
+
+    void requestTrailWeather(selectedTrail.id, {
+      plannedDate: userInput.plannedDate,
+      signal: controller.signal,
+    })
+      .then((liveWeather) => {
+        if (!active) {
+          return;
+        }
+
+        setWeatherState({
+          status: "ready",
+          requestKey: weatherRequestKey,
+          weather: liveWeather,
+        });
+      })
+      .catch(() => {
+        if (!active) {
+          return;
+        }
+
+        setWeatherState({
+          status: "ready",
+          requestKey: weatherRequestKey,
+          weather: {
+            ...savedWeather,
+            retrievalStatus: "saved-fixture",
+            statusReason:
+              "The live forecast could not be loaded. TrailPack is showing saved example conditions instead.",
+          },
+        });
+      });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [
+    savedWeather,
+    selectedTrail,
+    userInput.plannedDate,
+    weatherRequestKey,
+  ]);
 
   const recommendation = useMemo(() => {
     if (mode === "manual") {
       return generateManualEntryRecommendation(userInput);
     }
 
-    if (!selectedTrail || !selectedScenario) {
+    if (!selectedTrail || !selectedScenario || !weather) {
       return null;
     }
 
     return generatePackingRecommendation(
       selectedTrail,
-      {
-        ...selectedScenario.weather,
-        plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
-      },
+      weather,
       selectedScenario.alerts,
       userInput,
     );
-  }, [mode, selectedScenario, selectedTrail, userInput]);
+  }, [mode, selectedScenario, selectedTrail, userInput, weather]);
 
   const aiInput = useMemo(() => {
-    if (!selectedTrail || !selectedScenario || !recommendation) {
+    if (!selectedTrail || !selectedScenario || !recommendation || !weather) {
       return null;
     }
 
     return buildAiContractInput({
       trail: selectedTrail,
-      weather: {
-        ...selectedScenario.weather,
-        plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
-      },
+      weather,
       alerts: selectedScenario.alerts,
       userInput,
       recommendation,
     });
-  }, [recommendation, selectedScenario, selectedTrail, userInput]);
+  }, [recommendation, selectedScenario, selectedTrail, userInput, weather]);
 
   const savedAiReview = useMemo(() => {
     if (!aiInput) {
@@ -354,13 +465,11 @@ export function TrailPackShell() {
 
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
 
-        {selectedTrail && selectedScenario ? (
+        {selectedTrail && selectedScenario && weather ? (
           <ContextStatusPanel
-            weather={{
-              ...selectedScenario.weather,
-              plannedDate: userInput.plannedDate ?? selectedScenario.weather.plannedDate,
-            }}
+            weather={weather}
             alerts={selectedScenario.alerts}
+            isWeatherLoading={isWeatherLoading}
           />
         ) : null}
 

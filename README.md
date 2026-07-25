@@ -9,16 +9,17 @@ Production deployment: [https://trailpack-ten.vercel.app](https://trailpack-ten.
 Version `0.1.0` is the completed CSE 499A technical prototype. The packing list
 uses fixed rules, so the same input always produces the same packing decisions.
 A guarded review can summarize the rule-based result, but it cannot add, remove,
-reprioritize, or relabel packing items. The current UI remains fixture-first
-while the CSE 499B live-provider boundary remains optional and independently
-validated.
+reprioritize, or relabel packing items. Supported trails now request live
+Open-Meteo weather automatically while retaining an explicitly labeled saved
+fallback. The CSE 499B AI provider remains optional and independently validated.
 
 ## How It Works
 
 1. Search for a supported park or trail.
 2. Review the official trail statistics and any computed estimates.
-3. Review saved or live-path weather, daylight, and NPS alert status.
-4. Add useful details such as start time, expected duration, or trail conditions.
+3. Review a four-period day forecast, daylight, and NPS alert status.
+4. Choose a hike date or add details such as start time, expected duration, or
+   trail conditions.
 5. Receive an essential and optional packing list whose cards answer concrete
    hiker questions with quantities, examples, and source labels.
 
@@ -125,11 +126,14 @@ an optional non-secret override.
 TrailPack now includes server-side context routes for the live-data path while
 keeping saved demo fixtures available for deterministic demos:
 
-- `GET /api/trailpack/weather?trailId=jenny-lake-loop` loads Open-Meteo weather
-  for a supported trail when coordinates are available. When live weather
-  succeeds, the same path also requests Sunrise-Sunset.org daylight context for
-  civil twilight, then falls back to the saved demo weather context if weather
-  fails.
+- `GET /api/trailpack/weather?trailId=jenny-lake-loop` loads the current
+  Open-Meteo day forecast for a supported trail when coordinates are available.
+  Add `&date=YYYY-MM-DD` to request a selected date. The normalized response
+  includes daily high/low context plus local 6 AM, 10 AM, 2 PM, and 6 PM
+  temperature, apparent temperature, precipitation probability, condition, and
+  wind periods when the provider supplies them. A successful request also loads
+  Sunrise-Sunset.org civil twilight. Provider failure or an unsupported forecast
+  date returns a clearly labeled saved example instead of an unhandled error.
 - `GET /api/trailpack/alerts?trailId=jenny-lake-loop` or
   `GET /api/trailpack/alerts?parkCode=grte` loads NPS alerts with the
   server-side `NPS_API_KEY`. If the key is missing or the provider request
@@ -140,11 +144,14 @@ keeping saved demo fixtures available for deterministic demos:
   or provider-error outcome. Every non-accepted outcome includes the unchanged
   template fallback derived from the rule-based packing list.
 
-The main UI still uses saved demo scenarios by default so the CSE 499A demo
-remains stable when live services are unavailable. Supported trail pages show
-the current weather, civil-twilight, and NPS alert state before the packing list,
-including saved no-active-alert fixture states and the saved Taggart Lake 2026
-trail-work alert fixture.
+The main UI automatically requests weather for the selected supported trail and
+uses the user-selected hike date when one is present. Saved four-period examples
+remain visible while the request is loading and when the provider is unavailable,
+with the retrieval state and fallback reason shown in the weather card. The
+resolved live-or-saved weather feeds the deterministic packing rules and guarded
+AI contract. NPS alert cards remain fixture-backed in the main flow, including
+the Taggart Lake 2026 trail-work alert, while the live NPS route stays available
+for independent testing.
 
 ## Recommendation Style
 
@@ -257,9 +264,12 @@ official-source validation. The scenario stress command regenerates the Week
   14/24 study trails and first for only 12/24; its adapter and server route were
   removed. Trails enter the current import catalog only after individual NPS and
   USGS reconciliation.
-- The main UI still uses demo weather and alert contexts by default, although
-  server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
-  exist for the live-data path.
+- Supported-trail pages request live Open-Meteo weather automatically, but the
+  result is a coordinate-based forecast rather than an exact high-elevation
+  trail-condition observation. Open-Meteo supports forecasts up to 16 days; a
+  selected date outside the provider range uses a clearly labeled saved example.
+  Main-flow NPS alerts remain saved fixtures even though the live NPS route is
+  available independently.
 - The guarded AI panel starts with the saved Jenny Lake fixture and can call the
   server-only Gemini route on demand. `GEMINI_API_KEY` is configured as an
   encrypted Preview-only variable and has produced repeatable accepted
@@ -267,10 +277,12 @@ official-source validation. The scenario stress command regenerates the Week
   missing-key fallback.
 - Automatic NPS page collection and USGS processing are not part of this slice;
   imports are reviewed and saved before release.
-- Planned date can affect seasonal insect-repellent guidance. Expected duration
-  can change water, food, headlamp, extra-food, and unusual-timing guidance.
-  Start time can change headlamp guidance when daylight context is available.
-  Notes are stored as context but do not yet change the list.
+- Planned date requests that day's weather when available and can affect both
+  weather-driven packing rules and seasonal insect-repellent guidance. Expected
+  duration can change water, food, headlamp, extra-food, and unusual-timing
+  guidance. Start time can change headlamp guidance when matching daylight
+  context is available. Notes are stored as context but do not yet change the
+  list.
 - `npm audit` reports a moderate PostCSS issue bundled inside Next.js. The known
   attack requires processing untrusted CSS, which TrailPack does not do. A forced
   audit fix would install an incompatible Next.js version, so the project is

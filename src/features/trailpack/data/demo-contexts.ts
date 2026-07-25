@@ -1,4 +1,8 @@
-import type { AlertContext, WeatherContext } from "@/features/trailpack/types";
+import type {
+  AlertContext,
+  WeatherContext,
+  WeatherForecastPeriod,
+} from "@/features/trailpack/types";
 
 export interface DemoScenario {
   weather: WeatherContext;
@@ -40,6 +44,23 @@ const TAGGART_2026_TRAIL_WORK: AlertContext = {
   retrievalStatus: "saved-fixture",
 };
 
+function savedForecastPeriods(
+  periods: Array<{
+    hour: string;
+    temperatureF: number;
+    apparentTemperatureF: number;
+    precipitationChance: number;
+    windMph: number;
+    weatherCode: number;
+    condition: string;
+  }>,
+): WeatherForecastPeriod[] {
+  return periods.map((period) => ({
+    ...period,
+    time: `2026-06-15T${period.hour}:00`,
+  }));
+}
+
 export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
   "jenny-lake-loop": {
     weather: {
@@ -54,6 +75,44 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
       retrievalStatus: "saved-fixture",
       statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
+      forecastPeriods: savedForecastPeriods([
+        {
+          hour: "06",
+          temperatureF: 44,
+          apparentTemperatureF: 42,
+          precipitationChance: 15,
+          windMph: 5,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "10",
+          temperatureF: 58,
+          apparentTemperatureF: 56,
+          precipitationChance: 20,
+          windMph: 8,
+          weatherCode: 2,
+          condition: "partly cloudy",
+        },
+        {
+          hour: "14",
+          temperatureF: 67,
+          apparentTemperatureF: 65,
+          precipitationChance: 35,
+          windMph: 12,
+          weatherCode: 61,
+          condition: "rain likely",
+        },
+        {
+          hour: "18",
+          temperatureF: 61,
+          apparentTemperatureF: 59,
+          precipitationChance: 30,
+          windMph: 10,
+          weatherCode: 80,
+          condition: "rain showers possible",
+        },
+      ]),
       daylight: {
         date: "2026-06-15",
         sunrise: "2026-06-15T05:38:37-06:00",
@@ -81,6 +140,44 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
       retrievalStatus: "saved-fixture",
       statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
+      forecastPeriods: savedForecastPeriods([
+        {
+          hour: "06",
+          temperatureF: 49,
+          apparentTemperatureF: 47,
+          precipitationChance: 5,
+          windMph: 3,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "10",
+          temperatureF: 62,
+          apparentTemperatureF: 61,
+          precipitationChance: 5,
+          windMph: 5,
+          weatherCode: 0,
+          condition: "clear",
+        },
+        {
+          hour: "14",
+          temperatureF: 71,
+          apparentTemperatureF: 70,
+          precipitationChance: 10,
+          windMph: 8,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "18",
+          temperatureF: 66,
+          apparentTemperatureF: 65,
+          precipitationChance: 10,
+          windMph: 6,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+      ]),
       daylight: {
         date: "2026-06-15",
         sunrise: "2026-06-15T05:38:37-06:00",
@@ -108,6 +205,44 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
       retrievalStatus: "saved-fixture",
       statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
+      forecastPeriods: savedForecastPeriods([
+        {
+          hour: "06",
+          temperatureF: 53,
+          apparentTemperatureF: 52,
+          precipitationChance: 0,
+          windMph: 4,
+          weatherCode: 0,
+          condition: "clear",
+        },
+        {
+          hour: "10",
+          temperatureF: 69,
+          apparentTemperatureF: 68,
+          precipitationChance: 0,
+          windMph: 8,
+          weatherCode: 0,
+          condition: "clear",
+        },
+        {
+          hour: "14",
+          temperatureF: 83,
+          apparentTemperatureF: 82,
+          precipitationChance: 5,
+          windMph: 14,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "18",
+          temperatureF: 76,
+          apparentTemperatureF: 75,
+          precipitationChance: 5,
+          windMph: 12,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+      ]),
       daylight: {
         date: "2026-06-15",
         sunrise: "2026-06-15T05:38:37-06:00",
@@ -135,6 +270,44 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
       retrievalStatus: "saved-fixture",
       statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
+      forecastPeriods: savedForecastPeriods([
+        {
+          hour: "06",
+          temperatureF: 46,
+          apparentTemperatureF: 44,
+          precipitationChance: 10,
+          windMph: 3,
+          weatherCode: 2,
+          condition: "partly cloudy",
+        },
+        {
+          hour: "10",
+          temperatureF: 59,
+          apparentTemperatureF: 58,
+          precipitationChance: 15,
+          windMph: 5,
+          weatherCode: 2,
+          condition: "partly cloudy",
+        },
+        {
+          hour: "14",
+          temperatureF: 69,
+          apparentTemperatureF: 68,
+          precipitationChance: 20,
+          windMph: 8,
+          weatherCode: 2,
+          condition: "partly cloudy",
+        },
+        {
+          hour: "18",
+          temperatureF: 64,
+          apparentTemperatureF: 63,
+          precipitationChance: 20,
+          windMph: 7,
+          weatherCode: 2,
+          condition: "partly cloudy",
+        },
+      ]),
       daylight: {
         date: "2026-06-15",
         sunrise: "2026-06-15T05:38:37-06:00",
@@ -162,6 +335,44 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
       retrievalStatus: "saved-fixture",
       statusReason: "Saved weather fixture for deterministic TrailPack testing.",
       timezone: "America/Denver",
+      forecastPeriods: savedForecastPeriods([
+        {
+          hour: "06",
+          temperatureF: 44,
+          apparentTemperatureF: 42,
+          precipitationChance: 5,
+          windMph: 3,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "10",
+          temperatureF: 61,
+          apparentTemperatureF: 59,
+          precipitationChance: 5,
+          windMph: 5,
+          weatherCode: 0,
+          condition: "clear",
+        },
+        {
+          hour: "14",
+          temperatureF: 74,
+          apparentTemperatureF: 73,
+          precipitationChance: 10,
+          windMph: 10,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+        {
+          hour: "18",
+          temperatureF: 67,
+          apparentTemperatureF: 66,
+          precipitationChance: 10,
+          windMph: 8,
+          weatherCode: 1,
+          condition: "mostly clear",
+        },
+      ]),
       daylight: {
         date: "2026-06-15",
         sunrise: "2026-06-15T05:38:37-06:00",

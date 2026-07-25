@@ -74,7 +74,7 @@ evidence must remain distinguishable.
 | Requirement | Status | Completion Evidence |
 |---|---|---|
 | MH-01 Supported Hike Input Workflow | Complete | Three supported Grand Teton profiles plus manual distance, elevation gain, route type, date, start time, duration, and condition input. |
-| MH-02 Weather And Official Alert Context | Complete | Live-path Open-Meteo, Sunrise-Sunset.org, and NPS route handlers; saved fixtures; visible active, no-alert, and unavailable states. |
+| MH-02 Weather And Official Alert Context | Complete and enhanced | Automatic date-aware Open-Meteo weather with a visible four-period day forecast; Sunrise-Sunset.org and NPS route handlers; saved fixtures; visible live, fallback, no-alert, and unavailable states. |
 | MH-03 Rule-Based Baseline Packing List | Complete | Deterministic essential and optional output for supported profiles and manual fallback without AI. |
 | MH-04 Recommendation Explanations And Source Labels | Complete | Grouped accordion recommendations with clear actions, expandable reasons, context markers, and source labels. |
 | MH-05 Guarded AI Contract And Fallback Validation | Complete by accepted fixture path | Structured fixture-first review, validation, rejection behavior, and template fallback. Live AI was optional under the Week 12 contract. |
@@ -261,8 +261,8 @@ the browser.
 ### Data Flow
 
 1. The user selects a curated trail, public lookup result, or manual entry.
-2. Trail facts, weather, daylight, alerts, and user input are normalized with
-   provenance and availability status.
+2. Trail facts, date-aware day forecast, daylight, alerts, and user input are
+   normalized with provenance and availability status.
 3. The rule engine creates the packing list and safety classifications.
 4. The optional AI provider receives only the structured data required to explain
    or review the result.
@@ -333,4 +333,3 @@ TrailPack is complete for CSE 499B when:
 - CWE Top 25: https://cwe.mitre.org/top25/
 - SonarQube documentation: https://docs.sonarsource.com/sonarqube-server/
 - Burp Suite documentation: https://portswigger.net/burp/documentation
-

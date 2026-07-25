@@ -11,6 +11,15 @@ change as the project develops.
 
 ### Added
 
+- A responsive supported-trail day forecast with local 6 AM, 10 AM, 2 PM, and
+  6 PM temperature, apparent temperature, precipitation, condition, and wind
+  periods.
+- Date-aware weather requests through
+  `GET /api/trailpack/weather?trailId=...&date=YYYY-MM-DD`, including strict
+  date validation, hourly Open-Meteo normalization, no-store responses, and
+  saved-example fallback behavior.
+- Bounded client-side weather response validation and focused tests proving
+  malformed or failed route responses cannot expose provider details in the UI.
 - A server-only B-02 Gemini provider boundary at
   `POST /api/trailpack/ai-review`, using the Interactions API, structured JSON
   output, `store: false`, a 25-second
@@ -133,6 +142,10 @@ change as the project develops.
 
 ### Changed
 
+- Supported-trail pages now request live Open-Meteo weather automatically and
+  refresh when the planned hike date changes. The resolved live-or-saved context
+  drives both the deterministic packing rules and the guarded AI input, while
+  loading, live, saved, and unavailable states remain visible.
 - Corrected the guarded Gemini provider default from the undocumented
   `gemini-3.5-flash-lite` identifier to the current generally available
   `gemini-3.5-flash` model and migrated the direct REST boundary to the current
