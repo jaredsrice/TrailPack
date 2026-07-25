@@ -2,7 +2,8 @@ import {
   buildGuardedAiFallback,
   buildGuardedAiReview,
   type AiContractInput,
-  type GuardedAiReviewResult,
+  type LiveAiOutcome,
+  type LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
 import { parseAiReviewDraft } from "@/features/trailpack/lib/ai-contract-runtime";
 import type { SourceLabel } from "@/features/trailpack/types";
@@ -72,24 +73,6 @@ const AI_REVIEW_RESPONSE_SCHEMA = {
   },
   required: ["tripSummary", "missingDataReview", "itemExplanationDrafts"],
 } as const;
-
-export type LiveAiOutcome =
-  | "accepted"
-  | "rejected"
-  | "timed-out"
-  | "quota-limited"
-  | "missing-key"
-  | "invalid-response"
-  | "provider-error";
-
-export interface LiveAiReviewResult {
-  outcome: LiveAiOutcome;
-  provider: {
-    name: "gemini";
-    model: string;
-  };
-  review: GuardedAiReviewResult;
-}
 
 export interface LiveAiProviderOptions {
   apiKey?: string;

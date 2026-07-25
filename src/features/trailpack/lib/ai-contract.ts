@@ -85,6 +85,24 @@ export interface GuardedAiReviewResult {
   validationReasons: string[];
 }
 
+export type LiveAiOutcome =
+  | "accepted"
+  | "rejected"
+  | "timed-out"
+  | "quota-limited"
+  | "missing-key"
+  | "invalid-response"
+  | "provider-error";
+
+export interface LiveAiReviewResult {
+  outcome: LiveAiOutcome;
+  provider: {
+    name: "gemini";
+    model: string;
+  };
+  review: GuardedAiReviewResult;
+}
+
 export function buildAiContractInput({
   trail,
   weather,

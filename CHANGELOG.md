@@ -21,6 +21,13 @@ change as the project develops.
 - Mocked B-02 contract coverage for accepted, rejected, timeout, quota,
   missing-key, malformed-response, provider-error, privacy, route-validation,
   and oversized-request paths.
+- A user-triggered guarded live-review control that keeps the saved fixture as
+  the initial demo state, calls the server route on demand, and labels accepted,
+  rejected, timed-out, quota-limited, missing-key, invalid-response,
+  provider-error, and client-request fallback states.
+- Client-side runtime validation for live-review responses plus focused coverage
+  proving that malformed or failed route responses cannot expose upstream
+  details in the UI.
 - A bounded Grand Teton public-source import catalog with Colter Bay Lakeshore
   Trail and Two Ocean Lake Loop, using official NPS display values and
   reconciled NPS-origin USGS geometry.
@@ -123,9 +130,10 @@ change as the project develops.
 - Expanded unsupported-safety-claim validation to reject broader safety
   guarantees, zero-risk language, and risk-free claims while preserving the
   deterministic rule-based fallback.
-- Moved the active CSE 499B implementation track from completed B-01 trail
-  imports to the B-02 guarded live-AI provider boundary; the visible AI panel
-  remains fixture-first until the separate UI slice.
+- Advanced the active B-02 track from the server-only provider boundary to the
+  guarded-refinement UI; the rule-based packing list remains authoritative while
+  the separate AI panel can display validated live text or an explicit,
+  unchanged template fallback.
 - Rejected Nominatim as a supported B-01 source after it found the intended
   identity anywhere for 14/24 study trails, ranked it first for 12/24, and found
   0/24 with the current location-scoped query. Removed the experimental adapter,

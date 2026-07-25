@@ -184,11 +184,12 @@ optional.
 
 ## Guarded AI Review
 
-TrailPack includes a fixture-first guarded AI path for the Week 13 / Week 14
-requirements. For the Jenny Lake Loop demo, the app builds structured AI input
-from the selected trail profile, saved weather and alert context, user trip
-details, missing-data status, and the rule-based packing output. A saved
-AI-style response is then validated before display.
+TrailPack includes a fixture-first guarded AI path that keeps the deterministic
+demo stable while allowing an explicit live review. For the Jenny Lake Loop
+demo, the app builds structured AI input from the selected trail profile, saved
+weather and alert context, user trip details, missing-data status, and the
+rule-based packing output. A saved AI-style response is validated for the
+initial display; the user may then run the optional live route.
 
 Validation rejects AI text that:
 
@@ -217,9 +218,13 @@ the stronger provider-side handling commitment. See the official
 [structured-output](https://ai.google.dev/gemini-api/docs/structured-output),
 and [pricing](https://ai.google.dev/gemini-api/docs/pricing) documentation.
 
-This Week 6 slice deliberately does not connect the live route to the visible UI.
-The saved fixture remains the displayed demo path until the Week 7
-accepted/rejected/fallback UI is implemented and a live key is approved.
+The Week 7 UI calls the live route only after the user selects **Run guarded live
+review**. It distinguishes a validated live response from rejected, timed-out,
+quota-limited, missing-key, invalid-response, provider-error, and client-request
+fallback states. Every state explains that the rule-based packing list remains
+unchanged, and provider output is never displayed before validation. A
+deployment without `GEMINI_API_KEY` makes no Gemini request and shows the
+labeled deterministic fallback.
 
 ## Verify the Project
 
@@ -251,8 +256,10 @@ official-source validation. The scenario stress command regenerates the Week
 - The main UI still uses demo weather and alert contexts by default, although
   server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
   exist for the live-data path.
-- The visible guarded AI review still uses the saved Jenny Lake fixture. The
-  live Gemini route is server-only and not called by the UI yet.
+- The guarded AI panel starts with the saved Jenny Lake fixture and can call the
+  server-only Gemini route on demand. Until `GEMINI_API_KEY` is approved for the
+  Vercel Preview environment, the live control returns the labeled missing-key
+  fallback rather than a live accepted response.
 - Automatic NPS page collection and USGS processing are not part of this slice;
   imports are reviewed and saved before release.
 - Planned date can affect seasonal insect-repellent guidance. Expected duration
@@ -277,9 +284,9 @@ official-source validation. The scenario stress command regenerates the Week
   [`docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`](docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md).
 - The only active implementation track is
   [B-02 guarded live AI](https://github.com/jaredsrice/TrailPack/issues/26).
-  The Week 6 provider boundary is implemented on its feature branch. Next is
-  the Week 7 UI that displays accepted, rejected, and unchanged fallback
-  outcomes without replacing the rule-based list.
+  The Week 6 provider boundary and Week 7 guarded-refinement UI are implemented
+  on its feature branch. Next is a Preview-only Gemini credential, one accepted
+  live response, and the Week 8 accepted/rejected/unavailable demo matrix.
 - B-03 Google login and private saved results remains blocked on B-02. Guest
   access stays required.
 - Cybersecurity testing and remediation are planned after those 499B features

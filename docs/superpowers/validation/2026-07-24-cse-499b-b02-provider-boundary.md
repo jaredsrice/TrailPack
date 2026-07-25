@@ -1,14 +1,14 @@
-# CSE 499B B-02 Live AI Provider Boundary Validation
+# CSE 499B B-02 Live AI Boundary And UI Validation
 
 - Date: 2026-07-24
 - Requirement: B-02 advanced guarded AI recommendation refinement
 - Branch: `codex/b02-guarded-live-ai`
-- Status: Week 6 provider boundary implemented and feature preview verified;
-  live credential, UI integration, and live acceptance demo remain pending
+- Status: Week 6 provider boundary and Week 7 guarded-refinement UI implemented;
+  live credential and live acceptance demo remain pending
 
 ## Scope Gate
 
-This slice implements the Week 6 schedule output only:
+This record now covers the Week 6 provider boundary and Week 7 UI:
 
 - select an approved AI provider and model
 - add a server-only provider boundary
@@ -16,11 +16,14 @@ This slice implements the Week 6 schedule output only:
 - minimize the provider payload
 - map timeout, quota, configuration, provider, and invalid-response failures
 - prove accepted and rejected behavior with deterministic mocks
+- let the user explicitly request a live review
+- distinguish accepted, rejected, unavailable, and request-failure states
+- keep the rule-based list visible and unchanged in every state
 
-The visible TrailPack UI remains on the saved Jenny Lake review fixture. It does
-not call the live route yet. That separation is intentional: the schedule says
-that no user-facing live AI result is accepted during the provider-boundary
-slice.
+The visible TrailPack UI starts on the saved Jenny Lake review fixture and calls
+the live route only after the user selects **Run guarded live review**. This
+keeps the deterministic demo stable and avoids automatic provider requests while
+still making every live outcome understandable.
 
 ## Provider Decision
 
@@ -93,6 +96,22 @@ The unrestricted `notes` field is deliberately excluded.
 The rule-based packing recommendation is already complete before this route is
 called. No outcome can add, remove, reprioritize, or relabel baseline items.
 
+## Implemented UI
+
+The guarded AI panel:
+
+- labels the saved fixture separately from a live accepted result
+- maps rejected, timed-out, quota-limited, missing-key, invalid-response, and
+  provider-error outcomes to clear deterministic fallback copy
+- validates the route response again at the client boundary
+- hides malformed route bodies and upstream details behind generic request copy
+- keeps the live request user-triggered instead of firing on selection or input
+  changes
+- states that the rule-based packing list remains authoritative
+
+Vercel currently inventories `NPS_API_KEY` as encrypted for Preview and
+Production. `GEMINI_API_KEY` is not configured in any Vercel environment.
+
 ## Verification
 
 | Check | Result | Evidence |
@@ -111,6 +130,9 @@ called. No outcome can add, remove, reprioritize, or relabel baseline items.
 | Vercel preview homepage | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
 | Vercel preview missing-key fallback | Pass | Authenticated same-origin POST returned HTTP 200, `no-store`, outcome `missing-key`, and review status `fallback` |
 | Vercel preview invalid contract | Pass | Authenticated same-origin POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
+| Focused Week 7 client and display tests | Pass | Live-route parsing and every accepted/rejected/fallback presentation state passed |
+| Local Week 7 Firefox walkthrough | Pass | Desktop and 390px mobile layouts rendered without a framework overlay; the control changed from saved accepted fixture to labeled missing-key fallback while the rule-based list remained visible |
+| Local Firefox console | Pass with note | No application errors; only a Next development font-preload warning appeared |
 | Live accepted provider response | Pending | Requires an approved Gemini key; do not store one without confirmation |
 
 Focused coverage includes accepted, semantic rejection, timeout, quota, missing
@@ -122,12 +144,11 @@ oversized route input, and server-only provider configuration.
 1. Obtain or approve a Gemini key and configure it for Preview only.
 2. Capture one live accepted response without recording the key, prompt, or
    personal data.
-3. Implement the Week 7 UI that distinguishes accepted, rejected, and unchanged
-   fallback text from the rule-based packing list.
-4. Run the Week 8 live accepted, rejected, timeout, quota, and missing-key demo
+3. Run the Week 8 live accepted, rejected, timeout, quota, and missing-key demo
    matrix before closing B-02.
-5. Review request-abuse controls before enabling paid or broadly available
+4. Review request-abuse controls before enabling paid or broadly available
    production traffic.
 
-B-02 is not complete at this boundary. This record proves the server contract
-and deterministic failure behavior, not a live user-visible AI result.
+B-02 is not complete yet. This record proves the server contract, Week 7
+presentation behavior, and deterministic failure handling, not a live accepted
+provider response.

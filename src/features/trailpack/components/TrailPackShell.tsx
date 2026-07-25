@@ -12,7 +12,10 @@ import {
 import {
   buildAiContractInput,
   buildGuardedAiReview,
+  type AiContractInput,
+  type LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
+import { requestLiveAiReviewFromRoute } from "@/features/trailpack/lib/ai-review-client";
 import {
   generateManualEntryRecommendation,
   generatePackingRecommendation,
@@ -39,6 +42,16 @@ const QUICK_START_TRAIL_IDS = [
   "string-lake-loop",
 ] as const;
 
+type LiveAiUiState =
+  | { status: "idle" }
+  | { status: "loading"; input: AiContractInput }
+  | {
+      status: "ready";
+      input: AiContractInput;
+      result: LiveAiReviewResult;
+    }
+  | { status: "error"; input: AiContractInput; message: string };
+
 function suggestionBadge(type: SearchSuggestion["type"]): string {
   switch (type) {
     case "park":
@@ -58,6 +71,9 @@ export function TrailPackShell() {
   const [selectedParkId, setSelectedParkId] = useState<string | null>(null);
   const [selectedTrail, setSelectedTrail] = useState<TrailProfile | null>(null);
   const [userInput, setUserInput] = useState<UserHikeInput>({});
+  const [liveAiState, setLiveAiState] = useState<LiveAiUiState>({
+    status: "idle",
+  });
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
@@ -84,12 +100,12 @@ export function TrailPackShell() {
     );
   }, [mode, selectedScenario, selectedTrail, userInput]);
 
-  const aiReview = useMemo(() => {
+  const aiInput = useMemo(() => {
     if (!selectedTrail || !selectedScenario || !recommendation) {
       return null;
     }
 
-    const input = buildAiContractInput({
+    return buildAiContractInput({
       trail: selectedTrail,
       weather: {
         ...selectedScenario.weather,
@@ -99,9 +115,53 @@ export function TrailPackShell() {
       userInput,
       recommendation,
     });
-
-    return buildGuardedAiReview(input, getSavedAiReviewFixture(input.trail.id));
   }, [recommendation, selectedScenario, selectedTrail, userInput]);
+
+  const savedAiReview = useMemo(() => {
+    if (!aiInput) {
+      return null;
+    }
+
+    return buildGuardedAiReview(
+      aiInput,
+      getSavedAiReviewFixture(aiInput.trail.id),
+    );
+  }, [aiInput]);
+
+  const hasCurrentLiveState =
+    aiInput !== null &&
+    liveAiState.status !== "idle" &&
+    liveAiState.input === aiInput;
+  const currentLiveAiState = hasCurrentLiveState ? liveAiState : null;
+  const displayedAiReview =
+    currentLiveAiState?.status === "ready"
+      ? currentLiveAiState.result.review
+      : savedAiReview;
+
+  async function handleLiveAiReview() {
+    if (!aiInput) {
+      return;
+    }
+
+    const requestedInput = aiInput;
+    setLiveAiState({ status: "loading", input: requestedInput });
+
+    try {
+      const result = await requestLiveAiReviewFromRoute(requestedInput);
+      setLiveAiState({
+        status: "ready",
+        input: requestedInput,
+        result,
+      });
+    } catch {
+      setLiveAiState({
+        status: "error",
+        input: requestedInput,
+        message:
+          "TrailPack could not complete the live AI review. The rule-based list remains available.",
+      });
+    }
+  }
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
     if (suggestion.type === "manual") {
@@ -313,7 +373,28 @@ export function TrailPackShell() {
         ) : null}
 
         {recommendation ? <PackingListOutput recommendation={recommendation} /> : null}
-        {aiReview ? <AiReviewPanel review={aiReview} /> : null}
+        {displayedAiReview && aiInput ? (
+          <AiReviewPanel
+            review={displayedAiReview}
+            liveOutcome={
+              currentLiveAiState?.status === "ready"
+                ? currentLiveAiState.result.outcome
+                : undefined
+            }
+            providerModel={
+              currentLiveAiState?.status === "ready"
+                ? currentLiveAiState.result.provider.model
+                : undefined
+            }
+            isLoading={currentLiveAiState?.status === "loading"}
+            requestError={
+              currentLiveAiState?.status === "error"
+                ? currentLiveAiState.message
+                : undefined
+            }
+            onRequestLive={handleLiveAiReview}
+          />
+        ) : null}
       </div>
     </main>
   );

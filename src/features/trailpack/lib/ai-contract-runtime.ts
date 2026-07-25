@@ -3,6 +3,8 @@ import type {
   AiContractPackingItem,
   AiItemExplanationDraft,
   AiReviewDraft,
+  LiveAiOutcome,
+  LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
 import type {
   RetrievalStatus,
@@ -44,6 +46,16 @@ const WEATHER_CONDITIONS = new Set<WeatherContext["conditions"][number]>([
   "wind",
   "snow",
   "sun",
+]);
+
+const LIVE_AI_OUTCOMES = new Set<LiveAiOutcome>([
+  "accepted",
+  "rejected",
+  "timed-out",
+  "quota-limited",
+  "missing-key",
+  "invalid-response",
+  "provider-error",
 ]);
 
 const MAX_INPUT_STRING_LENGTH = 2_000;
@@ -142,6 +154,59 @@ export function parseAiReviewDraft(value: unknown): AiReviewDraft | null {
   }
 
   return value as unknown as AiReviewDraft;
+}
+
+export function parseLiveAiReviewResult(
+  value: unknown,
+): LiveAiReviewResult | null {
+  if (
+    !isRecord(value) ||
+    !isLiveAiOutcome(value.outcome) ||
+    !isRecord(value.provider) ||
+    value.provider.name !== "gemini" ||
+    !isRequiredString(value.provider.model, 100) ||
+    !/^gemini-[a-z0-9.-]+$/.test(value.provider.model) ||
+    !isRecord(value.review) ||
+    (value.review.status !== "accepted" &&
+      value.review.status !== "fallback") ||
+    !isStringArray(
+      value.review.validationReasons,
+      MAX_LIST_ITEMS,
+      MAX_OUTPUT_STRING_LENGTH,
+    )
+  ) {
+    return null;
+  }
+
+  const parsedReview = parseAiReviewDraft(value.review.review);
+  if (!parsedReview) {
+    return null;
+  }
+
+  const expectedStatus =
+    value.outcome === "accepted" ? "accepted" : "fallback";
+  if (
+    value.review.status !== expectedStatus ||
+    (expectedStatus === "accepted" &&
+      value.review.validationReasons.length > 0) ||
+    (expectedStatus === "fallback" &&
+      value.review.validationReasons.length === 0)
+  ) {
+    return null;
+  }
+
+  return {
+    outcome: value.outcome,
+    provider: {
+      name: "gemini",
+      model: value.provider.model,
+    },
+    review: {
+      status: expectedStatus,
+      review: parsedReview,
+      validationReasons: [...value.review.validationReasons],
+    },
+  };
 }
 
 function isAiItemExplanationDraft(value: unknown): value is AiItemExplanationDraft {
@@ -256,5 +321,12 @@ function isWeatherConditions(
         typeof condition === "string" &&
         WEATHER_CONDITIONS.has(condition as WeatherContext["conditions"][number]),
     )
+  );
+}
+
+function isLiveAiOutcome(value: unknown): value is LiveAiOutcome {
+  return (
+    typeof value === "string" &&
+    LIVE_AI_OUTCOMES.has(value as LiveAiOutcome)
   );
 }
