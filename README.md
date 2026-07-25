@@ -6,10 +6,11 @@ data came from.
 
 Production deployment: [https://trailpack-ten.vercel.app](https://trailpack-ten.vercel.app)
 
-Version `0.1.0` is the completed CSE 499A technical prototype. The packing list uses fixed
-rules, so the same input always produces the same packing decisions. A guarded
-saved AI-style review fixture can summarize the rule-based result, but it cannot
-add, remove, or relabel packing items.
+Version `0.1.0` is the completed CSE 499A technical prototype. The packing list
+uses fixed rules, so the same input always produces the same packing decisions.
+A guarded review can summarize the rule-based result, but it cannot add, remove,
+reprioritize, or relabel packing items. The current UI remains fixture-first
+while the CSE 499B live-provider boundary is verified separately.
 
 ## How It Works
 
@@ -100,18 +101,23 @@ Open [http://localhost:3000](http://localhost:3000), search for `Jenny Lake`,
 `Taggart`, `String Lake`, `Colter Bay`, or `Two Ocean`, and select one of the
 supported trails.
 
-Live NPS alerts are optional during local development. To enable the server-side
-NPS alert route, add an API key to `.env.local`:
+Live NPS alerts and the B-02 Gemini boundary are optional during local
+development. Add only the server-side credentials you intend to test to
+`.env.local`:
 
 ```bash
 NPS_API_KEY=your-key-here
+GEMINI_API_KEY=your-key-here
+# Optional; defaults to gemini-3.5-flash-lite
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 Do not commit `.env.local` or any provider keys.
 
 The B-01 NPS/USGS import uses saved, reviewed source records and adds no runtime
-provider secret or configuration. The only current optional server secret is
-`NPS_API_KEY` for live alerts.
+provider secret or configuration. `NPS_API_KEY` enables live NPS alerts, while
+`GEMINI_API_KEY` enables the server-only B-02 review boundary. `GEMINI_MODEL` is
+an optional non-secret override.
 
 ## External Context Routes
 
@@ -127,6 +133,11 @@ keeping saved demo fixtures available for deterministic demos:
   `GET /api/trailpack/alerts?parkCode=grte` loads NPS alerts with the
   server-side `NPS_API_KEY`. If the key is missing or the provider request
   fails, the route returns a labeled unavailable or saved-fixture alert state.
+- `POST /api/trailpack/ai-review` accepts the existing structured AI contract,
+  calls Gemini only when `GEMINI_API_KEY` is available, and returns an explicit
+  accepted, rejected, timed-out, quota-limited, missing-key, invalid-response,
+  or provider-error outcome. Every non-accepted outcome includes the unchanged
+  template fallback derived from the rule-based packing list.
 
 The main UI still uses saved demo scenarios by default so the CSE 499A demo
 remains stable when live services are unavailable. Supported trail pages show
@@ -171,7 +182,7 @@ tread may not be enough. Salt support is split into `Electrolytes` and
 long non-hot days can promote salty food, with the alternate still shown as
 optional.
 
-## Guarded AI Review Fixture
+## Guarded AI Review
 
 TrailPack includes a fixture-first guarded AI path for the Week 13 / Week 14
 requirements. For the Jenny Lake Loop demo, the app builds structured AI input
@@ -187,8 +198,28 @@ Validation rejects AI text that:
 - makes unsupported safety claims
 
 If validation fails or a saved fixture is unavailable, TrailPack displays
-template fallback text generated from the rule-based recommendation. Live Gemini
-or OpenAI calls are not part of this slice.
+template fallback text generated from the rule-based recommendation.
+
+The CSE 499B B-02 provider boundary adds an optional server-side Gemini REST
+call using structured JSON output. Before any provider call, TrailPack minimizes
+the payload to trail, weather, alert, bounded trip-condition, and rule-based
+packing context. The unrestricted `notes` field is never sent. Provider output
+must pass runtime schema parsing and the same packing-set, source-label,
+cross-trail, and safety validation used by the saved fixture.
+
+The default model is the generally available `gemini-3.5-flash-lite`, selected
+for structured-output support and its low-cost/free-tier path. Google states
+that free-tier content may be used to improve its products, while paid-tier
+content is not. TrailPack therefore keeps the provider payload non-personal and
+minimal; a paid tier should be used if the project's data policy later requires
+the stronger provider-side handling commitment. See the official
+[model](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite),
+[structured-output](https://ai.google.dev/gemini-api/docs/structured-output),
+and [pricing](https://ai.google.dev/gemini-api/docs/pricing) documentation.
+
+This Week 6 slice deliberately does not connect the live route to the visible UI.
+The saved fixture remains the displayed demo path until the Week 7
+accepted/rejected/fallback UI is implemented and a live key is approved.
 
 ## Verify the Project
 
@@ -220,8 +251,8 @@ official-source validation. The scenario stress command regenerates the Week
 - The main UI still uses demo weather and alert contexts by default, although
   server-side Open-Meteo, Sunrise-Sunset.org daylight, and NPS alert calls now
   exist for the live-data path.
-- The guarded AI review uses a saved Jenny Lake fixture and template fallback;
-  it does not call a live AI provider yet.
+- The visible guarded AI review still uses the saved Jenny Lake fixture. The
+  live Gemini route is server-only and not called by the UI yet.
 - Automatic NPS page collection and USGS processing are not part of this slice;
   imports are reviewed and saved before release.
 - Planned date can affect seasonal insect-repellent guidance. Expected duration
@@ -241,24 +272,16 @@ official-source validation. The scenario stress command regenerates the Week
 - CSE 499B Week 1 is complete. The current baseline, issue backlog, environment
   inventory, public production URL, and deployment evidence are recorded in
   [`docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md`](docs/superpowers/validation/2026-07-17-cse-499b-week-1-baseline.md).
-- The only active implementation track is
-  [B-01 public trail lookup](https://github.com/jaredsrice/TrailPack/issues/25).
-  The bounded Tetons-first replacement is implemented with Colter Bay Lakeshore
-  Trail and Two Ocean Lake Loop as reviewed NPS/USGS imports, plus manual entry
-  for no-result searches. B-01 still needs UAT and an explicit decision about
-  whether the saved public-source import contingency satisfies the requirement's
-  original live-provider wording. The historical adapter verification is
-  recorded in
-  [`docs/superpowers/validation/2026-07-17-cse-499b-b01-adapter.md`](docs/superpowers/validation/2026-07-17-cse-499b-b01-adapter.md),
-  the revised provider decision is documented in
-  [`docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`](docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md),
-  and the full reliability evidence is in
-  [`docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md`](docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md).
-  The replacement implementation evidence is in
+- B-01 is merged and production-verified through the bounded Tetons-first
+  NPS/USGS import plus manual fallback. Its implementation evidence is in
   [`docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`](docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md).
-- Later 499B work will add a constrained live AI provider using the existing
-  guardrails and Google login with private saved results while preserving guest
-  access.
+- The only active implementation track is
+  [B-02 guarded live AI](https://github.com/jaredsrice/TrailPack/issues/26).
+  The Week 6 provider boundary is implemented on its feature branch. Next is
+  the Week 7 UI that displays accepted, rejected, and unchanged fallback
+  outcomes without replacing the rule-based list.
+- B-03 Google login and private saved results remains blocked on B-02. Guest
+  access stays required.
 - Cybersecurity testing and remediation are planned after those 499B features
   reach a stable release candidate; they were not run during the 499A closeout.
 - The public Vercel production deployment is available at

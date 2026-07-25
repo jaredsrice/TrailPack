@@ -90,3 +90,25 @@ _Avoid_: recommendation engine
 **Packing item**:
 One recommended thing to bring, paired with a reason and provenance labels.
 _Avoid_: gear row, line item
+
+## Guarded AI
+
+**Rule-based baseline**:
+The complete packing decision produced before AI is considered. It owns the
+packing set, essential/optional priority, safety behavior, and source labels.
+_Avoid_: AI input suggestion, draft list
+
+**Guarded AI review**:
+Explanatory text that may summarize or clarify a rule-based baseline only after
+runtime schema, packing-set, provenance, cross-trail, and safety validation.
+_Avoid_: AI recommendation, generated packing list
+
+**Live AI outcome**:
+The recorded result of one provider attempt: accepted, rejected, timed out,
+quota limited, missing key, invalid response, or provider error.
+_Avoid_: success flag, AI status
+
+**Template fallback**:
+Deterministic review text rebuilt from the rule-based baseline whenever live or
+fixture AI text is unavailable or fails validation.
+_Avoid_: error message, degraded recommendation

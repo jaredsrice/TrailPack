@@ -11,6 +11,16 @@ change as the project develops.
 
 ### Added
 
+- A server-only B-02 Gemini provider boundary at
+  `POST /api/trailpack/ai-review`, using structured JSON output, a seven-second
+  timeout, bounded request and response parsing, and explicit accepted,
+  rejected, timed-out, quota-limited, missing-key, invalid-response, and
+  provider-error outcomes.
+- A minimized live-AI payload that omits unrestricted notes and sends only
+  bounded trail, weather, alert, trip-condition, and rule-based packing context.
+- Mocked B-02 contract coverage for accepted, rejected, timeout, quota,
+  missing-key, malformed-response, provider-error, privacy, route-validation,
+  and oversized-request paths.
 - A bounded Grand Teton public-source import catalog with Colter Bay Lakeshore
   Trail and Two Ocean Lake Loop, using official NPS display values and
   reconciled NPS-origin USGS geometry.
@@ -110,6 +120,12 @@ change as the project develops.
 
 ### Changed
 
+- Expanded unsupported-safety-claim validation to reject broader safety
+  guarantees, zero-risk language, and risk-free claims while preserving the
+  deterministic rule-based fallback.
+- Moved the active CSE 499B implementation track from completed B-01 trail
+  imports to the B-02 guarded live-AI provider boundary; the visible AI panel
+  remains fixture-first until the separate UI slice.
 - Rejected Nominatim as a supported B-01 source after it found the intended
   identity anywhere for 14/24 study trails, ranked it first for 12/24, and found
   0/24 with the current location-scoped query. Removed the experimental adapter,

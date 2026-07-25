@@ -171,6 +171,19 @@ describe("guarded AI contract", () => {
     expect(result.validationReasons.join(" ")).toMatch(/unsupported safety claim/i);
   });
 
+  it("rejects broader guarantees and risk-free language", () => {
+    const draft = {
+      ...validDraft(),
+      tripSummary:
+        "This packing review guarantees your safety and makes the hike risk-free.",
+    };
+
+    const result = validateAiReviewDraft(buildInput(), draft);
+
+    expect(result.status).toBe("rejected");
+    expect(result.validationReasons.join(" ")).toMatch(/unsupported safety claim/i);
+  });
+
   it("rejects unsupported trail facts from another supported trail", () => {
     const draft = {
       ...validDraft(),

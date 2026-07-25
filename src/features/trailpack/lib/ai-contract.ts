@@ -193,11 +193,7 @@ export function buildGuardedAiReview(
   draft: AiReviewDraft | null | undefined,
 ): GuardedAiReviewResult {
   if (!draft) {
-    return {
-      status: "fallback",
-      review: buildTemplateFallbackReview(input),
-      validationReasons: ["AI review fixture was unavailable."],
-    };
+    return buildGuardedAiFallback(input, ["AI review fixture was unavailable."]);
   }
 
   const result = validateAiReviewDraft(input, draft);
@@ -213,6 +209,17 @@ export function buildGuardedAiReview(
     status: "fallback",
     review: buildTemplateFallbackReview(input),
     validationReasons: result.validationReasons.map(toFallbackValidationReason),
+  };
+}
+
+export function buildGuardedAiFallback(
+  input: AiContractInput,
+  validationReasons: string[],
+): GuardedAiReviewResult {
+  return {
+    status: "fallback",
+    review: buildTemplateFallbackReview(input),
+    validationReasons,
   };
 }
 
@@ -258,11 +265,13 @@ function collectDraftText(draft: AiReviewDraft): string {
 
 function hasUnsupportedSafetyClaim(text: string): boolean {
   return [
-    /\bguaranteed safe\b/,
+    /\b(?:guaranteed|completely|perfectly|totally)\s+safe\b/,
     /\bsafe today\b/,
     /\bsafe to hike\b/,
     /\brely on this list for safety\b/,
-    /\bno risk\b/,
+    /\b(?:no|zero)\s+(?:risk|danger)\b/,
+    /\brisk[- ]free\b/,
+    /\b(?:ensures|guarantees)\s+(?:your\s+)?safety\b/,
   ].some((pattern) => pattern.test(text));
 }
 
