@@ -9,7 +9,7 @@ import { parseAiReviewDraft } from "@/features/trailpack/lib/ai-contract-runtime
 import type { SourceLabel } from "@/features/trailpack/types";
 
 export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
-export const DEFAULT_AI_TIMEOUT_MS = 12_000;
+export const DEFAULT_AI_TIMEOUT_MS = 25_000;
 
 const GEMINI_INTERACTIONS_ENDPOINT =
   "https://generativelanguage.googleapis.com/v1beta/interactions";

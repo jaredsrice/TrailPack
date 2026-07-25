@@ -209,7 +209,7 @@ any provider call, TrailPack minimizes the payload to trail, weather, alert,
 bounded trip-condition, and rule-based packing context. The unrestricted
 `notes` field is never sent. Provider output must pass runtime schema parsing
 and the same packing-set, source-label, missing-detail, cross-trail, and safety
-validation used by the saved fixture. Provider work is bounded to 12 seconds;
+validation used by the saved fixture. Provider work is bounded to 25 seconds;
 timeouts preserve the unchanged rule-based fallback.
 
 The default model is the generally available `gemini-3.5-flash`, selected

@@ -13,7 +13,7 @@ change as the project develops.
 
 - A server-only B-02 Gemini provider boundary at
   `POST /api/trailpack/ai-review`, using the Interactions API, structured JSON
-  output, `store: false`, a 12-second
+  output, `store: false`, a 25-second
   timeout, bounded request and response parsing, and explicit accepted,
   rejected, timed-out, quota-limited, missing-key, invalid-response, and
   provider-error outcomes.
@@ -137,11 +137,13 @@ change as the project develops.
   `gemini-3.5-flash-lite` identifier to the current generally available
   `gemini-3.5-flash` model and migrated the direct REST boundary to the current
   Interactions API.
-- Increased the bounded live-provider timeout from seven to 12 seconds after
-  three seven-second Preview requests safely timed out and three 12-second
-  requests were accepted without validation failures. A later three-request
-  Git-connected check accepted twice and safely fell back once, retaining a
-  responsive bound rather than treating provider availability as required.
+- Increased the bounded live-provider timeout from seven to 25 seconds after
+  the earlier 12-second probe used a one-item request that did not represent the
+  13-item Jenny Lake UI contract. Repeated browser and terminal checks of the
+  full request safely timed out at 12 seconds; the longer bound keeps a hard
+  fallback while giving the complete structured response time to finish. Three
+  representative full-contract Preview requests then passed at 17.71, 19.33,
+  and 16.03 seconds.
 - Expanded unsupported-safety-claim validation to reject broader safety
   guarantees, zero-risk language, and risk-free claims while preserving the
   deterministic rule-based fallback.

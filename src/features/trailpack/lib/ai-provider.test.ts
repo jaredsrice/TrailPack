@@ -73,7 +73,7 @@ function asFetch(
 
 describe("live AI provider boundary", () => {
   it("keeps the default live-provider wait bounded", () => {
-    expect(DEFAULT_AI_TIMEOUT_MS).toBe(12_000);
+    expect(DEFAULT_AI_TIMEOUT_MS).toBe(25_000);
   });
 
   it("accepts a structured response only after the existing guardrails pass", async () => {

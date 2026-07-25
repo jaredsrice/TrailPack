@@ -75,7 +75,7 @@ provider decision before enabling the route for production users.
 - sets `store: false`
 - requires exact item names, exact source-label arrays, and an exact copy of the
   rule-engine missing-details list
-- aborts provider work after 12 seconds
+- aborts provider work after 25 seconds
 - rejects provider bodies larger than 256,000 characters
 - returns `Cache-Control: no-store`
 - never returns the provider key, raw provider error body, or internal prompt
@@ -149,7 +149,9 @@ missing-key fallback.
 | Prior Week 6 preview UI smoke | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
 | Vercel preview missing-key fallback | Pass | Authenticated terminal POST returned HTTP 200, `no-store`, outcome `missing-key`, review status `fallback`, and one safe validation reason; no provider request was possible |
 | Vercel preview invalid contract | Pass | Authenticated terminal POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
-| Live accepted provider responses | Pass with provider variability | The disposable Preview accepted three of three 12-second requests at 11.73s, 8.35s, and 6.71s. The exact Git-connected Preview accepted two of three and safely timed out once. All six returned HTTP 200; accepted responses used `gemini-3.5-flash`, had zero validation reasons, and copied the exact empty missing-details list |
+| Initial live provider responses | Superseded | The earlier 12-second probes used a minimal one-item contract. They proved the provider and guardrail path but did not represent the 13-item Jenny Lake UI request and are not sufficient reliability evidence for the visible control |
+| Full Jenny Lake 12-second reproduction | Safe fallback, usability failure | Two user walkthrough attempts and one authenticated terminal request of the 15 KB, 13-item contract returned the labeled `timed-out` fallback. The packing list remained unchanged, but the bound was too short for the real UI workload |
+| Full Jenny Lake 25-second verification | Pass | Disposable deployment `dpl_2e4srJT5vao4G39JPMbTvjdX5Jhm` accepted three of three 15 KB, 13-item requests at 17.71s, 19.33s, and 16.03s. Every response returned HTTP 200, review status `accepted`, all 13 baseline items, the three exact missing details, and zero validation reasons |
 | Seven-second timeout comparison | Pass as fallback evidence | Three of three seven-second requests returned HTTP 200 with outcome `timed-out` and the unchanged rule-based fallback, demonstrating that the original limit was too aggressive |
 | Live response headers | Pass | HTTP/2 200, `Cache-Control: no-store`, JSON content type, HTTPS with strict transport security |
 | Vercel preview logs | Pass | Three info-level Preview POST records returned 200; the error-level query returned no entries |
