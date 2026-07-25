@@ -119,17 +119,20 @@ Production. `GEMINI_API_KEY` is not configured in any Vercel environment.
 | Focused guarded-contract, provider, and route tests | Pass | 3 files, 22 tests |
 | ESLint | Pass | `npm run lint`; no errors or warnings |
 | TypeScript direct check | Pass | `tsc --noEmit --incremental false` |
-| Full Vitest suite | Pass | 11 files, 153 tests |
+| Full Vitest suite | Pass | 13 files, 165 tests |
 | Standard Next type generation | Pass | `npm run typecheck`; route types generated successfully |
 | Scenario stress matrix | Pass | `npm run scenario:stress`; existing 27-scenario rule-engine report regenerated |
 | Production build | Pass | Next.js compiled successfully and lists `/api/trailpack/ai-review` as dynamic |
 | Local production homepage | Pass | Terminal HTTP 200 with `<title>TrailPack</title>` |
 | Local missing-key fallback | Pass | HTTP 200, `no-store`, outcome `missing-key`, review status `fallback` |
 | Local invalid contract | Pass | Controlled HTTP 400 with no internal details |
-| Vercel branch deployment | Pass | Vercel reported Ready for commit `005eb86`; the branch preview remains protected by Vercel authentication |
-| Vercel preview homepage | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
-| Vercel preview missing-key fallback | Pass | Authenticated same-origin POST returned HTTP 200, `no-store`, outcome `missing-key`, and review status `fallback` |
-| Vercel preview invalid contract | Pass | Authenticated same-origin POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
+| Vercel branch deployment | Pass | Deployment `dpl_9Rxb3f1jQwjz62qoKeD8eojF5f2R` reported Ready for Week 7 commit `42efef3`; the branch preview remains protected by Vercel authentication |
+| Vercel preview homepage and assets | Pass | Authenticated terminal checks returned HTTPS 200 with `<title>TrailPack</title>`; every referenced JavaScript, CSS, and font asset returned HTTP 200 |
+| Prior Week 6 preview UI smoke | Pass | Authenticated Firefox walkthrough loaded `<title>TrailPack</title>` and the expected Jenny Lake, Taggart Lake, and String Lake starter cards |
+| Vercel preview missing-key fallback | Pass | Authenticated terminal POST returned HTTP 200, `no-store`, outcome `missing-key`, review status `fallback`, and one safe validation reason; no provider request was possible |
+| Vercel preview invalid contract | Pass | Authenticated terminal POST returned controlled HTTP 400, `no-store`, and the generic supported-contract error |
+| Vercel preview error logs | Pass | Error-level query after homepage, asset, valid-contract, and invalid-contract requests returned no logs |
+| Draft PR checks | Pass | Vercel, Vercel Preview Comments, critical-bug scan, and vulnerability scan passed for commit `42efef3` |
 | Focused Week 7 client and display tests | Pass | Live-route parsing and every accepted/rejected/fallback presentation state passed |
 | Local Week 7 Firefox walkthrough | Pass | Desktop and 390px mobile layouts rendered without a framework overlay; the control changed from saved accepted fixture to labeled missing-key fallback while the rule-based list remained visible |
 | Local Firefox console | Pass with note | No application errors; only a Next development font-preload warning appeared |
