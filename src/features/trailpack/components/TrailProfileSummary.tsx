@@ -19,18 +19,15 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
       <div className="section-heading-row">
         <div>
           <p className="section-kicker">Selected trail</p>
-          <h2 id="trail-profile-heading" className="section-title">{trail.name}</h2>
+          <h2 id="trail-profile-heading" className="section-title">
+            <span className="sr-only">Trail profile for </span>
+            {trail.name}
+          </h2>
           <p className="section-subtitle">
             {trail.park} · {trail.state}
           </p>
         </div>
-        <SourceBadge
-          label={
-            trail.profileKind === "public-source-import"
-              ? "public-source-import"
-              : "supported-profile"
-          }
-        />
+        <SourceBadge label="supported-profile" />
       </div>
 
       <div className="profile-stat-grid">
@@ -74,6 +71,34 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           sourceLabel={trail.difficulty.label}
         />
       </div>
+
+      {trail.accessibility ? (
+        <aside
+          className="trail-accessibility-note"
+          aria-labelledby="trail-accessibility-heading"
+        >
+          <TrailPackIcon name="info" className="trail-accessibility-icon" />
+          <div>
+            <p className="trail-accessibility-kicker">Official NPS information</p>
+            <h3 id="trail-accessibility-heading">Accessibility and terrain</h3>
+            <p>{trail.accessibility.value}</p>
+            <p className="trail-accessibility-caveat">
+              This describes reported terrain and obstacles; it is not a claim
+              that the trail meets a particular accessibility standard.
+            </p>
+            {trail.accessibility.sourceUrl ? (
+              <a
+                href={trail.accessibility.sourceUrl}
+                className="source-link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read the official NPS trail page
+              </a>
+            ) : null}
+          </div>
+        </aside>
+      ) : null}
 
       <details className="source-confidence-details group">
         <summary>

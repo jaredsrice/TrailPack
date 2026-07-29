@@ -151,6 +151,43 @@ Fails if:
 AI becomes required for packing output, receives unnecessary personal data,
 produces untraceable safety claims, or changes the baseline without validation.
 
+#### B-02 Supporting Closeout Task: Monthly NPS Source Integrity
+
+Before B-02 closes, TrailPack must include a non-runtime monthly refresh for the
+known official NPS pages attached to every supported trail profile. It must
+compare the published distance, elevation gain, duration, difficulty, route
+wording, and NPS-specific accessibility information it can reliably extract
+against TrailPack's managed snapshots.
+
+Success:
+
+- The checker covers every supported trail with a saved NPS source URL.
+- Changed values, removed pages, parsing failures, and automatic-update outcomes
+  appear in a reviewable Markdown or JSON report.
+- Fixture tests cover unchanged, changed, missing-field, and changed-page-layout
+  outcomes.
+- A source change is applied only after two matching fetches, type and range
+  validation, and the normal lint, test, type-check, and production-build gates.
+- Automatic writes are limited to the existing managed NPS snapshot file.
+  Supported-trail membership, USGS geometry, source-confidence rules, and
+  recommendations are outside the workflow's write scope.
+- NPS accessibility information is shown in the selected-trail interface when
+  the official page publishes a trail-specific block.
+
+Demo:
+
+Run the refresh, show the generated comparison report, demonstrate that a
+bounded simulated NPS change updates the managed snapshot after two matching
+fetches, and demonstrate that an inconsistent or implausible change leaves the
+snapshot untouched.
+
+Fails if:
+
+The refresh expands the catalog automatically, writes outside the managed NPS
+snapshot, applies a single unconfirmed response, treats a parse failure as an
+authoritative change, bypasses the verification suite, or requests NPS pages
+during a user's normal TrailPack workflow.
+
 ### B-03: Google Login And Private Saved Results
 
 TrailPack must offer Google sign-in for users who want to save generated packing
@@ -293,7 +330,7 @@ available data.
 |---|---|---|
 | CSE 499A baseline | Existing unit, scenario, build, and browser evidence | Final closeout note and passing main branch |
 | B-01 Public trail lookup | Contract tests, normalization tests, no-result/error tests, UI walkthrough | Source-labeled external result and manual fallback |
-| B-02 Advanced guarded AI | Schema and validation tests, provider mocks, controlled live test | Accepted, rejected, unavailable, and fallback outcomes |
+| B-02 Advanced guarded AI | Schema and validation tests, provider mocks, controlled live test, NPS source-integrity fixtures and live dry run | Accepted, rejected, unavailable, and fallback outcomes plus a non-destructive NPS comparison report |
 | B-03 Google login and saved results | Auth integration tests, data-access tests, two-user manual check | Guest path, save/revisit/delete, and cross-user denial |
 | B-04 Cybersecurity review | Static, dynamic, manual, and agent-assisted review followed by retest | Sanitized findings and remediation report |
 

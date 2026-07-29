@@ -30,6 +30,13 @@ The normalized description of one supported trail, including display stats,
 provenance, and confidence notes.
 _Avoid_: trail object, raw trail data, record
 
+**Managed NPS snapshot**:
+The versioned file containing refreshable official NPS values and optional
+trail-specific accessibility text for existing supported trails. A scheduled
+job may update this file after two matching bounded reads and full verification,
+but it cannot add catalog entries or rewrite USGS evidence.
+_Avoid_: scraper database, automatic import
+
 **Manual entry fallback**:
 The unsupported-hike path used when TrailPack does not have a supported trail
 ready for the full flow.
@@ -74,6 +81,12 @@ _Avoid_: certainty score, trust rating
 A user-visible provenance tag that explains why a fact or packing item appears,
 such as official, forecast-based, user-provided, or inferred.
 _Avoid_: badge, status
+
+**Official accessibility information**:
+Trail-specific terrain, slope, surface, and obstacle wording published in an
+NPS accessibility block and shown with its source. It describes reported
+conditions but does not certify that a trail meets an accessibility standard.
+_Avoid_: accessible trail, ADA rating
 
 ## Recommendation Output
 

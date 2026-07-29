@@ -8,6 +8,7 @@ import {
   TRAIL_CATALOG,
   getTrailsForPark,
 } from "@/features/trailpack/data/supported-trails";
+import { NPS_SOURCE_SNAPSHOTS } from "@/features/trailpack/data/nps-source-snapshots";
 
 describe("supported trail inventory", () => {
   it("includes the expected Grand Teton park and trail catalog", () => {
@@ -35,10 +36,21 @@ describe("supported trail inventory", () => {
 
 describe("Jenny Lake Loop profile", () => {
   it("uses official NPS values as the display values", () => {
-    expect(JENNY_LAKE_LOOP.distanceMiles.value).toBe(7.1);
+    const snapshot = NPS_SOURCE_SNAPSHOTS.trails[JENNY_LAKE_LOOP.id];
+    expect(JENNY_LAKE_LOOP.distanceMiles.value).toBe(snapshot.distanceMiles);
     expect(JENNY_LAKE_LOOP.distanceMiles.source).toBe("NPS");
-    expect(JENNY_LAKE_LOOP.elevationGainFeet.value).toBe(1040);
+    expect(JENNY_LAKE_LOOP.elevationGainFeet.value).toBe(
+      snapshot.elevationGainFeet,
+    );
     expect(JENNY_LAKE_LOOP.elevationGainFeet.source).toBe("NPS");
+  });
+
+  it("exposes the official NPS accessibility information", () => {
+    expect(JENNY_LAKE_LOOP.accessibility).toMatchObject({
+      source: "NPS",
+      label: "official",
+      value: NPS_SOURCE_SNAPSHOTS.trails[JENNY_LAKE_LOOP.id].accessibility,
+    });
   });
 
   it("marks the NPS-vs-USGS gain comparison as a conflict", () => {
@@ -64,11 +76,12 @@ describe("Jenny Lake Loop profile", () => {
 
 describe("Taggart Lake profile", () => {
   it("uses the expected supported profile values", () => {
-    expect(TAGGART_LAKE.distanceMiles.value).toBe(3.0);
-    expect(TAGGART_LAKE.elevationGainFeet.value).toBe(360);
-    expect(TAGGART_LAKE.estimatedDuration.value).toBe("1-2 Hours");
-    expect(TAGGART_LAKE.difficulty.value).toBe("Easy");
-    expect(TAGGART_LAKE.routeType).toBe("out-and-back");
+    const snapshot = NPS_SOURCE_SNAPSHOTS.trails[TAGGART_LAKE.id];
+    expect(TAGGART_LAKE.distanceMiles.value).toBe(snapshot.distanceMiles);
+    expect(TAGGART_LAKE.elevationGainFeet.value).toBe(snapshot.elevationGainFeet);
+    expect(TAGGART_LAKE.estimatedDuration.value).toBe(snapshot.estimatedDuration);
+    expect(TAGGART_LAKE.difficulty.value).toBe(snapshot.difficulty);
+    expect(TAGGART_LAKE.routeType).toBe(snapshot.routeType);
   });
 
   it("records the expected computed distance confidence", () => {
@@ -82,11 +95,16 @@ describe("Taggart Lake profile", () => {
 
 describe("String Lake Loop profile", () => {
   it("uses the expected supported profile values", () => {
-    expect(STRING_LAKE_LOOP.distanceMiles.value).toBe(3.7);
-    expect(STRING_LAKE_LOOP.elevationGainFeet.value).toBe(540);
-    expect(STRING_LAKE_LOOP.estimatedDuration.value).toBe("2-3 Hours");
-    expect(STRING_LAKE_LOOP.difficulty.value).toBe("Easy");
-    expect(STRING_LAKE_LOOP.routeType).toBe("loop");
+    const snapshot = NPS_SOURCE_SNAPSHOTS.trails[STRING_LAKE_LOOP.id];
+    expect(STRING_LAKE_LOOP.distanceMiles.value).toBe(snapshot.distanceMiles);
+    expect(STRING_LAKE_LOOP.elevationGainFeet.value).toBe(
+      snapshot.elevationGainFeet,
+    );
+    expect(STRING_LAKE_LOOP.estimatedDuration.value).toBe(
+      snapshot.estimatedDuration,
+    );
+    expect(STRING_LAKE_LOOP.difficulty.value).toBe(snapshot.difficulty);
+    expect(STRING_LAKE_LOOP.routeType).toBe(snapshot.routeType);
   });
 
   it("records the expected computed distance confidence", () => {

@@ -61,7 +61,8 @@ export type TrailProfileField =
   | "elevationGainFeet"
   | "routeType"
   | "estimatedDuration"
-  | "difficulty";
+  | "difficulty"
+  | "accessibility";
 
 export interface TrailSourceRecord {
   source: Extract<DataSource, "NPS" | "USGS">;
@@ -89,6 +90,7 @@ export interface TrailProfile {
   estimatedDuration: SourcedValue<string>;
   difficulty: SourcedValue<string>;
   routeType: RouteType;
+  accessibility?: SourcedValue<string>;
   elevationMinFeet?: number;
   elevationMaxFeet?: number;
   sourceConfidence: SourceConfidence;

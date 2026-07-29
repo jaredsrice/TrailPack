@@ -57,6 +57,7 @@ export function PackingListOutput({
         <div>
           <p className="section-kicker">Today&apos;s TrailPack</p>
           <h2 id="packing-list-heading" className="section-title">
+            <span className="sr-only">Packing list for </span>
             {recommendation.trailName}
           </h2>
           <p className="section-subtitle">

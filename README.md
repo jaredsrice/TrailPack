@@ -16,12 +16,13 @@ fallback. The CSE 499B AI provider remains optional and independently validated.
 ## How It Works
 
 1. Search for a supported park or trail.
-2. Review the official trail statistics and any computed estimates.
-3. Review the short weather summary and, when useful, open the day-forecast
+2. If a park is selected, choose from its focused list of supported trails.
+3. Review the official trail statistics and any computed estimates.
+4. Review the short weather summary and, when useful, open the day-forecast
    accordion for four highlights or the complete hour-by-hour timeline.
-4. Choose a hike date or add details such as start time, expected duration, or
+5. Choose a hike date or add details such as start time, expected duration, or
    trail conditions.
-5. Receive an essential and optional packing list whose cards answer concrete
+6. Receive an essential and optional packing list whose cards answer concrete
    hiker questions with quantities, examples, and source labels.
 
 Unsupported hikes can use the manual-entry fallback to get a limited baseline
@@ -36,6 +37,10 @@ that a generic scene depicts the user's hike. The rotation can be paused and
 stops automatically when reduced motion is preferred.
 
 Selecting Grand Teton National Park locks the showcase to a park scene.
+The homepage search and planner output then give way to a dedicated park view
+with one compact five-trail list and a clear return-to-search control. Trail
+statistics, weather, packing guidance, and guarded AI remain hidden until the
+user chooses a trail.
 Selecting one of the five supported trails instead shows that trail or the most
 specific verified NPS location photograph available. Manual entry keeps the
 general park rotation because TrailPack has no verified identity for an
@@ -43,8 +48,8 @@ unsupported hike. Every photograph includes a visible NPS credit and official
 source link; the complete provenance record is in
 [`docs/ui/2026-07-25-national-park-image-sources.md`](docs/ui/2026-07-25-national-park-image-sources.md).
 
-The current demo supports three curated profiles plus two verified public-source
-imports in Grand Teton National Park.
+The current demo supports five manually reviewed NPS + USGS trail profiles in
+Grand Teton National Park.
 
 ## Supported Demo Trails
 
@@ -54,16 +59,25 @@ imports in Grand Teton National Park.
   close USGS geometry match, and saved 2026 NPS trail-work alert context.
 - `String Lake Loop` - easy loop with a moderate USGS bridge estimate and a hot,
   exposed saved demo weather scenario for Week 10 evaluation.
-- `Colter Bay Lakeshore Trail` - verified public-source import using official
-  NPS values and 15 reconciled NPS-origin USGS trail segments.
-- `Two Ocean Lake Loop` - verified public-source import using official NPS values
-  and three reconciled NPS-origin USGS trail segments whose total is within about
-  one percent of the official loop distance.
+- `Colter Bay Lakeshore Trail` - official NPS values supported by 15 reconciled
+  NPS-origin USGS trail segments.
+- `Two Ocean Lake Loop` - official NPS values supported by three reconciled
+  NPS-origin USGS trail segments whose total is within about one percent of the
+  official loop distance.
 
-The first three remain the curated CSE 499A catalog. The last two are the bounded
-CSE 499B Tetons-first import slice. Search and the Grand Teton park view label
-the distinction, and each imported profile retains retrieval status, source
-URLs, confidence notes, source feature IDs, and missing-field status.
+All five show the same `Verified NPS + USGS profile` label because they use the
+same core collection method: manual review of official NPS facts followed by
+manual USGS geometry reconciliation. Internally, the first three retain their
+CSE 499A `curated` profile kind and the last two retain their CSE 499B
+`public-source-import` kind for milestone traceability. The later B-01 records
+also retain more detailed source feature IDs and import-validation notes; the
+internal split is not presented as a user-facing quality tier.
+
+When an official trail page publishes a trail-specific accessibility block,
+TrailPack shows that terrain, slope, surface, and obstacle wording beneath the
+profile statistics. This guidance currently appears for Jenny Lake, String
+Lake, and Taggart Lake; it is explicitly presented as reported NPS information,
+not as an accessibility certification.
 
 ## Data Sources
 
@@ -90,7 +104,7 @@ The same rule applies when AllTrails differs: the comparison can trigger review,
 but it is not promoted into an official or computed TrailPack value.
 
 The NPS API can provide alerts and park information, but it does not provide all
-the trail statistics TrailPack needs. The current import workflow reviews values
+the trail statistics TrailPack needs. The current profile workflow reviews values
 from public NPS trail pages, retains the source URL, and reconciles USGS geometry
 before saving a profile. Future automation would follow site access rules and
 refresh cached results on a slow schedule instead of requesting agency pages for
@@ -136,6 +150,28 @@ The B-01 NPS/USGS import uses saved, reviewed source records and adds no runtime
 provider secret or configuration. `NPS_API_KEY` enables live NPS alerts, while
 `GEMINI_API_KEY` enables the server-only B-02 review boundary. `GEMINI_MODEL` is
 an optional non-secret override.
+
+Run a read-only NPS source comparison with:
+
+```bash
+npm run check:nps-integrity
+```
+
+Run the guarded refresh used by automation with:
+
+```bash
+npm run refresh:nps-sources
+```
+
+Both commands request only the five saved official NPS source URLs and write
+Markdown and JSON reports under `.artifacts/nps-source-integrity/`. The refresh
+can update only `src/features/trailpack/data/nps-source-snapshots.json`, and only
+after two matching fetches plus identity, type, range, and USGS-distance guards.
+Missing fields, inconsistent responses, implausible values, removed pages, and
+parser failures block every write. GitHub Actions runs the guarded refresh
+monthly on the first day at 15:17 UTC, executes lint, tests, type checking, and
+the recommendation stress matrix and production build, then commits the
+snapshot automatically if those gates pass.
 
 ## External Context Routes
 
@@ -264,20 +300,29 @@ labeled deterministic fallback.
 npm run lint
 npm run typecheck
 npm test
+npm run test:a11y
 npm run build
 npm run scenario:stress
 ```
 
 The test suite covers trail values, packing rules, duration parsing, trail-condition
 phrasing, question-answer recommendation copy, guarded AI validation, and
-official-source validation. The scenario stress command regenerates the Week
-13/14 hiker-lens report from the current rule engine.
+official-source validation. The Playwright accessibility check starts the local
+app in Firefox and runs axe against the trail chooser, the focused Grand Teton
+park view, and a populated Jenny Lake plan. It also verifies the return-to-search
+focus behavior and the park-to-trail transition. Install the matching browser
+once with `npx playwright install firefox` if it is not already present. The
+scenario stress command regenerates the Week 13/14 hiker-lens report from the
+current rule engine.
+
+Project-scoped Impeccable design commands are available under
+`.agents/skills/impeccable`. They are intentionally invoked on demand; automatic
+design hooks are disabled.
 
 ## Current Limits
 
-- The current verified catalog is limited to five Grand Teton trails: three
-  curated profiles and two reviewed NPS/USGS public-source imports. It is not a
-  nationwide lookup service.
+- The current verified catalog is limited to five manually reviewed Grand Teton
+  NPS + USGS profiles. It is not a nationwide lookup service.
 - Unsupported hikes can only use a limited manual fallback list. Direct distance,
   elevation gain, and route-type inputs improve that fallback, but source-backed
   trail profiles remain more complete.
@@ -297,8 +342,13 @@ official-source validation. The scenario stress command regenerates the Week
   `GEMINI_API_KEY` is configured as an encrypted Preview-only variable and has
   produced repeatable accepted responses. Production intentionally has no
   Gemini key and returns the labeled missing-key fallback.
-- Automatic NPS page collection and USGS processing are not part of this slice;
-  imports are reviewed and saved before release.
+- Runtime NPS page collection, automatic catalog expansion, and automatic USGS
+  reconciliation are not part of this slice. B-02 includes a monthly,
+  non-runtime guarded NPS refresh for the five saved official pages. It can
+  update the managed official-value and accessibility snapshots after two
+  matching, bounded reads and a complete verification run; it cannot add a
+  trail, rewrite USGS evidence, or change recommendation logic. The initial
+  live refresh passed all five profiles on 2026-07-28.
 - Planned date requests that day's weather when available and can affect both
   weather-driven packing rules and seasonal insect-repellent guidance. Expected
   duration can change water, food, headlamp, extra-food, and unusual-timing
@@ -325,7 +375,9 @@ official-source validation. The scenario stress command regenerates the Week
   [B-02 guarded live AI](https://github.com/jaredsrice/TrailPack/issues/26).
   Its provider boundary, guarded-refinement UI, deterministic failure matrix,
   and repeatable Preview acceptance path are complete on the feature branch.
-  Next is PR review and merge.
+  Its monthly guarded NPS refresh, official accessibility display, and first
+  5/5 live comparison are also complete. The implementation evidence is in
+  [`docs/superpowers/validation/2026-07-28-b02-nps-source-integrity.md`](docs/superpowers/validation/2026-07-28-b02-nps-source-integrity.md).
 - B-03 Google login and private saved results becomes the next active track
   after B-02 merges. Guest access stays required.
 - Cybersecurity testing and remediation are planned after those 499B features
@@ -343,7 +395,7 @@ Next.js, React, TypeScript, Tailwind CSS, and Vitest.
 
 - [`src/app/`](src/app/) - Next.js route entrypoints and global styles
 - [`src/features/trailpack/components/`](src/features/trailpack/components/) - TrailPack UI modules
-- [`src/features/trailpack/data/`](src/features/trailpack/data/) - curated trails, verified public-source imports, and demo-context fixtures
+- [`src/features/trailpack/data/`](src/features/trailpack/data/) - verified NPS + USGS trail profiles and demo-context fixtures
 - [`src/features/trailpack/lib/`](src/features/trailpack/lib/) - search, packing, and flow logic
 - [`src/features/trailpack/types.ts`](src/features/trailpack/types.ts) - shared TrailPack domain types
 

@@ -18,9 +18,13 @@ interface PhotoLayers {
 
 export function ParkPhotoShowcase({
   selectedParkId,
+  selectedParkName,
+  selectedParkState,
   selectedTrailId,
 }: {
   selectedParkId: string | null;
+  selectedParkName: string | null;
+  selectedParkState: string | null;
   selectedTrailId: string | null;
 }) {
   const lockedPhoto = useMemo(
@@ -74,21 +78,28 @@ export function ParkPhotoShowcase({
 
   const visiblePhoto = layers.showFront ? layers.front : layers.back;
   const rotationStopped = Boolean(lockedPhoto);
+  const isParkSelection = Boolean(selectedParkId && !selectedTrailId);
+  const captionTitle = isParkSelection
+    ? selectedParkName ?? visiblePhoto.parkName
+    : visiblePhoto.locationName;
+  const captionSubtitle = isParkSelection
+    ? selectedParkState ?? visiblePhoto.parkName
+    : visiblePhoto.parkName;
 
   return (
     <figure
       className="park-photo-showcase"
-      aria-label={`${visiblePhoto.locationName}, ${visiblePhoto.parkName}`}
+      aria-label={`${captionTitle}, ${captionSubtitle}`}
     >
       <PhotoLayer
         photo={layers.back}
         isVisible={!layers.showFront}
-        priority={false}
+        priority={!layers.showFront}
       />
       <PhotoLayer
         photo={layers.front}
         isVisible={layers.showFront}
-        priority
+        priority={layers.showFront}
       />
 
       <div className="park-photo-scrim" aria-hidden="true" />
@@ -117,8 +128,8 @@ export function ParkPhotoShowcase({
 
       <figcaption className="park-photo-caption">
         <div>
-          <p className="park-photo-location">{visiblePhoto.locationName}</p>
-          <p className="park-photo-park">{visiblePhoto.parkName}</p>
+          <p className="park-photo-location">{captionTitle}</p>
+          <p className="park-photo-park">{captionSubtitle}</p>
         </div>
         <a
           href={visiblePhoto.sourceUrl}
@@ -161,7 +172,7 @@ function PhotoLayer({
       alt={photo.alt}
       fill
       priority={priority}
-      sizes="(max-width: 767px) 100vw, (max-width: 1199px) 52vw, 620px"
+      sizes="(max-width: 1199px) 100vw, 1120px"
       className={`park-photo-layer ${isVisible ? "is-visible" : ""}`}
     />
   );

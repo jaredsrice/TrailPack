@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
@@ -36,6 +36,7 @@ import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { ParkPhotoShowcase } from "./ParkPhotoShowcase";
 import { PackingListOutput } from "./PackingListOutput";
+import { VERIFIED_TRAIL_PROFILE_LABEL } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
 
@@ -92,9 +93,8 @@ function suggestionBadge(type: SearchSuggestion["type"]): string {
     case "park":
       return "Supported park";
     case "trail":
-      return "Supported trail";
     case "public-trail":
-      return "Verified public trail";
+      return VERIFIED_TRAIL_PROFILE_LABEL;
     case "manual":
       return "Manual entry";
   }
@@ -112,6 +112,7 @@ export function TrailPackShell() {
   const [weatherState, setWeatherState] = useState<WeatherUiState>({
     status: "idle",
   });
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
@@ -331,6 +332,19 @@ export function TrailPackShell() {
     setUserInput(next.userInput);
   }
 
+  function handleChangeSearch() {
+    const next = buildClearedSearchState();
+    setMode(next.mode);
+    setSelectedParkId(next.selectedParkId);
+    setSelectedTrail(next.selectedTrail);
+    setUserInput(next.userInput);
+    setQuery("");
+
+    window.requestAnimationFrame(() => {
+      searchInputRef.current?.focus();
+    });
+  }
+
   return (
     <main className="trailpack-app">
       <header className="site-masthead">
@@ -345,138 +359,149 @@ export function TrailPackShell() {
         </div>
       </header>
 
-      <section className="home-hero" aria-labelledby="trailpack-heading">
+      <section
+        className={`home-hero ${mode === "park" ? "is-park-view" : ""}`}
+        aria-label={mode === "park" ? "Selected park photograph" : undefined}
+        aria-labelledby={mode === "park" ? undefined : "trailpack-heading"}
+      >
         <div className="home-hero-inner">
-          <div className="hero-search-column">
-            <p className="section-kicker">Plan with traceable trail context</p>
-            <h1 id="trailpack-heading" className="hero-heading">
-              Choose a trail.
-              <span>Prepare intelligently.</span>
-            </h1>
-            <p className="hero-description">
-              Search a supported park, curated trail, or verified public-source
-              import, then build a focused packing list from trail facts,
-              forecast context, and official alerts.
-            </p>
-
-            <label className="search-field">
-              <span className="sr-only">Search a park or trail</span>
-              <TrailPackIcon name="search" className="search-field-icon" />
-              <input
-                type="search"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  if (!event.target.value) {
-                    const next = buildClearedSearchState();
-                    setMode(next.mode);
-                    setSelectedParkId(next.selectedParkId);
-                    setSelectedTrail(next.selectedTrail);
-                    setUserInput(next.userInput);
-                  }
-                }}
-                placeholder="Search a park or trail..."
-              />
-            </label>
-
-            {query.trim() ? (
-              <div className="search-results" aria-label="Search suggestions">
-                <p className="search-label">Suggestions</p>
-                <div className="suggestion-grid">
-                  {suggestions.map((suggestion) => (
-                    <button
-                      key={suggestion.id}
-                      type="button"
-                      onClick={() => handleSuggestionSelect(suggestion)}
-                      className={`suggestion-button ${
-                        suggestion.type === "manual" ? "is-manual" : ""
-                      }`}
-                    >
-                      <span className="suggestion-type">
-                        {suggestionBadge(suggestion.type)}
-                      </span>
-                      <span className="suggestion-title">{suggestion.title}</span>
-                      <span className="suggestion-subtitle">
-                        {suggestion.subtitle}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : mode === "search" ? (
-              <div className="quick-starts">
-                <p className="search-label">Quick starts</p>
-                <div className="quick-start-list">
-                  {QUICK_START_TRAIL_IDS.map((trailId) => {
-                    const trail = SUPPORTED_TRAILS[trailId];
-                    return (
-                      <button
-                        key={trail.id}
-                        type="button"
-                        onClick={() => handleTrailSelect(trail.id)}
-                        className="quick-start-button"
-                      >
-                        <TrailPackIcon name="trail" className="h-4 w-4" />
-                        <span>
-                          <strong>{trail.name}</strong>
-                          <small>
-                            {trail.distanceMiles.value} mi ·{" "}
-                            {trail.elevationGainFeet.value} ft
-                          </small>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : null}
-          </div>
-
           <ParkPhotoShowcase
             selectedParkId={selectedParkId}
+            selectedParkName={selectedPark?.name ?? null}
+            selectedParkState={selectedPark?.state ?? null}
             selectedTrailId={selectedTrail?.id ?? null}
           />
+
+          {mode !== "park" ? (
+            <div className="hero-search-column">
+              <h1 id="trailpack-heading" className="hero-heading">
+                Plan a hike
+              </h1>
+              <p className="hero-description">
+                Choose a supported trail or park to build a packing list with
+                weather and official trail context.
+              </p>
+
+              <label className="search-field">
+                <span className="sr-only">Search a park or trail</span>
+                <TrailPackIcon name="search" className="search-field-icon" />
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  value={query}
+                  onChange={(event) => {
+                    setQuery(event.target.value);
+                    if (!event.target.value) {
+                      const next = buildClearedSearchState();
+                      setMode(next.mode);
+                      setSelectedParkId(next.selectedParkId);
+                      setSelectedTrail(next.selectedTrail);
+                      setUserInput(next.userInput);
+                    }
+                  }}
+                  placeholder="Search a park or trail..."
+                />
+              </label>
+
+              {query.trim() ? (
+                <div className="search-results" aria-label="Search suggestions">
+                  <p className="search-label">Suggestions</p>
+                  <div className="suggestion-grid">
+                    {suggestions.map((suggestion) => (
+                      <button
+                        key={suggestion.id}
+                        type="button"
+                        onClick={() => handleSuggestionSelect(suggestion)}
+                        className={`suggestion-button ${
+                          suggestion.type === "manual" ? "is-manual" : ""
+                        }`}
+                      >
+                        <span className="suggestion-type">
+                          {suggestionBadge(suggestion.type)}
+                        </span>
+                        <span className="suggestion-title">{suggestion.title}</span>
+                        <span className="suggestion-subtitle">
+                          {suggestion.subtitle}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : mode === "search" ? (
+                <div className="quick-starts">
+                  <p className="search-label">Popular trails</p>
+                  <div className="quick-start-list">
+                    {QUICK_START_TRAIL_IDS.map((trailId) => {
+                      const trail = SUPPORTED_TRAILS[trailId];
+                      return (
+                        <button
+                          key={trail.id}
+                          type="button"
+                          onClick={() => handleTrailSelect(trail.id)}
+                          className="quick-start-button"
+                        >
+                          <span>
+                            <strong>{trail.name}</strong>
+                            <small>
+                              {trail.distanceMiles.value} mi ·{" "}
+                              {trail.elevationGainFeet.value} ft
+                            </small>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
 
       <div id="main-content" className="content-flow">
         {mode === "park" && selectedPark ? (
-          <section className="selection-band">
-            <div className="section-heading-row">
-              <div>
-                <p className="section-kicker">Selected park</p>
-                <h2 className="section-title">{selectedPark.name}</h2>
-                <p className="section-subtitle">{selectedPark.state}</p>
-              </div>
-              <TrailPackIcon name="trail" className="section-heading-icon" />
-            </div>
+          <section className="park-landing-section" aria-labelledby="trailpack-heading">
+            <button
+              type="button"
+              className="park-change-button"
+              onClick={handleChangeSearch}
+            >
+              <TrailPackIcon name="chevron" className="park-change-icon" />
+              Change park or trail
+            </button>
 
-            <div className="park-trail-picker">
-              <p className="picker-label">
-                Choose a curated or verified public-source trail
-              </p>
-              <div className="park-trail-grid">
-                {parkTrails.map((trail) => (
-                  <button
-                    key={trail.id}
-                    type="button"
-                    onClick={() => handleTrailSelect(trail.id)}
-                    className="park-trail-button"
-                  >
+            <h1 id="trailpack-heading" className="park-landing-title">
+              {selectedPark.name}
+            </h1>
+            <p className="park-landing-description">
+              Choose a trail to build your packing list and forecast.
+            </p>
+
+            <div className="park-trail-list">
+              {parkTrails.map((trail) => (
+                <button
+                  key={trail.id}
+                  type="button"
+                  onClick={() => handleTrailSelect(trail.id)}
+                  className="park-trail-button"
+                >
+                  <span className="park-trail-copy">
                     <span className="park-trail-name">{trail.name}</span>
                     <span className="park-trail-source">
-                      {trail.profileKind === "public-source-import"
-                        ? "Verified NPS + USGS import"
-                        : "Curated profile"}
+                      {VERIFIED_TRAIL_PROFILE_LABEL}
                     </span>
-                    <span className="park-trail-stats">
-                      {trail.distanceMiles.value} mi ·{" "}
-                      {trail.elevationGainFeet.value} ft gain ·{" "}
-                      {trail.difficulty.value}
-                    </span>
-                  </button>
-                ))}
-              </div>
+                  </span>
+                  <span className="park-trail-stats">
+                    {trail.distanceMiles.value} mi ·{" "}
+                    {trail.elevationGainFeet.value.toLocaleString()} ft gain ·{" "}
+                    {trail.difficulty.value}
+                  </span>
+                  <TrailPackIcon
+                    name="chevron"
+                    className="park-trail-chevron"
+                  />
+                </button>
+              ))}
             </div>
           </section>
         ) : null}

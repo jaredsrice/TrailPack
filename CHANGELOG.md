@@ -11,6 +11,21 @@ change as the project develops.
 
 ### Added
 
+- A fixture-tested, non-runtime NPS source refresh for all five supported
+  trails, with conservative requests to saved official pages, two-read
+  confirmation, bounded automatic updates to one managed snapshot file, full
+  pre-commit verification, monthly GitHub Actions automation, and reviewable
+  Markdown and JSON reports.
+- Official NPS accessibility and terrain notes in the selected-trail interface
+  when a source page publishes trail-specific guidance. Current notes cover
+  Jenny Lake, String Lake, and Taggart Lake and include an explicit warning that
+  terrain information is not an accessibility-certification claim.
+- Project-scoped Impeccable design-review commands without automatic edit hooks,
+  plus a Playwright and axe accessibility check covering the initial trail
+  chooser, the focused Grand Teton park view, return-to-search focus, the
+  park-to-trail transition, and a populated Jenny Lake plan. The first
+  populated-plan scan also corrected nine low-contrast text treatments and
+  clarified the trail-profile and packing-list landmark names.
 - A seven-park homepage photograph rotation using locally served, officially
   sourced NPS photography, visible credits, official source links, pause/resume
   controls, and reduced-motion behavior.
@@ -155,10 +170,24 @@ change as the project develops.
 
 ### Changed
 
-- Redesigned the complete TrailPack planning flow as a contemporary national
-  park field guide with evergreen and alpine-blue bands, Lora editorial
-  headings, open information rails, subtle topographic texture, clearer source
-  hierarchy, and restrained sunrise accents.
+- Unified all five supported trails under the user-facing
+  `Verified NPS + USGS profile` label in search, park browsing, and trail
+  summaries. The original CSE 499A and later B-01 profile kinds remain internal
+  milestone metadata rather than implying different collection methods or
+  quality tiers.
+- Applied npm's non-breaking dependency-audit remediation, updating Next.js
+  15.5.19 to 15.5.22, Tailwind CSS 4.3.1 to 4.3.3, and patched direct
+  PostCSS, js-yaml, nanoid, and brace-expansion paths. Rejected the unsafe
+  `--force` proposal to downgrade Next.js and ESLint tooling; the remaining
+  upstream transitive findings are documented separately.
+- Refined the complete TrailPack planning flow into a quieter, task-first
+  interface with evergreen and alpine-blue color, a compact real-park photo
+  banner, straightforward sans-serif hierarchy, open information rails, clearer
+  source hierarchy, and restrained sunrise accents.
+- Selecting a supported park now replaces the homepage search and planner
+  output with a dedicated park view: locked official photography, one compact
+  five-trail list, and a return-to-search action. Trail data and planning
+  sections remain hidden until a trail is selected.
 - Restyled trail provenance, weather and alert states, trip-detail controls,
   safety-critical and alert-modified packing accordions, and the optional AI
   review while preserving every deterministic rule, provider boundary,

@@ -1,9 +1,10 @@
 import type { TrailProfile } from "@/features/trailpack/types";
+import { applyNpsSourceSnapshot } from "./nps-source-snapshots";
 
 const USGS_TRAILS_LAYER_URL =
   "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37";
 
-export const COLTER_BAY_LAKESHORE_TRAIL: TrailProfile = {
+export const COLTER_BAY_LAKESHORE_TRAIL: TrailProfile = applyNpsSourceSnapshot({
   id: "colter-bay-lakeshore-trail",
   name: "Colter Bay Lakeshore Trail",
   park: "Grand Teton National Park",
@@ -89,9 +90,9 @@ export const COLTER_BAY_LAKESHORE_TRAIL: TrailProfile = {
     },
   ],
   missingFields: [],
-};
+});
 
-export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
+export const TWO_OCEAN_LAKE_LOOP: TrailProfile = applyNpsSourceSnapshot({
   id: "two-ocean-lake-loop",
   name: "Two Ocean Lake Loop",
   park: "Grand Teton National Park",
@@ -120,7 +121,7 @@ export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
     sourceUrl: "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
     label: "official",
     computedNote:
-      "Official NPS pages conflict: the newer trailhead page lists 400 ft, while the older activity page lists 700 ft. AllTrails reports 488 ft as a comparison only; TrailPack keeps the newer official value and flags the conflict.",
+      "Official NPS pages conflict on elevation gain. AllTrails remains a comparison only; TrailPack keeps the newer official page's value and flags the conflict.",
   },
   estimatedDuration: {
     value: "3 hours",
@@ -139,7 +140,7 @@ export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
   sourceConfidence: {
     status: "official_nps_with_gain_conflict",
     summary:
-      "The official 6.4-mile route is strongly supported by USGS and AllTrails comparisons. TrailPack displays the newer NPS page's 400-ft climbing value, but another NPS page lists 700 ft, so elevation confidence remains explicitly conflicted.",
+      "The official route is strongly supported by USGS and AllTrails comparisons. TrailPack displays the newer NPS page's climbing value, but another NPS page differs, so elevation confidence remains explicitly conflicted.",
     distanceMatch: "ok",
     gainMatch: "conflict",
     lastChecked: "2026-07-20",
@@ -151,7 +152,7 @@ export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
       sourceUrl: "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
       retrievedAt: "2026-07-20",
       note:
-        "Newer official page used for display: 6.4 miles, 3 hours, 400 ft total climbing, Moderate.",
+        "Newer official page used for the current display values.",
     },
     {
       source: "NPS",
@@ -159,7 +160,7 @@ export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
       sourceUrl: "https://www.nps.gov/thingstodo/twoocean.htm",
       retrievedAt: "2026-07-20",
       note:
-        "Older official activity page agrees on distance, route, and difficulty but lists 3-5 hours and 700 ft elevation gain.",
+        "Older official activity page agrees on the route identity but lists different duration and elevation-gain values.",
     },
     {
       source: "USGS",
@@ -172,7 +173,7 @@ export const TWO_OCEAN_LAKE_LOOP: TrailProfile = {
     },
   ],
   missingFields: [],
-};
+});
 
 export const PUBLIC_TRAILS: Record<string, TrailProfile> = {
   "colter-bay-lakeshore-trail": COLTER_BAY_LAKESHORE_TRAIL,
