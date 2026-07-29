@@ -1,420 +1,206 @@
 # Changelog
 
-All meaningful changes to TrailPack are recorded here.
+All notable TrailPack changes are recorded here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
-[Semantic Versioning](https://semver.org/spec/v2.0.0.html). Because TrailPack is
-still a prototype, the `0.x` version number means features and data structures may
-change as the project develops.
+TrailPack is still a `0.x` prototype. A minor version marks a completed,
+demo-ready product milestone; a patch version is reserved for backward-compatible
+corrections within that milestone.
 
 ## [Unreleased]
 
-### Added
+No user-facing changes have been released since `0.4.0`.
 
-- A fixture-tested, non-runtime NPS source refresh for all five supported
-  trails, with conservative requests to saved official pages, two-read
-  confirmation, bounded automatic updates to one managed snapshot file, full
-  pre-commit verification, monthly GitHub Actions automation, and reviewable
-  Markdown and JSON reports.
-- Official NPS accessibility and terrain notes in the selected-trail interface
-  when a source page publishes trail-specific guidance. Current notes cover
-  Jenny Lake, String Lake, and Taggart Lake and include an explicit warning that
-  terrain information is not an accessibility-certification claim.
-- Project-scoped Impeccable design-review commands without automatic edit hooks,
-  plus a Playwright and axe accessibility check covering the initial trail
-  chooser, the focused Grand Teton park view, return-to-search focus, the
-  park-to-trail transition, and a populated Jenny Lake plan. The first
-  populated-plan scan also corrected nine low-contrast text treatments and
-  clarified the trail-profile and packing-list landmark names.
-- A seven-park homepage photograph rotation using locally served, officially
-  sourced NPS photography, visible credits, official source links, pause/resume
-  controls, and reduced-motion behavior.
-- Trail- and park-aware image locking for Grand Teton and all five supported
-  trails, with manual entry deliberately retaining general park imagery rather
-  than claiming an unverified location match.
-- A versioned image-source ledger covering every shipped photograph, displayed
-  credit, official source page, usage basis, and location-mapping rule.
-- Reusable field-guide SVG icons and responsive visual primitives for trail
-  facts, weather, alerts, trip details, packing rows, and guarded AI status.
-- A responsive supported-trail day-forecast accordion with a four-highlight
-  view and a complete local hour-by-hour view of temperature, apparent
-  temperature, precipitation, condition, and wind.
-- A forecast trip timeline that marks first light, sunrise, sunset, last light,
-  and the user's planned start time, including a highlighted matching hourly
-  card.
-- Date-aware weather requests through
-  `GET /api/trailpack/weather?trailId=...&date=YYYY-MM-DD`, including strict
-  date validation, hourly Open-Meteo normalization, no-store responses, and
-  saved-example fallback behavior.
-- Bounded client-side weather response validation and focused tests proving
-  malformed or failed route responses cannot expose provider details in the UI.
-- A server-only B-02 Gemini provider boundary at
-  `POST /api/trailpack/ai-review`, using the Interactions API, structured JSON
-  output, `store: false`, a 25-second
-  timeout, bounded request and response parsing, and explicit accepted,
-  rejected, timed-out, quota-limited, missing-key, invalid-response, and
-  provider-error outcomes.
-- A minimized live-AI payload that omits unrestricted notes and sends only
-  bounded trail, weather, alert, trip-condition, and rule-based packing context.
-- Mocked B-02 contract coverage for accepted, rejected, timeout, quota,
-  missing-key, malformed-response, provider-error, privacy, route-validation,
-  and oversized-request paths.
-- Exact missing-detail provenance validation so AI cannot add, omit, reorder, or
-  rewrite gaps identified by the rule engine.
-- Bounded Vercel diagnostics that retain provider status and invalid-field codes
-  without logging API keys, prompts, raw response bodies, or unrestricted
-  messages.
-- A user-triggered guarded live-review control that keeps the saved fixture as
-  the initial demo state, calls the server route on demand, and labels accepted,
-  rejected, timed-out, quota-limited, missing-key, invalid-response,
-  provider-error, and client-request fallback states.
-- Client-side runtime validation for live-review responses plus focused coverage
-  proving that malformed or failed route responses cannot expose upstream
-  details in the UI.
-- A bounded Grand Teton public-source import catalog with Colter Bay Lakeshore
-  Trail and Two Ocean Lake Loop, using official NPS display values and
-  reconciled NPS-origin USGS geometry.
-- Trail-profile provenance fields for curated versus imported profile kind,
-  retrieval status and date, source records and feature IDs, confidence, and
-  explicit missing fields.
-- Search, park browsing, packing output, saved context, and live-weather path
-  support for the two imported trails while preserving no-result manual entry.
-- Focused tests for imported values and source IDs, search selection, catalog
-  coverage, packing generation, saved-context fallback, and park-code lookup.
-- A B-01 adapter validation record that separates passing technical adapter
-  checks from the provider's failed reliability decision.
-- A 24-trail authoritative/USGS/Nominatim comparison recording identity
-  coverage, route-distance reconciliation, exploratory 3DEP elevation results,
-  Nominatim failure rates, and the decision not to ship Nominatim.
-- A Grand Teton public-source import validation record documenting selected NPS
-  facts, exact USGS source features, distance reconciliation, deferred candidate
-  trails, B-01 fit, and remaining UAT scope.
-- A comparison-only AllTrails check for both new imports, including route,
-  distance, gain, duration, and difficulty differences without using AllTrails
-  as an application data source.
-- Taggart Lake and String Lake Loop as additional supported Grand Teton trail
-  profiles alongside Jenny Lake Loop.
-- Deterministic saved demo weather and alert scenarios for each supported trail.
-- Search coverage and packing coverage tests for the expanded supported trail set.
-- A standalone `npm run typecheck` script that runs `next typegen` before
-  `tsc --noEmit` on a clean checkout.
-- Repo-level agent workflow documentation in `AGENTS.md`, `CONTEXT.md`, and
-  `docs/agents/`.
-- The saved Week 8 implementation plan in
-  `docs/superpowers/plans/2026-06-17-week-8-supported-trails.md`.
-- A saved Week 8 / Week 9 validation note in
-  `docs/superpowers/validation/2026-06-19-week-8-9-validation.md`.
-- A saved Week 10 scenario review note in
-  `docs/superpowers/validation/2026-06-20-week-10-scenario-review.md`.
-- Server-side external-context route handlers for Open-Meteo weather and NPS
-  alerts, with saved-fixture and unavailable-state fallbacks.
-- Unit coverage for weather normalization, NPS alert normalization, supported
-  park-code validation, and external-context fallback behavior.
-- A fixture-first guarded AI review path for Jenny Lake Loop that builds
-  structured input from TrailPack data, validates saved AI-style text, and falls
-  back to template text when validation fails.
-- Unit coverage for accepted AI fixture output, rejected packing-item changes,
-  rejected source-label changes, unsupported safety claims, unsupported trail
-  facts, and template fallback behavior.
-- Manual-entry fields for distance, elevation gain, and route type so
-  unsupported hikes can produce a more specific fallback list.
-- Unit coverage for manual distance/gain sizing, route-type prompts, and
-  point-to-point route-planning recommendations.
-- A supported-trail context status panel that shows weather context and NPS
-  alert state, including saved no-active-alert fixtures.
-- Unit coverage for saved weather status, no-active alert status, and active
-  official alert summaries.
-- Civil-twilight daylight context from Sunrise-Sunset.org on the live weather
-  path, plus saved daylight fixtures for supported demo trails.
-- A start-time trip detail field that can affect daylight/headlamp guidance.
-- Unit coverage for civil-twilight normalization, live daylight attachment,
-  visible context status, and start-time-aware headlamp recommendations.
-- Question-answer packing item fields and unit coverage requiring every generated
-  recommendation to answer a concrete hiker question.
-- Bear-spray recommendation links for official NPS guidance and current Bear
-  Aware rental-location information.
-- Seasonal optional insect-repellent guidance backed by NPS Hike Smart.
-- A saved Taggart Lake 2026 NPS trail-work alert fixture that appears in the
-  recommendation flow with official-source provenance.
-- Overall trip alerts for unusual duration, heat/sun exposure, wet weather,
-  cold/snow conditions, and active NPS trail alerts.
-- A Week 13/14 hiker-scenario stress report covering seasoned, casual/new, and
-  middle-of-the-road hiker lenses across all three supported trails.
-- A reusable `npm run scenario:stress` command that regenerates the hiker-scenario
-  stress report from the current recommendation engine.
-- A trip-decision danger classifier for closures, flash flooding, lightning,
-  extreme heat, high water, wildfire or heavy smoke, and avalanche language.
-- An optional `Water filter or treatment backup` recommendation backed by NPS
-  water-treatment basics.
-- A separate optional `Extra dry socks` row with blister and cold/wet-foot
-  rationale.
-- A Week 14 scope/status note that maps the current prototype against the
-  proposal, Week 12 requirements spec, and remaining 499A closeout tasks.
-- A final CSE 499A closeout record covering requirement completion, automated
-  verification, desktop/mobile walkthrough evidence, known limits, and deferred
-  work.
-- An instructor-aligned CSE 499B requirements specification that reduces the old
-  six stretch items to public trail lookup, guarded live AI, and Google login
-  with saved results, plus a separate late security-verification requirement.
-- A fourteen-week CSE 499B schedule with feature gates, provider contingencies,
-  a release-candidate freeze, and deferred security testing.
-- A CSE 499B Week 1 baseline record covering the verified 499A commit, automated
-  checks, GitHub issue backlog, environment inventory, working-repository path,
-  and the completed Vercel deployment gate.
-- A CSE 499B public-trail source feasibility record covering the initial bounded
-  Nominatim experiment, its policy controls, and its later rejection after the
-  24-trail reliability evaluation.
-- A public Vercel production deployment at
-  `https://trailpack-ten.vercel.app`, verified with an HTTP `200` response and
-  the expected `TrailPack` page title.
+## [0.4.0] - 2026-07-29
 
-### Changed
-
-- Unified all five supported trails under the user-facing
-  `Verified NPS + USGS profile` label in search, park browsing, and trail
-  summaries. The original CSE 499A and later B-01 profile kinds remain internal
-  milestone metadata rather than implying different collection methods or
-  quality tiers.
-- Applied npm's non-breaking dependency-audit remediation, updating Next.js
-  15.5.19 to 15.5.22, Tailwind CSS 4.3.1 to 4.3.3, and patched direct
-  PostCSS, js-yaml, nanoid, and brace-expansion paths. Rejected the unsafe
-  `--force` proposal to downgrade Next.js and ESLint tooling; the remaining
-  upstream transitive findings are documented separately.
-- Refined the complete TrailPack planning flow into a quieter, task-first
-  interface with evergreen and alpine-blue color, a compact real-park photo
-  banner, straightforward sans-serif hierarchy, open information rails, clearer
-  source hierarchy, and restrained sunrise accents.
-- Selecting a supported park now replaces the homepage search and planner
-  output with a dedicated park view: locked official photography, one compact
-  five-trail list, and a return-to-search action. Trail data and planning
-  sections remain hidden until a trail is selected.
-- Restyled trail provenance, weather and alert states, trip-detail controls,
-  safety-critical and alert-modified packing accordions, and the optional AI
-  review while preserving every deterministic rule, provider boundary,
-  validation contract, fallback state, and source label.
-- Reworked responsive behavior around comfortable 44-pixel controls and a
-  single-column mobile hierarchy without horizontal overflow or nested-card
-  crowding.
-- Supported-trail pages now request live Open-Meteo weather automatically and
-  refresh when the planned hike date changes. The resolved live-or-saved context
-  drives both the deterministic packing rules and the guarded AI input, while
-  loading, live, saved, and unavailable states remain visible.
-- Live weather now starts the optional AI panel from the clean deterministic
-  template fallback instead of revalidating a saved explanation fixture built
-  for different weather-driven packing items.
-- Corrected the guarded Gemini provider default from the undocumented
-  `gemini-3.5-flash-lite` identifier to the current generally available
-  `gemini-3.5-flash` model and migrated the direct REST boundary to the current
-  Interactions API.
-- Increased the bounded live-provider timeout from seven to 25 seconds after
-  the earlier 12-second probe used a one-item request that did not represent the
-  13-item Jenny Lake UI contract. Repeated browser and terminal checks of the
-  full request safely timed out at 12 seconds; the longer bound keeps a hard
-  fallback while giving the complete structured response time to finish. Three
-  representative full-contract Preview requests then passed at 17.71, 19.33,
-  and 16.03 seconds.
-- Expanded unsupported-safety-claim validation to reject broader safety
-  guarantees, zero-risk language, and risk-free claims while preserving the
-  deterministic rule-based fallback.
-- Advanced the active B-02 track from the server-only provider boundary to the
-  guarded-refinement UI; the rule-based packing list remains authoritative while
-  the separate AI panel can display validated live text or an explicit,
-  unchanged template fallback.
-- Rejected Nominatim as a supported B-01 source after it found the intended
-  identity anywhere for 14/24 study trails, ranked it first for 12/24, and found
-  0/24 with the current location-scoped query. Removed the experimental adapter,
-  route, provider types, and tests; retained the decision evidence in validation
-  notes.
-- Selected an individually reviewed NPS/USGS import workflow for the Tetons-first
-  B-01 slice. Official NPS values remain authoritative, USGS values stay labeled
-  as geometry comparisons, and trails that have not passed review use manual
-  entry.
-- Flagged the Two Ocean Lake elevation gain as conflicted: the newer NPS
-  trailhead page lists 400 ft, an older NPS activity page lists 700 ft, and the
-  comparison-only AllTrails listing reports 488 ft. TrailPack keeps the newer
-  official display value while exposing the unresolved discrepancy.
-- Reorganized the app code into a single `src/features/trailpack/` feature
-  module and moved planning docs under `docs/data/` and `docs/ui/`.
-- Updated the main app flow so each supported trail uses its own saved demo
-  scenario instead of sharing one static weather context.
-- Refreshed the README to describe the three supported Week 8 demo trails and
-  the current verification commands.
-- Tightened the agent-maintenance guidance to prefer the latest proposal version
-  and keep user-facing docs aligned with merged scope.
-- Recorded the current milestone status more explicitly: Week 8 is complete,
-  Week 9 is complete for the baseline rule-engine milestone, the supported
-  prototype remains limited to three Grand Teton trails, and the AI path is
-  still deferred.
-- Added a limited manual-entry fallback packing list for unsupported or
-  incomplete hikes.
-- Polished the Week 10 evaluation scenarios so short-hike, hot/exposed, and
-  incomplete-data demo paths are cleaner and more defensible.
-- Reset trip-detail state when switching trails or modes so one scenario no
-  longer contaminates the next during live demos.
-- Extended weather and alert context objects with retrieval status metadata so
-  live, saved-fixture, and unavailable states can stay labeled.
-- Updated the main output so the packing list remains explicitly rule-based
-  while the guarded AI review appears as a separate validated summary panel.
-- Expanded manual fallback behavior so user-entered trail facts can affect water,
-  food, route-planning prompts, and the fallback confidence note.
-- Made weather and NPS alert context visible before the packing list instead of
-  relying only on recommendation side effects.
-- Replaced obsolete technology-demo framing with a next-project-focus note for
-  prototype polish, Requirements Spec work, live data, AI guardrails, and UAT.
-- Polished the main app surface with quick-start trail cards, tighter card
-  geometry, clearer manual-entry copy, and recommendation item counts.
-- Changed headlamp guidance so supported-trail recommendations use start time,
-  expected duration, sunset, and civil twilight when available instead of making
-  every long summer hike treat a headlamp as automatically essential.
-- Reworked packing cards from terse item/reason copy into concrete answers for
-  footwear, water per adult or person, food amounts, first-aid examples, bear
-  spray access, trekking poles, socks, headlamp timing, and summer layers.
-- Refined packing card headings so the UI shows clean recommendation topics
-  while the underlying item data keeps the hidden question each answer addresses.
-- Replaced the two-column packing-card layout with grouped accordion rows so
-  related recommendations stay visually close while `Essential` and `Optional`
-  remain visible as row badges.
-- Added a first-position `Critical Safety` recommendation group for trip-safety
-  decisions, safety-critical gear, and active-alert review rows.
-- Added affected-by markers to recommendation rows so overall alerts can connect
-  to specific items without adding more text to the quick-scan view.
-- Strengthened essential and alert-affected row styling so required items and
-  alert-driven changes stand out more clearly in the scan view.
-- Split critical safety styling into `Change plan` for trip-decision dangers and
-  `Safety-critical` for gear whose absence materially changes basic trip safety.
-- Split accordion content so users can scan the clear action before expanding
-  the supporting trip context, sources, and context notes.
-- Moved dry-sock guidance out of `Trail footwear` and into a separate optional
-  row so the sock recommendation is easier to notice.
-- Added a date-gated `Insect repellent` optional card for regional bug season
-  rather than making bug spray a permanent essential.
-- Updated trip-detail copy so the planned date is described as seasonal
-  recommendation context instead of context-only data.
-- Sanitized guarded-AI fallback validation copy so stale fixture item names do
-  not appear when the current rule-based list changes.
-- Removed the Yellowstone insect-season source from Grand Teton-facing bug-spray
-  guidance; TrailPack now treats the date window as an inference instead of
-  showing another park as the source.
-- Scaled long-day food and water recommendations from expected duration, with
-  distance, elevation gain, difficulty, and hot/exposed weather reflected in the
-  range and explanation.
-- Reworded long-day food rationale so route context, forecast context, and the
-  lower-versus-higher snack range read as hiker-facing guidance.
-- Reframed long-day water as a realistic frontcountry carry range, with `3-4`
-  liters per adult for very long supported-trail days instead of indefinitely
-  scaling by time.
-- Moved refill/treatment guidance into an optional backup row unless the hiker
-  plans to refill from an unverified source.
-- Split the old blended electrolyte/salty-snack guidance into separate
-  `Electrolytes` and `Salty snacks` rows so one salt source is promoted based on
-  heat and duration while the alternate stays optional.
-- Moved very-long-day extra food reserve into essentials while keeping shorter
-  long-day reserve food optional.
-- Made cold or snowy forecasts promote the warm-layer recommendation to
-  essentials without summer-specific wording.
-- Expanded snow/ice traction guidance to explain microspikes, shoe/boot fit,
-  and generic buy/rent planning without inventing a trail-specific rental source.
-- Moved abnormal-duration warnings into the overall alerts area instead of
-  treating the warning as packing gear.
-- Expanded bear-spray guidance to recommend one can per adult while keeping
-  official NPS support tied to EPA-approved, immediately accessible bear spray.
-- Promoted navigation to an essential `Navigation / offline map` item backed by
-  NPS Ten Essentials, with offline map or GPS route, battery, and physical backup
-  guidance.
-- Added a `Power bank / extra battery` row for longer trips where a phone, GPS,
-  or rechargeable headlamp may be part of navigation or lighting.
-- Added lightweight UPF or long-sleeve sun shirts to sun-protection guidance.
-- Expanded the hiker-scenario stress report with flash-flood, severe-storm, and
-  extreme-heat templates so critical-danger behavior is checked across all three
-  supported trails.
-- Passed the richer question, recommendation, why, and answer context through
-  the guarded AI input contract and updated the saved Jenny Lake fixture to match
-  the new rule-based item set.
-- Closed CSE 499A as a completed six-requirement baseline and replaced the older
-  499B candidate backlog with the July 16 requirements and schedule.
-
-### Fixed
-
-- Prevented unsupported or unknown trail ids from being treated like valid saved
-  demo scenarios.
-- Made the documented TypeScript verification flow reliable even when `.next`
-  route types have not been generated yet.
-- Removed the misleading planned-date prompt from the missing-details list while
-  date remains a context-only field.
-- Softened food and first-aid wording where the previous output overstated
-  shorter scenarios.
-- Restored pre-dawn headlamp guidance when a supported-trail hiker provides only
-  a start time (without expected duration) and daylight context is available.
-
-## [0.1.0] - 2026-06-14
-
-Initial technical prototype for selecting a supported trail and generating a
-rule-based hiking packing list.
+Completed the CSE 499B B-02 guarded-AI milestone and deployed it to production
+as commit
+[`33fa471`](https://github.com/jaredsrice/TrailPack/commit/33fa471350608b4468714083a74f26334037cca6).
 
 ### Added
 
-- A Next.js, React, TypeScript, and Tailwind CSS application at the repository root.
-- A one-page search flow for supported parks and trails, with a manual-entry fallback.
-- A supported Jenny Lake Loop profile using official National Park Service values.
-- USGS-computed distance, elevation, and elevation-gain estimates for comparison.
-- Visible source and confidence information for official and computed trail data.
-- A rule-based packing list with essential and optional items. The prototype does
-  not use AI to interpret trip details.
-- Packing rules based on official trail length and gain, demo weather, active
-  alerts, expected trip duration, and user-reported trail conditions.
-- Trip-detail fields for planned date, expected duration, trail conditions, and notes.
-- Official source links on recommendations that claim official NPS support.
-- Week 5 UI workflow documentation and Week 6-7 trail-data feasibility findings.
-- Vitest unit tests for trail profiles, packing rules, duration parsing, condition
-  parsing, and source provenance.
+- A server-only Gemini review boundary with structured output, a bounded
+  timeout, explicit provider outcomes, and deterministic fallback text.
+- Date-aware Open-Meteo forecasts with four-highlight and full 24-hour views,
+  apparent temperature, precipitation, conditions, wind, and a planned-start
+  timeline.
+- Sunrise, sunset, first-light, and last-light markers from
+  Sunrise-Sunset.org.
+- A national-park field-guide interface with locally served, officially sourced
+  NPS photography, park/trail image locking, credits, and source links.
+- A guarded monthly NPS source refresh for all five supported trails. Safe,
+  confirmed changes can update one managed snapshot; ambiguous or unsafe
+  results leave saved data untouched and fail visibly.
+- Official NPS accessibility and terrain text for Jenny Lake, Taggart Lake, and
+  String Lake when their tracked pages publish matching guidance.
+- Firefox/Playwright/axe coverage for the chooser, Grand Teton park view,
+  return-to-search focus, trail selection, and a populated Jenny Lake plan.
 
 ### Changed
 
-- Set NPS trail pages as the primary source for official trail statistics.
-- Set USGS trail geometry and elevation data as the legal fallback for computed
-  trail values.
-- Marked the Jenny Lake USGS elevation-gain estimate as conflicting with the
-  official NPS value instead of presenting it as an exact match.
-- Displayed the official NPS gain of 1,040 feet separately from the USGS estimate
-  of about 698 feet, with a wider method-dependent range noted.
-- Made expected duration and reported trail conditions affect the packing list.
-- Marked planned date and notes as context-only fields until they influence rules.
-- Relabeled general cell-service guidance as inferred rather than official.
-- Limited the current data plan to NPS and USGS. Trailforks is not used as a
-  production source without appropriate API access or permission.
-- Pinned the Next.js workspace root so builds use this repository instead of a
-  parent directory containing another lockfile.
+- Supported trails now request live weather automatically and refresh when the
+  planned date changes.
+- All five trails now use the user-facing `Verified NPS + USGS profile` label;
+  internal profile kinds remain only for milestone traceability.
+- Packing, weather, alert, trail, trip-detail, and guarded-AI surfaces now use a
+  quieter responsive field-guide design with stronger safety hierarchy.
+- The Gemini integration now uses the Interactions API and the documented
+  `gemini-3.5-flash` default.
+- Safe dependency updates moved the resolved stack to Next.js `15.5.22`,
+  Tailwind CSS `4.3.3`, its PostCSS path to `8.5.23`, and compatible patched
+  transitive packages. Unsupported forced downgrades were rejected.
+- Vitest now uses Vite 8's native `resolve.tsconfigPaths` support; the redundant
+  `vite-tsconfig-paths` plugin was removed.
 
 ### Fixed
 
-- Corrected mixed hour-and-minute input such as `1 hour 30 minutes` so it is read
-  as 1.5 hours instead of 30 hours.
-- Preserved conservative handling of duration ranges such as `4-6 hours`.
-- Added deterministic recognition of snow, ice, mud, and wet trail reports.
-- Prevented negated reports such as `no snow`, `not muddy`, `snow-free`, and
-  `clear of snow` from adding unnecessary equipment.
-- Scoped negation to each clause, so `no snow, icy bridge` still recommends
-  traction for the reported ice.
-- Required verified official alerts to use HTTPS URLs on `nps.gov` or its
-  subdomains. Malformed and deceptive look-alike URLs are rejected.
-- Prevented mixed NPS and third-party alert groups from being labeled entirely
-  official.
-- Required every packing item labeled `official` to include a supporting source URL.
+- Prevented saved AI fixture text from being reused after live weather changes
+  the current rule-based packing set.
+- Corrected low-contrast text treatments and duplicate landmark naming found by
+  the first automated accessibility pass.
+- Assigned loading priority to the currently visible park image rather than an
+  inactive rotation layer.
+- Prevented unsupported or unknown trail identifiers from being treated as
+  valid saved scenarios.
 
 ### Security
 
-- Updated safe, compatible development dependencies without forcing breaking
-  framework changes.
-- Added source validation to prevent third-party or deceptive URLs from being
-  presented as official NPS sources.
+- AI requests exclude unrestricted notes, identity data, OAuth data, and
+  provider credentials; Gemini storage is disabled with `store: false`.
+- Runtime schema, source-label, packing-set, cross-trail, missing-detail, and
+  safety validation runs before AI text can be displayed.
+- NPS refresh writes require two identical reads, HTTPS `nps.gov` identity
+  checks, bounded values, a complete five-trail snapshot, and the full
+  verification suite.
 
-### Known Issues
+### Verification
 
-- `npm audit` reports two moderate findings for PostCSS
-  ([GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93))
-  bundled inside Next.js. The documented attack requires processing untrusted CSS,
-  which TrailPack does not do. The available forced fix would downgrade Next.js to
-  an incompatible version, so the project will wait for a safe upstream update.
-- Weather and alerts are demo data in this prototype and are not yet loaded from
-  live APIs.
-- Jenny Lake Loop is the only fully supported trail profile in version `0.1.0`.
+- Lint, type checking, 205 Vitest tests, three Firefox/axe flows, the production
+  build, and 27 recommendation stress scenarios passed.
+- The initial live NPS refresh confirmed all five supported pages; a repeat run
+  made no unnecessary write.
+- Production homepage, weather, and both NPS alert routes returned HTTP `200`
+  after deployment.
+
+## [0.3.0] - 2026-07-20
+
+Completed the CSE 499B B-01 public-trail import milestone and deployed it as
+commit
+[`d4cbbd7`](https://github.com/jaredsrice/TrailPack/commit/d4cbbd7f5dd33fa7c1c561ee86deac2fac239ac4).
+
+### Added
+
+- Colter Bay Lakeshore Trail and Two Ocean Lake Loop as verified Grand Teton
+  profiles.
+- Detailed provenance records containing official NPS source URLs, USGS feature
+  identifiers, retrieval dates, confidence, missing fields, and reconciliation
+  notes.
+- Search, park-view, packing, saved-fixture, and weather support for the two
+  imported trails.
+- A 24-trail reliability study comparing authoritative sources, USGS evidence,
+  and Nominatim identity results.
+- Comparison-only AllTrails checks for the two new profiles without importing
+  AllTrails values into TrailPack.
+
+### Changed
+
+- Adopted a Tetons-first manual NPS review plus USGS geometry-reconciliation
+  workflow for new supported profiles.
+- Rejected Nominatim as a production TrailPack source after unreliable identity
+  and ranking results; its experimental runtime adapter and route were removed.
+- Kept the newer NPS 400-foot Two Ocean Lake gain while visibly recording the
+  conflicting older NPS 700-foot value and comparison-only AllTrails result.
+
+### Verification
+
+- Provider normalization, source IDs, search selection, catalog coverage,
+  packing generation, fallback behavior, and production API paths passed.
+- The production homepage and required Next.js assets were publicly reachable
+  after merge.
+
+## [0.2.0] - 2026-07-16
+
+Closed the six-requirement CSE 499A baseline and established the CSE 499B
+requirements and schedule at commit
+[`c77158b`](https://github.com/jaredsrice/TrailPack/commit/c77158b580351024e43edba9388a4523f5c587f6).
+
+### Added
+
+- Taggart Lake and String Lake Loop alongside the original Jenny Lake Loop
+  profile.
+- Server-side Open-Meteo weather and NPS alert routes with deterministic saved
+  fixtures and labeled unavailable states.
+- Civil-twilight context and start-time-aware headlamp guidance.
+- A fixture-first guarded AI review with validation and template fallback.
+- Manual distance, gain, route-type, duration, and condition inputs for
+  unsupported hikes.
+- Critical-safety grouping, trip-decision alerts, question-answer packing
+  explanations, and source-backed recommendation links.
+- A repeatable hiker-scenario stress command covering seasoned, casual, and
+  middle-of-the-road users.
+
+### Changed
+
+- Reorganized application code into the `src/features/trailpack/` feature
+  module.
+- Replaced generic packing cards with grouped accordion recommendations,
+  visible priorities, clearer actions, expandable rationale, and
+  alert-affected markers.
+- Refined duration-aware water, food, reserve, navigation, battery, traction,
+  electrolyte, dry-sock, sun, insect, and layer guidance.
+- Preserved a complete guest and rule-based workflow when live context or AI is
+  unavailable.
+
+### Fixed
+
+- Restored pre-dawn headlamp guidance when start time is provided without an
+  expected duration.
+- Prevented negated trail conditions and unrelated clauses from adding
+  unnecessary gear.
+- Strengthened official-source validation and blocked deceptive NPS look-alike
+  URLs.
+- Corrected duration parsing and scenario state leakage between trails.
+
+### Verification
+
+- The closeout recorded all six CSE 499A requirements as complete with unit,
+  scenario, build, and browser evidence.
+
+## [0.1.0] - 2026-06-14
+
+Initial tested TrailPack prototype.
+
+### Added
+
+- A Next.js, React, TypeScript, and Tailwind CSS application.
+- Search for the supported Jenny Lake Loop profile with a manual-entry fallback.
+- Official NPS facts displayed separately from USGS-computed comparisons.
+- A deterministic essential and optional packing list using trail facts, saved
+  weather, alerts, expected duration, and reported conditions.
+- Trip date, duration, condition, and note inputs.
+- Source links, confidence labels, and Vitest coverage for packing and
+  provenance behavior.
+
+### Changed
+
+- Established NPS as the authority for official trail statistics and USGS as
+  the public comparison/fallback source.
+- Kept the NPS 1,040-foot Jenny Lake gain separate from the roughly 698-foot
+  USGS method-dependent estimate.
+- Limited production trail data to permission-compliant NPS and USGS sources.
+
+### Fixed
+
+- Correctly parsed mixed hour-and-minute durations and conservative duration
+  ranges.
+- Added deterministic snow, ice, mud, and wet-condition handling with
+  clause-scoped negation.
+- Required official packing and alert claims to include validated HTTPS NPS
+  sources.
+
+### Security
+
+- Added source validation for official NPS links.
+- Applied safe dependency updates without forcing incompatible framework
+  changes.
