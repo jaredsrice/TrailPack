@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-07-29",
+  "trails": {
+    "jenny-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+      "checkedAt": "2026-07-29",
+      "distanceMiles": 7.1,
+      "elevationGainFeet": 1040,
+      "estimatedDuration": "3-5 hours",
+      "difficulty": "Moderate",
+      "routeType": "loop",
+      "accessibility": "The Jenny Lake Loop is a 7.1 mi (11.4 km) loop hike with 1,040 ft (320 m) of elevation gain with an average slope of 6%. The trail is dirt, narrow in sections, and features obstacles such as roots, exposed rock, and slight elevation change."
+    },
+    "string-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/stringlake.htm",
+      "checkedAt": "2026-07-29",
+      "distanceMiles": 3.7,
+      "elevationGainFeet": 540,
+      "estimatedDuration": "2-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "loop",
+      "accessibility": "The String Lake Loop is an easy 3.7 mi (5.6 km) loop hike with 540 ft (160 m) of elevation gain and an average slope of 6%. The trail on the east side of the lake is relatively flat, with obstacles such as exposed roots and rock. The west side of the trail includes elevation gain to a ridge overlooking String Lake."
+    },
+    "taggart-lake": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/taggartlake.htm",
+      "checkedAt": "2026-07-29",
+      "distanceMiles": 3,
+      "elevationGainFeet": 360,
+      "estimatedDuration": "1-2 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Taggart Lake is a 3 mi (4.8 km) roundtrip hike with 360 ft (110 m) of elevation gain and an average slope of 6%. The trail gains and loses elevation and includes rocks and steps."
+    },
+    "colter-bay-lakeshore-trail": {
+      "sourceUrl": "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
+      "checkedAt": "2026-07-29",
+      "distanceMiles": 2.2,
+      "elevationGainFeet": 100,
+      "estimatedDuration": "1 hour",
+      "difficulty": "Easy",
+      "routeType": "loop"
+    },
+    "two-ocean-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
+      "checkedAt": "2026-07-29",
+      "distanceMiles": 6.4,
+      "elevationGainFeet": 400,
+      "estimatedDuration": "3 hours",
+      "difficulty": "Moderate",
+      "routeType": "loop"
+    }
+  }
+}

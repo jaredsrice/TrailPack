@@ -1,5 +1,6 @@
 import type { TrailProfile } from "@/features/trailpack/types";
 import { PUBLIC_TRAILS } from "./public-trails";
+import { applyNpsSourceSnapshot } from "./nps-source-snapshots";
 
 const USGS_TRAILS_LAYER_URL =
   "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37";
@@ -24,7 +25,7 @@ export const SUPPORTED_PARKS: SupportedPark[] = [
   },
 ];
 
-export const JENNY_LAKE_LOOP: TrailProfile = {
+export const JENNY_LAKE_LOOP: TrailProfile = applyNpsSourceSnapshot({
   id: "jenny-lake-loop",
   name: "Jenny Lake Loop",
   park: "Grand Teton National Park",
@@ -97,9 +98,9 @@ export const JENNY_LAKE_LOOP: TrailProfile = {
     },
   ],
   missingFields: [],
-};
+});
 
-export const TAGGART_LAKE: TrailProfile = {
+export const TAGGART_LAKE: TrailProfile = applyNpsSourceSnapshot({
   id: "taggart-lake",
   name: "Taggart Lake",
   park: "Grand Teton National Park",
@@ -161,9 +162,9 @@ export const TAGGART_LAKE: TrailProfile = {
     },
   ],
   missingFields: [],
-};
+});
 
-export const STRING_LAKE_LOOP: TrailProfile = {
+export const STRING_LAKE_LOOP: TrailProfile = applyNpsSourceSnapshot({
   id: "string-lake-loop",
   name: "String Lake Loop",
   park: "Grand Teton National Park",
@@ -225,7 +226,7 @@ export const STRING_LAKE_LOOP: TrailProfile = {
     },
   ],
   missingFields: [],
-};
+});
 
 export const SUPPORTED_TRAILS: Record<string, TrailProfile> = {
   "jenny-lake-loop": JENNY_LAKE_LOOP,

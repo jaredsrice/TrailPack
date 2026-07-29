@@ -5,12 +5,13 @@ import {
   TWO_OCEAN_LAKE_LOOP,
 } from "@/features/trailpack/data/public-trails";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
+import { NPS_SOURCE_SNAPSHOTS } from "@/features/trailpack/data/nps-source-snapshots";
 import { generatePackingRecommendation } from "@/features/trailpack/lib/packing";
 import type { TrailProfile } from "@/features/trailpack/types";
 
-const TRAIL_CASES: Array<[TrailProfile, number, number, number]> = [
-  [COLTER_BAY_LAKESHORE_TRAIL, 2.2, 100, 2.331],
-  [TWO_OCEAN_LAKE_LOOP, 6.4, 400, 6.335],
+const TRAIL_CASES: Array<[TrailProfile, number]> = [
+  [COLTER_BAY_LAKESHORE_TRAIL, 2.331],
+  [TWO_OCEAN_LAKE_LOOP, 6.335],
 ];
 
 describe("verified Grand Teton public-source imports", () => {
@@ -23,18 +24,19 @@ describe("verified Grand Teton public-source imports", () => {
 
   it.each(TRAIL_CASES)(
     "keeps NPS values authoritative and USGS distance labeled as comparison data for %s",
-    (trail, distanceMiles, gainFeet, usgsDistanceMiles) => {
+    (trail, usgsDistanceMiles) => {
+      const snapshot = NPS_SOURCE_SNAPSHOTS.trails[trail.id];
       expect(trail.profileKind).toBe("public-source-import");
       expect(trail.retrievalStatus).toBe("saved-fixture");
       expect(trail.distanceMiles).toMatchObject({
-        value: distanceMiles,
+        value: snapshot.distanceMiles,
         source: "NPS",
         label: "official",
         computedValue: usgsDistanceMiles,
         computedSource: "USGS",
       });
       expect(trail.elevationGainFeet).toMatchObject({
-        value: gainFeet,
+        value: snapshot.elevationGainFeet,
         source: "NPS",
         label: "official",
       });
@@ -59,9 +61,11 @@ describe("verified Grand Teton public-source imports", () => {
   });
 
   it("keeps the newer Two Ocean NPS gain while exposing the official conflict", () => {
-    expect(TWO_OCEAN_LAKE_LOOP.elevationGainFeet.value).toBe(400);
+    expect(TWO_OCEAN_LAKE_LOOP.elevationGainFeet.value).toBe(
+      NPS_SOURCE_SNAPSHOTS.trails[TWO_OCEAN_LAKE_LOOP.id].elevationGainFeet,
+    );
     expect(TWO_OCEAN_LAKE_LOOP.elevationGainFeet.computedNote).toMatch(
-      /400 ft.*700 ft.*AllTrails.*488 ft/i,
+      /official NPS pages conflict.*AllTrails/i,
     );
     expect(TWO_OCEAN_LAKE_LOOP.sourceConfidence).toMatchObject({
       status: "official_nps_with_gain_conflict",

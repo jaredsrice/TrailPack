@@ -61,7 +61,8 @@ export type TrailProfileField =
   | "elevationGainFeet"
   | "routeType"
   | "estimatedDuration"
-  | "difficulty";
+  | "difficulty"
+  | "accessibility";
 
 export interface TrailSourceRecord {
   source: Extract<DataSource, "NPS" | "USGS">;
@@ -89,12 +90,23 @@ export interface TrailProfile {
   estimatedDuration: SourcedValue<string>;
   difficulty: SourcedValue<string>;
   routeType: RouteType;
+  accessibility?: SourcedValue<string>;
   elevationMinFeet?: number;
   elevationMaxFeet?: number;
   sourceConfidence: SourceConfidence;
   npsSourceUrl: string;
   sourceRecords: TrailSourceRecord[];
   missingFields: TrailProfileField[];
+}
+
+export interface WeatherForecastPeriod {
+  time: string;
+  temperatureF?: number;
+  apparentTemperatureF?: number;
+  precipitationChance?: number;
+  windMph?: number;
+  weatherCode?: number;
+  condition: string;
 }
 
 export interface WeatherContext {
@@ -114,6 +126,7 @@ export interface WeatherContext {
   retrievalStatus?: RetrievalStatus;
   statusReason?: string;
   daylight?: DaylightContext;
+  forecastPeriods?: WeatherForecastPeriod[];
 }
 
 export interface DaylightContext {

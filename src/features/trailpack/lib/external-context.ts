@@ -4,7 +4,12 @@ import {
   SUPPORTED_PARKS,
   TRAIL_CATALOG,
 } from "@/features/trailpack/data/supported-trails";
-import type { AlertContext, DaylightContext, WeatherContext } from "@/features/trailpack/types";
+import type {
+  AlertContext,
+  DaylightContext,
+  WeatherContext,
+  WeatherForecastPeriod,
+} from "@/features/trailpack/types";
 
 type Fetcher = (
   input: RequestInfo | URL,
@@ -22,6 +27,15 @@ interface OpenMeteoForecastResponse {
     wind_speed_10m?: number;
     weather_code?: number;
     weathercode?: number;
+  };
+  hourly?: {
+    time?: string[];
+    temperature_2m?: number[];
+    apparent_temperature?: number[];
+    precipitation_probability?: number[];
+    wind_speed_10m?: number[];
+    weather_code?: number[];
+    weathercode?: number[];
   };
   daily?: {
     time?: string[];
@@ -65,9 +79,18 @@ const RAIN_CODES = new Set([
   51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82, 95, 96, 99,
 ]);
 const SNOW_CODES = new Set([71, 73, 75, 77, 85, 86]);
+const MAX_HOURLY_FORECAST_PERIODS = 24;
 
 function firstNumber(values: number[] | undefined): number | undefined {
   const value = values?.[0];
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function numberAt(
+  values: number[] | undefined,
+  index: number,
+): number | undefined {
+  const value = values?.[index];
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
@@ -85,31 +108,82 @@ function weatherCodeDescription(code: number | undefined): string {
     return "forecast context available";
   }
 
-  if (SNOW_CODES.has(code)) {
-    return "snow possible";
-  }
-
-  if (RAIN_CODES.has(code)) {
-    return "rain likely";
-  }
-
-  if (code === 0 || code === 1) {
-    return "mostly clear";
-  }
-
-  if (code === 2 || code === 3) {
-    return "partly cloudy";
-  }
-
-  if (code >= 45 && code <= 48) {
-    return "fog possible";
-  }
-
+  if (code === 0) return "clear";
+  if (code === 1) return "mostly clear";
+  if (code === 2) return "partly cloudy";
+  if (code === 3) return "overcast";
+  if (code === 45 || code === 48) return "fog possible";
+  if (code >= 51 && code <= 55) return "drizzle possible";
+  if (code === 56 || code === 57) return "freezing drizzle possible";
+  if (code >= 61 && code <= 65) return "rain likely";
+  if (code === 66 || code === 67) return "freezing rain possible";
+  if (code >= 71 && code <= 75) return "snow possible";
+  if (code === 77) return "snow grains possible";
+  if (code >= 80 && code <= 82) return "rain showers possible";
+  if (code === 85 || code === 86) return "snow showers possible";
+  if (code === 95) return "thunderstorms possible";
+  if (code === 96 || code === 99) return "thunderstorms with hail possible";
   return "forecast context available";
 }
 
 function round(value: number | undefined): number | undefined {
   return value === undefined ? undefined : Math.round(value);
+}
+
+function buildForecastPeriods(
+  hourly: OpenMeteoForecastResponse["hourly"],
+  plannedDate: string | undefined,
+): WeatherForecastPeriod[] {
+  if (!plannedDate || !Array.isArray(hourly?.time)) {
+    return [];
+  }
+
+  const periods: WeatherForecastPeriod[] = [];
+  const datePrefix = `${plannedDate}T`;
+
+  for (const [index, time] of hourly.time.entries()) {
+    if (
+      periods.length >= MAX_HOURLY_FORECAST_PERIODS ||
+      typeof time !== "string" ||
+      !time.startsWith(datePrefix)
+    ) {
+      continue;
+    }
+
+    const temperatureF = round(numberAt(hourly.temperature_2m, index));
+    const apparentTemperatureF = round(
+      numberAt(hourly.apparent_temperature, index),
+    );
+    const precipitationChance = round(
+      numberAt(hourly.precipitation_probability, index),
+    );
+    const windMph = round(numberAt(hourly.wind_speed_10m, index));
+    const weatherCode =
+      numberAt(hourly.weather_code, index) ??
+      numberAt(hourly.weathercode, index);
+
+    if (
+      temperatureF === undefined &&
+      apparentTemperatureF === undefined &&
+      precipitationChance === undefined &&
+      windMph === undefined &&
+      weatherCode === undefined
+    ) {
+      continue;
+    }
+
+    periods.push({
+      time,
+      temperatureF,
+      apparentTemperatureF,
+      precipitationChance,
+      windMph,
+      weatherCode,
+      condition: weatherCodeDescription(weatherCode),
+    });
+  }
+
+  return periods;
 }
 
 function buildWeatherSummary({
@@ -164,6 +238,8 @@ export function buildWeatherContextFromOpenMeteoResponse(
     firstNumber(daily.weathercode) ??
     current.weather_code ??
     current.weathercode;
+  const forecastDate = plannedDate ?? daily.time?.[0];
+  const forecastPeriods = buildForecastPeriods(response.hourly, forecastDate);
 
   const conditions: WeatherContext["conditions"] = [];
 
@@ -192,7 +268,7 @@ export function buildWeatherContextFromOpenMeteoResponse(
   }
 
   return {
-    plannedDate: plannedDate ?? daily.time?.[0],
+    plannedDate: forecastDate,
     timezone: response.timezone,
     summary: buildWeatherSummary({
       high,
@@ -212,6 +288,7 @@ export function buildWeatherContextFromOpenMeteoResponse(
     source: "open-meteo",
     label: "forecast-based",
     retrievalStatus: "live",
+    forecastPeriods,
   };
 }
 
@@ -241,16 +318,37 @@ export function buildDaylightContextFromSunriseSunsetResponse(
   };
 }
 
-export function buildSavedWeatherFallback(trailId: string): WeatherContext | null {
+export function buildSavedWeatherFallback(
+  trailId: string,
+  plannedDate?: string,
+): WeatherContext | null {
   const scenario = getDemoScenario(trailId);
   if (!scenario) {
     return null;
   }
 
+  const forecastPeriods = plannedDate
+    ? scenario.weather.forecastPeriods?.map((period) => ({
+        ...period,
+        time: period.time.includes("T")
+          ? `${plannedDate}${period.time.slice(period.time.indexOf("T"))}`
+          : period.time,
+      }))
+    : scenario.weather.forecastPeriods;
+  const daylight =
+    plannedDate && plannedDate !== scenario.weather.daylight?.date
+      ? undefined
+      : scenario.weather.daylight;
+
   return {
     ...scenario.weather,
+    plannedDate: plannedDate ?? scenario.weather.plannedDate,
+    forecastPeriods,
+    daylight,
     retrievalStatus: "saved-fixture",
-    statusReason: "Using saved demo weather because live weather is unavailable.",
+    statusReason: plannedDate
+      ? `Live weather is unavailable for ${plannedDate}; these are saved example conditions, not that day's forecast.`
+      : "Using saved example conditions because live weather is unavailable.",
   };
 }
 
@@ -302,10 +400,16 @@ async function fetchSunriseSunsetDaylightContext({
 
 export async function fetchOpenMeteoWeatherContext(
   trailId: string,
-  fetcher: Fetcher = fetch,
+  {
+    plannedDate,
+    fetcher = fetch,
+  }: {
+    plannedDate?: string;
+    fetcher?: Fetcher;
+  } = {},
 ): Promise<WeatherContext | null> {
   const trail = TRAIL_CATALOG[trailId];
-  const fallback = buildSavedWeatherFallback(trailId);
+  const fallback = buildSavedWeatherFallback(trailId, plannedDate);
 
   if (!trail?.coordinates) {
     return fallback;
@@ -322,9 +426,18 @@ export async function fetchOpenMeteoWeatherContext(
     "daily",
     "temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code",
   );
+  url.searchParams.set(
+    "hourly",
+    "temperature_2m,apparent_temperature,precipitation_probability,wind_speed_10m,weather_code",
+  );
   url.searchParams.set("temperature_unit", "fahrenheit");
   url.searchParams.set("wind_speed_unit", "mph");
-  url.searchParams.set("forecast_days", "1");
+  if (plannedDate) {
+    url.searchParams.set("start_date", plannedDate);
+    url.searchParams.set("end_date", plannedDate);
+  } else {
+    url.searchParams.set("forecast_days", "1");
+  }
   url.searchParams.set("timezone", "auto");
 
   try {
@@ -340,6 +453,7 @@ export async function fetchOpenMeteoWeatherContext(
 
     const weather = buildWeatherContextFromOpenMeteoResponse(
       (await response.json()) as OpenMeteoForecastResponse,
+      plannedDate,
     );
     const daylight = await fetchSunriseSunsetDaylightContext({
       lat: trail.coordinates.lat,

@@ -4,8 +4,9 @@ const JENNY_LAKE_REVIEW_FIXTURE: AiReviewDraft = {
   tripSummary:
     "Jenny Lake Loop is a longer Grand Teton day hike with forecast-based rain and sun signals, so the rule-based list emphasizes steady hydration, weather protection, bear safety, and basic mountain-hike backups.",
   missingDataReview: [
-    "Current trail surface conditions are not known from official data alone.",
-    "Expected time out was not provided.",
+    "Current trail conditions (muddy, icy, snow) are not known from official data alone.",
+    "Your expected time out improves food, water, and daylight/headlamp guidance.",
+    "Your start time would improve daylight and headlamp guidance.",
   ],
   itemExplanationDrafts: [
     {

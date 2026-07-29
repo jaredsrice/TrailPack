@@ -85,6 +85,24 @@ export interface GuardedAiReviewResult {
   validationReasons: string[];
 }
 
+export type LiveAiOutcome =
+  | "accepted"
+  | "rejected"
+  | "timed-out"
+  | "quota-limited"
+  | "missing-key"
+  | "invalid-response"
+  | "provider-error";
+
+export interface LiveAiReviewResult {
+  outcome: LiveAiOutcome;
+  provider: {
+    name: "gemini";
+    model: string;
+  };
+  review: GuardedAiReviewResult;
+}
+
 export function buildAiContractInput({
   trail,
   weather,
@@ -166,6 +184,12 @@ export function validateAiReviewDraft(
     }
   }
 
+  if (!sameStrings(draft.missingDataReview, input.packing.missingDetails)) {
+    validationReasons.push(
+      "AI review changed the rule-based missing-details list.",
+    );
+  }
+
   const draftText = collectDraftText(draft).toLowerCase();
   if (hasUnsupportedSafetyClaim(draftText)) {
     validationReasons.push("AI review made an unsupported safety claim.");
@@ -193,11 +217,7 @@ export function buildGuardedAiReview(
   draft: AiReviewDraft | null | undefined,
 ): GuardedAiReviewResult {
   if (!draft) {
-    return {
-      status: "fallback",
-      review: buildTemplateFallbackReview(input),
-      validationReasons: ["AI review fixture was unavailable."],
-    };
+    return buildGuardedAiFallback(input, ["AI review fixture was unavailable."]);
   }
 
   const result = validateAiReviewDraft(input, draft);
@@ -213,6 +233,17 @@ export function buildGuardedAiReview(
     status: "fallback",
     review: buildTemplateFallbackReview(input),
     validationReasons: result.validationReasons.map(toFallbackValidationReason),
+  };
+}
+
+export function buildGuardedAiFallback(
+  input: AiContractInput,
+  validationReasons: string[],
+): GuardedAiReviewResult {
+  return {
+    status: "fallback",
+    review: buildTemplateFallbackReview(input),
+    validationReasons,
   };
 }
 
@@ -248,6 +279,14 @@ function sameLabels(left: SourceLabel[], right: SourceLabel[]): boolean {
   return left.every((label, index) => label === right[index]);
 }
 
+function sameStrings(left: string[], right: string[]): boolean {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  return left.every((value, index) => value === right[index]);
+}
+
 function collectDraftText(draft: AiReviewDraft): string {
   return [
     draft.tripSummary,
@@ -258,11 +297,13 @@ function collectDraftText(draft: AiReviewDraft): string {
 
 function hasUnsupportedSafetyClaim(text: string): boolean {
   return [
-    /\bguaranteed safe\b/,
+    /\b(?:guaranteed|completely|perfectly|totally)\s+safe\b/,
     /\bsafe today\b/,
     /\bsafe to hike\b/,
     /\brely on this list for safety\b/,
-    /\bno risk\b/,
+    /\b(?:no|zero)\s+(?:risk|danger)\b/,
+    /\brisk[- ]free\b/,
+    /\b(?:ensures|guarantees)\s+(?:your\s+)?safety\b/,
   ].some((pattern) => pattern.test(text));
 }
 

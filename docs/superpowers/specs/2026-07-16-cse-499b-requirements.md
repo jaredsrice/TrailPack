@@ -74,7 +74,7 @@ evidence must remain distinguishable.
 | Requirement | Status | Completion Evidence |
 |---|---|---|
 | MH-01 Supported Hike Input Workflow | Complete | Three supported Grand Teton profiles plus manual distance, elevation gain, route type, date, start time, duration, and condition input. |
-| MH-02 Weather And Official Alert Context | Complete | Live-path Open-Meteo, Sunrise-Sunset.org, and NPS route handlers; saved fixtures; visible active, no-alert, and unavailable states. |
+| MH-02 Weather And Official Alert Context | Complete and enhanced | Automatic date-aware Open-Meteo weather with a collapsed four-highlight/full-hourly forecast, planned-start and daylight timeline markers, Sunrise-Sunset.org and NPS route handlers, saved fixtures, and visible live, fallback, no-alert, and unavailable states. |
 | MH-03 Rule-Based Baseline Packing List | Complete | Deterministic essential and optional output for supported profiles and manual fallback without AI. |
 | MH-04 Recommendation Explanations And Source Labels | Complete | Grouped accordion recommendations with clear actions, expandable reasons, context markers, and source labels. |
 | MH-05 Guarded AI Contract And Fallback Validation | Complete by accepted fixture path | Structured fixture-first review, validation, rejection behavior, and template fallback. Live AI was optional under the Week 12 contract. |
@@ -150,6 +150,43 @@ Fails if:
 
 AI becomes required for packing output, receives unnecessary personal data,
 produces untraceable safety claims, or changes the baseline without validation.
+
+#### B-02 Supporting Closeout Task: Monthly NPS Source Integrity
+
+Before B-02 closes, TrailPack must include a non-runtime monthly refresh for the
+known official NPS pages attached to every supported trail profile. It must
+compare the published distance, elevation gain, duration, difficulty, route
+wording, and NPS-specific accessibility information it can reliably extract
+against TrailPack's managed snapshots.
+
+Success:
+
+- The checker covers every supported trail with a saved NPS source URL.
+- Changed values, removed pages, parsing failures, and automatic-update outcomes
+  appear in a reviewable Markdown or JSON report.
+- Fixture tests cover unchanged, changed, missing-field, and changed-page-layout
+  outcomes.
+- A source change is applied only after two matching fetches, type and range
+  validation, and the normal lint, test, type-check, and production-build gates.
+- Automatic writes are limited to the existing managed NPS snapshot file.
+  Supported-trail membership, USGS geometry, source-confidence rules, and
+  recommendations are outside the workflow's write scope.
+- NPS accessibility information is shown in the selected-trail interface when
+  the official page publishes a trail-specific block.
+
+Demo:
+
+Run the refresh, show the generated comparison report, demonstrate that a
+bounded simulated NPS change updates the managed snapshot after two matching
+fetches, and demonstrate that an inconsistent or implausible change leaves the
+snapshot untouched.
+
+Fails if:
+
+The refresh expands the catalog automatically, writes outside the managed NPS
+snapshot, applies a single unconfirmed response, treats a parse failure as an
+authoritative change, bypasses the verification suite, or requests NPS pages
+during a user's normal TrailPack workflow.
 
 ### B-03: Google Login And Private Saved Results
 
@@ -261,8 +298,8 @@ the browser.
 ### Data Flow
 
 1. The user selects a curated trail, public lookup result, or manual entry.
-2. Trail facts, weather, daylight, alerts, and user input are normalized with
-   provenance and availability status.
+2. Trail facts, date-aware day forecast, daylight, alerts, and user input are
+   normalized with provenance and availability status.
 3. The rule engine creates the packing list and safety classifications.
 4. The optional AI provider receives only the structured data required to explain
    or review the result.
@@ -293,7 +330,7 @@ available data.
 |---|---|---|
 | CSE 499A baseline | Existing unit, scenario, build, and browser evidence | Final closeout note and passing main branch |
 | B-01 Public trail lookup | Contract tests, normalization tests, no-result/error tests, UI walkthrough | Source-labeled external result and manual fallback |
-| B-02 Advanced guarded AI | Schema and validation tests, provider mocks, controlled live test | Accepted, rejected, unavailable, and fallback outcomes |
+| B-02 Advanced guarded AI | Schema and validation tests, provider mocks, controlled live test, NPS source-integrity fixtures and live dry run | Accepted, rejected, unavailable, and fallback outcomes plus a non-destructive NPS comparison report |
 | B-03 Google login and saved results | Auth integration tests, data-access tests, two-user manual check | Guest path, save/revisit/delete, and cross-user denial |
 | B-04 Cybersecurity review | Static, dynamic, manual, and agent-assisted review followed by retest | Sanitized findings and remediation report |
 
@@ -333,4 +370,3 @@ TrailPack is complete for CSE 499B when:
 - CWE Top 25: https://cwe.mitre.org/top25/
 - SonarQube documentation: https://docs.sonarsource.com/sonarqube-server/
 - Burp Suite documentation: https://portswigger.net/burp/documentation
-

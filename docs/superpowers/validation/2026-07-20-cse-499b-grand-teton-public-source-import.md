@@ -5,6 +5,12 @@ Requirement: B-01 permission-compliant public trail lookup
 Branch: `codex/b01-public-trail-adapter`  
 Status: Tetons-first implementation complete; visual UAT and scope acceptance pending
 
+> **Current UI note (2026-07-25):** TrailPack now labels all five catalog trails
+> `Verified NPS + USGS profile`. The `curated` and `public-source-import` kinds
+> remain internal milestone metadata because both groups were manually assembled
+> from official NPS facts and reconciled USGS evidence. Historical references to
+> separate visible labels below describe the original B-01 implementation.
+
 ## Decision
 
 Use a bounded, manually approved NPS/USGS import workflow before expanding

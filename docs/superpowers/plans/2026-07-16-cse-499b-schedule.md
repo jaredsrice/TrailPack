@@ -44,7 +44,7 @@ scheduled late; it is not part of the CSE 499A closeout.
 | 5 | B-01 verification and UAT | Test success, partial data, no result, provider failure, and rate-limit behavior; complete a hiker walkthrough and close B-01 defects. |
 | 6 | B-02 live provider boundary | Select the approved AI provider, add server-side configuration, schema validation, timeout/error handling, and mocked contract tests. No user-facing AI result is accepted yet. |
 | 7 | B-02 guarded refinement UI | Add accepted/rejected/fallback display, preserve the rule-based list, and make the validation result understandable without exposing internal prompts or secrets. |
-| 8 | B-02 validation and midpoint demo | Run accepted, rejected, timeout, quota, and missing-key scenarios; demonstrate B-01 and B-02 together and resolve midpoint feedback. |
+| 8 | B-02 validation, source integrity, and midpoint demo | Run accepted, rejected, timeout, quota, and missing-key scenarios; implement and dry-run the offline monthly NPS source-integrity checker for every supported trail; demonstrate B-01 and B-02 together; and resolve midpoint feedback. |
 | 9 | B-03 auth and data design | Define saved-result fields, retention, ownership rules, guest behavior, OAuth flow, test users, and managed storage before implementing persistence. |
 | 10 | B-03 Google login and persistence | Implement sign-in/sign-out and save/revisit/delete for one result while keeping the full guest workflow available. |
 | 11 | B-03 authorization and integration | Add per-user access tests, cross-user denial tests, session/error handling, and an integrated two-user walkthrough. |
@@ -58,7 +58,7 @@ scheduled late; it is not part of the CSE 499A closeout.
 |---|---|---|
 | M1: 499B baseline accepted | End of Week 2 | Requirements, deployment state, provider feasibility, and issue breakdown are recorded. |
 | M2: Public lookup complete | End of Week 5 | B-01 success, fallback, provenance, and UAT criteria pass. |
-| M3: Guarded live AI complete | End of Week 8 | B-02 live, rejected, unavailable, and deterministic fallback paths pass. |
+| M3: Guarded live AI and source integrity complete | End of Week 8 | B-02 live, rejected, unavailable, and deterministic fallback paths pass, and the monthly NPS checker produces its first non-destructive comparison report. |
 | M4: Saved results complete | End of Week 11 | B-03 guest, save, revisit, delete, and access-isolation criteria pass. |
 | M5: Release candidate frozen | End of Week 12 | Required product scope is stable in the authorized test environment. |
 | M6: Final verified delivery | End of Week 14 | B-04 report and retests are complete, UAT passes, and final docs match the deployed product. |
@@ -78,6 +78,27 @@ criterion.
 If a live AI provider cannot be used within approved cost, privacy, or quota
 limits, preserve the existing fixture contract and request an explicit scope
 decision. Do not weaken validation to make the live demo pass.
+
+### B-02 Monthly NPS Source-Integrity Gate
+
+Before B-02 closes, add an offline monthly refresh for the supported trail
+catalog's known official NPS pages. It must retrieve only the saved NPS source
+URLs at a conservative rate, extract the trail fields and accessibility
+information TrailPack tracks, compare them with the managed snapshots, and
+produce a reviewable report for changes, removed pages, parsing failures, and
+automatic-update outcomes.
+
+Twice-confirmed changes within explicit identity, type, range, and USGS-distance
+bounds may update the managed NPS snapshot automatically after the normal
+verification suite passes. The job must never write USGS geometry, publish a
+newly discovered trail, change recommendation logic, or apply ambiguous source
+data. Parser and refresh behavior must be fixture-tested, and the initial live
+refresh must be recorded before this gate passes.
+
+Implementation status (2026-07-28): complete on the B-02 feature branch. The
+fixture-tested guarded refresh, automatic snapshot workflow, accessibility
+display, and initial 5/5 live comparison are recorded in
+[`../validation/2026-07-28-b02-nps-source-integrity.md`](../validation/2026-07-28-b02-nps-source-integrity.md).
 
 ### Authentication Gate
 
@@ -105,4 +126,3 @@ npm run build
 Run `npm run scenario:stress` whenever recommendation behavior or AI-facing
 explanation data changes. Run focused browser checks whenever the search,
 recommendation, auth, or saved-result workflow changes.
-

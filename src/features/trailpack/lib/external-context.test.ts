@@ -28,6 +28,19 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
           wind_speed_10m_max: [24],
           weather_code: [61],
         },
+        hourly: {
+          time: [
+            "2026-07-06T06:00",
+            "2026-07-06T10:00",
+            "2026-07-06T14:00",
+            "2026-07-06T18:00",
+          ],
+          temperature_2m: [45, 60, 84, 70],
+          apparent_temperature: [42, 59, 82, 68],
+          precipitation_probability: [10, 20, 55, 40],
+          wind_speed_10m: [4, 10, 24, 18],
+          weather_code: [1, 2, 61, 80],
+        },
       },
       "2026-07-06",
     );
@@ -41,6 +54,44 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
     expect(weather.windMph).toBe(24);
     expect(weather.conditions).toEqual(expect.arrayContaining(["heat", "rain", "wind"]));
     expect(weather.summary).toContain("84°F high");
+    expect(weather.forecastPeriods).toEqual([
+      {
+        time: "2026-07-06T06:00",
+        temperatureF: 45,
+        apparentTemperatureF: 42,
+        precipitationChance: 10,
+        windMph: 4,
+        weatherCode: 1,
+        condition: "mostly clear",
+      },
+      {
+        time: "2026-07-06T10:00",
+        temperatureF: 60,
+        apparentTemperatureF: 59,
+        precipitationChance: 20,
+        windMph: 10,
+        weatherCode: 2,
+        condition: "partly cloudy",
+      },
+      {
+        time: "2026-07-06T14:00",
+        temperatureF: 84,
+        apparentTemperatureF: 82,
+        precipitationChance: 55,
+        windMph: 24,
+        weatherCode: 61,
+        condition: "rain likely",
+      },
+      {
+        time: "2026-07-06T18:00",
+        temperatureF: 70,
+        apparentTemperatureF: 68,
+        precipitationChance: 40,
+        windMph: 18,
+        weatherCode: 80,
+        condition: "rain showers possible",
+      },
+    ]);
   });
 });
 
@@ -130,12 +181,40 @@ describe("external-context fallbacks", () => {
       json: async () => ({}),
     });
 
-    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", fetcher);
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      fetcher,
+    });
 
     expect(fetcher).toHaveBeenCalledOnce();
     expect(weather).not.toBeNull();
     expect(weather?.retrievalStatus).toBe("saved-fixture");
     expect(weather?.summary).toMatch(/Partly sunny/);
+  });
+
+  it("labels a selected-date fallback without reusing daylight from another day", async () => {
+    const fetcher = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      json: async () => ({}),
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      plannedDate: "2027-01-01",
+      fetcher,
+    });
+
+    expect(weather).toMatchObject({
+      plannedDate: "2027-01-01",
+      retrievalStatus: "saved-fixture",
+    });
+    expect(weather?.statusReason).toMatch(/saved example conditions/i);
+    expect(weather?.statusReason).toMatch(/not that day's forecast/i);
+    expect(weather?.daylight).toBeUndefined();
+    expect(
+      weather?.forecastPeriods?.every((period) =>
+        period.time.startsWith("2027-01-01T"),
+      ),
+    ).toBe(true);
   });
 
   it("uses imported-trail coordinates and falls back to its saved context", async () => {
@@ -147,7 +226,7 @@ describe("external-context fallbacks", () => {
 
     const weather = await fetchOpenMeteoWeatherContext(
       "two-ocean-lake-loop",
-      fetcher,
+      { fetcher },
     );
     const requestedUrl = new URL(String(fetcher.mock.calls[0]?.[0]));
 
@@ -206,11 +285,86 @@ describe("external-context fallbacks", () => {
       };
     });
 
-    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", fetcher);
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      fetcher,
+    });
 
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(weather?.daylight?.source).toBe("sunrise-sunset");
     expect(weather?.daylight?.civilTwilightEnd).toBe("2026-06-15T21:42:37-06:00");
+  });
+
+  it("requests the selected date and hourly forecast fields", async () => {
+    const hourlyTimes = Array.from(
+      { length: 24 },
+      (_, hour) =>
+        `2026-07-28T${hour.toString().padStart(2, "0")}:00`,
+    );
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      const url = new URL(String(input));
+
+      if (url.hostname === "api.open-meteo.com") {
+        expect(url.searchParams.get("start_date")).toBe("2026-07-28");
+        expect(url.searchParams.get("end_date")).toBe("2026-07-28");
+        expect(url.searchParams.has("forecast_days")).toBe(false);
+        expect(url.searchParams.get("hourly")).toContain(
+          "precipitation_probability",
+        );
+
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            timezone: "America/Denver",
+            daily: {
+              time: ["2026-07-28"],
+              temperature_2m_max: [76],
+              temperature_2m_min: [46],
+              precipitation_probability_max: [20],
+              wind_speed_10m_max: [11],
+              weather_code: [2],
+            },
+            hourly: {
+              time: hourlyTimes,
+              temperature_2m: hourlyTimes.map((_, hour) =>
+                hour === 14 ? 76 : 46 + hour,
+              ),
+              apparent_temperature: hourlyTimes.map((_, hour) => 43 + hour),
+              precipitation_probability: hourlyTimes.map((_, hour) =>
+                Math.min(hour, 20),
+              ),
+              wind_speed_10m: hourlyTimes.map((_, hour) =>
+                Math.min(3 + hour, 11),
+              ),
+              weather_code: hourlyTimes.map((_, hour) =>
+                hour >= 12 ? 2 : 1,
+              ),
+            },
+          }),
+        };
+      }
+
+      return {
+        ok: false,
+        status: 503,
+        json: async () => ({}),
+      };
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      plannedDate: "2026-07-28",
+      fetcher,
+    });
+
+    expect(weather?.plannedDate).toBe("2026-07-28");
+    expect(weather?.forecastPeriods).toHaveLength(24);
+    expect(weather?.forecastPeriods?.[0]?.time).toBe("2026-07-28T00:00");
+    expect(weather?.forecastPeriods?.[14]).toMatchObject({
+      time: "2026-07-28T14:00",
+      temperatureF: 76,
+      condition: "partly cloudy",
+    });
+    expect(weather?.forecastPeriods?.[23]?.time).toBe("2026-07-28T23:00");
   });
 
   it("returns unavailable alert context when the NPS key is missing", async () => {

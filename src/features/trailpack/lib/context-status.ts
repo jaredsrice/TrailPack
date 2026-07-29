@@ -6,6 +6,7 @@ export interface ContextStatusItem {
   label: SourceLabel;
   retrievalStatus: RetrievalStatus;
   details: string[];
+  notice?: string;
 }
 
 export interface ContextStatusSummary {
@@ -24,6 +25,7 @@ export function buildContextStatus(
       label: weather.label,
       retrievalStatus: weather.retrievalStatus ?? "saved-fixture",
       details: weatherDetails(weather),
+      notice: weather.statusReason,
     },
     alerts: {
       status: alertStatusText(alerts),
@@ -31,6 +33,7 @@ export function buildContextStatus(
       label: alerts.label,
       retrievalStatus: alerts.retrievalStatus ?? "saved-fixture",
       details: alerts.alerts.map((alert) => alert.title),
+      notice: alerts.statusReason,
     },
   };
 }
