@@ -10,12 +10,15 @@ corrections within that milestone.
 
 ## [Unreleased]
 
-No user-facing changes have been released since `0.4.0`.
+### Changed
+
+- Reframed the README, roadmap, and release summaries around product milestones
+  for a public audience.
 
 ## [0.4.0] - 2026-07-29
 
-Completed the CSE 499B B-02 guarded-AI milestone and deployed it to production
-as commit
+Delivered the guarded-AI and field-guide milestone and deployed it to
+production as commit
 [`33fa471`](https://github.com/jaredsrice/TrailPack/commit/33fa471350608b4468714083a74f26334037cca6).
 
 ### Added
@@ -85,8 +88,7 @@ as commit
 
 ## [0.3.0] - 2026-07-20
 
-Completed the CSE 499B B-01 public-trail import milestone and deployed it as
-commit
+Delivered the verified public-trail import milestone and deployed it as commit
 [`d4cbbd7`](https://github.com/jaredsrice/TrailPack/commit/d4cbbd7f5dd33fa7c1c561ee86deac2fac239ac4).
 
 ### Added
@@ -121,8 +123,8 @@ commit
 
 ## [0.2.0] - 2026-07-16
 
-Closed the six-requirement CSE 499A baseline and established the CSE 499B
-requirements and schedule at commit
+Completed the six-part product baseline and established the next product
+roadmap at commit
 [`c77158b`](https://github.com/jaredsrice/TrailPack/commit/c77158b580351024e43edba9388a4523f5c587f6).
 
 ### Added
@@ -164,8 +166,8 @@ requirements and schedule at commit
 
 ### Verification
 
-- The closeout recorded all six CSE 499A requirements as complete with unit,
-  scenario, build, and browser evidence.
+- The release passed unit, scenario, production-build, and browser verification
+  across all six baseline capabilities.
 
 ## [0.1.0] - 2026-06-14
 
