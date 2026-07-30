@@ -7,24 +7,23 @@ silently change the packing decisions or their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
 [View the changelog](CHANGELOG.md) ·
-[Read the 499B requirements](docs/superpowers/specs/2026-07-16-cse-499b-requirements.md)
+[View the product roadmap](#roadmap)
 
 ## Project Status
 
 | Item | Current state |
 |---|---|
-| Release | `0.4.0` — B-02 production release |
+| Release | `0.4.0` — guarded AI and field-guide release |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
-| Production commit | [`33fa471`](https://github.com/jaredsrice/TrailPack/commit/33fa471350608b4468714083a74f26334037cca6) |
-| Completed 499B work | B-01 public trail imports; B-02 guarded AI and source integrity |
-| Active track | [B-03 Google login and private saved results](https://github.com/jaredsrice/TrailPack/issues/27) |
+| Release commit | [`33fa471`](https://github.com/jaredsrice/TrailPack/commit/33fa471350608b4468714083a74f26334037cca6) |
+| Completed milestones | Verified public-trail catalog; guarded AI and source integrity |
+| Active track | [Google login and private saved results](https://github.com/jaredsrice/TrailPack/issues/27) |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Fully available without an account |
 
-The original proposal treated accounts as optional after the first stable
-version. The active CSE 499B requirements deliberately promote Google login and
-private saved results to B-03. The guest search, planning, and packing workflow
-must remain available when B-03 is implemented.
+Google login and private saved results are planned for the next product
+milestone. The guest search, planning, and packing workflow must remain
+available as account support is added.
 
 ## What TrailPack Does
 
@@ -196,9 +195,9 @@ axe. Install the matching browser once, if needed:
 npx playwright install firefox
 ```
 
-The B-02 release passed lint, type checking, 205 Vitest tests, three Firefox/axe
-flows, a production build, 27 recommendation stress scenarios, a five-trail live
-NPS refresh, and production HTTP/API smoke checks.
+The `0.4.0` release passed lint, type checking, 205 Vitest tests, three
+Firefox/axe flows, a production build, 27 recommendation stress scenarios, a
+five-trail live NPS refresh, and production HTTP/API smoke checks.
 
 ## Current Limitations
 
@@ -213,7 +212,7 @@ NPS refresh, and production HTTP/API smoke checks.
 - Gemini is optional and Preview-only. Production intentionally uses the
   deterministic fallback.
 - TrailPack does not yet have accounts or saved recommendations. That is the
-  active B-03 requirement.
+  active product milestone.
 - The current dependency-risk decision and remaining upstream findings are
   documented in
   [`docs/superpowers/validation/2026-07-25-dependency-audit.md`](docs/superpowers/validation/2026-07-25-dependency-audit.md).
@@ -223,16 +222,17 @@ current local conditions, emergency preparation, or personal judgment.
 
 ## Roadmap
 
-| Requirement | Status |
+| Product milestone | Status |
 |---|---|
-| CSE 499A MH-01 through MH-06 | Complete |
-| B-01 Public trail lookup/import | Complete and production-verified |
-| B-02 Guarded live AI and NPS source integrity | Complete and production-verified |
-| B-03 Google login and private saved results | Next |
-| B-04 Cybersecurity testing, remediation, and report | Blocked until B-03 and release-candidate freeze |
+| Core guest planning and packing workflow | Complete and production-verified |
+| Verified Grand Teton trail catalog | Complete and production-verified |
+| Guarded live AI and NPS source integrity | Complete and production-verified |
+| Google login and private saved results | Next |
+| Security audit, remediation, and release-candidate verification | Planned after the account milestone |
 
-The active schedule is
-[`docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`](docs/superpowers/plans/2026-07-16-cse-499b-schedule.md).
+Detailed implementation plans and validation evidence are maintained under
+[`docs/superpowers/plans/`](docs/superpowers/plans/) and
+[`docs/superpowers/validation/`](docs/superpowers/validation/).
 
 ## Repository Guide
 
