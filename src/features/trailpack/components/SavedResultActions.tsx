@@ -60,7 +60,10 @@ export function SavedResultActions({
     const callbackPath = `/auth/callback?next=${encodeURIComponent(window.location.pathname)}`;
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}${callbackPath}` },
+      options: {
+        redirectTo: `${window.location.origin}${callbackPath}`,
+        queryParams: { prompt: "select_account" },
+      },
     });
     if (error || !data.url) {
       setSaveState("error");
