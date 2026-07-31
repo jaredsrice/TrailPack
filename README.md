@@ -21,9 +21,10 @@ silently change the packing decisions or their sources.
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Fully available without an account |
 
-Google login and private saved results are planned for the next product
-milestone. The guest search, planning, and packing workflow must remain
-available as account support is added.
+Google login and private saved results are the active release milestone. The
+implementation and managed account configuration are ready, while deployed
+save/revisit/delete and two-user privacy verification remain. The guest search,
+planning, and packing workflow remains available without an account.
 
 ## What TrailPack Does
 
@@ -116,6 +117,8 @@ Store local values in `.env.local`; never commit that file or print its values.
 | `NPS_API_KEY` | No | Enables live NPS alert responses | Preview and Production |
 | `GEMINI_API_KEY` | No | Enables the guarded live AI review | Preview only |
 | `GEMINI_MODEL` | No | Overrides the default `gemini-3.5-flash` model | Not configured |
+| `NEXT_PUBLIC_SUPABASE_URL` | No | Enables managed Google sessions and private saved results | Preview and Production |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | No | Browser-safe Supabase project key used with row-level security | Preview and Production |
 
 The core guest planner, saved fixtures, manual fallback, and deterministic
 packing engine work without either provider key.
@@ -129,6 +132,9 @@ packing engine work without either provider key.
 | `GET /api/trailpack/alerts?trailId=...` | Returns normalized NPS alerts for a supported trail |
 | `GET /api/trailpack/alerts?parkCode=grte` | Returns normalized Grand Teton alerts |
 | `POST /api/trailpack/ai-review` | Returns an accepted guarded review or an explicit deterministic fallback state |
+| `GET` / `POST /api/trailpack/saved-results` | Lists the signed-in user's results or saves one bounded private snapshot |
+| `DELETE /api/trailpack/saved-results/:id` | Deletes only the signed-in owner's saved result |
+| `GET /auth/callback` | Completes the Supabase Google OAuth PKCE exchange |
 
 Invalid trail identifiers and malformed inputs return controlled validation
 errors without exposing provider details.
@@ -211,8 +217,10 @@ five-trail live NPS refresh, and production HTTP/API smoke checks.
   route is independently available and production-verified.
 - Gemini is optional and Preview-only. Production intentionally uses the
   deterministic fallback.
-- TrailPack does not yet have accounts or saved recommendations. That is the
-  active product milestone.
+- Saved results now have a managed Supabase project, an applied RLS migration,
+  and production Google OAuth configuration. The remaining deployed lifecycle
+  and two-user verification checklist is in
+  [`docs/superpowers/validation/2026-07-30-b03-auth-data-design.md`](docs/superpowers/validation/2026-07-30-b03-auth-data-design.md).
 - The current dependency-risk decision and remaining upstream findings are
   documented in
   [`docs/superpowers/validation/2026-07-25-dependency-audit.md`](docs/superpowers/validation/2026-07-25-dependency-audit.md).
@@ -227,7 +235,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Core guest planning and packing workflow | Complete and production-verified |
 | Verified Grand Teton trail catalog | Complete and production-verified |
 | Guarded live AI and NPS source integrity | Complete and production-verified |
-| Google login and private saved results | Next |
+| Google login and private saved results | Implemented; deployment verification pending |
 | Security audit, remediation, and release-candidate verification | Planned after the account milestone |
 
 Detailed implementation plans and validation evidence are maintained under

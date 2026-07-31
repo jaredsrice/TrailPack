@@ -36,6 +36,7 @@ import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { ParkPhotoShowcase } from "./ParkPhotoShowcase";
 import { PackingListOutput } from "./PackingListOutput";
+import { SavedResultActions } from "./SavedResultActions";
 import { VERIFIED_TRAIL_PROFILE_LABEL } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
@@ -539,7 +540,16 @@ export function TrailPackShell() {
           />
         ) : null}
 
-        {recommendation ? <PackingListOutput recommendation={recommendation} /> : null}
+        {recommendation ? (
+          <>
+            <PackingListOutput recommendation={recommendation} />
+            <SavedResultActions
+              trail={selectedTrail}
+              userInput={userInput}
+              recommendation={recommendation}
+            />
+          </>
+        ) : null}
         {displayedAiReview && aiInput ? (
           <AiReviewPanel
             review={displayedAiReview}
