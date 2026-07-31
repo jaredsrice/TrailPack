@@ -10,6 +10,21 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+### Added
+
+- B-03's Google OAuth and private saved-results foundation using Supabase Auth
+  and a row-level-security protected user-owned table.
+- A private save action for generated packing lists and a saved-plans view with
+  owner-only deletion, while the complete guest planner remains available.
+- A bounded saved-result contract that retains only recommendation-relevant trip
+  data and excludes free-form notes.
+
+### Deployment verification
+
+- The managed Supabase project, RLS migration, and production Google provider
+  are configured. The deployed sign-in, save/revisit/delete, and two-user
+  privacy walkthrough remains before B-03 can be marked complete.
+
 ### Changed
 
 - Reframed the README, roadmap, and release summaries around product milestones
