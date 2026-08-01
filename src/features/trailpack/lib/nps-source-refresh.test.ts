@@ -18,6 +18,7 @@ import {
 } from "./nps-source-refresh";
 
 const CHECKED_AT = "2026-08-01";
+const PREVIOUS_CHECKED_AT = "2026-07-31";
 
 function fixture(name: string): string {
   return readFileSync(
@@ -37,7 +38,22 @@ function snapshot(html: string): NpsPageSnapshot {
 }
 
 function currentDocument(): NpsSourceSnapshotDocument {
-  return structuredClone(NPS_SOURCE_SNAPSHOTS);
+  const document = structuredClone(NPS_SOURCE_SNAPSHOTS);
+
+  document.updatedAt = PREVIOUS_CHECKED_AT;
+  document.trails[JENNY_LAKE_LOOP.id] = {
+    ...document.trails[JENNY_LAKE_LOOP.id],
+    checkedAt: PREVIOUS_CHECKED_AT,
+    distanceMiles: 7.1,
+    elevationGainFeet: 1_040,
+    estimatedDuration: "3-5 hours",
+    difficulty: "Moderate",
+    routeType: "loop",
+    accessibility:
+      "The Jenny Lake Loop is a 7.1 mi (11.4 km) loop hike with 1,040 ft (320 m) of elevation gain with an average slope of 6%. The trail is dirt, narrow in sections, and features obstacles such as roots, exposed rock, and slight elevation change.",
+  };
+
+  return document;
 }
 
 describe("planNpsSourceRefresh", () => {
