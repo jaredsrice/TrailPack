@@ -349,17 +349,13 @@ a {
 .park-photo-layer {
   z-index: -2;
   object-fit: cover;
-  object-position: center;
+  object-position: var(--park-photo-position, 50% 50%);
   opacity: 0;
-  transform: scale(1.005);
-  transition:
-    opacity 900ms ease,
-    transform 9s linear;
+  transition: opacity 900ms ease;
 }
 
 .park-photo-layer.is-visible {
   opacity: 1;
-  transform: scale(1.025);
 }
 
 .park-photo-scrim {
@@ -393,6 +389,11 @@ a {
   border-radius: 3px;
 }
 
+.park-photo-controls {
+  display: flex;
+  gap: 6px;
+}
+
 .park-photo-control {
   min-width: 44px;
   min-height: 44px;
@@ -405,6 +406,11 @@ a {
   font-weight: 650;
   border: 1px solid rgb(255 255 255 / 0.3);
   border-radius: 4px;
+}
+
+.park-photo-control.is-icon-only {
+  width: 44px;
+  padding: 0;
 }
 
 .park-photo-control:hover {
@@ -463,19 +469,30 @@ a {
 .park-photo-dots {
   position: absolute;
   right: 22px;
-  bottom: 15px;
+  bottom: 4px;
   display: flex;
-  gap: 5px;
+  gap: 2px;
 }
 
-.park-photo-dots span {
-  width: 15px;
-  height: 2px;
+.park-photo-dots button {
+  position: relative;
+  width: 23px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.park-photo-dots button::before {
+  position: absolute;
+  inset: 11px 4px;
+  content: "";
   background: rgb(255 255 255 / 0.36);
   transition: background 200ms ease;
 }
 
-.park-photo-dots span.is-active {
+.park-photo-dots button:hover::before,
+.park-photo-dots button.is-active::before {
   background: white;
 }
 
@@ -1709,6 +1726,13 @@ a {
     min-height: 230px;
   }
 
+  .park-photo-layer {
+    object-position: var(
+      --park-photo-position-mobile,
+      var(--park-photo-position, 50% 50%)
+    );
+  }
+
   .home-hero.is-park-view .park-photo-showcase {
     min-height: 260px;
   }
@@ -1895,7 +1919,4 @@ a {
     animation-iteration-count: 1 !important;
   }
 
-  .park-photo-layer.is-visible {
-    transform: none;
-  }
 }

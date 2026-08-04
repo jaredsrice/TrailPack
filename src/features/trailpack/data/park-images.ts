@@ -6,26 +6,34 @@ export interface ParkPhoto {
   alt: string;
   credit: string;
   sourceUrl: string;
+  focalPoint?: {
+    desktop: string;
+    mobile?: string;
+  };
 }
 
 export const PARK_PHOTO_ROTATION: readonly ParkPhoto[] = [
   {
-    id: "grand-teton-jenny-lake",
-    src: "/park-images/grand-teton-jenny-lake.jpg",
+    id: "grand-teton-teton-range",
+    src: "/park-images/grand-teton-teton-range.jpg",
     parkName: "Grand Teton National Park",
-    locationName: "Jenny Lake Loop",
-    alt: "A lakeside trail beneath the Teton Range at Jenny Lake.",
-    credit: "NPS Photo / J. Bonney",
-    sourceUrl: "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+    locationName: "Teton Range",
+    alt: "Snowy peaks rise above green forest and spring wildflowers in Grand Teton National Park.",
+    credit: "NPS Photo / Jane Gamble",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=D8FA991A-BAB6-4DA9-84CD-8B0F58A33E6A",
+    focalPoint: { desktop: "50% 54%", mobile: "50% 53%" },
   },
   {
-    id: "yosemite-upper-fall",
+    id: "yosemite-half-dome",
     src: "/park-images/yosemite-national-park.jpg",
     parkName: "Yosemite National Park",
-    locationName: "Upper Yosemite Fall and Merced River",
-    alt: "Upper Yosemite Fall above the Merced River and a forested valley.",
-    credit: "NPS Photo",
-    sourceUrl: "https://www.nps.gov/yose/index.htm",
+    locationName: "Half Dome from Snow Creek Trail",
+    alt: "Half Dome rises above granite slopes and pine trees under cloudy skies.",
+    credit: "NPS Photo / Dory Shreve",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=F0103896-0B72-4458-8DCC-9393098FCB46",
+    focalPoint: { desktop: "58% 46%", mobile: "61% 48%" },
   },
   {
     id: "yellowstone-pelican-creek",
@@ -33,49 +41,69 @@ export const PARK_PHOTO_ROTATION: readonly ParkPhoto[] = [
     parkName: "Yellowstone National Park",
     locationName: "Pelican Creek and Yellowstone Lake",
     alt: "Pelican Creek winding through golden wetlands toward Yellowstone Lake.",
-    credit: "NPS Photo / Jacob W. Frank",
-    sourceUrl: "https://www.nps.gov/yell/index.htm",
+    credit: "NPS Photo / Diane Renkin",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=FF5DCB7D-1DD8-B71B-0B7B-E46B9D89458A",
+    focalPoint: { desktop: "52% 50%", mobile: "55% 50%" },
   },
   {
-    id: "glacier-saint-mary-valley",
+    id: "glacier-going-to-the-sun-road",
     src: "/park-images/glacier-national-park.jpg",
     parkName: "Glacier National Park",
-    locationName: "St. Mary Valley",
-    alt: "Going-to-the-Sun Road beneath dark mountains at dusk in St. Mary Valley.",
-    credit: "NPS Photo",
-    sourceUrl: "https://www.nps.gov/glac/index.htm",
+    locationName: "Going-to-the-Sun Road",
+    alt: "Going-to-the-Sun Road crosses a green mountain valley above waterfalls and a winding creek.",
+    credit: "NPS Photo / Tim Rains",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=350026E2-1DD8-B71B-0BF0-87234FDB0F45",
+    focalPoint: { desktop: "50% 56%", mobile: "52% 52%" },
   },
   {
-    id: "olympic-high-country",
+    id: "olympic-coast-sea-stacks",
     src: "/park-images/olympic-national-park.jpg",
     parkName: "Olympic National Park",
-    locationName: "Olympic high country",
-    alt: "Backpackers watching sunset above clouds in Olympic National Park.",
+    locationName: "Olympic Coast sea stacks",
+    alt: "Rocky sea stacks rise from the Olympic Coast beyond a shaded tide pool.",
     credit: "NPS Photo",
-    sourceUrl: "https://www.nps.gov/olym/index.htm",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=F24A5A69-155D-4519-3E4D-8113C1A7B030",
+    focalPoint: { desktop: "50% 42%", mobile: "50% 45%" },
   },
   {
-    id: "zion-watchman",
+    id: "zion-canyon",
     src: "/park-images/zion-national-park.jpg",
     parkName: "Zion National Park",
-    locationName: "The Watchman",
-    alt: "The Watchman glowing above desert plants in Zion Canyon.",
-    credit: "NPS Photo / Shane Carte",
-    sourceUrl: "https://www.nps.gov/zion/index.htm",
+    locationName: "Zion Canyon",
+    alt: "Zion Canyon stretches between towering sandstone cliffs from Angels Landing.",
+    credit: "NPS Photo",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=27CFD31C-155D-451F-67B1-099AF8F7BC45",
+    focalPoint: { desktop: "50% 49%", mobile: "50% 50%" },
   },
   {
-    id: "acadia-atlantic-coast",
+    id: "acadia-otter-cliff",
     src: "/park-images/acadia-national-park.jpg",
     parkName: "Acadia National Park",
-    locationName: "Atlantic coast",
-    alt: "Sunset over granite boulders and the Atlantic coast in Acadia National Park.",
-    credit: "NPS Photo",
-    sourceUrl: "https://www.nps.gov/articles/getaway-acad.htm",
+    locationName: "Otter Cliff at sunrise",
+    alt: "Warm sunrise light illuminates Otter Cliff above softened Atlantic waves.",
+    credit: "NPS Photo / Matthew Lambert",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=8FC76911-1DD8-B71B-0B0C-44001AD49D55",
+    focalPoint: { desktop: "60% 50%", mobile: "68% 50%" },
   },
 ] as const;
 
 const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
-  "jenny-lake-loop": PARK_PHOTO_ROTATION[0],
+  "jenny-lake-loop": {
+    id: "grand-teton-jenny-lake",
+    src: "/park-images/grand-teton-jenny-lake-trail.jpg",
+    parkName: "Grand Teton National Park",
+    locationName: "Jenny Lake Loop",
+    alt: "The Cathedral Group and Cascade Canyon reflected in Jenny Lake.",
+    credit: "NPS Photo",
+    sourceUrl:
+      "https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5",
+    focalPoint: { desktop: "50% 48%", mobile: "50% 50%" },
+  },
   "taggart-lake": {
     id: "grand-teton-taggart-lake",
     src: "/park-images/grand-teton-taggart-lake.jpg",
