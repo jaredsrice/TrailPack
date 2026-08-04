@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-08-04",
   "trails": {
     "jenny-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
-      "checkedAt": "2026-07-29",
+      "checkedAt": "2026-08-04",
       "distanceMiles": 7.1,
       "elevationGainFeet": 1040,
       "estimatedDuration": "3-5 hours",
@@ -14,7 +14,7 @@
     },
     "string-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/stringlake.htm",
-      "checkedAt": "2026-07-29",
+      "checkedAt": "2026-08-04",
       "distanceMiles": 3.7,
       "elevationGainFeet": 540,
       "estimatedDuration": "2-3 Hours",
@@ -24,7 +24,7 @@
     },
     "taggart-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartlake.htm",
-      "checkedAt": "2026-07-29",
+      "checkedAt": "2026-08-04",
       "distanceMiles": 3,
       "elevationGainFeet": 360,
       "estimatedDuration": "1-2 Hours",
@@ -34,7 +34,7 @@
     },
     "colter-bay-lakeshore-trail": {
       "sourceUrl": "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
-      "checkedAt": "2026-07-29",
+      "checkedAt": "2026-08-04",
       "distanceMiles": 2.2,
       "elevationGainFeet": 100,
       "estimatedDuration": "1 hour",
@@ -43,7 +43,7 @@
     },
     "two-ocean-lake-loop": {
       "sourceUrl": "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
-      "checkedAt": "2026-07-29",
+      "checkedAt": "2026-08-04",
       "distanceMiles": 6.4,
       "elevationGainFeet": 400,
       "estimatedDuration": "3 hours",
