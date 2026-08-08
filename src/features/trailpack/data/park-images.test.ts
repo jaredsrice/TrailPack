@@ -10,6 +10,13 @@ describe("park photo selection", () => {
     expect(new Set(PARK_PHOTO_ROTATION.map((photo) => photo.parkName)).size).toBe(
       7,
     );
+    expect(
+      PARK_PHOTO_ROTATION.every(
+        (photo) =>
+          photo.focalPoint?.desktop &&
+          photo.sourceUrl.startsWith("https://www.nps.gov/media/photo/view.htm"),
+      ),
+    ).toBe(true);
   });
 
   it("prefers a trail-specific photo when a trail is selected", () => {

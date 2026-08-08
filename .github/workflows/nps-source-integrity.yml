@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: nps-source-integrity
@@ -51,18 +52,27 @@ jobs:
       - name: Build refreshed application
         run: npm run build
 
-      - name: Commit verified snapshot refresh
+      - name: Open verified snapshot refresh pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           if git diff --quiet -- src/features/trailpack/data/nps-source-snapshots.json; then
             echo "NPS snapshots are already current."
             exit 0
           fi
+          refresh_branch="automation/nps-source-refresh-${GITHUB_RUN_ID}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --create "${refresh_branch}"
           git add src/features/trailpack/data/nps-source-snapshots.json
           git commit -m "chore(data): refresh NPS trail snapshots"
-          git push origin "HEAD:${{ github.event.repository.default_branch }}"
+          git push --set-upstream origin "${refresh_branch}"
+          gh pr create \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "${refresh_branch}" \
+            --title "chore(data): refresh NPS trail snapshots" \
+            --body "Automated NPS source refresh validated by ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
 
       - name: Upload source-integrity report
         if: ${{ always() }}

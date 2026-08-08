@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   getContextParkPhoto,
   PARK_PHOTO_ROTATION,
@@ -61,7 +61,7 @@ export function ParkPhotoShowcase({
     }, ROTATION_INTERVAL_MS);
 
     return () => window.clearInterval(interval);
-  }, [isPaused, lockedPhoto, prefersReducedMotion]);
+  }, [isPaused, lockedPhoto, prefersReducedMotion, rotationIndex]);
 
   useEffect(() => {
     setLayers((current) => {
@@ -85,6 +85,16 @@ export function ParkPhotoShowcase({
   const captionSubtitle = isParkSelection
     ? selectedParkState ?? visiblePhoto.parkName
     : visiblePhoto.parkName;
+  const showPreviousPhoto = () => {
+    setRotationIndex(
+      (current) =>
+        (current - 1 + PARK_PHOTO_ROTATION.length) %
+        PARK_PHOTO_ROTATION.length,
+    );
+  };
+  const showNextPhoto = () => {
+    setRotationIndex((current) => (current + 1) % PARK_PHOTO_ROTATION.length);
+  };
 
   return (
     <figure
@@ -113,16 +123,38 @@ export function ParkPhotoShowcase({
               : "Featured park"}
         </span>
         {!rotationStopped ? (
-          <button
-            type="button"
-            className="park-photo-control"
-            onClick={() => setIsPaused((current) => !current)}
-            aria-pressed={isPaused}
-            aria-label={isPaused ? "Resume park photo rotation" : "Pause park photo rotation"}
-          >
-            {isPaused ? <PlayIcon /> : <PauseIcon />}
-            <span>{isPaused ? "Play" : "Pause"}</span>
-          </button>
+          <div className="park-photo-controls">
+            <button
+              type="button"
+              className="park-photo-control is-icon-only"
+              onClick={showPreviousPhoto}
+              aria-label="Show previous park photo"
+            >
+              <PreviousIcon />
+            </button>
+            <button
+              type="button"
+              className="park-photo-control"
+              onClick={() => setIsPaused((current) => !current)}
+              aria-pressed={isPaused}
+              aria-label={
+                isPaused
+                  ? "Resume park photo rotation"
+                  : "Pause park photo rotation"
+              }
+            >
+              {isPaused ? <PlayIcon /> : <PauseIcon />}
+              <span>{isPaused ? "Play" : "Pause"}</span>
+            </button>
+            <button
+              type="button"
+              className="park-photo-control is-icon-only"
+              onClick={showNextPhoto}
+              aria-label="Show next park photo"
+            >
+              <NextIcon />
+            </button>
+          </div>
         ) : null}
       </div>
 
@@ -143,11 +175,15 @@ export function ParkPhotoShowcase({
       </figcaption>
 
       {!rotationStopped ? (
-        <div className="park-photo-dots" aria-hidden="true">
+        <div className="park-photo-dots" aria-label="Choose a featured park photo">
           {PARK_PHOTO_ROTATION.map((photo, index) => (
-            <span
+            <button
+              type="button"
               key={photo.id}
               className={index === rotationIndex ? "is-active" : undefined}
+              onClick={() => setRotationIndex(index)}
+              aria-label={`Show ${photo.parkName}`}
+              aria-current={index === rotationIndex ? "true" : undefined}
             />
           ))}
         </div>
@@ -165,6 +201,9 @@ function PhotoLayer({
   isVisible: boolean;
   priority: boolean;
 }) {
+  const focalPoint = photo.focalPoint?.desktop ?? "50% 50%";
+  const mobileFocalPoint = photo.focalPoint?.mobile ?? focalPoint;
+
   return (
     <Image
       key={photo.id}
@@ -172,9 +211,32 @@ function PhotoLayer({
       alt={photo.alt}
       fill
       priority={priority}
+      quality={90}
       sizes="(max-width: 1199px) 100vw, 1120px"
       className={`park-photo-layer ${isVisible ? "is-visible" : ""}`}
+      style={
+        {
+          "--park-photo-position": focalPoint,
+          "--park-photo-position-mobile": mobileFocalPoint,
+        } as CSSProperties
+      }
     />
+  );
+}
+
+function PreviousIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" className="park-photo-control-icon">
+      <path d="m12.5 4.5-5 5.5 5 5.5" />
+    </svg>
+  );
+}
+
+function NextIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20" className="park-photo-control-icon">
+      <path d="m7.5 4.5 5 5.5-5 5.5" />
+    </svg>
   );
 }
 

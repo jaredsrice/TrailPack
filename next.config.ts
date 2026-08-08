@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // cloud-synced parent folder). This silences the "inferred workspace root"
   // warning without touching any files outside this repository.
   outputFileTracingRoot: projectRoot,
+  images: {
+    qualities: [75, 90],
+  },
   turbopack: {
     root: projectRoot,
   },
