@@ -9,6 +9,11 @@ export const dynamic = "force-dynamic";
 const MAX_REQUEST_BYTES = 64_000;
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
 
+type RequestBodyReadResult =
+  | { status: "ok"; text: string }
+  | { status: "too-large" }
+  | { status: "unreadable" };
+
 export async function GET() {
   const supabase = await getSupabaseServerClient();
   if (!supabase) {
@@ -39,21 +44,14 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const declaredLength = Number(request.headers.get("content-length"));
-  if (Number.isFinite(declaredLength) && declaredLength > MAX_REQUEST_BYTES) {
+  const bodyRead = await readRequestTextWithinLimit(request, MAX_REQUEST_BYTES);
+  if (bodyRead.status === "too-large") {
     return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
   }
-
-  let requestText: string;
-  try {
-    requestText = await request.text();
-  } catch {
+  if (bodyRead.status === "unreadable") {
     return jsonResponse({ error: "Unable to read saved result request." }, { status: 400 });
   }
-
-  if (new TextEncoder().encode(requestText).byteLength > MAX_REQUEST_BYTES) {
-    return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
-  }
+  const requestText = bodyRead.text;
 
   let value: unknown;
   try {
@@ -120,6 +118,52 @@ function rowToRecord(row: {
     recommendation: row.recommendation,
     sourceLabels: row.source_labels,
   });
+}
+
+async function readRequestTextWithinLimit(
+  request: Request,
+  maximumBytes: number,
+): Promise<RequestBodyReadResult> {
+  const declaredLengthHeader = request.headers.get("content-length");
+  if (declaredLengthHeader !== null) {
+    const declaredLength = Number(declaredLengthHeader);
+    if (!Number.isFinite(declaredLength) || declaredLength < 0) {
+      return { status: "unreadable" };
+    }
+    if (declaredLength > maximumBytes) {
+      return { status: "too-large" };
+    }
+  }
+
+  if (!request.body) {
+    return { status: "ok", text: "" };
+  }
+
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder();
+  let totalBytes = 0;
+  let text = "";
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      totalBytes += value.byteLength;
+      if (totalBytes > maximumBytes) {
+        await reader.cancel();
+        return { status: "too-large" };
+      }
+      text += decoder.decode(value, { stream: true });
+    }
+    text += decoder.decode();
+    return { status: "ok", text };
+  } catch {
+    return { status: "unreadable" };
+  } finally {
+    reader.releaseLock();
+  }
 }
 
 function jsonResponse(body: unknown, init: ResponseInit = {}): Response {

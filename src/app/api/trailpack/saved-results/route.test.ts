@@ -25,11 +25,58 @@ function draft() {
   });
 }
 
+function oversizedStreamRequest(): {
+  request: Request;
+  getPullCount: () => number;
+  chunkCount: number;
+} {
+  const chunkCount = 200;
+  const chunk = new TextEncoder().encode("x".repeat(1_024));
+  let pulls = 0;
+
+  const stream = new ReadableStream<Uint8Array>({
+    pull(controller) {
+      pulls += 1;
+      if (pulls > chunkCount) {
+        controller.close();
+        return;
+      }
+      controller.enqueue(chunk);
+    },
+  });
+
+  const streamedRequest = new Request("http://localhost/api/trailpack/saved-results", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: stream as unknown as BodyInit,
+    duplex: "half",
+  } as RequestInit);
+
+  return {
+    request: streamedRequest,
+    getPullCount: () => pulls,
+    chunkCount,
+  };
+}
+
 afterEach(() => {
   vi.resetAllMocks();
 });
 
 describe("saved-results route ownership", () => {
+  it("stops reading a streamed body after crossing the safety limit", async () => {
+    const streamed = oversizedStreamRequest();
+
+    const response = await POST(streamed.request);
+
+    expect(response.status).toBe(413);
+    expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
+    await expect(response.json()).resolves.toEqual({
+      error: "Saved result request is too large.",
+    });
+    expect(mocks.getSupabaseServerClient).not.toHaveBeenCalled();
+  });
+
   it("derives the inserted owner from the validated session, not the request", async () => {
     const saved = draft();
     const row = {

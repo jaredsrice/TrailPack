@@ -33,6 +33,40 @@ function request(body: string): Request {
   });
 }
 
+function oversizedStreamRequest(): {
+  request: Request;
+  getPullCount: () => number;
+  chunkCount: number;
+} {
+  const chunkCount = 200;
+  const chunk = new TextEncoder().encode("x".repeat(1_024));
+  let pulls = 0;
+
+  const stream = new ReadableStream<Uint8Array>({
+    pull(controller) {
+      pulls += 1;
+      if (pulls > chunkCount) {
+        controller.close();
+        return;
+      }
+      controller.enqueue(chunk);
+    },
+  });
+
+  const streamedRequest = new Request("http://localhost/api/trailpack/ai-review", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: stream as unknown as BodyInit,
+    duplex: "half",
+  } as RequestInit);
+
+  return {
+    request: streamedRequest,
+    getPullCount: () => pulls,
+    chunkCount,
+  };
+}
+
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
@@ -64,6 +98,17 @@ describe("POST /api/trailpack/ai-review", () => {
     );
 
     expect(response.status).toBe(413);
+    await expect(response.json()).resolves.toEqual({
+      error: "AI review request is too large.",
+    });
+  });
+
+  it("stops reading a streamed body after crossing the safety limit", async () => {
+    const streamed = oversizedStreamRequest();
+    const response = await POST(streamed.request);
+
+    expect(response.status).toBe(413);
+    expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
     await expect(response.json()).resolves.toEqual({
       error: "AI review request is too large.",
     });
