@@ -116,10 +116,12 @@ describe("saved-results route ownership", () => {
     const query = {
       select: vi.fn(),
       eq: vi.fn(),
-      order: vi.fn(async () => ({ data: [], error: null })),
+      order: vi.fn(),
+      limit: vi.fn(async () => ({ data: [], error: null })),
     };
     query.select.mockReturnValue(query);
     query.eq.mockReturnValue(query);
+    query.order.mockReturnValue(query);
     mocks.getSupabaseServerClient.mockResolvedValue({
       auth: { getUser: vi.fn(async () => ({ data: { user: { id: "user-a" } }, error: null })) },
       from: vi.fn(() => query),
@@ -129,7 +131,42 @@ describe("saved-results route ownership", () => {
 
     expect(response.status).toBe(200);
     expect(query.eq).toHaveBeenCalledWith("user_id", "user-a");
+    expect(query.limit).toHaveBeenCalledWith(100);
     await expect(response.json()).resolves.toEqual({ results: [] });
+  });
+
+  it("returns a controlled conflict when the database quota rejects an insert", async () => {
+    const query = {
+      insert: vi.fn(),
+      select: vi.fn(),
+      single: vi.fn(async () => ({
+        data: null,
+        error: { code: "23514" },
+      })),
+    };
+    query.insert.mockReturnValue(query);
+    query.select.mockReturnValue(query);
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: {
+        getUser: vi.fn(async () => ({
+          data: { user: { id: "user-a" } },
+          error: null,
+        })),
+      },
+      from: vi.fn(() => query),
+    });
+
+    const response = await POST(
+      new Request("http://localhost/api/trailpack/saved-results", {
+        method: "POST",
+        body: JSON.stringify(draft()),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toEqual({
+      error: "Saved result limit reached. Delete one before saving another.",
+    });
   });
 
   it("does not process a valid-looking snapshot without authentication", async () => {

@@ -6,6 +6,10 @@ import {
   type LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
 import { parseAiReviewDraft } from "@/features/trailpack/lib/ai-contract-runtime";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "@/features/trailpack/lib/read-text-with-limit";
 import type { SourceLabel } from "@/features/trailpack/types";
 
 export const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
@@ -139,6 +143,7 @@ export async function requestLiveAiReview(
     );
 
     if (response.status === 429) {
+      await discardBody(response);
       return fallbackResult(
         input,
         provider,
@@ -148,6 +153,7 @@ export async function requestLiveAiReview(
     }
 
     if (response.status === 408 || response.status === 504) {
+      await discardBody(response);
       return fallbackResult(
         input,
         provider,
@@ -215,6 +221,7 @@ export async function requestLiveAiReview(
 
 async function logSafeGeminiFailure(response: Response): Promise<void> {
   if (!process.env.VERCEL_ENV) {
+    await discardBody(response);
     return;
   }
 
@@ -223,11 +230,14 @@ async function logSafeGeminiFailure(response: Response): Promise<void> {
   };
 
   try {
-    const responseText = await response.clone().text();
-    if (responseText.length > MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH) {
+    const responseRead = await readTextWithinLimit(
+      response,
+      MAX_PROVIDER_ERROR_DIAGNOSTIC_LENGTH,
+    );
+    if (responseRead.status === "too-large") {
       diagnostic.providerEnvelope = "oversized";
-    } else {
-      const responseBody: unknown = JSON.parse(responseText);
+    } else if (responseRead.status === "ok") {
+      const responseBody: unknown = JSON.parse(responseRead.text);
       if (isRecord(responseBody)) {
         diagnostic.providerEnvelope = isRecord(responseBody.error)
           ? "nested-error"
@@ -245,6 +255,8 @@ async function logSafeGeminiFailure(response: Response): Promise<void> {
         diagnostic.providerEnvelope = "json-primitive";
         diagnostic.providerReason = classifyProviderMessage(responseBody);
       }
+    } else {
+      diagnostic.providerEnvelope = "non-json";
     }
   } catch {
     diagnostic.providerEnvelope = "non-json";
@@ -389,24 +401,14 @@ function toProviderPackingItem(item: AiContractInput["packing"]["essential"][num
 }
 
 async function readGeminiDraft(response: Response) {
-  const contentLength = Number(response.headers.get("content-length"));
-  if (
-    Number.isFinite(contentLength) &&
-    contentLength > MAX_PROVIDER_RESPONSE_LENGTH
-  ) {
+  const responseRead = await readTextWithinLimit(
+    response,
+    MAX_PROVIDER_RESPONSE_LENGTH,
+  );
+  if (responseRead.status !== "ok") {
     return null;
   }
-
-  let responseText: string;
-  try {
-    responseText = await response.text();
-  } catch {
-    return null;
-  }
-
-  if (responseText.length > MAX_PROVIDER_RESPONSE_LENGTH) {
-    return null;
-  }
+  const responseText = responseRead.text;
 
   let responseBody: unknown;
   try {

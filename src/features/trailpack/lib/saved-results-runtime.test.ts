@@ -39,4 +39,43 @@ describe("saved result runtime contract", () => {
     const value = draft();
     expect(parseSavedResultDraft({ ...value, sourceLabels: ["unverified"] })).toBeNull();
   });
+
+  it("strips unrecognized nested fields before a snapshot is persisted", () => {
+    const value = draft();
+    const parsed = parseSavedResultDraft({
+      ...value,
+      trailSummary: {
+        ...value.trailSummary,
+        privateNote: "Do not retain this",
+      },
+      recommendation: {
+        ...value.recommendation,
+        essential: value.recommendation.essential.map((item, index) =>
+          index === 0 ? { ...item, secret: "Do not retain this" } : item,
+        ),
+      },
+    });
+
+    expect(parsed).not.toBeNull();
+    expect(parsed?.trailSummary).not.toHaveProperty("privateNote");
+    expect(parsed?.recommendation.essential[0]).not.toHaveProperty("secret");
+  });
+
+  it("rejects malformed optional packing-item details", () => {
+    const value = draft();
+    const [first, ...remaining] = value.recommendation.essential;
+
+    expect(
+      parseSavedResultDraft({
+        ...value,
+        recommendation: {
+          ...value.recommendation,
+          essential: [
+            { ...first, links: [{ label: "NPS", url: 123 }] },
+            ...remaining,
+          ],
+        },
+      }),
+    ).toBeNull();
+  });
 });

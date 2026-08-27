@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload source-integrity report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: nps-source-integrity-${{ github.run_number }}
           path: .artifacts/nps-source-integrity/
