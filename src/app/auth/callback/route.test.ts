@@ -50,4 +50,22 @@ describe("auth callback redirects", () => {
       "https://trailpack.example/saved?view=compact&auth=unavailable",
     );
   });
+
+  it("delegates a missing OAuth code to Supabase validation", async () => {
+    const exchangeCodeForSession = vi.fn(async () => ({
+      error: new Error("invalid code"),
+    }));
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: { exchangeCodeForSession },
+    });
+
+    const response = await GET(
+      new Request("https://trailpack.example/auth/callback?next=%2Fsaved"),
+    );
+
+    expect(exchangeCodeForSession).toHaveBeenCalledWith("");
+    expect(response.headers.get("location")).toBe(
+      "https://trailpack.example/saved?auth=error",
+    );
+  });
 });

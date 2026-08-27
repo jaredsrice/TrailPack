@@ -13,11 +13,9 @@ export async function GET(request: Request) {
     return redirectWithAuthStatus(next, "unavailable");
   }
 
-  const code = url.searchParams.get("code");
-  if (!code) {
-    return redirectWithAuthStatus(next, "error");
-  }
-
+  // Supabase, not the presence of user-controlled input, is the security
+  // authority for deciding whether the one-time OAuth code is valid.
+  const code = url.searchParams.get("code") ?? "";
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   const status = error ? "error" : "signed-in";
   return redirectWithAuthStatus(next, status);
