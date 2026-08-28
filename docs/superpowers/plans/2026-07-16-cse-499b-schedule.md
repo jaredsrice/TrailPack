@@ -1,7 +1,7 @@
 # TrailPack CSE 499B Schedule
 
 Created: July 16, 2026  
-Status: Technical delivery complete; final two human acceptance checks remain  
+Status: Complete; technical delivery and final human acceptance passed  
 Requirements source: `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`
 
 ## Planning Basis
@@ -20,11 +20,9 @@ The rule engine, three curated profiles, saved demo fixtures, manual fallback,
 and guest workflow remain the stable baseline. Security testing is deliberately
 scheduled late; it is not part of the CSE 499A closeout.
 
-Delivery status as of 2026-08-28: B-01 and B-02 are complete; the B-03 product
-surface and first-user production lifecycle are complete with only the real
-second-user denial walkthrough pending; B-04 testing, remediation, and retest
-are complete. Final everyday-hiker acceptance is the other remaining human
-check.
+Delivery status as of 2026-08-28: B-01 through B-04 are complete. The real
+two-account privacy denial walkthrough passed, final everyday-hiker owner
+acceptance passed, and the release documentation matches the deployed product.
 
 ## Delivery Rules
 

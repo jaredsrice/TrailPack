@@ -86,8 +86,9 @@ commit
 - The production database reported its payload constraint, quota trigger, and
   security-invoker function enabled after migration.
 - Production sign-in, save, fresh-session revisit, owner delete, sign-out, and
-  account chooser passed. The final separate-second-identity denial walkthrough
-  remains an acceptance item before the private-save tracking issue closes.
+  account chooser passed. A genuinely separate second identity then saw no User
+  A rows, deleted zero User A rows under RLS, and User A confirmed the temporary
+  acceptance result remained before removing it.
 
 ## [0.4.0] - 2026-07-29
 

@@ -16,17 +16,16 @@ silently change the packing decisions or their sources.
 | Release | `0.5.0` — private saves and security-hardening release |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Application release commit | [`30f183c`](https://github.com/jaredsrice/TrailPack/commit/30f183cd32d5841c0cca4ace606c4498e1775ac5) |
-| Completed milestones | Verified trail catalog; guarded AI; source integrity; private-save implementation; security remediation |
-| Active track | Final two-account privacy acceptance and everyday-hiker UAT |
+| Completed milestones | Verified trail catalog; guarded AI; source integrity; private saves; security remediation; final UAT |
+| Active track | Release complete; optional post-release maintenance |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Fully available without an account |
 
-Google login and private saved results are live. The guest flow and the complete
-first-user production lifecycle—sign in, save, revisit in a fresh session,
-delete, sign out, and receive a fresh account-selection prompt—have been
-verified. The remaining account acceptance item is a walkthrough with a
-separate second identity proving that one user cannot list or delete another
-user's result.
+Google login and private saved results are live. The guest flow, complete owner
+lifecycle, fresh account chooser, and a real two-account production walkthrough
+have been verified. The second identity could neither list nor delete User A's
+saved result, and User A confirmed the result remained before removing the
+temporary acceptance copy.
 
 ## What TrailPack Does
 
@@ -210,9 +209,9 @@ npx playwright install firefox
 The `0.5.0` application release passed lint, type checking, 239 Vitest tests,
 three Firefox/axe flows, a production build, 27 recommendation stress
 scenarios, a five-trail live NPS check, CodeQL analysis, a zero-vulnerability
-dependency audit, and production browser/API smoke checks. An updated OWASP ZAP
-passive scan found no critical or high-severity issue. The sanitized review and
-risk decisions are in the
+dependency audit, production browser/API smoke checks, and a real two-account
+privacy walkthrough. An updated OWASP ZAP passive scan found no critical or
+high-severity issue. The sanitized review and risk decisions are in the
 [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cybersecurity-review.md).
 
 ## Current Limitations
@@ -228,8 +227,8 @@ risk decisions are in the
 - Gemini is optional and Preview-only. Production intentionally uses the
   deterministic fallback.
 - Saved results have managed Supabase storage, row-level security, database
-  payload and quota limits, and production Google OAuth. The first-user
-  lifecycle is verified; the remaining two-user acceptance walkthrough is in
+  payload and quota limits, and production Google OAuth. The owner lifecycle
+  and real two-account list/delete isolation are verified in the
   [private-save validation record](docs/superpowers/validation/2026-07-30-b03-auth-data-design.md).
 - The release audit reports zero npm vulnerabilities and zero open Dependabot
   alerts. The historical and current dependency decisions are documented in
@@ -249,9 +248,9 @@ current local conditions, emergency preparation, or personal judgment.
 | Core guest planning and packing workflow | Complete and production-verified |
 | Verified Grand Teton trail catalog | Complete and production-verified |
 | Guarded live AI and NPS source integrity | Complete and production-verified |
-| Google login and private saved results | Live; first-user lifecycle verified; second-user acceptance pending |
-| Security audit, remediation, and release-candidate verification | Complete for the application release candidate |
-| Final everyday-hiker acceptance | Pending final owner walkthrough |
+| Google login and private saved results | Complete and production-verified with two separate identities |
+| Security audit, remediation, and release-candidate verification | Complete |
+| Final everyday-hiker acceptance | Complete; owner approved the final preview and release state |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

@@ -3,9 +3,9 @@
 Date: 2026-08-28 (America/Denver)  
 Application release candidate: `30f183cd32d5841c0cca4ace606c4498e1775ac5`  
 Authorized production target: `https://trailpack-ten.vercel.app`  
-Status: Application review complete; no unresolved critical or high-severity
-finding. Two CSP observations are accepted medium risk, and one public-static-
-asset CORS alert is downgraded to informational after manual verification.
+Status: Complete; no unresolved critical or high-severity finding. Two CSP
+observations are accepted medium risk, and one public-static-asset CORS alert is
+downgraded to informational after manual verification.
 
 ## Authorization, Scope, And Rules
 
@@ -25,9 +25,12 @@ The dynamic run was deliberately passive:
 - database verification limited to aggregate/catalog booleans rather than row
   contents.
 
-The first account is referred to only as **User A**. A separate **User B**
-production denial walkthrough remains the final account acceptance step and is
-tracked in the auth validation record; it is not represented here as completed.
+The first account is referred to only as **User A**. A genuinely separate
+**User B** completed the production privacy walkthrough after the passive scan.
+User B could not list User A's saved data, an authenticated RLS delete probe
+affected zero User A rows, User A confirmed the row remained, and the temporary
+acceptance row was removed by User A. No account identifiers or result UUIDs are
+retained in this report.
 
 ## Tools And Evidence
 
@@ -40,7 +43,7 @@ tracked in the auth validation record; it is not represented here as completed.
 | Dynamic analysis | OWASP ZAP `2.17.0`, updated add-ons including passive rules `75` | Passive plan succeeded; 72 URLs discovered; 0 critical/high/low categories |
 | Browser verification | Production desktop, mobile, keyboard/accessibility, image, and core-flow checks | No broken carousel image or mobile overflow; guest plan populated |
 | Header verification | Production HTTPS response inspection | CSP, HSTS, frame denial, MIME denial, referrer policy, and permissions policy present |
-| Database verification | Supabase catalog/aggregate query after migration | Payload constraint, quota trigger, and security-invoker function all enabled |
+| Database verification | Supabase catalog/aggregate queries and real User B RLS probe after migration | Payload constraint, quota trigger, and security-invoker function all enabled; User B deleted 0 User A rows and the owner row remained |
 | Regression suite | ESLint, TypeScript, Vitest, Firefox/axe, build, stress matrix, NPS integrity | 239 unit/integration tests, 3 accessibility flows, 27 scenarios, and 5/5 NPS checks passed |
 
 The full ZAP export was retained only temporarily during review because it
@@ -65,7 +68,7 @@ sanitized report.
 
 | Category | TrailPack evidence |
 |---|---|
-| A01 Broken Access Control | Server identity comes from `auth.getUser()`, list/delete operations include the owner, and Supabase RLS independently enforces `auth.uid() = user_id`. Callback redirect validation is same-origin. Automated cross-user delete denial passes; real User B walkthrough remains. |
+| A01 Broken Access Control | Server identity comes from `auth.getUser()`, list/delete operations include the owner, and Supabase RLS independently enforces `auth.uid() = user_id`. Callback redirect validation is same-origin. Automated denial and the real two-account production walkthrough both passed. |
 | A02 Cryptographic Failures | HTTPS/HSTS are active. Google and Supabase manage credentials and session cryptography; no custom password or service-role key is used by the runtime. |
 | A03 Injection | Input is schema-checked and bounded, Supabase query builders parameterize values, and no request-controlled raw SQL, command, template, or provider URL is executed. |
 | A04 Insecure Design | The deterministic rule engine remains authoritative; AI cannot alter item membership or provenance. Request, response, storage, and row-count limits now exist at both route and database boundaries. |
@@ -91,10 +94,12 @@ exposure (CWE-200), and exceptional-condition handling (CWE-755).
   valid application icon.
 - GitHub reported zero open CodeQL, secret-scanning, and Dependabot alerts after
   merge.
+- A real User B saw no User A saved results. A delete probe under User B's
+  authenticated database identity affected zero rows, the User A row remained,
+  and User A removed the temporary acceptance row afterward.
 - The updated passive scan reported no critical, high, or low category. The two
   remaining medium categories are the explicitly accepted CSP allowances above.
 
 There is no unresolved critical or high-severity finding. No medium or low
-finding is left without remediation or a written risk decision. The separate
-real-account cross-user walkthrough and final everyday-hiker UAT remain release
-acceptance evidence, not undisclosed security defects.
+finding is left without remediation or a written risk decision. The real-account
+cross-user walkthrough and final owner acceptance both passed on 2026-08-28.

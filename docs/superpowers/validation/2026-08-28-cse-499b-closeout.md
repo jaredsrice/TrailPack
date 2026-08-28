@@ -4,8 +4,8 @@ Date: 2026-08-28 (America/Denver)
 Version: `0.5.0`  
 Application release commit: `30f183cd32d5841c0cca4ace606c4498e1775ac5`  
 Production: `https://trailpack-ten.vercel.app`  
-Status: Technical release and security evidence complete; final User B privacy
-walkthrough and everyday-hiker acceptance are ready for the owner.
+Status: Complete; technical delivery, security evidence, real two-account
+privacy acceptance, and owner UAT all passed.
 
 ## Release Outcome
 
@@ -15,12 +15,9 @@ packing decisions, guarded AI explanations, optional Google login, and private
 saved plans. Guest planning remains fully usable when authentication, AI, or an
 optional live provider is unavailable.
 
-The original product criteria are implemented. The two remaining items are
-human acceptance evidence rather than additional development:
-
-1. use a genuinely separate Google identity to prove it cannot see or delete a
-   saved result belonging to User A; and
-2. complete the short everyday-hiker clarity walkthrough below.
+The original product criteria are implemented. A genuinely separate User B
+completed the production privacy walkthrough, and the owner approved the final
+preview and indicated the release was ready on 2026-08-28.
 
 ## Requirements Traceability
 
@@ -28,7 +25,7 @@ human acceptance evidence rather than additional development:
 |---|---|---|
 | Public trail lookup and provenance | Five verified Grand Teton profiles, NPS authority, USGS reconciliation, source links, manual fallback, and production selection flow | Complete |
 | Guarded AI and source integrity | Deterministic baseline, schema/provenance guardrails, accepted/rejected/unavailable fallback paths, monthly five-trail NPS comparison, and protected refresh pull requests | Complete |
-| Google login and private saved results | Provider-managed OAuth, guest preservation, minimized snapshots, first-user save/revisit/delete, exact validation, route owner filters, RLS, database limits, and automated cross-user delete denial | Implementation complete; real User B walkthrough pending |
+| Google login and private saved results | Provider-managed OAuth, guest preservation, minimized snapshots, first-user save/revisit/delete, exact validation, route owner filters, RLS, database limits, automated denial, and a real two-account production walkthrough | Complete |
 | Cybersecurity review and remediation | Independent agent review, CodeQL, npm/Dependabot, secret scanning, OWASP/CWE mapping, updated passive ZAP scan, manual checks, remediation, and production retest | Complete |
 
 ## Final Technical UAT
@@ -43,8 +40,8 @@ human acceptance evidence rather than additional development:
 | Mobile framing | 390×844 layout has no horizontal overflow and retains useful subject crops | Pass |
 | Accessibility | Three Firefox/axe flows complete without a violation | Pass |
 | First-user private save | Sign in, save, fresh-session revisit, owner delete, sign out, and account chooser | Pass (2026-07-31) |
-| Second-user privacy | User B cannot list or delete User A's saved result | Pending owner account action |
-| Everyday-hiker clarity | Owner confirms trail/source distinctions, critical items, alerts, and limitations are understandable | Pending owner review |
+| Second-user privacy | User B cannot list or delete User A's saved result | Pass; separate identity saw no rows, deleted 0 owner rows, and User A confirmed retention |
+| Everyday-hiker clarity | Owner confirms trail/source distinctions, critical items, alerts, limitations, and image framing are understandable | Pass; owner approved the final preview and release state |
 
 ## Final Validation Baseline
 
@@ -90,9 +87,7 @@ human acceptance evidence rather than additional development:
    deterministic packing items.
 6. Use the photo selectors and previous/next controls, then select a trail to
    demonstrate the honest trail-specific image lock.
-7. Sign in, save the plan, revisit `/saved`, and delete it. If performing the
-   final acceptance run, leave one temporary User A row until User B denial is
-   confirmed, then clean it up as User A.
+7. Sign in, save the plan, revisit `/saved`, and delete it.
 
 ### Fallback Demo
 
@@ -102,22 +97,22 @@ human acceptance evidence rather than additional development:
    deterministic response usable.
 4. Point to the explicit planning disclaimer and official-source links.
 
-## Owner Acceptance Steps
+## Owner Acceptance Evidence
 
-### User B Privacy Walkthrough
+### User B Privacy Walkthrough — Pass
 
-1. Sign in as User A, generate one plan, save it, and note only the plan title
-   and its saved-result UUID. Do not copy account identifiers or tokens.
-2. Sign out and choose a genuinely separate Google account as User B.
-3. Open `/saved`; User A's plan must not appear.
-4. Request deletion of User A's UUID while signed in as User B. The application
-   must return the not-found path and User A's row must remain.
-5. Sign back in as User A, confirm the plan still exists, delete it, and confirm
-   the empty state.
+On 2026-08-28, User A created one temporary production result. A genuinely
+separate User B then received the empty `/saved` state. A deletion probe under
+User B's actual authenticated database identity affected zero rows, and an
+owner-independent check confirmed the temporary User A row remained. User A
+signed back in, confirmed its rows remained, deleted only the temporary row,
+and retained the pre-existing owned row. No account identifier, token, or result
+UUID is included in this record.
 
-### Everyday-Hiker Acceptance
+### Everyday-Hiker Acceptance — Pass
 
-Answer yes or record a defect for each statement:
+The owner reviewed the final production/preview presentation, approved it, and
+indicated the release was ready on 2026-08-28. Acceptance covered these points:
 
 - I can tell official NPS facts from computed USGS estimates.
 - I can identify the most important safety items without opening every detail.

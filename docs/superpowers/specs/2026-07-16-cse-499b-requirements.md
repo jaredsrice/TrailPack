@@ -359,11 +359,10 @@ TrailPack is complete for CSE 499B when:
 6. README, changelog, proposal-alignment notes, demo script, and portfolio
    summary match the delivered system.
 
-Current closeout status (2026-08-28): implementation, production verification,
-security remediation/retest, and final documentation are complete. The two
-remaining human acceptance items are the separate-second-user privacy denial
-walkthrough required by B-03 and the final everyday-hiker clarity review. They
-are recorded in
+Current closeout status (2026-08-28): complete. Implementation, production
+verification, security remediation/retest, final documentation, a real
+two-account privacy denial walkthrough, and final everyday-hiker owner
+acceptance all passed. The evidence is recorded in
 [`../validation/2026-08-28-cse-499b-closeout.md`](../validation/2026-08-28-cse-499b-closeout.md).
 
 ## Sources And Reference Documents

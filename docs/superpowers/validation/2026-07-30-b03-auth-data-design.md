@@ -1,8 +1,8 @@
 # B-03 Google Login And Private Saved Results: Auth And Data Design
 
-**Status:** Implementation, managed persistence, production Google OAuth, and
-the complete first-user lifecycle are verified. Only the separate-second-user
-privacy denial walkthrough remains before B-03 can close.
+**Status:** Complete. Implementation, managed persistence, production Google
+OAuth, the complete first-user lifecycle, and a real two-account privacy denial
+walkthrough are verified.
 
 ## Decision
 
@@ -142,6 +142,23 @@ runtime environment.
 - Lint, type checking, 239 Vitest tests, three Firefox/axe flows, the production
   build, 27 stress scenarios, and required hosted checks passed.
 
-B-03 remains open only until a second real Google identity proves it cannot list
-or delete a saved row belonging to the first identity. Code-level and database
-controls are verified but are not being substituted for that acceptance step.
+## Two-Account Production Evidence — 2026-08-28
+
+- User A signed in to production and saved one temporary Jenny Lake result.
+- After sign-out, Google displayed the account chooser and User B signed in
+  with a genuinely separate Google identity.
+- User B opened `/saved` and received the empty state; neither User A row was
+  listed.
+- A database-level delete probe used User B's actual authenticated identity and
+  the exact temporary User A result. Row-level security allowed zero rows to be
+  deleted, and a follow-up owner-independent check confirmed the User A row was
+  retained. The route-level cross-user test separately confirms the application
+  returns its not-found response without issuing an owner-mismatched delete.
+- User A signed back in, confirmed both owned rows were still present, deleted
+  only the temporary acceptance row, and confirmed the older owned row remained.
+- No email address, account identifier, token, or saved-result UUID is retained
+  in this report.
+
+B-03 is complete: the guest path, owner lifecycle, account chooser, application
+owner filter, database RLS boundary, real second-user list denial, real
+second-user delete denial, and cleanup all passed.
