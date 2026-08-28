@@ -10,25 +10,84 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+No unreleased product changes.
+
+## [0.5.0] - 2026-08-28
+
+Delivered private saved plans, a sharper controllable park-photo experience,
+protected automation, and the security-remediated application release as
+commit
+[`30f183c`](https://github.com/jaredsrice/TrailPack/commit/30f183cd32d5841c0cca4ace606c4498e1775ac5).
+
 ### Added
 
-- B-03's Google OAuth and private saved-results foundation using Supabase Auth
-  and a row-level-security protected user-owned table.
-- A private save action for generated packing lists and a saved-plans view with
-  owner-only deletion, while the complete guest planner remains available.
-- A bounded saved-result contract that retains only recommendation-relevant trip
-  data and excludes free-form notes.
-
-### Deployment verification
-
-- The managed Supabase project, RLS migration, and production Google provider
-  are configured. The deployed sign-in, save/revisit/delete, and two-user
-  privacy walkthrough remains before B-03 can be marked complete.
+- Provider-managed Google sign-in, a fresh account chooser on every sign-in,
+  sign-out, private save, fresh-session revisit, and owner-only deletion while
+  the complete guest planner remains available.
+- A row-level-security protected saved-plan table with a 64 KB database payload
+  ceiling and a 100-result per-user quota that also apply to direct Supabase
+  clients.
+- Required pull-request validation and CodeQL workflows for lint, type checking,
+  unit tests, accessibility checks, stress scenarios, build, static analysis,
+  and Vercel deployment.
+- A TrailPack application icon and global browser-security headers.
+- Previous/next carousel controls, pause/resume, per-park slide selectors, and
+  separate desktop/mobile focal points for the seven featured park photographs.
 
 ### Changed
 
-- Reframed the README, roadmap, and release summaries around product milestones
-  for a public audience.
+- Replaced the smaller or poorly framed rotating images with high-resolution NPS
+  originals and separated the Grand Teton rotation image from the Jenny Lake
+  trail-specific scene.
+- The monthly NPS refresh now commits a verified snapshot to an automation
+  branch and opens a pull request instead of attempting a direct `main` push.
+- Saved-plan input is rebuilt from an exact canonical schema before storage;
+  list responses are capped at the most recent 100 rows.
+- Updated Next.js to `15.5.24`, `eslint-config-next` to `15.5.24`, js-yaml to
+  `4.3.1`, nanoid to `3.3.18`, PostCSS to `8.5.23`, Sharp to `0.35.3`, and both
+  resolved brace-expansion lines to patched versions.
+- Reframed public README and release text around product behavior rather than
+  internal course milestones.
+
+### Fixed
+
+- Made the NPS refresh regression test use a stable historical fixture date so
+  a passing live comparison cannot fail later because the calendar advanced.
+- Bounded incoming request streams and Gemini response streams before buffering,
+  including multibyte, missing-length, oversized, read-error, and cancellation
+  behavior.
+- Closed a callback open-redirect edge case involving backslash-prefixed paths
+  and now require the resolved destination to remain on the request origin.
+- Prevented unknown nested saved-plan fields from surviving validation and being
+  written to JSONB.
+- Added explicit owner-scoped delete-route coverage, including cross-user denial.
+- Removed the production favicon `404`.
+
+### Security
+
+- Production now sends a Content Security Policy, permissions policy, strict
+  referrer policy, frame denial, MIME-sniffing denial, and HSTS.
+- Secret scanning and push protection report no open alerts; CodeQL reports no
+  open alerts for the release commit; npm and Dependabot report zero open
+  dependency vulnerabilities.
+- An updated OWASP ZAP `2.17.0` passive-only scan found no critical or
+  high-severity issue. Two medium CSP categories were accepted with compensating
+  controls, and one public-static-asset CORS category was downgraded to
+  informational after independent review.
+
+### Verification
+
+- Lint, type checking, 239 Vitest tests, three Firefox/axe flows, the production
+  build, 27 recommendation stress scenarios, and the five-trail NPS integrity
+  check passed locally and in required hosted checks.
+- All seven production carousel images loaded without error at their tuned
+  focal points on a high-density desktop display; the responsive mobile view had
+  no horizontal overflow.
+- The production database reported its payload constraint, quota trigger, and
+  security-invoker function enabled after migration.
+- Production sign-in, save, fresh-session revisit, owner delete, sign-out, and
+  account chooser passed. The final separate-second-identity denial walkthrough
+  remains an acceptance item before the private-save tracking issue closes.
 
 ## [0.4.0] - 2026-07-29
 

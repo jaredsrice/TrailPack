@@ -2,7 +2,7 @@
 
 Jared Rice  
 CSE 499B continuation working specification  
-Updated: July 16, 2026  
+Updated: August 28, 2026  
 Project repository: https://github.com/jaredsrice/TrailPack
 
 ## Document Purpose
@@ -32,9 +32,10 @@ stretch requirements. The updated scope makes these changes:
 - Remove no-account email or export as a separate requirement.
 - Add a separate cybersecurity testing, remediation, and reporting requirement.
 
-The cybersecurity requirement is included for future planning, but its testing
-work is explicitly deferred during the July 2026 CSE 499A closeout. It begins
-only after the primary 499B features and deployed test environment are stable.
+The cybersecurity requirement was deferred during the July 2026 CSE 499A
+closeout and executed after the primary 499B surface and deployed environment
+became stable. The sanitized review and retest record is
+[`../validation/2026-08-28-b04-cybersecurity-review.md`](../validation/2026-08-28-b04-cybersecurity-review.md).
 
 ## Section 1: Product Definition
 
@@ -263,8 +264,10 @@ Testing is performed against a system without authorization, findings are copied
 without verification, secrets or personal data appear in the report, or serious
 findings remain unaddressed without an explicit decision.
 
-Status at this revision: planned for late CSE 499B; not executed during CSE 499A
-closeout.
+Status at this revision: executed against the frozen `0.5.0` application release
+candidate. Agent review, CodeQL, dependency and secret checks, an updated
+passive-only OWASP ZAP run, manual checks, remediation, and retests are complete
+with no unresolved critical or high-severity finding.
 
 ## Section 5: Removed Or Deferred Scope
 
@@ -355,6 +358,13 @@ TrailPack is complete for CSE 499B when:
    hiker.
 6. README, changelog, proposal-alignment notes, demo script, and portfolio
    summary match the delivered system.
+
+Current closeout status (2026-08-28): implementation, production verification,
+security remediation/retest, and final documentation are complete. The two
+remaining human acceptance items are the separate-second-user privacy denial
+walkthrough required by B-03 and the final everyday-hiker clarity review. They
+are recorded in
+[`../validation/2026-08-28-cse-499b-closeout.md`](../validation/2026-08-28-cse-499b-closeout.md).
 
 ## Sources And Reference Documents
 

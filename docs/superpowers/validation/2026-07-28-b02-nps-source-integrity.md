@@ -3,7 +3,7 @@
 Date: 2026-07-28 (America/Boise)
 Requirement: B-02 supporting closeout task
 Branch: `codex/b02-guarded-live-ai`
-Status: Implemented; initial live refresh passed
+Status: Complete; live refresh and protected pull-request delivery passed
 
 ## Outcome
 
@@ -62,14 +62,17 @@ A normal NPS change no longer waits for routine manual approval:
 6. Write a complete managed snapshot only when every affected trail passes.
 7. Run lint, all unit tests, the recommendation stress matrix, type checking,
    and the production build.
-8. Commit and push only the snapshot file when every verification gate passes.
+8. Commit only the snapshot file to a unique automation branch and open a pull
+   request when every verification gate passes. Protected `main` remains the
+   only release path.
 
 The scheduled job runs at 15:17 UTC on the first day of each month. It also
 supports manual dispatch, uploads its report for 90 days, and requests only
-`contents: write`. The checkout is pinned to the repository's default branch.
-The bot uses `GITHUB_TOKEN`, whose resulting push does not recursively trigger
-another GitHub Actions run; the refresh workflow therefore performs the complete
-verification suite before its own commit.
+`contents: write` and `pull-requests: write`. The checkout is pinned to the
+repository's default branch. The bot uses `GITHUB_TOKEN` to push only its
+automation branch and open the reviewable refresh pull request. The refresh
+workflow performs the complete verification suite before that branch is
+published, and the normal required checks run again on the pull request.
 
 ## Conditions That Still Block
 
@@ -101,9 +104,13 @@ Routine confirmed changes inside the bounds are automatic.
   saved `/thingstodo/` and `/places/` pages.
 - The job requires no provider secret and prints no environment-variable values.
 - Nothing runs in the user-facing request path.
-- The current `main` branch was verified as unprotected before selecting the
-  direct, post-verification bot commit. If protection is added later, the
-  workflow will fail safely at push until its delivery method is updated.
+- The original direct-push design was superseded when `main` protection became
+  the repository policy. PR
+  [#37](https://github.com/jaredsrice/TrailPack/pull/37) changed delivery to an
+  automation branch plus pull request. PR
+  [#38](https://github.com/jaredsrice/TrailPack/pull/38) then proved the full
+  path by merging a verified automated snapshot update without bypassing
+  `Protect Main`.
 
 ## Test Evidence
 
@@ -141,12 +148,13 @@ value was changed.
 | Firefox rendered QA | Pass | Desktop 1440×1000 and mobile 390×844; panel visible after Jenny Lake selection; no console errors or warnings |
 | Production build | Pass | Next.js 15.5.22 compiled `/` and all three API routes |
 | Recommendation stress matrix | Pass | `npm run scenario:stress`; regenerated the 27-scenario report |
+| Protected delivery correction | Pass | PR #37 replaced direct push with an automation pull request |
+| First automated snapshot PR | Pass | PR #38 merged as `22639af` after required checks |
 
-The local generated report is ignored by Git. The workflow becomes active and
-its report artifacts become durable after this branch reaches the default
-branch. Scheduled workflows run from the default branch in UTC, may be delayed
-under high load, and may be disabled after 60 days of inactivity in a public
-repository.
+The local generated report is ignored by Git. Workflow report artifacts remain
+available for 90 days. Scheduled workflows run from the default branch in UTC,
+may be delayed under high load, and may be disabled after 60 days of inactivity
+in a public repository.
 
 ## References
 

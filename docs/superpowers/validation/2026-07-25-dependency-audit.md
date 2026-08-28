@@ -1,10 +1,11 @@
-# Dependency Audit Validation — 2026-07-25
+# Dependency Audit Validation — 2026-07-25 Baseline And 2026-08-28 Release
 
 ## Scope
 
-This record covers the dependency audit performed after adding Playwright and
-axe accessibility testing. It distinguishes deployed dependency exposure from
-development-tool findings and records why npm's forced remediation was rejected.
+The July sections below preserve the dependency audit performed after adding
+Playwright and axe accessibility testing. They are historical evidence, not the
+current vulnerability count. The final section records the fresh `0.5.0`
+release-candidate audit and remediation.
 
 ## Safe Remediation Applied
 
@@ -89,3 +90,32 @@ than the bounded transitive findings.
    without compatibility evidence.
 3. Revisit the dev-only lint chain during a planned Next.js 16 and ESLint 10
    migration.
+
+## Release-Candidate Reaudit — 2026-08-28
+
+The dependency review was rerun after the application surface was frozen. Safe,
+supported updates and explicit compatible overrides moved the release to:
+
+- Next.js and `eslint-config-next` `15.5.24`;
+- js-yaml `4.3.1`;
+- nanoid `3.3.18`;
+- PostCSS `8.5.23`;
+- Sharp `0.35.3`; and
+- brace-expansion `1.1.18` and `5.0.9` in the resolved graph.
+
+Node's supported runtime floor is now explicit as `>=20.9.0`. The application
+continued to build and pass its complete validation suite with these versions.
+
+### Current Results
+
+| Check | Result |
+|---|---|
+| `npm audit --json` | 0 vulnerabilities across 498 total dependencies |
+| GitHub Dependabot open alerts after merge | 0 |
+| GitHub secret-scanning open alerts | 0 |
+| CodeQL on the release commit | JavaScript/TypeScript and Actions analyses passed; 0 open alerts |
+
+No forced framework downgrade or incompatible major upgrade was used. The July
+finding counts above are therefore closed historical observations and must not
+be quoted as the current TrailPack risk state. Dependency monitoring is now part
+of protected pull-request validation and GitHub's repository security features.

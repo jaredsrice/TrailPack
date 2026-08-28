@@ -1,8 +1,8 @@
 # B-03 Google Login And Private Saved Results: Auth And Data Design
 
-**Status:** Local implementation, managed Supabase persistence, and production
-Google OAuth configuration are ready. The deployed save/revisit/delete and
-two-user privacy walkthrough remains before B-03 can close.
+**Status:** Implementation, managed persistence, production Google OAuth, and
+the complete first-user lifecycle are verified. Only the separate-second-user
+privacy denial walkthrough remains before B-03 can close.
 
 ## Decision
 
@@ -25,10 +25,11 @@ Each saved row contains only:
 4. The time saved.
 
 The snapshot deliberately excludes free-form `notes`: they are not interpreted
-by the rule engine and can contain unrelated personal information. Guest data
-remains only in browser memory unless the user signs in and presses **Save this
-plan**. A saved row remains until its owner deletes it; deleting an auth user
-cascades to that user's saved rows.
+by the rule engine and can contain unrelated personal information. Runtime
+validation constructs a new canonical object and does not preserve unrecognized
+nested fields. Guest data remains only in browser memory unless the user signs
+in and presses **Save this plan**. A saved row remains until its owner deletes
+it; deleting an auth user cascades to that user's saved rows.
 
 ## Ownership Model
 
@@ -46,6 +47,11 @@ user (`auth.getUser()`), never from the browser request. It also scopes deletes
 by both record ID and that user ID. Thus a guessed UUID cannot return, modify,
 or delete another user's row; RLS remains the database-level enforcement even
 if a future route filter is changed.
+
+`supabase/migrations/20260827000000_harden_saved_results_limits.sql` also
+enforces a 64 KB serialized payload ceiling and a maximum of 100 rows per user
+inside Postgres. These controls apply when an authenticated client calls
+Supabase directly instead of using TrailPack's server route.
 
 ## Auth And Application Flow
 
@@ -79,11 +85,14 @@ if a future route filter is changed.
 
 - Snapshot tests prove recommendation-relevant inputs are retained and
   free-form notes are omitted.
-- The saved-result runtime contract accepts only bounded fields and known source
-  labels before a server insert.
+- The saved-result runtime contract accepts only bounded fields, exact nested
+  schemas, and known source labels before a server insert.
 - The server routes use `Cache-Control: no-store`, validate request size and
   shape, validate the authenticated user on every request, and avoid returning
   provider/database detail to the browser.
+- Route tests cover missing sessions, malformed IDs, storage errors, successful
+  owner deletion, and a second authenticated user receiving `404` without a
+  delete operation against the first user's identifier.
 
 ## Managed Setup Evidence — 2026-07-31
 
@@ -106,5 +115,33 @@ if a future route filter is changed.
   restricted to an undeclared test-user list.
 
 The OAuth client secret was not added to this repository, Vercel, or TrailPack's
-runtime environment. B-03 remains open until the deployed first-user lifecycle
-and second-user denial walkthrough pass.
+runtime environment.
+
+## First-User Production Evidence — 2026-07-31
+
+- Production guest planning remained usable without signing in.
+- Google OAuth returned through the production callback and created a
+  cookie-backed TrailPack session.
+- The signed-in user saved a Jenny Lake result, opened `/saved`, revisited the
+  result from a fresh browser tab, deleted it, and confirmed the empty state.
+- Sign-out completed and the follow-up OAuth request displayed Google's
+  **Choose an account** screen with `prompt=select_account`, proving the account
+  chooser fix delivered in PR
+  [#35](https://github.com/jaredsrice/TrailPack/pull/35).
+- The production browser console remained free of errors during the lifecycle,
+  and the temporary test row was removed.
+
+## Security And Capacity Retest — 2026-08-28
+
+- PR [#39](https://github.com/jaredsrice/TrailPack/pull/39) added bounded stream
+  handling, exact saved-result canonicalization, owner-scoped delete tests,
+  response limits, and same-origin callback validation.
+- The production hardening migration completed successfully. A follow-up catalog
+  query returned `true` for the validated payload constraint, enabled quota
+  trigger, and security-invoker quota function.
+- Lint, type checking, 239 Vitest tests, three Firefox/axe flows, the production
+  build, 27 stress scenarios, and required hosted checks passed.
+
+B-03 remains open only until a second real Google identity proves it cannot list
+or delete a saved row belonging to the first identity. Code-level and database
+controls are verified but are not being substituted for that acceptance step.
