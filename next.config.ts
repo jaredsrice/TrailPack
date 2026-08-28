@@ -1,5 +1,6 @@
 import path from "node:path";
 import type { NextConfig } from "next";
+import { buildSecurityHeaders } from "./src/config/security-headers";
 
 const projectRoot = path.resolve(__dirname);
 
@@ -9,6 +10,14 @@ const nextConfig: NextConfig = {
   // cloud-synced parent folder). This silences the "inferred workspace root"
   // warning without touching any files outside this repository.
   outputFileTracingRoot: projectRoot,
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: buildSecurityHeaders(),
+      },
+    ];
+  },
   images: {
     qualities: [75, 90],
   },

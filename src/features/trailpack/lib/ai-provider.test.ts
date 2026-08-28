@@ -71,6 +71,42 @@ function asFetch(
   return vi.fn(implementation) as unknown as typeof fetch;
 }
 
+function oversizedProviderResponse(status: number): {
+  response: Response;
+  getPullCount: () => number;
+  wasCancelled: () => boolean;
+  chunkCount: number;
+} {
+  const chunkCount = 400;
+  const chunk = new TextEncoder().encode("x".repeat(1_024));
+  let pulls = 0;
+  let cancelled = false;
+
+  const response = new Response(
+    new ReadableStream<Uint8Array>({
+      pull(controller) {
+        pulls += 1;
+        if (pulls > chunkCount) {
+          controller.close();
+          return;
+        }
+        controller.enqueue(chunk);
+      },
+      cancel() {
+        cancelled = true;
+      },
+    }),
+    { status },
+  );
+
+  return {
+    response,
+    getPullCount: () => pulls,
+    wasCancelled: () => cancelled,
+    chunkCount,
+  };
+}
+
 describe("live AI provider boundary", () => {
   it("keeps the default live-provider wait bounded", () => {
     expect(DEFAULT_AI_TIMEOUT_MS).toBe(25_000);
@@ -174,6 +210,20 @@ describe("live AI provider boundary", () => {
     expect(JSON.stringify(result)).not.toContain("test-key");
   });
 
+  it("cancels an oversized streamed provider success response", async () => {
+    const streamed = oversizedProviderResponse(200);
+    const fetchImpl = asFetch(async () => streamed.response);
+
+    const result = await requestLiveAiReview(buildInput(), {
+      apiKey: "test-key",
+      fetchImpl,
+    });
+
+    expect(result.outcome).toBe("invalid-response");
+    expect(streamed.wasCancelled()).toBe(true);
+    expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
+  });
+
   it("maps provider failures to a generic fallback without returning the error body", async () => {
     const fetchImpl = asFetch(
       async () =>
@@ -250,6 +300,31 @@ describe("live AI provider boundary", () => {
         "private field description",
       );
       expect(JSON.stringify(warn.mock.calls)).not.toContain("test-key");
+    } finally {
+      warn.mockRestore();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("classifies and cancels an oversized streamed provider error", async () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const streamed = oversizedProviderResponse(500);
+    const fetchImpl = asFetch(async () => streamed.response);
+
+    try {
+      const result = await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl,
+      });
+
+      expect(result.outcome).toBe("provider-error");
+      expect(streamed.wasCancelled()).toBe(true);
+      expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
+      expect(warn).toHaveBeenCalledWith(
+        "TrailPack Gemini provider request failed.",
+        { httpStatus: 500, providerEnvelope: "oversized" },
+      );
     } finally {
       warn.mockRestore();
       vi.unstubAllEnvs();

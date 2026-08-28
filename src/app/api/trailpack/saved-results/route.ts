@@ -2,11 +2,13 @@ import { getSupabaseServerClient } from "@/features/trailpack/lib/supabase/serve
 import type { Json } from "@/features/trailpack/lib/supabase/types";
 import type { SavedResultRecord } from "@/features/trailpack/lib/saved-results";
 import { parseSavedResultDraft, parseSavedResultRecord } from "@/features/trailpack/lib/saved-results-runtime";
+import { readTextWithinLimit } from "@/features/trailpack/lib/read-text-with-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const MAX_REQUEST_BYTES = 64_000;
+const MAX_SAVED_RESULTS_PER_USER = 100;
 const NO_STORE_HEADERS = { "Cache-Control": "no-store" };
 
 export async function GET() {
@@ -24,7 +26,8 @@ export async function GET() {
     .from("saved_results")
     .select("id, created_at, trail_summary, trip_inputs, recommendation, source_labels")
     .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(MAX_SAVED_RESULTS_PER_USER);
 
   if (error || !data) {
     return jsonResponse({ error: "Saved results could not be loaded." }, { status: 500 });
@@ -39,21 +42,14 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const declaredLength = Number(request.headers.get("content-length"));
-  if (Number.isFinite(declaredLength) && declaredLength > MAX_REQUEST_BYTES) {
+  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES);
+  if (bodyRead.status === "too-large") {
     return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
   }
-
-  let requestText: string;
-  try {
-    requestText = await request.text();
-  } catch {
+  if (bodyRead.status === "unreadable") {
     return jsonResponse({ error: "Unable to read saved result request." }, { status: 400 });
   }
-
-  if (new TextEncoder().encode(requestText).byteLength > MAX_REQUEST_BYTES) {
-    return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
-  }
+  const requestText = bodyRead.text;
 
   let value: unknown;
   try {
@@ -90,6 +86,12 @@ export async function POST(request: Request) {
     .single();
 
   const result = data ? rowToRecord(data) : null;
+  if (error?.code === "23514") {
+    return jsonResponse(
+      { error: "Saved result limit reached. Delete one before saving another." },
+      { status: 409 },
+    );
+  }
   if (error || !result) {
     return jsonResponse({ error: "Saved result could not be created." }, { status: 500 });
   }

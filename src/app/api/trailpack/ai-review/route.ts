@@ -1,5 +1,6 @@
 import { parseAiContractInput } from "@/features/trailpack/lib/ai-contract-runtime";
 import { requestLiveAiReview } from "@/features/trailpack/lib/ai-provider";
+import { readTextWithinLimit } from "@/features/trailpack/lib/read-text-with-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,33 +11,20 @@ const NO_STORE_HEADERS = {
 };
 
 export async function POST(request: Request) {
-  const declaredLength = Number(request.headers.get("content-length"));
-  if (
-    Number.isFinite(declaredLength) &&
-    declaredLength > MAX_REQUEST_BYTES
-  ) {
+  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES);
+  if (bodyRead.status === "too-large") {
     return jsonResponse(
       { error: "AI review request is too large." },
       { status: 413 },
     );
   }
-
-  let requestText: string;
-  try {
-    requestText = await request.text();
-  } catch {
+  if (bodyRead.status === "unreadable") {
     return jsonResponse(
       { error: "Unable to read AI review request." },
       { status: 400 },
     );
   }
-
-  if (new TextEncoder().encode(requestText).byteLength > MAX_REQUEST_BYTES) {
-    return jsonResponse(
-      { error: "AI review request is too large." },
-      { status: 413 },
-    );
-  }
+  const requestText = bodyRead.text;
 
   let requestValue: unknown;
   try {
