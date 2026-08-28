@@ -13,18 +13,19 @@ silently change the packing decisions or their sources.
 
 | Item | Current state |
 |---|---|
-| Release | `0.4.0` — guarded AI and field-guide release |
+| Release | `0.5.0` — private saves and security-hardening release |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
-| Release commit | [`33fa471`](https://github.com/jaredsrice/TrailPack/commit/33fa471350608b4468714083a74f26334037cca6) |
-| Completed milestones | Verified public-trail catalog; guarded AI and source integrity |
-| Active track | [Google login and private saved results](https://github.com/jaredsrice/TrailPack/issues/27) |
+| Application release commit | [`30f183c`](https://github.com/jaredsrice/TrailPack/commit/30f183cd32d5841c0cca4ace606c4498e1775ac5) |
+| Completed milestones | Verified trail catalog; guarded AI; source integrity; private saves; security remediation; final UAT |
+| Active track | Release complete; optional post-release maintenance |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Fully available without an account |
 
-Google login and private saved results are the active release milestone. The
-implementation and managed account configuration are ready, while deployed
-save/revisit/delete and two-user privacy verification remain. The guest search,
-planning, and packing workflow remains available without an account.
+Google login and private saved results are live. The guest flow, complete owner
+lifecycle, fresh account chooser, and a real two-account production walkthrough
+have been verified. The second identity could neither list nor delete User A's
+saved result, and User A confirmed the result remained before removing the
+temporary acceptance copy.
 
 ## What TrailPack Does
 
@@ -88,9 +89,11 @@ under [`docs/superpowers/validation/`](docs/superpowers/validation/).
 
 ## Visual Context
 
-The homepage rotates through seven locally served, officially sourced NPS
-photographs. Selecting Grand Teton or a supported trail locks the visual to the
-most specific verified scene available. Manual entry retains general park
+The homepage rotates through seven high-resolution, locally served, officially
+sourced NPS photographs. Each image has desktop and mobile focal-point tuning;
+the carousel also provides previous/next controls, pause/resume, and a selector
+for every park. Selecting Grand Teton or a supported trail locks the visual to
+the most specific verified scene available. Manual entry retains general park
 imagery instead of claiming an unsupported location match.
 
 Every photograph includes a visible credit and source link. The image ledger is
@@ -180,8 +183,10 @@ inconsistent responses, implausible values, removed pages, or parser failures
 block the entire write.
 
 GitHub Actions runs the same guarded refresh monthly on the first day at
-15:17 UTC. A changed snapshot is committed only after lint, tests, type checking,
-the recommendation stress matrix, and the production build pass.
+15:17 UTC. A changed snapshot is committed to a dedicated automation branch
+only after lint, tests, type checking, the recommendation stress matrix, and the
+production build pass. The workflow then opens a pull request; protected
+`main` requires the normal validation, CodeQL, and Vercel checks before merge.
 
 ## Verification
 
@@ -201,9 +206,13 @@ axe. Install the matching browser once, if needed:
 npx playwright install firefox
 ```
 
-The `0.4.0` release passed lint, type checking, 205 Vitest tests, three
-Firefox/axe flows, a production build, 27 recommendation stress scenarios, a
-five-trail live NPS refresh, and production HTTP/API smoke checks.
+The `0.5.0` application release passed lint, type checking, 239 Vitest tests,
+three Firefox/axe flows, a production build, 27 recommendation stress
+scenarios, a five-trail live NPS check, CodeQL analysis, a zero-vulnerability
+dependency audit, production browser/API smoke checks, and a real two-account
+privacy walkthrough. An updated OWASP ZAP passive scan found no critical or
+high-severity issue. The sanitized review and risk decisions are in the
+[sanitized security review](docs/superpowers/validation/2026-08-28-b04-cybersecurity-review.md).
 
 ## Current Limitations
 
@@ -217,13 +226,17 @@ five-trail live NPS refresh, and production HTTP/API smoke checks.
   route is independently available and production-verified.
 - Gemini is optional and Preview-only. Production intentionally uses the
   deterministic fallback.
-- Saved results now have a managed Supabase project, an applied RLS migration,
-  and production Google OAuth configuration. The remaining deployed lifecycle
-  and two-user verification checklist is in
-  [`docs/superpowers/validation/2026-07-30-b03-auth-data-design.md`](docs/superpowers/validation/2026-07-30-b03-auth-data-design.md).
-- The current dependency-risk decision and remaining upstream findings are
-  documented in
+- Saved results have managed Supabase storage, row-level security, database
+  payload and quota limits, and production Google OAuth. The owner lifecycle
+  and real two-account list/delete isolation are verified in the
+  [private-save validation record](docs/superpowers/validation/2026-07-30-b03-auth-data-design.md).
+- The release audit reports zero npm vulnerabilities and zero open Dependabot
+  alerts. The historical and current dependency decisions are documented in
   [`docs/superpowers/validation/2026-07-25-dependency-audit.md`](docs/superpowers/validation/2026-07-25-dependency-audit.md).
+- The production CSP intentionally retains bounded inline-script and
+  inline-style allowances required by the current Next.js rendering path. The
+  accepted medium-risk rationale and compensating controls are in the security
+  review linked above.
 
 TrailPack supports planning but does not replace official trail guidance,
 current local conditions, emergency preparation, or personal judgment.
@@ -235,8 +248,9 @@ current local conditions, emergency preparation, or personal judgment.
 | Core guest planning and packing workflow | Complete and production-verified |
 | Verified Grand Teton trail catalog | Complete and production-verified |
 | Guarded live AI and NPS source integrity | Complete and production-verified |
-| Google login and private saved results | Implemented; deployment verification pending |
-| Security audit, remediation, and release-candidate verification | Planned after the account milestone |
+| Google login and private saved results | Complete and production-verified with two separate identities |
+| Security audit, remediation, and release-candidate verification | Complete |
+| Final everyday-hiker acceptance | Complete; owner approved the final preview and release state |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

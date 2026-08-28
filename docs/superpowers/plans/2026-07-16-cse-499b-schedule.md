@@ -1,7 +1,7 @@
 # TrailPack CSE 499B Schedule
 
 Created: July 16, 2026  
-Status: Working plan for the next senior-project course  
+Status: Complete; technical delivery and final human acceptance passed  
 Requirements source: `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`
 
 ## Planning Basis
@@ -19,6 +19,10 @@ requirements and one late verification requirement:
 The rule engine, three curated profiles, saved demo fixtures, manual fallback,
 and guest workflow remain the stable baseline. Security testing is deliberately
 scheduled late; it is not part of the CSE 499A closeout.
+
+Delivery status as of 2026-08-28: B-01 through B-04 are complete. The real
+two-account privacy denial walkthrough passed, final everyday-hiker owner
+acceptance passed, and the release documentation matches the deployed product.
 
 ## Delivery Rules
 
@@ -95,9 +99,10 @@ newly discovered trail, change recommendation logic, or apply ambiguous source
 data. Parser and refresh behavior must be fixture-tested, and the initial live
 refresh must be recorded before this gate passes.
 
-Implementation status (2026-07-28): complete on the B-02 feature branch. The
-fixture-tested guarded refresh, automatic snapshot workflow, accessibility
-display, and initial 5/5 live comparison are recorded in
+Implementation status (updated 2026-08-28): complete on `main`. The
+fixture-tested guarded refresh, automation-branch pull-request workflow,
+accessibility display, initial 5/5 live comparison, and first delivered refresh
+PR are recorded in
 [`../validation/2026-07-28-b02-nps-source-integrity.md`](../validation/2026-07-28-b02-nps-source-integrity.md).
 
 ### Authentication Gate
