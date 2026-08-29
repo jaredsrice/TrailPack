@@ -30,7 +30,7 @@ declare
   current_user_id uuid := (select auth.uid());
   current_window_started_at timestamptz;
   current_review_count smallint;
-  current_time timestamptz := now();
+  now_ts timestamptz := now();
 begin
   if current_user_id is null then
     raise exception using
@@ -55,27 +55,27 @@ begin
       review_count
     ) values (
       current_user_id,
-      current_time,
+      now_ts,
       1
     );
 
     return query select
       true,
       4::smallint,
-      current_time + interval '1 hour';
+      now_ts + interval '1 hour';
     return;
   end if;
 
-  if current_window_started_at + interval '1 hour' <= current_time then
+  if current_window_started_at + interval '1 hour' <= now_ts then
     update public.ai_review_quotas
-    set window_started_at = current_time,
+    set window_started_at = now_ts,
         review_count = 1
     where user_id = current_user_id;
 
     return query select
       true,
       4::smallint,
-      current_time + interval '1 hour';
+      now_ts + interval '1 hour';
     return;
   end if;
 
