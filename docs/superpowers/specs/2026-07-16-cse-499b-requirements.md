@@ -152,6 +152,28 @@ Fails if:
 AI becomes required for packing output, receives unnecessary personal data,
 produces untraceable safety claims, or changes the baseline without validation.
 
+#### B-02 Production Rollout Addendum — 2026-08-29
+
+Production provider use must remain optional and explanation-only. When a
+provider key is configured, a supported list may request one review
+automatically after its input and weather context stabilize, subject to all of
+these additional controls:
+
+- only a server-validated signed-in account may reach the provider;
+- one account may claim no more than five reviews during an hour-long window;
+- the allowance check and increment must be atomic across serverless workers;
+- the browser must not supply or override the account identity, count, or reset
+  time;
+- signed-out, exhausted, unavailable, rejected, and invalid responses must keep
+  the deterministic list and explanation available; and
+- automatic requests for the same stable contract must be deduplicated within
+  the current browser session, while a visible refresh remains available within
+  the allowance.
+
+Production enablement fails if authentication or allowance checks occur only in
+the browser, a blocked request still reaches the provider, or any AI response
+can change the rule-based packing decisions.
+
 #### B-02 Supporting Closeout Task: Monthly NPS Source Integrity
 
 Before B-02 closes, TrailPack must include a non-runtime monthly refresh for the
@@ -364,6 +386,12 @@ verification, security remediation/retest, final documentation, a real
 two-account privacy denial walkthrough, and final everyday-hiker owner
 acceptance all passed. The evidence is recorded in
 [`../validation/2026-08-28-cse-499b-closeout.md`](../validation/2026-08-28-cse-499b-closeout.md).
+
+Post-closeout product update (2026-08-29): the optional guarded AI review was
+approved for signed-in Production use after the database-backed five-per-hour
+allowance, automatic-review deduplication, live Preview acceptance, and safe
+fallback retests passed. The rule-based guest workflow and the completed
+`0.5.0` security baseline remain unchanged.
 
 ## Sources And Reference Documents
 

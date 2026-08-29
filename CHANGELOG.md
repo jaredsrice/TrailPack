@@ -12,6 +12,59 @@ corrections within that milestone.
 
 No unreleased product changes.
 
+## [0.6.0] - 2026-08-29
+
+Promoted the guarded Gemini explanation review to signed-in production use with
+an account-based allowance and automatic, non-authoritative review flow in
+[pull request #41](https://github.com/jaredsrice/TrailPack/pull/41).
+
+### Added
+
+- Automatic guarded explanation review after a supported packing list and its
+  weather context stabilize, plus a manual refresh control.
+- A database-backed allowance of five live reviews per signed-in account during
+  an hour-long window, claimed atomically across serverless workers.
+- Explicit `sign-in-required` and `rate-limited` fallback outcomes with
+  no-store, remaining-allowance, reset-time, and retry headers where applicable.
+
+### Changed
+
+- Expanded the encrypted `GEMINI_API_KEY` from Preview to Preview and Production
+  after the abuse controls and live Preview review passed.
+- Kept the rule-generated packing list, priorities, source labels, and missing
+  details authoritative while presenting the AI result as an explanation-only
+  review.
+- OAuth sign-in now uses the exact origin-local `/auth/callback` URL so branch
+  previews match the allow-list without depending on a query-string variant.
+
+### Fixed
+
+- Replaced an ambiguous `current_time` PL/pgSQL variable in the quota claim
+  function with an unambiguous timestamp name after the first live claim exposed
+  PostgreSQL's reserved-expression resolution.
+- Preserved the deterministic fallback for signed-out, exhausted, unavailable,
+  rejected, timed-out, malformed, and provider-error responses without spending
+  a provider request when authentication or account allowance blocks it.
+
+### Security
+
+- The server derives the quota owner from the validated Supabase session; the
+  browser cannot choose another user identifier.
+- Direct table access is revoked from browser roles, row-level security is
+  enabled, and the security-definer claim function exposes only a bounded
+  authenticated operation.
+
+### Verification
+
+- Lint, type checking, 255 Vitest tests, four Firefox/axe flows, the optimized
+  Production build, 27 recommendation stress scenarios, and the five-trail NPS
+  integrity check passed.
+- The protected Vercel Preview returned a live accepted `gemini-3.5-flash`
+  review for Jenny Lake while the deterministic packing list remained
+  unchanged.
+- The corrected Production quota function passed a transactional authenticated
+  claim test and returned four remaining reviews without retaining test data.
+
 ## [0.5.0] - 2026-08-28
 
 Delivered private saved plans, a sharper controllable park-photo experience,
@@ -47,7 +100,7 @@ commit
   `4.3.1`, nanoid to `3.3.18`, PostCSS to `8.5.23`, Sharp to `0.35.3`, and both
   resolved brace-expansion lines to patched versions.
 - Reframed public README and release text around product behavior rather than
-  internal course milestones.
+  internal implementation tracking.
 
 ### Fixed
 
