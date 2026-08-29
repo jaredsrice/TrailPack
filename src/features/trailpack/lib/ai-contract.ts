@@ -90,6 +90,8 @@ export type LiveAiOutcome =
   | "rejected"
   | "timed-out"
   | "quota-limited"
+  | "rate-limited"
+  | "sign-in-required"
   | "missing-key"
   | "invalid-response"
   | "provider-error";

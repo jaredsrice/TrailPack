@@ -26,6 +26,8 @@ describe("AI review display states", () => {
     { outcome: "rejected", badge: "Live review rejected" },
     { outcome: "timed-out", badge: "Live review timed out" },
     { outcome: "quota-limited", badge: "Live quota unavailable" },
+    { outcome: "rate-limited", badge: "Hourly review limit reached" },
+    { outcome: "sign-in-required", badge: "Sign in for live AI" },
     { outcome: "missing-key", badge: "Live AI not configured" },
     { outcome: "invalid-response", badge: "Invalid live response" },
     { outcome: "provider-error", badge: "Live provider unavailable" },

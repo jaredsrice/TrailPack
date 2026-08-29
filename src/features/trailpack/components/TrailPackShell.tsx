@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
@@ -46,6 +46,8 @@ const QUICK_START_TRAIL_IDS = [
   "taggart-lake",
   "string-lake-loop",
 ] as const;
+
+const AUTOMATIC_AI_REVIEW_DELAY_MS = 1_500;
 
 type LiveAiUiState =
   | { status: "idle" }
@@ -114,6 +116,7 @@ export function TrailPackShell() {
     status: "idle",
   });
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const automaticallyRequestedAiInputs = useRef(new Set<string>());
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
@@ -255,22 +258,33 @@ export function TrailPackShell() {
       ? currentLiveAiState.result.review
       : savedAiReview;
 
-  async function handleLiveAiReview() {
-    if (!aiInput) {
-      return;
-    }
+  const aiInputKey = useMemo(
+    () => (aiInput ? JSON.stringify(aiInput) : null),
+    [aiInput],
+  );
 
-    const requestedInput = aiInput;
+  const requestAiReview = useCallback(async (
+    requestedInput: AiContractInput,
+    signal?: AbortSignal,
+  ) => {
     setLiveAiState({ status: "loading", input: requestedInput });
 
     try {
-      const result = await requestLiveAiReviewFromRoute(requestedInput);
+      const result = await requestLiveAiReviewFromRoute(requestedInput, {
+        signal,
+      });
+      if (signal?.aborted) {
+        return;
+      }
       setLiveAiState({
         status: "ready",
         input: requestedInput,
         result,
       });
     } catch {
+      if (signal?.aborted) {
+        return;
+      }
       setLiveAiState({
         status: "error",
         input: requestedInput,
@@ -278,6 +292,37 @@ export function TrailPackShell() {
           "TrailPack could not complete the live AI review. The rule-based list remains available.",
       });
     }
+  }, []);
+
+  useEffect(() => {
+    if (
+      !aiInput ||
+      !aiInputKey ||
+      isWeatherLoading ||
+      automaticallyRequestedAiInputs.current.has(aiInputKey)
+    ) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => {
+      automaticallyRequestedAiInputs.current.add(aiInputKey);
+      void requestAiReview(aiInput, controller.signal);
+    }, AUTOMATIC_AI_REVIEW_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [aiInput, aiInputKey, isWeatherLoading, requestAiReview]);
+
+  function handleLiveAiReview() {
+    if (!aiInput || !aiInputKey) {
+      return;
+    }
+
+    automaticallyRequestedAiInputs.current.add(aiInputKey);
+    void requestAiReview(aiInput);
   }
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
