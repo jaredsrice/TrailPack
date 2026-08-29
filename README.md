@@ -15,7 +15,7 @@ silently change the packing decisions or their sources.
 |---|---|
 | Release | `0.6.0` — production-guarded AI review release |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
-| Release review | [Pull request #41](https://github.com/jaredsrice/TrailPack/pull/41) |
+| Application release commit | [`9e95139`](https://github.com/jaredsrice/TrailPack/commit/9e951392d6eb113180257f80b498eeb46e7d548c) |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
 | Active track | Release complete; optional post-release maintenance |
 | Supported catalog | Five manually verified Grand Teton day hikes |
@@ -218,9 +218,10 @@ npx playwright install firefox
 
 The `0.6.0` release candidate passed lint, type checking, 255 Vitest tests, four
 Firefox/axe flows, a production build, 27 recommendation stress scenarios, and
-a five-trail live NPS check. Its protected Preview produced a real accepted
-Gemini review while preserving the unchanged rule-based list, and the
-Production quota function passed a transactional authenticated claim test.
+a five-trail live NPS check. Its protected Preview and Production deployment
+each produced a real accepted Gemini review while preserving the unchanged
+rule-based list, and the Production quota function passed a transactional
+authenticated claim test.
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
 zero-vulnerability dependency audit, production browser/API smoke checks, a

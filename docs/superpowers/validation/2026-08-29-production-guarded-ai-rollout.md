@@ -4,8 +4,9 @@
 - Release: `0.6.0`
 - Branch: `codex/production-guarded-ai`
 - Pull request: [#41](https://github.com/jaredsrice/TrailPack/pull/41)
-- Gate status: Preview, database, environment, and local release checks passed;
-  protected merge and one Production smoke review remain as deployment actions
+- Production deployment: `864Tp5oWS5LTzCL3DGscNfFUnd9R`
+- Gate status: passed; protected merge and signed-in Production acceptance are
+  complete
 
 ## Decision
 
@@ -77,8 +78,18 @@ the browser response.
 
 ## Deployment Acceptance
 
-Merge is allowed only through the protected pull request after required hosted
-checks pass. The post-merge acceptance action is one signed-in Production Jenny
-Lake review. It must show the accepted state while leaving the rule-based list
-unchanged; otherwise the release remains safe but the live provider rollout is
-treated as unavailable and investigated through bounded server logs.
+Pull request [#41](https://github.com/jaredsrice/TrailPack/pull/41) passed the
+required validation, CodeQL, automated critical-bug, automated vulnerability,
+and Vercel checks before it merged as commit `9e95139`.
+
+Vercel Production deployment `864Tp5oWS5LTzCL3DGscNfFUnd9R` reached Ready and
+served the merged application through
+[trailpack-ten.vercel.app](https://trailpack-ten.vercel.app). The signed-out
+Jenny Lake path first returned the expected `sign-in-required` deterministic
+fallback without contacting Gemini. The exact Production `/auth/callback` then
+completed sign-in, and a fresh Jenny Lake selection automatically progressed
+from **Checking live AI** to **Live review accepted** from
+`gemini-3.5-flash`.
+
+The deterministic packing list remained visible and unchanged throughout the
+request. This completes the `0.6.0` Production rollout gate.
