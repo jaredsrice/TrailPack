@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { buildAuthCallbackUrl } from "@/features/trailpack/lib/auth-redirect";
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
 import { buildSavedResultDraft } from "@/features/trailpack/lib/saved-results";
 import { saveResultFromRoute } from "@/features/trailpack/lib/saved-results-client";
@@ -57,11 +58,10 @@ export function SavedResultActions({
       return;
     }
 
-    const callbackPath = `/auth/callback?next=${encodeURIComponent(window.location.pathname)}`;
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}${callbackPath}`,
+        redirectTo: buildAuthCallbackUrl(window.location.origin),
         queryParams: { prompt: "select_account" },
       },
     });

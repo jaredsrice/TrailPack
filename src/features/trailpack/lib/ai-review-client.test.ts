@@ -116,6 +116,25 @@ describe("live AI review client", () => {
     });
   });
 
+  it.each([
+    { status: 401, outcome: "sign-in-required" as const },
+    { status: 429, outcome: "rate-limited" as const },
+  ])("keeps a structured $status fallback as a valid UI result", async ({
+    status,
+    outcome,
+  }) => {
+    const fetchImpl = asFetch(
+      Response.json(liveResult(outcome), { status }),
+    );
+
+    const result = await requestLiveAiReviewFromRoute(INPUT, { fetchImpl });
+
+    expect(result).toMatchObject({
+      outcome,
+      review: { status: "fallback" },
+    });
+  });
+
   it("rejects malformed success bodies with a generic client error", async () => {
     const fetchImpl = asFetch(
       Response.json({

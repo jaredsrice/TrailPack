@@ -41,13 +41,14 @@ export function AiReviewPanel({
       <div className="section-heading-row">
         <div>
           <p className="section-kicker">
-            Optional explanation layer
+            Automatic explanation layer
           </p>
           <h2 id="ai-review-heading" className="section-title">
             Guarded AI review
           </h2>
           <p className="section-subtitle">
-            Explanations may change; the rule-based list above does not.
+            TrailPack checks the explanation automatically; the rule-based list
+            above never changes.
           </p>
         </div>
         <span className={`ai-status-badge ${toneBadgeClassName(
@@ -79,11 +80,12 @@ export function AiReviewPanel({
           disabled={isLoading}
           className="ai-review-button"
         >
-          {isLoading ? "Checking live AI..." : "Run guarded live review"}
+          {isLoading ? "Checking live AI..." : "Refresh guarded review"}
         </button>
         <p>
-          Optional: this checks explanation text only. It cannot add, remove,
-          reprioritize, or relabel anything in the rule-based list above.
+          Signed-in hikers can generate up to five live reviews per hour. Every
+          review checks explanation text only and cannot add, remove,
+          reprioritize, or relabel the rule-based list above.
         </p>
       </div>
 

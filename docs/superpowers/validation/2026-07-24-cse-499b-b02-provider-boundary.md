@@ -1,12 +1,11 @@
 # CSE 499B B-02 Live AI Boundary And UI Validation
 
 - Date: 2026-07-24
-- Updated: 2026-07-25
+- Updated: 2026-08-29
 - Requirement: B-02 advanced guarded AI recommendation refinement
 - Branch: `codex/b02-guarded-live-ai`
-- Status: implementation and Preview validation complete; branch review and
-  merge remain pending, and Production intentionally retains the missing-key
-  fallback
+- Status: original implementation and Preview validation complete; the `0.6.0`
+  Production rollout is recorded in the 2026-08-29 addendum
 
 ## Scope Gate
 
@@ -28,6 +27,10 @@ The visible TrailPack UI starts on the saved Jenny Lake review fixture and calls
 the live route only after the user selects **Run guarded live review**. This
 keeps the deterministic demo stable and avoids automatic provider requests while
 still making every live outcome understandable.
+
+> Historical behavior: this paragraph describes the July `0.4.0` checkpoint.
+> The `0.6.0` rollout supersedes the manual-only request with the authenticated,
+> rate-limited automatic review described in the addendum below.
 
 ## Provider Decision
 
@@ -117,10 +120,10 @@ The guarded AI panel:
 - validates the route response again at the client boundary
 - hides malformed route bodies and upstream details behind generic request copy
 - keeps the live request user-triggered instead of firing on selection or input
-  changes
+  changes at the original July checkpoint
 - states that the rule-based packing list remains authoritative
 
-Vercel environment inventory, by name only:
+Vercel environment inventory at the original July checkpoint, by name only:
 
 - `NPS_API_KEY`: encrypted for Preview and Production
 - `GEMINI_API_KEY`: encrypted and limited to Preview
@@ -181,7 +184,7 @@ No proposal scope mismatch was found. The exact missing-details check closes a
 gap discovered during live validation, where a model could otherwise describe
 missing profile or preference data that the rule engine had not identified.
 
-## Remaining B-02 Work
+## Historical Remaining B-02 Work At The July Checkpoint
 
 1. Complete PR review and merge before treating B-03 as the active track.
 2. Use the deterministic rejection fixture to show the rejected response,
@@ -192,3 +195,73 @@ missing profile or preference data that the rule engine had not identified.
 B-02's implementation and Preview validation are complete on this branch.
 Production remains intentionally unchanged until abuse controls and the release
 decision are addressed.
+
+## Production Rollout Addendum — 2026-08-29
+
+The `0.6.0` release addresses the original production-abuse gate and promotes
+the guarded explanation review without changing packing authority.
+
+### Updated User Flow
+
+- A supported plan waits for its live weather and AI contract to stabilize,
+  then requests one review automatically after a 1.5-second debounce.
+- The same exact contract is not requested automatically again during the
+  current browser session. A signed-in hiker may use **Refresh guarded review**
+  when another review is useful.
+- Signed-out, exhausted, provider-failure, and validation-failure paths keep the
+  complete deterministic explanation and packing list available.
+- AI still cannot add, remove, reorder, reprioritize, relabel, or rewrite the
+  rule-engine missing-detail list.
+
+### Production Abuse Controls
+
+- The route validates the bounded contract before provider work, then obtains
+  the current user from the server-validated Supabase session.
+- `public.ai_review_quotas` stores one bounded counter per authenticated user.
+  Browser roles have no direct table privileges and row-level security remains
+  enabled.
+- `public.claim_ai_review_quota()` is the only authenticated operation. It uses
+  `auth.uid()`, an account-scoped transaction advisory lock, and a one-hour
+  window to allow at most five claims.
+- A signed-out request returns the explicit deterministic `sign-in-required`
+  outcome with HTTP `401`; an exhausted account returns `rate-limited` with HTTP
+  `429`, `Retry-After`, and bounded allowance headers. Neither reaches Gemini.
+- The encrypted `GEMINI_API_KEY` is configured for both Preview and Production;
+  Vercel records that a new deployment is required for the Production scope to
+  take effect.
+
+The first live database claim exposed an ambiguous PL/pgSQL variable named
+`current_time`, which PostgreSQL resolved as its time expression inside the
+insert. The follow-up migration
+`20260829174000_fix_ai_review_quota_timestamp.sql` replaces it with
+`claim_timestamp` while preserving the same atomic behavior. The base migration
+also uses a non-reserved name for clean installations; the follow-up remains for
+deployments that had already recorded the original migration. The applied
+Production function source was re-read to confirm the replacement.
+
+### Preview And Database Evidence
+
+| Check | Result | Evidence |
+|---|---|---|
+| Vercel Preview | Pass | Deployment `25AeVjArBoQw8pVya4YM334FWY9d` reached Ready at the branch Preview URL |
+| Preview OAuth | Pass | The exact origin-local `/auth/callback` redirect completed sign-in on the branch Preview instead of falling back to the Production callback |
+| Transactional quota claim | Pass | An authenticated rollback test returned `allowed = true` and `remaining = 4`; rollback left no test row |
+| Live guarded review | Pass | Jenny Lake returned `Live review accepted` from `gemini-3.5-flash`; the rule-based item set, order, labels, and missing details remained unchanged |
+| Environment scope | Pass | Vercel saved `GEMINI_API_KEY` for Production and Preview without exposing the secret value |
+
+### Final Local Gate
+
+| Check | Result |
+|---|---|
+| ESLint | Pass |
+| Type generation and TypeScript | Pass |
+| Vitest | Pass — 28 files, 255 tests |
+| Firefox/axe | Pass — four flows |
+| Optimized Production build | Pass — Next.js `15.5.24` |
+| Recommendation stress matrix | Pass — 27 scenarios |
+| Live NPS source integrity | Pass — 5/5 unchanged |
+
+The rollout is ready for the repository's protected pull-request merge. A single
+signed-in Production review is the post-deployment acceptance check; all failure
+paths remain safe before and after that check because the deterministic list is
+already complete.

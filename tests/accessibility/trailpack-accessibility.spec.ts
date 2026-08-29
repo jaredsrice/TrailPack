@@ -106,3 +106,44 @@ test("populated trail plan has no automated accessibility violations", async ({
   );
   await expectNoAccessibilityViolations(page);
 });
+
+test("a generated trail plan opens the guarded review automatically", async ({
+  page,
+}) => {
+  let reviewRequests = 0;
+  await page.route("**/api/trailpack/ai-review", async (route) => {
+    reviewRequests += 1;
+    await route.fulfill({
+      status: 401,
+      contentType: "application/json",
+      body: JSON.stringify({
+        outcome: "sign-in-required",
+        provider: { name: "gemini", model: "gemini-3.5-flash" },
+        review: {
+          status: "fallback",
+          review: {
+            tripSummary:
+              "TrailPack kept the deterministic Jenny Lake packing list.",
+            missingDataReview: [
+              "Sign in to add an automatically validated live review.",
+            ],
+            itemExplanationDrafts: [],
+          },
+          validationReasons: ["Authentication is required for live AI."],
+        },
+      }),
+    });
+  });
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+
+  await expect(page.getByText("Sign in for live AI", { exact: true })).toBeVisible({
+    timeout: 10_000,
+  });
+  expect(reviewRequests).toBe(1);
+  await expect(
+    page.getByRole("button", { name: "Refresh guarded review" }),
+  ).toBeEnabled();
+  await expectNoAccessibilityViolations(page);
+});

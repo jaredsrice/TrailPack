@@ -31,9 +31,32 @@ export interface Database {
         Update: never;
         Relationships: [];
       };
+      ai_review_quotas: {
+        Row: {
+          user_id: string;
+          window_started_at: string;
+          review_count: number;
+        };
+        Insert: {
+          user_id: string;
+          window_started_at?: string;
+          review_count?: number;
+        };
+        Update: never;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      claim_ai_review_quota: {
+        Args: Record<string, never>;
+        Returns: {
+          allowed: boolean;
+          remaining: number;
+          reset_at: string;
+        }[];
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

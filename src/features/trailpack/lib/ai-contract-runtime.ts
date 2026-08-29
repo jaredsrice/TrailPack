@@ -53,6 +53,8 @@ const LIVE_AI_OUTCOMES = new Set<LiveAiOutcome>([
   "rejected",
   "timed-out",
   "quota-limited",
+  "rate-limited",
+  "sign-in-required",
   "missing-key",
   "invalid-response",
   "provider-error",

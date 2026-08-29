@@ -72,6 +72,20 @@ export function getAiReviewPresentation({
           "The provider could not accept this request, so the deterministic template fallback is shown and the rule-based list remains unchanged.",
         tone: "fallback",
       };
+    case "rate-limited":
+      return {
+        badge: "Hourly review limit reached",
+        description:
+          "This account has generated five live reviews in the current hour. TrailPack kept the deterministic rule-based list and explanation and will allow another live review after the window resets.",
+        tone: "fallback",
+      };
+    case "sign-in-required":
+      return {
+        badge: "Sign in for live AI",
+        description:
+          "TrailPack generated the rule-based list and deterministic explanation. Sign in with Google to add an automatically validated live Gemini review.",
+        tone: "fallback",
+      };
     case "missing-key":
       return {
         badge: "Live AI not configured",
@@ -98,7 +112,7 @@ export function getAiReviewPresentation({
         ? {
             badge: "Saved review accepted",
             description:
-              "This saved explanation fixture passed the same TrailPack guardrails used for live responses. Run the optional live check to test the configured provider.",
+              "This saved explanation fixture passed the same TrailPack guardrails used for live responses. TrailPack will request a live review automatically when the configured provider and account quota are available.",
             tone: "accepted",
           }
         : {

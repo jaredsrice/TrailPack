@@ -3,7 +3,9 @@ import { DEMO_CONTEXTS } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import { JENNY_LAKE_LOOP } from "@/features/trailpack/data/supported-trails";
 import { buildAiContractInput } from "@/features/trailpack/lib/ai-contract";
+import type { AiReviewQuotaAccess } from "@/features/trailpack/lib/ai-review-quota";
 import { generatePackingRecommendation } from "@/features/trailpack/lib/packing";
+import { handleAiReviewPost } from "@/features/trailpack/lib/ai-review-route";
 import { POST } from "./route";
 
 function buildInput() {
@@ -31,6 +33,17 @@ function request(body: string): Request {
     headers: { "Content-Type": "application/json" },
     body,
   });
+}
+
+function quota(
+  status: "allowed" | "limited",
+): AiReviewQuotaAccess {
+  return {
+    status,
+    remaining: status === "allowed" ? 4 : 0,
+    resetAt: "2026-08-29T18:00:00.000Z",
+    retryAfterSeconds: 1_800,
+  };
 }
 
 function oversizedStreamRequest(): {
@@ -116,8 +129,12 @@ describe("POST /api/trailpack/ai-review", () => {
 
   it("returns a usable missing-key fallback for a valid contract", async () => {
     vi.stubEnv("GEMINI_API_KEY", "");
+    const claimQuota = vi.fn();
 
-    const response = await POST(request(JSON.stringify(buildInput())));
+    const response = await handleAiReviewPost(
+      request(JSON.stringify(buildInput())),
+      { claimQuota },
+    );
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -127,6 +144,70 @@ describe("POST /api/trailpack/ai-review", () => {
         status: "fallback",
       },
     });
+    expect(claimQuota).not.toHaveBeenCalled();
+  });
+
+  it("keeps live AI behind a signed-in account", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+    const requestReview = vi.fn();
+
+    const response = await handleAiReviewPost(
+      request(JSON.stringify(buildInput())),
+      {
+        claimQuota: async () => ({ status: "signed-out" }),
+        requestReview,
+      },
+    );
+
+    expect(response.status).toBe(401);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    await expect(response.json()).resolves.toMatchObject({
+      outcome: "sign-in-required",
+      review: { status: "fallback" },
+    });
+    expect(requestReview).not.toHaveBeenCalled();
+  });
+
+  it("returns a structured hourly limit without provider work", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+    const requestReview = vi.fn();
+
+    const response = await handleAiReviewPost(
+      request(JSON.stringify(buildInput())),
+      {
+        claimQuota: async () => quota("limited"),
+        requestReview,
+      },
+    );
+
+    expect(response.status).toBe(429);
+    expect(response.headers.get("retry-after")).toBe("1800");
+    expect(response.headers.get("x-ratelimit-limit")).toBe("5");
+    expect(response.headers.get("x-ratelimit-remaining")).toBe("0");
+    await expect(response.json()).resolves.toMatchObject({
+      outcome: "rate-limited",
+      review: { status: "fallback" },
+    });
+    expect(requestReview).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when the quota store is unavailable", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+    const requestReview = vi.fn();
+
+    const response = await handleAiReviewPost(
+      request(JSON.stringify(buildInput())),
+      {
+        claimQuota: async () => ({ status: "unavailable" }),
+        requestReview,
+      },
+    );
+
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toEqual({
+      error: "Automatic AI review is temporarily unavailable.",
+    });
+    expect(requestReview).not.toHaveBeenCalled();
   });
 
   it("uses server-side provider configuration for an accepted response", async () => {
@@ -161,10 +242,15 @@ describe("POST /api/trailpack/ai-review", () => {
     vi.stubEnv("GEMINI_API_KEY", "route-test-key");
     vi.stubEnv("GEMINI_MODEL", "gemini-3.5-flash");
 
-    const response = await POST(request(JSON.stringify(buildInput())));
+    const response = await handleAiReviewPost(
+      request(JSON.stringify(buildInput())),
+      { claimQuota: async () => quota("allowed") },
+    );
     const body = await response.json();
 
     expect(response.status).toBe(200);
+    expect(response.headers.get("x-ratelimit-limit")).toBe("5");
+    expect(response.headers.get("x-ratelimit-remaining")).toBe("4");
     expect(body).toMatchObject({
       outcome: "accepted",
       provider: {

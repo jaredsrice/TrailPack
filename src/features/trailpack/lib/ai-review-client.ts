@@ -33,10 +33,6 @@ export async function requestLiveAiReviewFromRoute(
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
-  if (!response.ok) {
-    throw new Error(REQUEST_ERROR_MESSAGE);
-  }
-
   let responseBody: unknown;
   try {
     responseBody = await response.json();
@@ -46,6 +42,10 @@ export async function requestLiveAiReviewFromRoute(
 
   const result = parseLiveAiReviewResult(responseBody);
   if (!result) {
+    throw new Error(REQUEST_ERROR_MESSAGE);
+  }
+
+  if (!response.ok && response.status !== 401 && response.status !== 429) {
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
