@@ -62,6 +62,9 @@ an account-based allowance and automatic, non-authoritative review flow in
 - The protected Vercel Preview returned a live accepted `gemini-3.5-flash`
   review for Jenny Lake while the deterministic packing list remained
   unchanged.
+- Production deployment `864Tp5oWS5LTzCL3DGscNfFUnd9R` reached Ready, completed
+  OAuth through the exact Production callback, and returned the same accepted
+  Jenny Lake review state with the rule-based list unchanged.
 - The corrected Production quota function passed a transactional authenticated
   claim test and returned four remaining reviews without retaining test data.
 
