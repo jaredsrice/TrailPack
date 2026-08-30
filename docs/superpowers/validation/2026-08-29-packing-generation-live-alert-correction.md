@@ -52,7 +52,7 @@ when the live route is unavailable.
 | Identity | The server still derives the quota owner from the validated Supabase session |
 | Signed-out behavior | A signed-out request is rejected before the quota claim and cannot spend an account allowance |
 | Retry behavior | A repeated generation UUID returns a structured duplicate result without another provider request |
-| Live alerts | Only bounded NPS responses and HTTPS `nps.gov` source links enter the client model |
+| Live alerts | Only bounded NPS responses and HTTPS `nps.gov` source links enter the client model; an eight-second upstream timeout prevents a stalled request from blocking generation indefinitely |
 | Fallback | Weather, alert, authentication, quota, and provider failures retain a usable, visibly labeled deterministic result |
 
 ## Production Database Migration
@@ -79,7 +79,7 @@ UUID was absent from the quota table.
 |---|---|
 | ESLint | Pass |
 | Type generation and TypeScript | Pass |
-| Vitest | Pass - 30 files, 270 tests |
+| Vitest | Pass - 30 files, 271 tests |
 | Firefox/axe | Pass - four flows |
 | Explicit-generation interaction | Pass - zero requests while editing; one on Generate; zero on another edit; one on Update |
 | Optimized Production build | Pass - Next.js `15.5.24` |

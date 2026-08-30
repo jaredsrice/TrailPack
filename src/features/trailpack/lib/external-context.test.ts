@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildAlertContextFromNpsResponse,
   buildDaylightContextFromSunriseSunsetResponse,
@@ -9,6 +9,10 @@ import {
   fetchOpenMeteoWeatherContext,
   resolveSupportedParkCode,
 } from "@/features/trailpack/lib/external-context";
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("buildWeatherContextFromOpenMeteoResponse", () => {
   it("normalizes Open-Meteo forecast data into TrailPack weather context", () => {
@@ -392,6 +396,34 @@ describe("external-context fallbacks", () => {
     expect(alerts.hasActiveAlerts).toBe(false);
     expect(alerts.label).toBe("unavailable");
     expect(alerts.retrievalStatus).toBe("saved-fixture");
+  });
+
+  it("bounds a stalled NPS request and returns the saved fallback", async () => {
+    vi.useFakeTimers();
+    let observedAbort = false;
+    const fetcher = vi.fn(
+      async (_input: RequestInfo | URL, init?: RequestInit) =>
+        new Promise<never>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => {
+              observedAbort = true;
+              reject(new DOMException("Timed out", "AbortError"));
+            },
+            { once: true },
+          );
+        }),
+    );
+
+    const alertsPromise = fetchNpsAlertContext("grte", "test-key", fetcher);
+    const expectation = expect(alertsPromise).resolves.toMatchObject({
+      hasActiveAlerts: false,
+      retrievalStatus: "saved-fixture",
+    });
+
+    await vi.advanceTimersByTimeAsync(8_000);
+    await expectation;
+    expect(observedAbort).toBe(true);
   });
 
   it("exposes saved fixture helpers with explicit retrieval status", () => {

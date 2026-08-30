@@ -42,6 +42,8 @@ generation, and connected current NPS alerts to the primary planning flow in
 - The planner now distinguishes a successful live NPS response with zero active
   alerts from an unavailable live source; it no longer presents the saved demo
   fixture as though it were the current NPS result.
+- A stalled NPS request now falls back after eight seconds instead of leaving
+  packing-list generation waiting indefinitely.
 
 ### Security
 
@@ -52,7 +54,7 @@ generation, and connected current NPS alerts to the primary planning flow in
 
 ### Verification
 
-- Lint, type checking, 270 Vitest tests across 30 files, four Firefox/axe flows,
+- Lint, type checking, 271 Vitest tests across 30 files, four Firefox/axe flows,
   the optimized Production build, 27 recommendation stress scenarios, and the
   five-trail live NPS integrity check passed.
 - The protected Preview displayed three current official Grand Teton alerts.

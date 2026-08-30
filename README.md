@@ -218,7 +218,7 @@ axe. Install the matching browser once, if needed:
 npx playwright install firefox
 ```
 
-The `0.6.1` correction passed lint, type checking, 270 Vitest tests across 30
+The `0.6.1` correction passed lint, type checking, 271 Vitest tests across 30
 files, four Firefox/axe interaction flows, a production build, 27 recommendation
 stress scenarios, and the five-trail live NPS integrity check. Its protected
 Preview displayed the current official NPS alerts and preserved the explicit
