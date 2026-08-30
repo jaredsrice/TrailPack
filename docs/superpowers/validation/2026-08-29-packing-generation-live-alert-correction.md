@@ -3,9 +3,10 @@
 - Date: 2026-08-29
 - Release: `0.6.1`
 - Branch: `codex/fix-list-quota-live-alerts`
-- Pull request: pending
-- Production deployment: pending
-- Gate status: release candidate verified locally; protected deployment pending
+- Pull request: [#43](https://github.com/jaredsrice/TrailPack/pull/43)
+- Production: [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app)
+- Gate status: release candidate, database migration, protected checks, and
+  Preview acceptance passed
 
 ## Reported Behavior
 
@@ -97,4 +98,19 @@ demo reliability.
 
 ## Protected Deployment Acceptance
 
-Pending Preview and Production verification.
+Pull request [#43](https://github.com/jaredsrice/TrailPack/pull/43) passed the
+required validation, CodeQL, automated critical-bug, automated vulnerability,
+and Vercel checks. The protected Preview at
+[trailpack-git-codex-fix-list-quota-live-alerts-jared-s-rice.vercel.app](https://trailpack-git-codex-fix-list-quota-live-alerts-jared-s-rice.vercel.app)
+loaded successfully without an interstitial or blank state.
+
+The Jenny Lake flow displayed live weather plus three current official NPS
+alerts. Editing start time, duration, and conditions for 1.8 seconds produced no
+packing output or AI panel. Generate then produced one deterministic list and
+the expected signed-out AI fallback. Editing duration made **Update packing
+list** available without replacing the existing snapshot; selecting Update
+returned the list to its current state.
+
+The same acceptance sequence is used against the stable Production URL after
+the protected merge. The merge and Production deployment identifiers remain in
+the pull-request delivery record rather than being predicted in this file.

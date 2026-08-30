@@ -218,10 +218,12 @@ axe. Install the matching browser once, if needed:
 npx playwright install firefox
 ```
 
-The `0.6.1` correction is verified with lint, type checking, unit and API tests,
-Firefox/axe interaction flows, a production build, recommendation stress
-scenarios, and the five-trail live NPS integrity check. Deployment-specific
-evidence is recorded in the matching changelog entry.
+The `0.6.1` correction passed lint, type checking, 270 Vitest tests across 30
+files, four Firefox/axe interaction flows, a production build, 27 recommendation
+stress scenarios, and the five-trail live NPS integrity check. Its protected
+Preview displayed the current official NPS alerts and preserved the explicit
+Generate/Update boundary. Deployment-specific evidence is recorded in the
+matching changelog entry.
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
 zero-vulnerability dependency audit, production browser/API smoke checks, a

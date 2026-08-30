@@ -15,7 +15,8 @@ No unreleased product changes.
 ## [0.6.1] - 2026-08-29
 
 Corrected the guarded-review allowance so it follows deliberate packing-list
-generation, and connected current NPS alerts to the primary planning flow.
+generation, and connected current NPS alerts to the primary planning flow in
+[pull request #43](https://github.com/jaredsrice/TrailPack/pull/43).
 
 ### Added
 
@@ -51,7 +52,16 @@ generation, and connected current NPS alerts to the primary planning flow.
 
 ### Verification
 
-- Pending final protected Preview and Production verification.
+- Lint, type checking, 270 Vitest tests across 30 files, four Firefox/axe flows,
+  the optimized Production build, 27 recommendation stress scenarios, and the
+  five-trail live NPS integrity check passed.
+- The protected Preview displayed three current official Grand Teton alerts.
+  Editing three trip fields produced no packing list or review; Generate created
+  one list and one signed-out fallback; a later edit exposed Update without an
+  automatic regeneration.
+- The Production quota schema and function grants passed structural checks. An
+  authenticated rollback transaction allowed the first generation UUID, marked
+  its retry as a duplicate with the same remaining count, and left no test data.
 
 ## [0.6.0] - 2026-08-29
 
