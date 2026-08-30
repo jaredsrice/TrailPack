@@ -49,6 +49,12 @@ A saved weather-and-alert context used to make the prototype deterministic for a
 supported trail.
 _Avoid_: mock response, random sample
 
+**Live alert context**:
+The current bounded NPS alert response for the selected supported trail's park.
+When it is unavailable, TrailPack keeps the demo scenario visibly labeled as a
+fallback rather than presenting it as current NPS data.
+_Avoid_: confirmed trail condition, real-time trail status
+
 **Trip context**:
 The hike-specific details that shape a recommendation beyond the trail profile,
 such as planned date, expected duration, and reported trail conditions.
@@ -100,6 +106,11 @@ The visible presentation of the essential and optional items within a packing
 recommendation.
 _Avoid_: recommendation engine
 
+**Packing-list generation**:
+A deliberate Generate or Update action that snapshots the current trail, trip,
+weather, and alert context before producing one packing recommendation.
+_Avoid_: field edit, automatic recalculation
+
 **Packing item**:
 One recommended thing to bring, paired with a reason and provenance labels.
 _Avoid_: gear row, line item
@@ -116,9 +127,16 @@ Explanatory text that may summarize or clarify a rule-based baseline only after
 runtime schema, packing-set, provenance, cross-trail, and safety validation.
 _Avoid_: AI recommendation, generated packing list
 
+**Review generation identifier**:
+A per-generation UUID used by the server and database to recognize retries of
+the same packing-list generation without spending another account allowance or
+contacting the provider twice.
+_Avoid_: user id, request counter
+
 **Live AI outcome**:
-The recorded result of one provider attempt: accepted, rejected, timed out,
-quota limited, missing key, invalid response, or provider error.
+The recorded result of one guarded-review attempt, including accepted, rejected,
+timed out, provider quota limited, account rate limited, duplicate generation,
+sign-in required, missing key, invalid response, or provider error.
 _Avoid_: success flag, AI status
 
 **Template fallback**:

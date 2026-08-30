@@ -4,7 +4,7 @@ import {
   type LiveAiOutcome,
   type LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
-import { parseAiContractInput } from "@/features/trailpack/lib/ai-contract-runtime";
+import { parseAiReviewRequest } from "@/features/trailpack/lib/ai-contract-runtime";
 import { requestLiveAiReview } from "@/features/trailpack/lib/ai-provider";
 import {
   AI_REVIEW_LIMIT_PER_WINDOW,
@@ -19,7 +19,7 @@ const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
 export async function handleAiReviewPost(
   request: Request,
   dependencies: {
-    claimQuota?: () => Promise<AiReviewQuotaAccess>;
+    claimQuota?: (generationId: string) => Promise<AiReviewQuotaAccess>;
     requestReview?: typeof requestLiveAiReview;
   } = {},
 ) {
@@ -47,13 +47,14 @@ export async function handleAiReviewPost(
     );
   }
 
-  const input = parseAiContractInput(requestValue);
-  if (!input) {
+  const parsedRequest = parseAiReviewRequest(requestValue);
+  if (!parsedRequest) {
     return jsonResponse(
       { error: "AI review request does not match the supported contract." },
       { status: 400 },
     );
   }
+  const { generationId, input } = parsedRequest;
 
   const apiKey = process.env.GEMINI_API_KEY;
   const model = process.env.GEMINI_MODEL;
@@ -66,7 +67,9 @@ export async function handleAiReviewPost(
     return jsonResponse(result);
   }
 
-  const quota = await (dependencies.claimQuota ?? claimAiReviewQuota)();
+  const quota = await (dependencies.claimQuota ?? claimAiReviewQuota)(
+    generationId,
+  );
   if (quota.status === "signed-out") {
     return jsonResponse(
       fallbackResult(
@@ -82,6 +85,20 @@ export async function handleAiReviewPost(
     return jsonResponse(
       { error: "Automatic AI review is temporarily unavailable." },
       { status: 503 },
+    );
+  }
+  if (quota.status === "duplicate") {
+    return jsonResponse(
+      fallbackResult(
+        input,
+        "duplicate-generation",
+        "This generated packing list was already reviewed. TrailPack did not spend another live review.",
+        model,
+      ),
+      {
+        status: 409,
+        headers: quotaHeaders(quota),
+      },
     );
   }
   if (quota.status === "limited") {
@@ -105,7 +122,10 @@ export async function handleAiReviewPost(
 
 function fallbackResult(
   input: AiContractInput,
-  outcome: Extract<LiveAiOutcome, "rate-limited" | "sign-in-required">,
+  outcome: Extract<
+    LiveAiOutcome,
+    "duplicate-generation" | "rate-limited" | "sign-in-required"
+  >,
   reason: string,
   configuredModel?: string,
 ): LiveAiReviewResult {
@@ -124,7 +144,10 @@ function fallbackResult(
 }
 
 function quotaHeaders(
-  quota: Extract<AiReviewQuotaAccess, { status: "allowed" | "limited" }>,
+  quota: Extract<
+    AiReviewQuotaAccess,
+    { status: "allowed" | "duplicate" | "limited" }
+  >,
 ): HeadersInit {
   const headers = new Headers({
     "X-RateLimit-Limit": String(AI_REVIEW_LIMIT_PER_WINDOW),

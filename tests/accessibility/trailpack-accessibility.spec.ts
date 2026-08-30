@@ -107,12 +107,38 @@ test("populated trail plan has no automated accessibility violations", async ({
   await expectNoAccessibilityViolations(page);
 });
 
-test("a generated trail plan opens the guarded review automatically", async ({
+test("one generated packing list requests one guarded review", async ({
   page,
 }) => {
   let reviewRequests = 0;
+  await page.route("**/api/trailpack/alerts?*", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        hasActiveAlerts: true,
+        alerts: [
+          {
+            title: "Death Canyon Trailhead Construction Closure",
+            description: "Death Canyon Road and Trailhead are closed to all use.",
+            severity: "closure",
+            source: "NPS",
+            sourceUrl:
+              "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+          },
+        ],
+        label: "official",
+        retrievalStatus: "live",
+      }),
+    });
+  });
   await page.route("**/api/trailpack/ai-review", async (route) => {
     reviewRequests += 1;
+    const requestBody = route.request().postDataJSON();
+    expect(requestBody.generationId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
+    expect(requestBody.input.trail.id).toBe("jenny-lake-loop");
     await route.fulfill({
       status: 401,
       contentType: "application/json",
@@ -138,12 +164,39 @@ test("a generated trail plan opens the guarded review automatically", async ({
   await page.goto("/");
   await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
 
+  await expect(
+    page.getByRole("heading", { name: "Active official alert" }),
+  ).toBeVisible();
+  await page
+    .getByRole("textbox", { name: /What time will you start/i })
+    .fill("6 AM");
+  await page
+    .getByRole("textbox", { name: /How long do you expect/i })
+    .fill("6 hours");
+  await page
+    .getByRole("textbox", { name: /current trail conditions/i })
+    .fill("wet");
+  await page.waitForTimeout(1_700);
+  expect(reviewRequests).toBe(0);
+
+  await page
+    .getByRole("button", { name: "Generate packing list" })
+    .click();
+
   await expect(page.getByText("Sign in for live AI", { exact: true })).toBeVisible({
     timeout: 10_000,
   });
   expect(reviewRequests).toBe(1);
   await expect(
-    page.getByRole("button", { name: "Refresh guarded review" }),
-  ).toBeEnabled();
+    page.getByRole("button", { name: "Packing list is current" }),
+  ).toBeDisabled();
+
+  await page
+    .getByRole("textbox", { name: /How long do you expect/i })
+    .fill("8 hours");
+  await page.waitForTimeout(1_700);
+  expect(reviewRequests).toBe(1);
+  await page.getByRole("button", { name: "Update packing list" }).click();
+  await expect.poll(() => reviewRequests).toBe(2);
   await expectNoAccessibilityViolations(page);
 });

@@ -2,21 +2,29 @@ import type {
   AiContractInput,
   LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
-import { parseLiveAiReviewResult } from "@/features/trailpack/lib/ai-contract-runtime";
+import {
+  isAiReviewGenerationId,
+  parseLiveAiReviewResult,
+} from "@/features/trailpack/lib/ai-contract-runtime";
 
 const AI_REVIEW_ROUTE = "/api/trailpack/ai-review";
 const REQUEST_ERROR_MESSAGE =
   "TrailPack could not complete the live AI review. The rule-based list remains available.";
 
 interface RequestLiveAiReviewOptions {
+  generationId: string;
   fetchImpl?: typeof fetch;
   signal?: AbortSignal;
 }
 
 export async function requestLiveAiReviewFromRoute(
   input: AiContractInput,
-  options: RequestLiveAiReviewOptions = {},
+  options: RequestLiveAiReviewOptions,
 ): Promise<LiveAiReviewResult> {
+  if (!isAiReviewGenerationId(options.generationId)) {
+    throw new Error(REQUEST_ERROR_MESSAGE);
+  }
+
   let response: Response;
 
   try {
@@ -25,7 +33,10 @@ export async function requestLiveAiReviewFromRoute(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(input),
+      body: JSON.stringify({
+        generationId: options.generationId,
+        input,
+      }),
       cache: "no-store",
       signal: options.signal,
     });
@@ -45,7 +56,12 @@ export async function requestLiveAiReviewFromRoute(
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
-  if (!response.ok && response.status !== 401 && response.status !== 429) {
+  if (
+    !response.ok &&
+    response.status !== 401 &&
+    response.status !== 409 &&
+    response.status !== 429
+  ) {
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 

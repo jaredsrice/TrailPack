@@ -73,6 +73,7 @@ interface NpsAlertsResponse {
 const OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const SUNRISE_SUNSET_URL = "https://api.sunrise-sunset.org/json";
 const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
+const NPS_REQUEST_TIMEOUT_MS = 8_000;
 const SUPPORTED_PARK_CODES = new Set(SUPPORTED_PARKS.map((park) => park.parkCode));
 
 const RAIN_CODES = new Set([
@@ -609,6 +610,11 @@ export async function fetchNpsAlertContext(
   const url = new URL(NPS_ALERTS_URL);
   url.searchParams.set("parkCode", normalizedParkCode);
   url.searchParams.set("limit", "10");
+  const timeoutController = new AbortController();
+  const timeoutId = setTimeout(
+    () => timeoutController.abort(),
+    NPS_REQUEST_TIMEOUT_MS,
+  );
 
   try {
     const response = await fetcher(url, {
@@ -616,6 +622,7 @@ export async function fetchNpsAlertContext(
         Accept: "application/json",
         "X-Api-Key": apiKey,
       },
+      signal: timeoutController.signal,
     });
 
     if (!response.ok) {
@@ -627,5 +634,7 @@ export async function fetchNpsAlertContext(
     );
   } catch {
     return buildSavedAlertFallback(normalizedParkCode);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }

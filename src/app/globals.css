@@ -507,6 +507,7 @@ a {
 .trail-profile-section,
 .context-section,
 .trip-details-section,
+.plan-generation-section,
 .packing-section,
 .ai-review-section {
   position: relative;
@@ -521,7 +522,8 @@ a {
 }
 
 .context-section,
-.trip-details-section {
+.trip-details-section,
+.plan-generation-section {
   margin-inline: 0;
   padding-inline: 0;
   background: transparent;
@@ -1197,6 +1199,52 @@ a {
   --tw-ring-color: rgb(47 111 152 / 0.3);
 }
 
+.plan-generation-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.62fr);
+  align-items: center;
+  gap: 28px;
+}
+
+.plan-generation-action {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 18px;
+  background: var(--forest-soft);
+  border: 1px solid #a9c8b9;
+  border-radius: 8px;
+}
+
+.plan-generation-action > p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.plan-generation-button {
+  min-height: 48px;
+  padding: 11px 17px;
+  color: #f5fbf9;
+  font-size: 0.8rem;
+  font-weight: 740;
+  background: var(--evergreen);
+  border-radius: 6px;
+  transition:
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+.plan-generation-button:hover:not(:disabled) {
+  background: var(--evergreen-2);
+}
+
+.plan-generation-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .generated-at {
   max-width: 240px;
   margin: 3px 0 0;
@@ -1636,6 +1684,7 @@ a {
   }
 
   .trip-detail-grid,
+  .plan-generation-section,
   .ai-review-grid {
     grid-template-columns: 1fr;
   }
@@ -1803,6 +1852,7 @@ a {
   .trail-profile-section,
   .context-section,
   .trip-details-section,
+  .plan-generation-section,
   .packing-section,
   .ai-review-section {
     padding-block: 28px;

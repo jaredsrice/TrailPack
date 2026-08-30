@@ -55,6 +55,11 @@ export interface AiContractInput {
   };
 }
 
+export interface AiReviewRequest {
+  generationId: string;
+  input: AiContractInput;
+}
+
 export interface AiItemExplanationDraft {
   itemName: string;
   explanation: string;
@@ -91,6 +96,7 @@ export type LiveAiOutcome =
   | "timed-out"
   | "quota-limited"
   | "rate-limited"
+  | "duplicate-generation"
   | "sign-in-required"
   | "missing-key"
   | "invalid-response"

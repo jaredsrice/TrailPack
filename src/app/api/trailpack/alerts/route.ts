@@ -13,11 +13,13 @@ export async function GET(request: NextRequest) {
   if (!parkCode) {
     return NextResponse.json(
       { error: "Provide a supported trailId or parkCode." },
-      { status: 400 },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
     );
   }
 
   const alerts = await fetchNpsAlertContext(parkCode, process.env.NPS_API_KEY);
 
-  return NextResponse.json(alerts);
+  return NextResponse.json(alerts, {
+    headers: { "Cache-Control": "no-store" },
+  });
 }

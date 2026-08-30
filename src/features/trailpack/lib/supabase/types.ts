@@ -36,11 +36,13 @@ export interface Database {
           user_id: string;
           window_started_at: string;
           review_count: number;
+          claimed_generation_ids: string[];
         };
         Insert: {
           user_id: string;
           window_started_at?: string;
           review_count?: number;
+          claimed_generation_ids?: string[];
         };
         Update: never;
         Relationships: [];
@@ -49,9 +51,12 @@ export interface Database {
     Views: Record<string, never>;
     Functions: {
       claim_ai_review_quota: {
-        Args: Record<string, never>;
+        Args: {
+          review_generation_id?: string;
+        };
         Returns: {
           allowed: boolean;
+          duplicate: boolean;
           remaining: number;
           reset_at: string;
         }[];

@@ -13,9 +13,9 @@ silently change the packing decisions or their sources.
 
 | Item | Current state |
 |---|---|
-| Release | `0.6.0` — production-guarded AI review release |
+| Release | `0.6.1` — explicit list generation and live-alert correction |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
-| Application release commit | [`9e95139`](https://github.com/jaredsrice/TrailPack/commit/9e951392d6eb113180257f80b498eeb46e7d548c) |
+| Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
 | Active track | Release complete; optional post-release maintenance |
 | Supported catalog | Five manually verified Grand Teton day hikes |
@@ -25,24 +25,25 @@ Google login and private saved results are live. The guest flow, complete owner
 lifecycle, fresh account chooser, and a real two-account production walkthrough
 have been verified. The second identity could neither list nor delete User A's
 saved result, and User A confirmed the result remained before removing the
-temporary acceptance copy. Signed-in hikers also receive an automatic guarded
-AI explanation review, limited to five live reviews per account per hour.
+temporary acceptance copy. Signed-in hikers can request one guarded AI
+explanation when they generate or update a packing list, limited to five
+distinct generated lists per account per hour.
 
 ## What TrailPack Does
 
 1. Search for a supported park or trail.
-2. Review verified trail facts, source labels, and available NPS accessibility
-   or terrain guidance.
+2. Review verified trail facts, source labels, available NPS accessibility or
+   terrain guidance, and current NPS alerts when the live service is available.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
-   markers.
+   markers, with clearly labeled saved fallbacks when a provider is unavailable.
 4. Add trip details such as date, start time, expected duration, route type, or
    reported conditions.
-5. Generate essential and optional packing recommendations with visible
-   rationale and provenance.
-6. For signed-in hikers, automatically run a guarded Gemini review of the
-   explanation after the list and weather settle. The rule-based packing list
-   remains authoritative, and the review can be refreshed within the hourly
-   allowance.
+5. Select **Generate packing list** to snapshot those inputs and create
+   essential and optional recommendations with visible rationale and provenance.
+6. For signed-in hikers, that same action requests one guarded Gemini review of
+   the explanation. Editing fields does not spend the allowance; **Update
+   packing list** explicitly generates a new snapshot and review. The rule-based
+   packing list remains authoritative.
 
 Unsupported hikes can use manual distance, elevation gain, route type, duration,
 and condition inputs to produce a limited fallback list.
@@ -153,8 +154,10 @@ addresses, OAuth data, and provider credentials are excluded.
 
 When Gemini is configured, the route requires a valid Supabase session and
 atomically claims a database-backed allowance before contacting the provider.
-Each account can generate at most five live reviews during an hour-long window;
-the browser cannot override the account identity, count, or reset time.
+Each account can review at most five distinct generated packing-list snapshots
+during an hour-long window; the browser cannot override the account identity,
+count, or reset time. A generation identifier makes retries idempotent, so a
+repeated request for the same list does not increment the account count.
 
 The server requests structured Gemini output with `store: false`, validates the
 response shape, and then rejects any result that:
@@ -165,12 +168,11 @@ response shape, and then rejects any result that:
 - substitutes facts from another trail; or
 - makes unsupported safety guarantees.
 
-Timeout, quota, missing-key, malformed-response, provider-error, and rejected
-outcomes all preserve the unchanged deterministic fallback. A supported plan
-requests one review automatically after its inputs stabilize. Signed-out hikers
-receive the labeled deterministic fallback without consuming provider quota,
-and signed-in hikers can use the visible refresh control while allowance
-remains.
+Timeout, quota, missing-key, malformed-response, provider-error, duplicate, and
+rejected outcomes all preserve the unchanged deterministic fallback. Supported
+plans request a review only when the hiker selects **Generate packing list** or
+**Update packing list**. Signed-out requests are rejected before an allowance
+claim, so they do not consume a signed-in account's quota.
 
 ## NPS Source Maintenance
 
@@ -216,12 +218,12 @@ axe. Install the matching browser once, if needed:
 npx playwright install firefox
 ```
 
-The `0.6.0` release candidate passed lint, type checking, 255 Vitest tests, four
-Firefox/axe flows, a production build, 27 recommendation stress scenarios, and
-a five-trail live NPS check. Its protected Preview and Production deployment
-each produced a real accepted Gemini review while preserving the unchanged
-rule-based list, and the Production quota function passed a transactional
-authenticated claim test.
+The `0.6.1` correction passed lint, type checking, 271 Vitest tests across 30
+files, four Firefox/axe interaction flows, a production build, 27 recommendation
+stress scenarios, and the five-trail live NPS integrity check. Its protected
+Preview displayed the current official NPS alerts and preserved the explicit
+Generate/Update boundary. Deployment-specific evidence is recorded in the
+matching changelog entry.
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
 zero-vulnerability dependency audit, production browser/API smoke checks, a
@@ -237,11 +239,14 @@ in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cy
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
   observation. Dates outside the provider range use a labeled saved example.
-- The main planning flow still uses saved alert scenarios; the live NPS alert
-  route is independently available and production-verified.
+- The main planning flow requests current park alerts from the NPS API. If the
+  service or key is unavailable, it keeps planning usable with an explicitly
+  labeled saved fixture and tells the hiker to check live NPS alerts.
 - Gemini is optional, available only to signed-in users, and capped at five
-  live reviews per account per hour. Authentication, quota, provider, or
-  validation failures retain the deterministic rule-based fallback.
+  distinct generated-list reviews per account per hour. Field edits, signed-out
+  attempts, and duplicate requests do not spend that allowance. Authentication,
+  quota, provider, or validation failures retain the deterministic rule-based
+  fallback.
 - Saved results have managed Supabase storage, row-level security, database
   payload and quota limits, and production Google OAuth. The owner lifecycle
   and real two-account list/delete isolation are verified in the

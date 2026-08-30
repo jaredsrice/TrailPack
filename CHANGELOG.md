@@ -12,6 +12,59 @@ corrections within that milestone.
 
 No unreleased product changes.
 
+## [0.6.1] - 2026-08-29
+
+Corrected the guarded-review allowance so it follows deliberate packing-list
+generation, and connected current NPS alerts to the primary planning flow in
+[pull request #43](https://github.com/jaredsrice/TrailPack/pull/43).
+
+### Added
+
+- An explicit **Generate packing list** / **Update packing list** boundary that
+  snapshots the trip, weather, and alert context before creating recommendations.
+- A strict, bounded browser client for the live NPS alert route, with a labeled
+  saved-fixture fallback when live alerts cannot be loaded.
+
+### Changed
+
+- A signed-in hiker receives one guarded explanation request for each deliberate
+  list generation. Editing trip fields alone no longer sends requests or spends
+  the hourly allowance.
+- The five-per-hour limit now means five distinct generated packing lists per
+  account, with the remaining count and reset time still controlled by the
+  server and database.
+
+### Fixed
+
+- Repeated delivery of the same generation identifier is detected before the
+  quota count increments, preventing network retries from consuming additional
+  allowance.
+- The planner now distinguishes a successful live NPS response with zero active
+  alerts from an unavailable live source; it no longer presents the saved demo
+  fixture as though it were the current NPS result.
+- A stalled NPS request now falls back after eight seconds instead of leaving
+  packing-list generation waiting indefinitely.
+
+### Security
+
+- The quota claim remains transactionally serialized per authenticated account,
+  and now records at most five generation identifiers for the active window.
+- Signed-out requests are rejected before the quota claim and cannot consume a
+  signed-in account's allowance.
+
+### Verification
+
+- Lint, type checking, 271 Vitest tests across 30 files, four Firefox/axe flows,
+  the optimized Production build, 27 recommendation stress scenarios, and the
+  five-trail live NPS integrity check passed.
+- The protected Preview displayed three current official Grand Teton alerts.
+  Editing three trip fields produced no packing list or review; Generate created
+  one list and one signed-out fallback; a later edit exposed Update without an
+  automatic regeneration.
+- The Production quota schema and function grants passed structural checks. An
+  authenticated rollback transaction allowed the first generation UUID, marked
+  its retry as a duplicate with the same remaining count, and left no test data.
+
 ## [0.6.0] - 2026-08-29
 
 Promoted the guarded Gemini explanation review to signed-in production use with

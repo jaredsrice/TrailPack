@@ -8,6 +8,8 @@ import { generatePackingRecommendation } from "@/features/trailpack/lib/packing"
 import { handleAiReviewPost } from "@/features/trailpack/lib/ai-review-route";
 import { POST } from "./route";
 
+const GENERATION_ID = "3f9a1f5e-6144-4f20-b1ad-32f8cc77d4bc";
+
 function buildInput() {
   const scenario = DEMO_CONTEXTS["jenny-lake-loop"];
   const userInput = {};
@@ -35,12 +37,19 @@ function request(body: string): Request {
   });
 }
 
+function validRequestBody(): string {
+  return JSON.stringify({
+    generationId: GENERATION_ID,
+    input: buildInput(),
+  });
+}
+
 function quota(
-  status: "allowed" | "limited",
+  status: "allowed" | "duplicate" | "limited",
 ): AiReviewQuotaAccess {
   return {
     status,
-    remaining: status === "allowed" ? 4 : 0,
+    remaining: status === "allowed" ? 4 : status === "duplicate" ? 3 : 0,
     resetAt: "2026-08-29T18:00:00.000Z",
     retryAfterSeconds: 1_800,
   };
@@ -132,7 +141,7 @@ describe("POST /api/trailpack/ai-review", () => {
     const claimQuota = vi.fn();
 
     const response = await handleAiReviewPost(
-      request(JSON.stringify(buildInput())),
+      request(validRequestBody()),
       { claimQuota },
     );
     const body = await response.json();
@@ -152,9 +161,12 @@ describe("POST /api/trailpack/ai-review", () => {
     const requestReview = vi.fn();
 
     const response = await handleAiReviewPost(
-      request(JSON.stringify(buildInput())),
+      request(validRequestBody()),
       {
-        claimQuota: async () => ({ status: "signed-out" }),
+        claimQuota: async (generationId) => {
+          expect(generationId).toBe(GENERATION_ID);
+          return { status: "signed-out" };
+        },
         requestReview,
       },
     );
@@ -173,7 +185,7 @@ describe("POST /api/trailpack/ai-review", () => {
     const requestReview = vi.fn();
 
     const response = await handleAiReviewPost(
-      request(JSON.stringify(buildInput())),
+      request(validRequestBody()),
       {
         claimQuota: async () => quota("limited"),
         requestReview,
@@ -191,12 +203,33 @@ describe("POST /api/trailpack/ai-review", () => {
     expect(requestReview).not.toHaveBeenCalled();
   });
 
+  it("does not spend or repeat provider work for a duplicate list generation", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+    const requestReview = vi.fn();
+
+    const response = await handleAiReviewPost(
+      request(validRequestBody()),
+      {
+        claimQuota: async () => quota("duplicate"),
+        requestReview,
+      },
+    );
+
+    expect(response.status).toBe(409);
+    expect(response.headers.get("x-ratelimit-remaining")).toBe("3");
+    await expect(response.json()).resolves.toMatchObject({
+      outcome: "duplicate-generation",
+      review: { status: "fallback" },
+    });
+    expect(requestReview).not.toHaveBeenCalled();
+  });
+
   it("fails closed when the quota store is unavailable", async () => {
     vi.stubEnv("GEMINI_API_KEY", "route-test-key");
     const requestReview = vi.fn();
 
     const response = await handleAiReviewPost(
-      request(JSON.stringify(buildInput())),
+      request(validRequestBody()),
       {
         claimQuota: async () => ({ status: "unavailable" }),
         requestReview,
@@ -243,7 +276,7 @@ describe("POST /api/trailpack/ai-review", () => {
     vi.stubEnv("GEMINI_MODEL", "gemini-3.5-flash");
 
     const response = await handleAiReviewPost(
-      request(JSON.stringify(buildInput())),
+      request(validRequestBody()),
       { claimQuota: async () => quota("allowed") },
     );
     const body = await response.json();

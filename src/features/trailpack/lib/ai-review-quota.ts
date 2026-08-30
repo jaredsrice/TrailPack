@@ -1,4 +1,5 @@
 import { getSupabaseServerClient } from "@/features/trailpack/lib/supabase/server";
+import { isAiReviewGenerationId } from "@/features/trailpack/lib/ai-contract-runtime";
 
 export const AI_REVIEW_LIMIT_PER_WINDOW = 5;
 export const AI_REVIEW_WINDOW_SECONDS = 60 * 60;
@@ -7,7 +8,7 @@ export type AiReviewQuotaAccess =
   | { status: "signed-out" }
   | { status: "unavailable" }
   | {
-      status: "allowed" | "limited";
+      status: "allowed" | "duplicate" | "limited";
       remaining: number;
       resetAt: string;
       retryAfterSeconds: number;
@@ -15,11 +16,18 @@ export type AiReviewQuotaAccess =
 
 interface AiReviewQuotaRow {
   allowed: boolean;
+  duplicate: boolean;
   remaining: number;
   reset_at: string;
 }
 
-export async function claimAiReviewQuota(): Promise<AiReviewQuotaAccess> {
+export async function claimAiReviewQuota(
+  generationId: string,
+): Promise<AiReviewQuotaAccess> {
+  if (!isAiReviewGenerationId(generationId)) {
+    return { status: "unavailable" };
+  }
+
   const supabase = await getSupabaseServerClient();
   if (!supabase) {
     return { status: "unavailable" };
@@ -30,14 +38,16 @@ export async function claimAiReviewQuota(): Promise<AiReviewQuotaAccess> {
     return { status: "signed-out" };
   }
 
-  const { data, error } = await supabase.rpc("claim_ai_review_quota");
+  const { data, error } = await supabase.rpc("claim_ai_review_quota", {
+    review_generation_id: generationId,
+  });
   const row = parseAiReviewQuotaRow(data);
   if (error || !row) {
     return { status: "unavailable" };
   }
 
   return {
-    status: row.allowed ? "allowed" : "limited",
+    status: row.allowed ? "allowed" : row.duplicate ? "duplicate" : "limited",
     remaining: row.remaining,
     resetAt: row.reset_at,
     retryAfterSeconds: getRetryAfterSeconds(row.reset_at),
@@ -57,6 +67,9 @@ export function parseAiReviewQuotaRow(
     typeof row !== "object" ||
     !("allowed" in row) ||
     typeof row.allowed !== "boolean" ||
+    !("duplicate" in row) ||
+    typeof row.duplicate !== "boolean" ||
+    (row.allowed && row.duplicate) ||
     !("remaining" in row) ||
     typeof row.remaining !== "number" ||
     !Number.isInteger(row.remaining) ||
@@ -71,6 +84,7 @@ export function parseAiReviewQuotaRow(
 
   return {
     allowed: row.allowed,
+    duplicate: row.duplicate,
     remaining: row.remaining,
     reset_at: row.reset_at,
   };
