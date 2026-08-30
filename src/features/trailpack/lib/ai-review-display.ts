@@ -76,14 +76,21 @@ export function getAiReviewPresentation({
       return {
         badge: "Hourly review limit reached",
         description:
-          "This account has generated five live reviews in the current hour. TrailPack kept the deterministic rule-based list and explanation and will allow another live review after the window resets.",
+          "This account has reviewed five distinct generated packing lists in the current hour. TrailPack kept the deterministic rule-based list and explanation and will allow another live review after the window resets.",
+        tone: "fallback",
+      };
+    case "duplicate-generation":
+      return {
+        badge: "List already reviewed",
+        description:
+          "TrailPack recognized this packing-list generation and did not spend another live review. The deterministic rule-based list remains available.",
         tone: "fallback",
       };
     case "sign-in-required":
       return {
         badge: "Sign in for live AI",
         description:
-          "TrailPack generated the rule-based list and deterministic explanation. Sign in with Google to add an automatically validated live Gemini review.",
+          "TrailPack generated the rule-based list and deterministic explanation. Sign in with Google before generating the next list to add a validated live Gemini review.",
         tone: "fallback",
       };
     case "missing-key":
@@ -112,7 +119,7 @@ export function getAiReviewPresentation({
         ? {
             badge: "Saved review accepted",
             description:
-              "This saved explanation fixture passed the same TrailPack guardrails used for live responses. TrailPack will request a live review automatically when the configured provider and account quota are available.",
+              "This saved explanation fixture passed the same TrailPack guardrails used for live responses. Generating a list while signed in requests one live review when the provider and account allowance are available.",
             tone: "accepted",
           }
         : {

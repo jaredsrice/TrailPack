@@ -3,6 +3,7 @@ import type {
   AiContractPackingItem,
   AiItemExplanationDraft,
   AiReviewDraft,
+  AiReviewRequest,
   LiveAiOutcome,
   LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
@@ -54,6 +55,7 @@ const LIVE_AI_OUTCOMES = new Set<LiveAiOutcome>([
   "timed-out",
   "quota-limited",
   "rate-limited",
+  "duplicate-generation",
   "sign-in-required",
   "missing-key",
   "invalid-response",
@@ -64,6 +66,31 @@ const MAX_INPUT_STRING_LENGTH = 2_000;
 const MAX_OUTPUT_STRING_LENGTH = 2_000;
 const MAX_PACKING_ITEMS = 80;
 const MAX_LIST_ITEMS = 40;
+const GENERATION_ID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+export function parseAiReviewRequest(value: unknown): AiReviewRequest | null {
+  if (
+    !isRecord(value) ||
+    !isAiReviewGenerationId(value.generationId)
+  ) {
+    return null;
+  }
+
+  const input = parseAiContractInput(value.input);
+  if (!input) {
+    return null;
+  }
+
+  return {
+    generationId: value.generationId,
+    input,
+  };
+}
+
+export function isAiReviewGenerationId(value: unknown): value is string {
+  return typeof value === "string" && GENERATION_ID_PATTERN.test(value);
+}
 
 export function parseAiContractInput(value: unknown): AiContractInput | null {
   if (!isRecord(value)) {

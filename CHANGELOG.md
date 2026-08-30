@@ -12,6 +12,47 @@ corrections within that milestone.
 
 No unreleased product changes.
 
+## [0.6.1] - 2026-08-29
+
+Corrected the guarded-review allowance so it follows deliberate packing-list
+generation, and connected current NPS alerts to the primary planning flow.
+
+### Added
+
+- An explicit **Generate packing list** / **Update packing list** boundary that
+  snapshots the trip, weather, and alert context before creating recommendations.
+- A strict, bounded browser client for the live NPS alert route, with a labeled
+  saved-fixture fallback when live alerts cannot be loaded.
+
+### Changed
+
+- A signed-in hiker receives one guarded explanation request for each deliberate
+  list generation. Editing trip fields alone no longer sends requests or spends
+  the hourly allowance.
+- The five-per-hour limit now means five distinct generated packing lists per
+  account, with the remaining count and reset time still controlled by the
+  server and database.
+
+### Fixed
+
+- Repeated delivery of the same generation identifier is detected before the
+  quota count increments, preventing network retries from consuming additional
+  allowance.
+- The planner now distinguishes a successful live NPS response with zero active
+  alerts from an unavailable live source; it no longer presents the saved demo
+  fixture as though it were the current NPS result.
+
+### Security
+
+- The quota claim remains transactionally serialized per authenticated account,
+  and now records at most five generation identifiers for the active window.
+- Signed-out requests are rejected before the quota claim and cannot consume a
+  signed-in account's allowance.
+
+### Verification
+
+- Pending final protected Preview and Production verification.
+
 ## [0.6.0] - 2026-08-29
 
 Promoted the guarded Gemini explanation review to signed-in production use with

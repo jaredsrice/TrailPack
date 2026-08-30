@@ -23,11 +23,13 @@ export function ContextStatusPanel({
   weather,
   alerts,
   isWeatherLoading = false,
+  isAlertLoading = false,
   startTime,
 }: {
   weather: WeatherContext;
   alerts: AlertContext;
   isWeatherLoading?: boolean;
+  isAlertLoading?: boolean;
   startTime?: string;
 }) {
   const status = buildContextStatus(weather, alerts);
@@ -73,12 +75,16 @@ export function ContextStatusPanel({
         <ContextCard
           icon="alert"
           title="NPS alerts"
-          status={status.alerts.status}
+          status={isAlertLoading ? "Updating live alerts" : status.alerts.status}
           summary={status.alerts.summary}
           label={status.alerts.label}
           retrievalStatus={status.alerts.retrievalStatus}
           details={status.alerts.details}
-          notice={status.alerts.notice}
+          notice={
+            isAlertLoading
+              ? "Saved alert context remains visible while TrailPack requests current NPS alerts."
+              : status.alerts.notice
+          }
         />
       </div>
     </section>

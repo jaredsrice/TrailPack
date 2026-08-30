@@ -16,6 +16,7 @@ import {
   type LiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract";
 import { requestLiveAiReviewFromRoute } from "@/features/trailpack/lib/ai-review-client";
+import { requestTrailAlerts } from "@/features/trailpack/lib/alerts-client";
 import {
   generateManualEntryRecommendation,
   generatePackingRecommendation,
@@ -30,7 +31,12 @@ import {
   type FlowMode,
 } from "@/features/trailpack/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
-import type { TrailProfile, WeatherContext } from "@/features/trailpack/types";
+import type {
+  AlertContext,
+  PackingRecommendation,
+  TrailProfile,
+  WeatherContext,
+} from "@/features/trailpack/types";
 import { AiReviewPanel } from "./AiReviewPanel";
 import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
@@ -47,17 +53,15 @@ const QUICK_START_TRAIL_IDS = [
   "string-lake-loop",
 ] as const;
 
-const AUTOMATIC_AI_REVIEW_DELAY_MS = 1_500;
-
 type LiveAiUiState =
   | { status: "idle" }
-  | { status: "loading"; input: AiContractInput }
+  | { status: "loading"; generationId: string }
   | {
       status: "ready";
-      input: AiContractInput;
+      generationId: string;
       result: LiveAiReviewResult;
     }
-  | { status: "error"; input: AiContractInput; message: string };
+  | { status: "error"; generationId: string; message: string };
 
 type WeatherUiState =
   | { status: "idle" }
@@ -66,6 +70,24 @@ type WeatherUiState =
       requestKey: string;
       weather: WeatherContext;
     };
+
+type AlertUiState =
+  | { status: "idle" }
+  | {
+      status: "loading" | "ready";
+      requestKey: string;
+      alerts: AlertContext;
+    };
+
+interface GeneratedPlan {
+  generationId: string;
+  trailId: string;
+  userInput: UserHikeInput;
+  weather: WeatherContext;
+  alerts: AlertContext;
+  recommendation: PackingRecommendation;
+  aiInput: AiContractInput;
+}
 
 function alignSavedWeatherToDate(
   weather: WeatherContext,
@@ -103,20 +125,39 @@ function suggestionBadge(type: SearchSuggestion["type"]): string {
   }
 }
 
+function sameUserHikeInput(
+  left: UserHikeInput,
+  right: UserHikeInput,
+): boolean {
+  return (
+    left.plannedDate === right.plannedDate &&
+    left.startTime === right.startTime &&
+    left.expectedDuration === right.expectedDuration &&
+    left.trailConditions === right.trailConditions &&
+    left.notes === right.notes &&
+    left.distanceMiles === right.distanceMiles &&
+    left.elevationGainFeet === right.elevationGainFeet &&
+    left.routeType === right.routeType
+  );
+}
+
 export function TrailPackShell() {
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<FlowMode>("search");
   const [selectedParkId, setSelectedParkId] = useState<string | null>(null);
   const [selectedTrail, setSelectedTrail] = useState<TrailProfile | null>(null);
   const [userInput, setUserInput] = useState<UserHikeInput>({});
+  const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlan | null>(null);
   const [liveAiState, setLiveAiState] = useState<LiveAiUiState>({
     status: "idle",
   });
   const [weatherState, setWeatherState] = useState<WeatherUiState>({
     status: "idle",
   });
+  const [alertState, setAlertState] = useState<AlertUiState>({
+    status: "idle",
+  });
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const automaticallyRequestedAiInputs = useRef(new Set<string>());
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
@@ -132,6 +173,7 @@ export function TrailPackShell() {
         : null,
     [selectedScenario, userInput.plannedDate],
   );
+  const savedAlerts = selectedScenario?.alerts ?? null;
   const weatherRequestKey =
     selectedTrail && savedWeather
       ? `${selectedTrail.id}:${userInput.plannedDate ?? "today"}`
@@ -143,8 +185,10 @@ export function TrailPackShell() {
   const weather = hasCurrentWeatherState
     ? weatherState.weather
     : savedWeather;
-  const isWeatherLoading =
-    hasCurrentWeatherState && weatherState.status === "loading";
+  const isWeatherLoading = Boolean(
+    weatherRequestKey &&
+      (!hasCurrentWeatherState || weatherState.status === "loading"),
+  );
 
   useEffect(() => {
     if (!weatherRequestKey || !selectedTrail || !savedWeather) {
@@ -204,36 +248,80 @@ export function TrailPackShell() {
     weatherRequestKey,
   ]);
 
-  const recommendation = useMemo(() => {
-    if (mode === "manual") {
-      return generateManualEntryRecommendation(userInput);
+  const alertRequestKey = selectedTrail?.id ?? null;
+  const hasCurrentAlertState =
+    alertRequestKey !== null &&
+    alertState.status !== "idle" &&
+    alertState.requestKey === alertRequestKey;
+  const alerts = hasCurrentAlertState ? alertState.alerts : savedAlerts;
+  const isAlertLoading = Boolean(
+    alertRequestKey &&
+      (!hasCurrentAlertState || alertState.status === "loading"),
+  );
+
+  useEffect(() => {
+    if (!alertRequestKey || !selectedTrail || !savedAlerts) {
+      setAlertState({ status: "idle" });
+      return;
     }
 
-    if (!selectedTrail || !selectedScenario || !weather) {
-      return null;
-    }
+    const controller = new AbortController();
+    let active = true;
 
-    return generatePackingRecommendation(
-      selectedTrail,
-      weather,
-      selectedScenario.alerts,
-      userInput,
-    );
-  }, [mode, selectedScenario, selectedTrail, userInput, weather]);
-
-  const aiInput = useMemo(() => {
-    if (!selectedTrail || !selectedScenario || !recommendation || !weather) {
-      return null;
-    }
-
-    return buildAiContractInput({
-      trail: selectedTrail,
-      weather,
-      alerts: selectedScenario.alerts,
-      userInput,
-      recommendation,
+    setAlertState({
+      status: "loading",
+      requestKey: alertRequestKey,
+      alerts: savedAlerts,
     });
-  }, [recommendation, selectedScenario, selectedTrail, userInput, weather]);
+
+    void requestTrailAlerts(selectedTrail.id, { signal: controller.signal })
+      .then((liveAlerts) => {
+        if (!active) {
+          return;
+        }
+
+        setAlertState({
+          status: "ready",
+          requestKey: alertRequestKey,
+          alerts: liveAlerts,
+        });
+      })
+      .catch(() => {
+        if (!active) {
+          return;
+        }
+
+        setAlertState({
+          status: "ready",
+          requestKey: alertRequestKey,
+          alerts: {
+            ...savedAlerts,
+            statusReason:
+              "Live NPS alerts could not be loaded. TrailPack is showing saved alert context instead.",
+          },
+        });
+      });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [alertRequestKey, savedAlerts, selectedTrail]);
+
+  const currentGeneratedPlan =
+    selectedTrail && generatedPlan?.trailId === selectedTrail.id
+      ? generatedPlan
+      : null;
+  const manualRecommendation = useMemo(
+    () =>
+      mode === "manual" ? generateManualEntryRecommendation(userInput) : null,
+    [mode, userInput],
+  );
+  const recommendation =
+    mode === "manual"
+      ? manualRecommendation
+      : currentGeneratedPlan?.recommendation ?? null;
+  const aiInput = currentGeneratedPlan?.aiInput ?? null;
 
   const savedAiReview = useMemo(() => {
     if (!aiInput) {
@@ -249,80 +337,104 @@ export function TrailPackShell() {
   }, [aiInput]);
 
   const hasCurrentLiveState =
-    aiInput !== null &&
+    currentGeneratedPlan !== null &&
     liveAiState.status !== "idle" &&
-    liveAiState.input === aiInput;
+    liveAiState.generationId === currentGeneratedPlan.generationId;
   const currentLiveAiState = hasCurrentLiveState ? liveAiState : null;
   const displayedAiReview =
     currentLiveAiState?.status === "ready"
       ? currentLiveAiState.result.review
       : savedAiReview;
 
-  const aiInputKey = useMemo(
-    () => (aiInput ? JSON.stringify(aiInput) : null),
-    [aiInput],
-  );
-
   const requestAiReview = useCallback(async (
     requestedInput: AiContractInput,
-    signal?: AbortSignal,
+    generationId: string,
   ) => {
-    setLiveAiState({ status: "loading", input: requestedInput });
+    setLiveAiState({ status: "loading", generationId });
 
     try {
       const result = await requestLiveAiReviewFromRoute(requestedInput, {
-        signal,
+        generationId,
       });
-      if (signal?.aborted) {
-        return;
-      }
-      setLiveAiState({
-        status: "ready",
-        input: requestedInput,
-        result,
-      });
+      setLiveAiState((current) =>
+        current.status !== "idle" && current.generationId === generationId
+          ? {
+              status: "ready",
+              generationId,
+              result,
+            }
+          : current,
+      );
     } catch {
-      if (signal?.aborted) {
-        return;
-      }
-      setLiveAiState({
-        status: "error",
-        input: requestedInput,
-        message:
-          "TrailPack could not complete the live AI review. The rule-based list remains available.",
-      });
+      setLiveAiState((current) =>
+        current.status !== "idle" && current.generationId === generationId
+          ? {
+              status: "error",
+              generationId,
+              message:
+                "TrailPack could not complete the live AI review. The rule-based list remains available.",
+            }
+          : current,
+      );
     }
   }, []);
 
-  useEffect(() => {
+  const hasPendingPlanChanges = Boolean(
+    currentGeneratedPlan &&
+      !sameUserHikeInput(userInput, currentGeneratedPlan.userInput),
+  );
+  const isPlanContextLoading = isWeatherLoading || isAlertLoading;
+  const canGeneratePlan = Boolean(
+    selectedTrail &&
+      weather &&
+      alerts &&
+      !isPlanContextLoading &&
+      liveAiState.status !== "loading" &&
+      (!currentGeneratedPlan || hasPendingPlanChanges),
+  );
+
+  function handleGeneratePlan() {
     if (
-      !aiInput ||
-      !aiInputKey ||
-      isWeatherLoading ||
-      automaticallyRequestedAiInputs.current.has(aiInputKey)
+      !selectedTrail ||
+      !weather ||
+      !alerts ||
+      isPlanContextLoading ||
+      liveAiState.status === "loading"
     ) {
       return;
     }
 
-    const controller = new AbortController();
-    const timer = window.setTimeout(() => {
-      automaticallyRequestedAiInputs.current.add(aiInputKey);
-      void requestAiReview(aiInput, controller.signal);
-    }, AUTOMATIC_AI_REVIEW_DELAY_MS);
+    const generationId = crypto.randomUUID();
+    const planUserInput = { ...userInput };
+    const planRecommendation = generatePackingRecommendation(
+      selectedTrail,
+      weather,
+      alerts,
+      planUserInput,
+    );
+    const nextAiInput = buildAiContractInput({
+      trail: selectedTrail,
+      weather,
+      alerts,
+      userInput: planUserInput,
+      recommendation: planRecommendation,
+    });
 
-    return () => {
-      window.clearTimeout(timer);
-      controller.abort();
-    };
-  }, [aiInput, aiInputKey, isWeatherLoading, requestAiReview]);
+    setGeneratedPlan({
+      generationId,
+      trailId: selectedTrail.id,
+      userInput: planUserInput,
+      weather,
+      alerts,
+      recommendation: planRecommendation,
+      aiInput: nextAiInput,
+    });
+    void requestAiReview(nextAiInput, generationId);
+  }
 
-  function handleLiveAiReview() {
-    if (!aiInput || !aiInputKey) {
-      return;
-    }
-
-    automaticallyRequestedAiInputs.current.add(aiInputKey);
-    void requestAiReview(aiInput);
+  function resetGeneratedOutput() {
+    setGeneratedPlan(null);
+    setLiveAiState({ status: "idle" });
   }
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
@@ -333,6 +445,7 @@ export function TrailPackShell() {
       setSelectedTrail(next.selectedTrail);
       setQuery(next.query);
       setUserInput(next.userInput);
+      resetGeneratedOutput();
       return;
     }
 
@@ -343,6 +456,7 @@ export function TrailPackShell() {
       setSelectedTrail(next.selectedTrail);
       setQuery(next.query);
       setUserInput(next.userInput);
+      resetGeneratedOutput();
       return;
     }
 
@@ -361,6 +475,7 @@ export function TrailPackShell() {
       setSelectedTrail(next.selectedTrail);
       setQuery(next.query);
       setUserInput(next.userInput);
+      resetGeneratedOutput();
     }
   }
 
@@ -376,6 +491,7 @@ export function TrailPackShell() {
     setSelectedTrail(next.selectedTrail);
     setQuery(next.query);
     setUserInput(next.userInput);
+    resetGeneratedOutput();
   }
 
   function handleChangeSearch() {
@@ -385,6 +501,7 @@ export function TrailPackShell() {
     setSelectedTrail(next.selectedTrail);
     setUserInput(next.userInput);
     setQuery("");
+    resetGeneratedOutput();
 
     window.requestAnimationFrame(() => {
       searchInputRef.current?.focus();
@@ -443,6 +560,7 @@ export function TrailPackShell() {
                       setSelectedParkId(next.selectedParkId);
                       setSelectedTrail(next.selectedTrail);
                       setUserInput(next.userInput);
+                      resetGeneratedOutput();
                     }
                   }}
                   placeholder="Search a park or trail..."
@@ -568,11 +686,12 @@ export function TrailPackShell() {
 
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
 
-        {selectedTrail && selectedScenario && weather ? (
+        {selectedTrail && selectedScenario && weather && alerts ? (
           <ContextStatusPanel
             weather={weather}
-            alerts={selectedScenario.alerts}
+            alerts={alerts}
             isWeatherLoading={isWeatherLoading}
+            isAlertLoading={isAlertLoading}
             startTime={userInput.startTime}
           />
         ) : null}
@@ -585,12 +704,58 @@ export function TrailPackShell() {
           />
         ) : null}
 
+        {selectedTrail ? (
+          <section
+            className="plan-generation-section"
+            aria-labelledby="plan-generation-heading"
+          >
+            <div>
+              <p className="section-kicker">Generation boundary</p>
+              <h2 id="plan-generation-heading" className="section-title">
+                {currentGeneratedPlan
+                  ? "Update your packing list"
+                  : "Generate your packing list"}
+              </h2>
+              <p className="section-subtitle">
+                Editing trip details does not use the AI allowance. Each button
+                press creates one rule-based list and requests at most one
+                guarded review for that list.
+              </p>
+            </div>
+            <div className="plan-generation-action">
+              <button
+                type="button"
+                className="plan-generation-button"
+                onClick={handleGeneratePlan}
+                disabled={!canGeneratePlan}
+              >
+                {isPlanContextLoading
+                  ? "Loading current conditions..."
+                  : liveAiState.status === "loading"
+                    ? "Reviewing generated list..."
+                    : !currentGeneratedPlan
+                      ? "Generate packing list"
+                      : hasPendingPlanChanges
+                        ? "Update packing list"
+                        : "Packing list is current"}
+              </button>
+              <p aria-live="polite">
+                {currentGeneratedPlan && hasPendingPlanChanges
+                  ? "Your edits are ready. Update the list when you are finished."
+                  : currentGeneratedPlan
+                    ? "The displayed list matches the trip details above."
+                    : "Finish your trip details, then generate the list once."}
+              </p>
+            </div>
+          </section>
+        ) : null}
+
         {recommendation ? (
           <>
             <PackingListOutput recommendation={recommendation} />
             <SavedResultActions
               trail={selectedTrail}
-              userInput={userInput}
+              userInput={currentGeneratedPlan?.userInput ?? userInput}
               recommendation={recommendation}
             />
           </>
@@ -614,7 +779,6 @@ export function TrailPackShell() {
                 ? currentLiveAiState.message
                 : undefined
             }
-            onRequestLive={handleLiveAiReview}
           />
         ) : null}
       </div>

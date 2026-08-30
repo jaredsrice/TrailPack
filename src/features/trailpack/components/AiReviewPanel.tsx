@@ -14,7 +14,6 @@ interface AiReviewPanelProps {
   providerModel?: string;
   isLoading: boolean;
   requestError?: string;
-  onRequestLive: () => void;
 }
 
 export function AiReviewPanel({
@@ -23,7 +22,6 @@ export function AiReviewPanel({
   providerModel,
   isLoading,
   requestError,
-  onRequestLive,
 }: AiReviewPanelProps) {
   const presentation = getAiReviewPresentation({
     reviewStatus: review.status,
@@ -47,8 +45,8 @@ export function AiReviewPanel({
             Guarded AI review
           </h2>
           <p className="section-subtitle">
-            TrailPack checks the explanation automatically; the rule-based list
-            above never changes.
+            TrailPack checks one explanation when you generate the list; the
+            rule-based list above never changes.
           </p>
         </div>
         <span className={`ai-status-badge ${toneBadgeClassName(
@@ -74,17 +72,10 @@ export function AiReviewPanel({
       </div>
 
       <div className="ai-action-row">
-        <button
-          type="button"
-          onClick={onRequestLive}
-          disabled={isLoading}
-          className="ai-review-button"
-        >
-          {isLoading ? "Checking live AI..." : "Refresh guarded review"}
-        </button>
         <p>
-          Signed-in hikers can generate up to five live reviews per hour. Every
-          review checks explanation text only and cannot add, remove,
+          Signed-in hikers can generate up to five packing lists with live
+          reviews per hour. Editing fields alone does not use the allowance.
+          Every review checks explanation text only and cannot add, remove,
           reprioritize, or relabel the rule-based list above.
         </p>
       </div>

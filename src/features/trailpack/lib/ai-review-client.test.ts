@@ -45,6 +45,7 @@ const INPUT: AiContractInput = {
     confidenceNote: "Test confidence note.",
   },
 };
+const GENERATION_ID = "3f9a1f5e-6144-4f20-b1ad-32f8cc77d4bc";
 
 function liveResult(
   outcome: LiveAiReviewResult["outcome"] = "accepted",
@@ -91,7 +92,10 @@ describe("live AI review client", () => {
       }),
     );
 
-    const result = await requestLiveAiReviewFromRoute(INPUT, { fetchImpl });
+    const result = await requestLiveAiReviewFromRoute(INPUT, {
+      generationId: GENERATION_ID,
+      fetchImpl,
+    });
 
     expect(result.outcome).toBe("accepted");
     const [url, init] = vi.mocked(fetchImpl).mock.calls[0];
@@ -100,13 +104,19 @@ describe("live AI review client", () => {
       method: "POST",
       cache: "no-store",
     });
-    expect(JSON.parse(String(init?.body))).toEqual(INPUT);
+    expect(JSON.parse(String(init?.body))).toEqual({
+      generationId: GENERATION_ID,
+      input: INPUT,
+    });
   });
 
   it("keeps a labeled provider fallback as a valid UI result", async () => {
     const fetchImpl = asFetch(Response.json(liveResult("missing-key")));
 
-    const result = await requestLiveAiReviewFromRoute(INPUT, { fetchImpl });
+    const result = await requestLiveAiReviewFromRoute(INPUT, {
+      generationId: GENERATION_ID,
+      fetchImpl,
+    });
 
     expect(result).toMatchObject({
       outcome: "missing-key",
@@ -118,6 +128,7 @@ describe("live AI review client", () => {
 
   it.each([
     { status: 401, outcome: "sign-in-required" as const },
+    { status: 409, outcome: "duplicate-generation" as const },
     { status: 429, outcome: "rate-limited" as const },
   ])("keeps a structured $status fallback as a valid UI result", async ({
     status,
@@ -127,7 +138,10 @@ describe("live AI review client", () => {
       Response.json(liveResult(outcome), { status }),
     );
 
-    const result = await requestLiveAiReviewFromRoute(INPUT, { fetchImpl });
+    const result = await requestLiveAiReviewFromRoute(INPUT, {
+      generationId: GENERATION_ID,
+      fetchImpl,
+    });
 
     expect(result).toMatchObject({
       outcome,
@@ -144,7 +158,10 @@ describe("live AI review client", () => {
     );
 
     await expect(
-      requestLiveAiReviewFromRoute(INPUT, { fetchImpl }),
+      requestLiveAiReviewFromRoute(INPUT, {
+        generationId: GENERATION_ID,
+        fetchImpl,
+      }),
     ).rejects.toThrow(
       "TrailPack could not complete the live AI review.",
     );
@@ -156,7 +173,22 @@ describe("live AI review client", () => {
     );
 
     await expect(
-      requestLiveAiReviewFromRoute(INPUT, { fetchImpl }),
+      requestLiveAiReviewFromRoute(INPUT, {
+        generationId: GENERATION_ID,
+        fetchImpl,
+      }),
     ).rejects.not.toThrow(/private route detail/i);
+  });
+
+  it("rejects an invalid generation id before making a request", async () => {
+    const fetchImpl = vi.fn() as unknown as typeof fetch;
+
+    await expect(
+      requestLiveAiReviewFromRoute(INPUT, {
+        generationId: "not-a-generation-id",
+        fetchImpl,
+      }),
+    ).rejects.toThrow("TrailPack could not complete the live AI review.");
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 });

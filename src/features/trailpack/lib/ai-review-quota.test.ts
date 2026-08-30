@@ -10,12 +10,14 @@ describe("AI review quota contract", () => {
       parseAiReviewQuotaRow([
         {
           allowed: true,
+          duplicate: false,
           remaining: 4,
           reset_at: "2026-08-29T18:00:00.000Z",
         },
       ]),
     ).toEqual({
       allowed: true,
+      duplicate: false,
       remaining: 4,
       reset_at: "2026-08-29T18:00:00.000Z",
     });
@@ -24,11 +26,30 @@ describe("AI review quota contract", () => {
   it.each([
     null,
     [],
-    [{ allowed: true, remaining: 6, reset_at: "2026-08-29T18:00:00.000Z" }],
-    [{ allowed: "yes", remaining: 4, reset_at: "2026-08-29T18:00:00.000Z" }],
-    [{ allowed: false, remaining: 0, reset_at: "not-a-date" }],
+    [{ allowed: true, duplicate: false, remaining: 6, reset_at: "2026-08-29T18:00:00.000Z" }],
+    [{ allowed: "yes", duplicate: false, remaining: 4, reset_at: "2026-08-29T18:00:00.000Z" }],
+    [{ allowed: true, duplicate: true, remaining: 4, reset_at: "2026-08-29T18:00:00.000Z" }],
+    [{ allowed: false, duplicate: false, remaining: 0, reset_at: "not-a-date" }],
   ])("rejects malformed quota data %#", (value) => {
     expect(parseAiReviewQuotaRow(value)).toBeNull();
+  });
+
+  it("accepts a duplicate generation without another claim", () => {
+    expect(
+      parseAiReviewQuotaRow([
+        {
+          allowed: false,
+          duplicate: true,
+          remaining: 3,
+          reset_at: "2026-08-29T18:00:00.000Z",
+        },
+      ]),
+    ).toEqual({
+      allowed: false,
+      duplicate: true,
+      remaining: 3,
+      reset_at: "2026-08-29T18:00:00.000Z",
+    });
   });
 
   it("turns the reset time into a bounded Retry-After value", () => {
