@@ -3,6 +3,10 @@ import type {
   RetrievalStatus,
   SourceLabel,
 } from "@/features/trailpack/types";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "@/features/trailpack/lib/read-text-with-limit";
 
 const ALERTS_ROUTE = "/api/trailpack/alerts";
 const REQUEST_ERROR_MESSAGE =
@@ -10,6 +14,7 @@ const REQUEST_ERROR_MESSAGE =
 const MAX_ALERTS = 10;
 const MAX_STRING_LENGTH = 2_000;
 const MAX_STATUS_REASON_LENGTH = 500;
+const MAX_RESPONSE_BYTES = 64_000;
 const RETRIEVAL_STATUSES = new Set<RetrievalStatus>([
   "live",
   "saved-fixture",
@@ -46,12 +51,17 @@ export async function requestTrailAlerts(
   }
 
   if (!response.ok) {
+    await discardBody(response);
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
   let responseBody: unknown;
   try {
-    responseBody = await response.json();
+    const responseRead = await readTextWithinLimit(response, MAX_RESPONSE_BYTES);
+    if (responseRead.status !== "ok") {
+      throw new Error(REQUEST_ERROR_MESSAGE);
+    }
+    responseBody = JSON.parse(responseRead.text);
   } catch {
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
@@ -72,6 +82,8 @@ export function parseAlertContextResponse(value: unknown): AlertContext | null {
     value.alerts.length > MAX_ALERTS ||
     !ALERT_LABELS.has(value.label as SourceLabel) ||
     !isRetrievalStatus(value.retrievalStatus) ||
+    (value.retrievalStatus === "live" && value.label !== "official") ||
+    (value.retrievalStatus === "unavailable" && value.label !== "unavailable") ||
     !isOptionalString(value.statusReason, MAX_STATUS_REASON_LENGTH)
   ) {
     return null;
@@ -166,6 +178,9 @@ function isOptionalNpsUrl(value: unknown): value is string | undefined {
     const host = parsed.hostname.toLowerCase();
     return (
       parsed.protocol === "https:" &&
+      !parsed.username &&
+      !parsed.password &&
+      !parsed.port &&
       (host === "nps.gov" || host.endsWith(".nps.gov"))
     );
   } catch {

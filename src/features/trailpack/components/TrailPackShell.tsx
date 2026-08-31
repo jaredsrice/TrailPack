@@ -53,6 +53,10 @@ const QUICK_START_TRAIL_IDS = [
   "string-lake-loop",
 ] as const;
 
+const AI_REVIEW_CLIENT_TIMEOUT_MS = 30_000;
+const ALERT_REQUEST_TIMEOUT_MS = 12_000;
+const WEATHER_REQUEST_TIMEOUT_MS = 20_000;
+
 type LiveAiUiState =
   | { status: "idle" }
   | { status: "loading"; generationId: string }
@@ -158,6 +162,8 @@ export function TrailPackShell() {
     status: "idle",
   });
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const activeAiGenerationRef = useRef<string | null>(null);
+  const aiReviewAbortControllerRef = useRef<AbortController | null>(null);
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
@@ -198,6 +204,10 @@ export function TrailPackShell() {
 
     const controller = new AbortController();
     let active = true;
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      WEATHER_REQUEST_TIMEOUT_MS,
+    );
 
     setWeatherState({
       status: "loading",
@@ -235,10 +245,12 @@ export function TrailPackShell() {
               "The live forecast could not be loaded. TrailPack is showing saved example conditions instead.",
           },
         });
-      });
+      })
+      .finally(() => window.clearTimeout(timeoutId));
 
     return () => {
       active = false;
+      window.clearTimeout(timeoutId);
       controller.abort();
     };
   }, [
@@ -267,6 +279,10 @@ export function TrailPackShell() {
 
     const controller = new AbortController();
     let active = true;
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      ALERT_REQUEST_TIMEOUT_MS,
+    );
 
     setAlertState({
       status: "loading",
@@ -300,10 +316,12 @@ export function TrailPackShell() {
               "Live NPS alerts could not be loaded. TrailPack is showing saved alert context instead.",
           },
         });
-      });
+      })
+      .finally(() => window.clearTimeout(timeoutId));
 
     return () => {
       active = false;
+      window.clearTimeout(timeoutId);
       controller.abort();
     };
   }, [alertRequestKey, savedAlerts, selectedTrail]);
@@ -350,11 +368,18 @@ export function TrailPackShell() {
     requestedInput: AiContractInput,
     generationId: string,
   ) => {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(
+      () => controller.abort(),
+      AI_REVIEW_CLIENT_TIMEOUT_MS,
+    );
+    aiReviewAbortControllerRef.current = controller;
     setLiveAiState({ status: "loading", generationId });
 
     try {
       const result = await requestLiveAiReviewFromRoute(requestedInput, {
         generationId,
+        signal: controller.signal,
       });
       setLiveAiState((current) =>
         current.status !== "idle" && current.generationId === generationId
@@ -376,8 +401,23 @@ export function TrailPackShell() {
             }
           : current,
       );
+    } finally {
+      window.clearTimeout(timeoutId);
+      if (activeAiGenerationRef.current === generationId) {
+        activeAiGenerationRef.current = null;
+      }
+      if (aiReviewAbortControllerRef.current === controller) {
+        aiReviewAbortControllerRef.current = null;
+      }
     }
   }, []);
+
+  useEffect(
+    () => () => {
+      aiReviewAbortControllerRef.current?.abort();
+    },
+    [],
+  );
 
   const hasPendingPlanChanges = Boolean(
     currentGeneratedPlan &&
@@ -395,11 +435,11 @@ export function TrailPackShell() {
 
   function handleGeneratePlan() {
     if (
+      !canGeneratePlan ||
       !selectedTrail ||
       !weather ||
       !alerts ||
-      isPlanContextLoading ||
-      liveAiState.status === "loading"
+      activeAiGenerationRef.current !== null
     ) {
       return;
     }
@@ -419,6 +459,7 @@ export function TrailPackShell() {
       userInput: planUserInput,
       recommendation: planRecommendation,
     });
+    activeAiGenerationRef.current = generationId;
 
     setGeneratedPlan({
       generationId,
@@ -433,6 +474,9 @@ export function TrailPackShell() {
   }
 
   function resetGeneratedOutput() {
+    aiReviewAbortControllerRef.current?.abort();
+    aiReviewAbortControllerRef.current = null;
+    activeAiGenerationRef.current = null;
     setGeneratedPlan(null);
     setLiveAiState({ status: "idle" });
   }

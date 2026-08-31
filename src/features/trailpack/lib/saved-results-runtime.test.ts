@@ -78,4 +78,26 @@ describe("saved result runtime contract", () => {
       }),
     ).toBeNull();
   });
+
+  it("rejects executable and insecure source URLs in stored snapshots", () => {
+    const value = draft();
+    const [first, ...remaining] = value.recommendation.essential;
+
+    expect(
+      parseSavedResultDraft({
+        ...value,
+        recommendation: {
+          ...value.recommendation,
+          essential: [
+            {
+              ...first,
+              sourceUrl: "javascript:alert(document.domain)",
+              links: [{ label: "Source", url: "http://example.com" }],
+            },
+            ...remaining,
+          ],
+        },
+      }),
+    ).toBeNull();
+  });
 });

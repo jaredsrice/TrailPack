@@ -43,9 +43,8 @@ function savedDraft(): AiReviewDraft {
   return structuredClone(draft);
 }
 
-function geminiResponse(draft: unknown, status = 200): Response {
-  return new Response(
-    JSON.stringify({
+function geminiResponseBody(draft: unknown): string {
+  return JSON.stringify({
       id: "interaction-test",
       status: "completed",
       steps: [
@@ -54,7 +53,12 @@ function geminiResponse(draft: unknown, status = 200): Response {
           content: [{ type: "text", text: JSON.stringify(draft) }],
         },
       ],
-    }),
+    });
+}
+
+function geminiResponse(draft: unknown, status = 200): Response {
+  return new Response(
+    geminiResponseBody(draft),
     {
       status,
       headers: { "Content-Type": "application/json" },
@@ -129,6 +133,21 @@ describe("live AI provider boundary", () => {
     expect(result.review.review.tripSummary).toMatch(/Jenny Lake Loop/);
   });
 
+  it("accepts an otherwise valid provider response at exactly 256 KB", async () => {
+    const responseBody = geminiResponseBody(savedDraft());
+    const paddingLength = 256_000 - Buffer.byteLength(responseBody);
+    const exactBoundary = `${responseBody}${" ".repeat(paddingLength)}`;
+    const fetchImpl = asFetch(async () => new Response(exactBoundary));
+
+    const result = await requestLiveAiReview(buildInput(), {
+      apiKey: "test-key",
+      fetchImpl,
+    });
+
+    expect(Buffer.byteLength(exactBoundary)).toBe(256_000);
+    expect(result.outcome).toBe("accepted");
+  });
+
   it("rejects a structurally valid response that changes baseline source labels", async () => {
     const draft = savedDraft();
     draft.itemExplanationDrafts[0].sourceLabels = ["official"];
@@ -185,6 +204,37 @@ describe("live AI provider boundary", () => {
     expect(result.review.validationReasons.join(" ")).toMatch(/quota/i);
   });
 
+  it.each([408, 504])(
+    "maps provider HTTP %i to the bounded timeout fallback",
+    async (status) => {
+      const fetchImpl = asFetch(
+        async () => new Response("private timeout detail", { status }),
+      );
+
+      const result = await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl,
+      });
+
+      expect(result.outcome).toBe("timed-out");
+      expect(JSON.stringify(result)).not.toContain("private timeout detail");
+    },
+  );
+
+  it("maps a provider network failure to the generic fallback", async () => {
+    const fetchImpl = asFetch(async () => {
+      throw new Error("private network detail");
+    });
+
+    const result = await requestLiveAiReview(buildInput(), {
+      apiKey: "test-key",
+      fetchImpl,
+    });
+
+    expect(result.outcome).toBe("provider-error");
+    expect(JSON.stringify(result)).not.toContain("private network detail");
+  });
+
   it("uses the fallback without making a provider request when the key is missing", async () => {
     const fetchImpl = asFetch(async () => geminiResponse(savedDraft()));
 
@@ -208,6 +258,20 @@ describe("live AI provider boundary", () => {
     expect(result.outcome).toBe("invalid-response");
     expect(result.review.status).toBe("fallback");
     expect(JSON.stringify(result)).not.toContain("test-key");
+  });
+
+  it("rejects provider output that widens the strict response contract", async () => {
+    const fetchImpl = asFetch(async () =>
+      geminiResponse({ ...savedDraft(), hidden: "private provider detail" }),
+    );
+
+    const result = await requestLiveAiReview(buildInput(), {
+      apiKey: "test-key",
+      fetchImpl,
+    });
+
+    expect(result.outcome).toBe("invalid-response");
+    expect(JSON.stringify(result)).not.toContain("private provider detail");
   });
 
   it("cancels an oversized streamed provider success response", async () => {
@@ -322,6 +386,46 @@ describe("live AI provider boundary", () => {
       expect(streamed.wasCancelled()).toBe(true);
       expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
       expect(warn).toHaveBeenCalledWith(
+        "TrailPack Gemini provider request failed.",
+        { httpStatus: 500, providerEnvelope: "oversized" },
+      );
+    } finally {
+      warn.mockRestore();
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("accepts exactly 8 KB of provider diagnostics and classifies 8 KB plus one byte as oversized", async () => {
+    vi.stubEnv("VERCEL_ENV", "preview");
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const diagnostic = JSON.stringify({ error: "API_KEY_INVALID" });
+    const exactBoundary = `${diagnostic}${" ".repeat(8_192 - Buffer.byteLength(diagnostic))}`;
+    const oversized = `${exactBoundary} `;
+
+    try {
+      expect(Buffer.byteLength(exactBoundary)).toBe(8_192);
+      expect(Buffer.byteLength(oversized)).toBe(8_193);
+
+      await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl: asFetch(async () =>
+          new Response(exactBoundary, { status: 500 }),
+        ),
+      });
+      expect(warn).toHaveBeenLastCalledWith(
+        "TrailPack Gemini provider request failed.",
+        expect.objectContaining({
+          httpStatus: 500,
+          providerEnvelope: "flat-error",
+          providerReason: "API_KEY_INVALID",
+        }),
+      );
+
+      await requestLiveAiReview(buildInput(), {
+        apiKey: "test-key",
+        fetchImpl: asFetch(async () => new Response(oversized, { status: 500 })),
+      });
+      expect(warn).toHaveBeenLastCalledWith(
         "TrailPack Gemini provider request failed.",
         { httpStatus: 500, providerEnvelope: "oversized" },
       );

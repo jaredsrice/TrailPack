@@ -6,17 +6,22 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 concurrency:
   group: nps-source-integrity
   cancel-in-progress: false
 
 jobs:
-  verify-nps-sources:
+  verify_nps_sources:
+    name: Validate snapshot refresh
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      base_sha: ${{ steps.base.outputs.sha }}
+      snapshot_changed: ${{ steps.snapshot.outputs.changed }}
 
     steps:
       - name: Check out repository
@@ -24,6 +29,12 @@ jobs:
         with:
           ref: ${{ github.event.repository.default_branch }}
           fetch-depth: 0
+          persist-credentials: false
+
+      - name: Record validated base commit
+        id: base
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -52,13 +63,74 @@ jobs:
       - name: Build refreshed application
         run: npm run build
 
+      - name: Detect validated snapshot change
+        id: snapshot
+        shell: bash
+        run: |
+          if git diff --quiet -- src/features/trailpack/data/nps-source-snapshots.json; then
+            echo "NPS snapshots are already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload validated snapshot
+        if: ${{ steps.snapshot.outputs.changed == 'true' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: validated-nps-snapshot-${{ github.run_id }}
+          path: src/features/trailpack/data/nps-source-snapshots.json
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload source-integrity report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: nps-source-integrity-${{ github.run_number }}
+          path: .artifacts/nps-source-integrity/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish_snapshot_refresh:
+    name: Publish validated snapshot pull request
+    needs: verify_nps_sources
+    if: ${{ needs.verify_nps_sources.outputs.snapshot_changed == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Check out validated base commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.verify_nps_sources.outputs.base_sha }}
+          fetch-depth: 0
+
+      - name: Download validated snapshot
+        uses: actions/download-artifact@v8
+        with:
+          name: validated-nps-snapshot-${{ github.run_id }}
+          path: validated-nps-snapshot
+
+      - name: Apply validated snapshot only
+        shell: bash
+        run: |
+          test -f validated-nps-snapshot/nps-source-snapshots.json
+          test "$(find validated-nps-snapshot -type f | wc -l | tr -d ' ')" = "1"
+          install -m 0644 \
+            validated-nps-snapshot/nps-source-snapshots.json \
+            src/features/trailpack/data/nps-source-snapshots.json
+
       - name: Open verified snapshot refresh pull request
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           if git diff --quiet -- src/features/trailpack/data/nps-source-snapshots.json; then
-            echo "NPS snapshots are already current."
+            echo "The validated snapshot is already present on the target commit."
             exit 0
           fi
           refresh_branch="automation/nps-source-refresh-${GITHUB_RUN_ID}"
@@ -73,12 +145,3 @@ jobs:
             --head "${refresh_branch}" \
             --title "chore(data): refresh NPS trail snapshots" \
             --body "Automated NPS source refresh validated by ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
-
-      - name: Upload source-integrity report
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v5
-        with:
-          name: nps-source-integrity-${{ github.run_number }}
-          path: .artifacts/nps-source-integrity/
-          if-no-files-found: error
-          retention-days: 90

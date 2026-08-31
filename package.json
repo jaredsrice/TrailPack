@@ -13,6 +13,7 @@
     "check:nps-integrity": "tsx scripts/check-nps-source-integrity.ts",
     "refresh:nps-sources": "tsx scripts/check-nps-source-integrity.ts --apply",
     "scenario:stress": "node scripts/generate-hiker-scenario-report.mjs",
+    "stress:system": "tsx scripts/run-system-stress.ts",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:a11y": "playwright test",

@@ -61,6 +61,28 @@ describe("readTextWithinLimit", () => {
     });
   });
 
+  it("does not wait forever when oversized-stream cancellation never settles", async () => {
+    const response = new Response(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode("oversized"));
+        },
+        cancel() {
+          return new Promise<void>(() => undefined);
+        },
+      }),
+    );
+
+    const outcome = await Promise.race([
+      readTextWithinLimit(response, 4),
+      new Promise<"timed-out">((resolve) =>
+        setTimeout(() => resolve("timed-out"), 25),
+      ),
+    ]);
+
+    expect(outcome).toEqual({ status: "too-large" });
+  });
+
   it("rejects a declared oversized body before consuming it", async () => {
     let pulled = false;
     const response = new Response(
@@ -77,6 +99,26 @@ describe("readTextWithinLimit", () => {
       status: "too-large",
     });
     expect(pulled).toBe(false);
+  });
+
+  it("does not wait forever when declared-oversize cancellation never settles", async () => {
+    const response = new Response(
+      new ReadableStream<Uint8Array>({
+        cancel() {
+          return new Promise<void>(() => undefined);
+        },
+      }),
+      { headers: { "content-length": "65" } },
+    );
+
+    const outcome = await Promise.race([
+      readTextWithinLimit(response, 64),
+      new Promise<"timed-out">((resolve) =>
+        setTimeout(() => resolve("timed-out"), 25),
+      ),
+    ]);
+
+    expect(outcome).toEqual({ status: "too-large" });
   });
 
   it("rejects malformed content-length metadata", async () => {

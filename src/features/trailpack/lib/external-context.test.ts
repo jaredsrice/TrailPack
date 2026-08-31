@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { TRAIL_CATALOG } from "@/features/trailpack/data/supported-trails";
 import {
   buildAlertContextFromNpsResponse,
   buildDaylightContextFromSunriseSunsetResponse,
@@ -175,6 +176,27 @@ describe("buildAlertContextFromNpsResponse", () => {
     expect(alerts.label).toBe("official");
     expect(alerts.retrievalStatus).toBe("live");
   });
+
+  it("bounds provider-controlled alert counts, text, and source URLs", () => {
+    const alerts = buildAlertContextFromNpsResponse({
+      data: Array.from({ length: 12 }, (_, index) => ({
+        title: ` Alert ${index} ${"t".repeat(2_100)} `,
+        description: ` ${"d".repeat(2_100)} `,
+        category: "Closure",
+        url:
+          index === 0
+            ? "https://attacker.example@nps.gov/looks-official"
+            : "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+      })),
+    });
+
+    expect(alerts.alerts).toHaveLength(10);
+    expect(alerts.alerts.every((alert) => alert.title.length <= 2_000)).toBe(true);
+    expect(
+      alerts.alerts.every((alert) => alert.description.length <= 2_000),
+    ).toBe(true);
+    expect(alerts.alerts[0]?.sourceUrl).toBeUndefined();
+  });
 });
 
 describe("external-context fallbacks", () => {
@@ -240,6 +262,35 @@ describe("external-context fallbacks", () => {
     expect(weather?.summary).toMatch(/Two Ocean Lake/);
   });
 
+  it("bounds a stalled Open-Meteo request and returns the saved fallback", async () => {
+    vi.useFakeTimers();
+    let observedAbort = false;
+    const fetcher = vi.fn(
+      async (_input: RequestInfo | URL, init?: RequestInit) =>
+        new Promise<never>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => {
+              observedAbort = true;
+              reject(new DOMException("Timed out", "AbortError"));
+            },
+            { once: true },
+          );
+        }),
+    );
+
+    const weatherPromise = fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      fetcher,
+    });
+    const expectation = expect(weatherPromise).resolves.toMatchObject({
+      retrievalStatus: "saved-fixture",
+    });
+
+    await vi.advanceTimersByTimeAsync(8_000);
+    await expectation;
+    expect(observedAbort).toBe(true);
+  });
+
   it("attaches live civil-twilight context when weather and daylight calls succeed", async () => {
     const fetcher = vi.fn(async (input: RequestInfo | URL) => {
       const url = new URL(String(input));
@@ -296,6 +347,79 @@ describe("external-context fallbacks", () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(weather?.daylight?.source).toBe("sunrise-sunset");
     expect(weather?.daylight?.civilTwilightEnd).toBe("2026-06-15T21:42:37-06:00");
+  });
+
+  it("bounds a stalled daylight request without discarding live weather", async () => {
+    vi.useFakeTimers();
+    let observedAbort = false;
+    const fetcher = vi.fn(
+      async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = new URL(String(input));
+        if (url.hostname === "api.open-meteo.com") {
+          return {
+            ok: true,
+            status: 200,
+            json: async () => ({
+              timezone: "America/Denver",
+              daily: {
+                time: ["2026-06-15"],
+                temperature_2m_max: [74],
+                temperature_2m_min: [44],
+                weather_code: [1],
+              },
+            }),
+          };
+        }
+
+        return new Promise<never>((_resolve, reject) => {
+          init?.signal?.addEventListener(
+            "abort",
+            () => {
+              observedAbort = true;
+              reject(new DOMException("Timed out", "AbortError"));
+            },
+            { once: true },
+          );
+        });
+      },
+    );
+
+    const weatherPromise = fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      fetcher,
+    });
+    await vi.advanceTimersByTimeAsync(8_000);
+
+    const weather = await weatherPromise;
+    expect(weather).toMatchObject({ retrievalStatus: "live" });
+    expect(weather?.daylight).toBeUndefined();
+    expect(observedAbort).toBe(true);
+  });
+
+  it("rejects oversized upstream weather and alert payloads", async () => {
+    const oversizedWeather = vi.fn(async () =>
+      new Response(JSON.stringify({ timezone: "x".repeat(300_000) })),
+    );
+    const oversizedAlerts = vi.fn(async () =>
+      new Response(
+        JSON.stringify({
+          data: [
+            {
+              title: "Alert",
+              description: "x".repeat(300_000),
+            },
+          ],
+        }),
+      ),
+    );
+
+    await expect(
+      fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+        fetcher: oversizedWeather,
+      }),
+    ).resolves.toMatchObject({ retrievalStatus: "saved-fixture" });
+    await expect(
+      fetchNpsAlertContext("grte", "test-key", oversizedAlerts),
+    ).resolves.toMatchObject({ retrievalStatus: "saved-fixture" });
   });
 
   it("requests the selected date and hourly forecast fields", async () => {
@@ -398,6 +522,30 @@ describe("external-context fallbacks", () => {
     expect(alerts.retrievalStatus).toBe("saved-fixture");
   });
 
+  it.each([
+    {
+      name: "HTTP 500",
+      response: () => new Response("private upstream detail", { status: 500 }),
+    },
+    {
+      name: "malformed JSON",
+      response: () => new Response("{", { status: 200 }),
+    },
+  ])("uses the labeled saved fallback for NPS $name", async ({ response }) => {
+    const alerts = await fetchNpsAlertContext(
+      "grte",
+      "test-key",
+      vi.fn(async () => response()),
+    );
+
+    expect(alerts).toMatchObject({
+      hasActiveAlerts: false,
+      label: "unavailable",
+      retrievalStatus: "saved-fixture",
+    });
+    expect(JSON.stringify(alerts)).not.toContain("private upstream detail");
+  });
+
   it("bounds a stalled NPS request and returns the saved fallback", async () => {
     vi.useFakeTimers();
     let observedAbort = false;
@@ -435,15 +583,21 @@ describe("external-context fallbacks", () => {
 });
 
 describe("resolveSupportedParkCode", () => {
-  it("resolves the Grand Teton park code from a supported trail id", () => {
-    expect(resolveSupportedParkCode({ trailId: "jenny-lake-loop" })).toBe("grte");
-    expect(resolveSupportedParkCode({ trailId: "colter-bay-lakeshore-trail" })).toBe(
-      "grte",
-    );
+  it("resolves every supported trail to the Grand Teton park code", () => {
+    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(5);
+    for (const trailId of Object.keys(TRAIL_CATALOG)) {
+      expect(resolveSupportedParkCode({ trailId })).toBe("grte");
+    }
   });
 
   it("rejects unsupported trail ids and park codes", () => {
     expect(resolveSupportedParkCode({ trailId: "unknown-trail" })).toBeNull();
     expect(resolveSupportedParkCode({ parkCode: "acad" })).toBeNull();
+    expect(
+      resolveSupportedParkCode({ trailId: "unknown-trail", parkCode: "grte" }),
+    ).toBeNull();
+    expect(
+      resolveSupportedParkCode({ trailId: "jenny-lake-loop", parkCode: "acad" }),
+    ).toBeNull();
   });
 });

@@ -42,6 +42,16 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) {
+    return jsonResponse({ error: "Saved results are unavailable." }, { status: 503 });
+  }
+
+  const user = await getAuthenticatedUser(supabase);
+  if (!user) {
+    return jsonResponse({ error: "Authentication is required." }, { status: 401 });
+  }
+
   const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES);
   if (bodyRead.status === "too-large") {
     return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
@@ -61,16 +71,6 @@ export async function POST(request: Request) {
   const draft = parseSavedResultDraft(value);
   if (!draft) {
     return jsonResponse({ error: "Saved result request does not match the supported contract." }, { status: 400 });
-  }
-
-  const supabase = await getSupabaseServerClient();
-  if (!supabase) {
-    return jsonResponse({ error: "Saved results are unavailable." }, { status: 503 });
-  }
-
-  const user = await getAuthenticatedUser(supabase);
-  if (!user) {
-    return jsonResponse({ error: "Authentication is required." }, { status: 401 });
   }
 
   const { data, error } = await supabase
@@ -102,8 +102,12 @@ export async function POST(request: Request) {
 async function getAuthenticatedUser(
   supabase: Awaited<ReturnType<typeof getSupabaseServerClient>> & {},
 ) {
-  const { data, error } = await supabase.auth.getUser();
-  return error ? null : data.user;
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    return error ? null : data.user;
+  } catch {
+    return null;
+  }
 }
 
 function rowToRecord(row: {

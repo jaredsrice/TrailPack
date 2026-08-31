@@ -2,7 +2,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { DEMO_CONTEXTS } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import { JENNY_LAKE_LOOP } from "@/features/trailpack/data/supported-trails";
-import { buildAiContractInput } from "@/features/trailpack/lib/ai-contract";
+import {
+  buildAiContractInput,
+  buildGuardedAiFallback,
+} from "@/features/trailpack/lib/ai-contract";
 import type { AiReviewQuotaAccess } from "@/features/trailpack/lib/ai-review-quota";
 import { generatePackingRecommendation } from "@/features/trailpack/lib/packing";
 import { handleAiReviewPost } from "@/features/trailpack/lib/ai-review-route";
@@ -37,11 +40,49 @@ function request(body: string): Request {
   });
 }
 
-function validRequestBody(): string {
+function validRequestBody(generationId = GENERATION_ID): string {
   return JSON.stringify({
-    generationId: GENERATION_ID,
+    generationId,
     input: buildInput(),
   });
+}
+
+function generationIdFor(index: number): string {
+  return `00000000-0000-4000-8000-${index.toString(16).padStart(12, "0")}`;
+}
+
+function createAtomicQuotaClaim(): (generationId: string) => Promise<AiReviewQuotaAccess> {
+  const claimed = new Set<string>();
+
+  return async (generationId) => {
+    if (claimed.has(generationId)) {
+      return {
+        status: "duplicate",
+        remaining: 5 - claimed.size,
+        resetAt: "2026-08-29T18:00:00.000Z",
+        retryAfterSeconds: 1_800,
+      };
+    }
+    if (claimed.size >= 5) {
+      return quota("limited");
+    }
+
+    claimed.add(generationId);
+    return {
+      status: "allowed",
+      remaining: 5 - claimed.size,
+      resetAt: "2026-08-29T18:00:00.000Z",
+      retryAfterSeconds: 1_800,
+    };
+  };
+}
+
+function mockReview() {
+  return vi.fn(async (input: ReturnType<typeof buildInput>) => ({
+    outcome: "provider-error" as const,
+    provider: { name: "gemini" as const, model: "gemini-3.5-flash" },
+    review: buildGuardedAiFallback(input, ["Mocked provider response."]),
+  }));
 }
 
 function quota(
@@ -125,6 +166,29 @@ describe("POST /api/trailpack/ai-review", () => {
     });
   });
 
+  it("accepts exactly 64,000 bytes and rejects 64,001 bytes", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "");
+    const body = validRequestBody();
+    const exactBoundary = `${body}${" ".repeat(64_000 - Buffer.byteLength(body))}`;
+
+    const accepted = await POST(request(exactBoundary));
+    const rejected = await POST(request(`${exactBoundary} `));
+
+    expect(Buffer.byteLength(exactBoundary)).toBe(64_000);
+    expect(accepted.status).toBe(200);
+    expect(rejected.status).toBe(413);
+  });
+
+  it("rejects unknown fields instead of widening the guarded contract", async () => {
+    const value = JSON.parse(validRequestBody()) as Record<string, unknown>;
+    value.unexpected = "must not be accepted";
+
+    const response = await POST(request(JSON.stringify(value)));
+
+    expect(response.status).toBe(400);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+  });
+
   it("stops reading a streamed body after crossing the safety limit", async () => {
     const streamed = oversizedStreamRequest();
     const response = await POST(streamed.request);
@@ -133,6 +197,51 @@ describe("POST /api/trailpack/ai-review", () => {
     expect(streamed.getPullCount()).toBeLessThan(streamed.chunkCount);
     await expect(response.json()).resolves.toEqual({
       error: "AI review request is too large.",
+    });
+  });
+
+  it("returns a controlled error for malformed Content-Length metadata", async () => {
+    const malformedLengthRequest = new Request(
+      "http://localhost/api/trailpack/ai-review",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": "not-a-number",
+        },
+        body: validRequestBody(),
+      },
+    );
+
+    const response = await POST(malformedLengthRequest);
+
+    expect(response.status).toBe(400);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    await expect(response.json()).resolves.toEqual({
+      error: "Unable to read AI review request.",
+    });
+  });
+
+  it("returns a controlled error when a streamed body fails", async () => {
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.error(new Error("private stream detail"));
+      },
+    });
+    const failedRequest = new Request(
+      "http://localhost/api/trailpack/ai-review",
+      {
+        method: "POST",
+        body: stream as unknown as BodyInit,
+        duplex: "half",
+      } as RequestInit,
+    );
+
+    const response = await POST(failedRequest);
+
+    expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toEqual({
+      error: "Unable to read AI review request.",
     });
   });
 
@@ -201,6 +310,28 @@ describe("POST /api/trailpack/ai-review", () => {
       review: { status: "fallback" },
     });
     expect(requestReview).not.toHaveBeenCalled();
+  });
+
+  it("reports remaining counts 4 through 0 and rejects the sixth unique generation", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+    const claimQuota = createAtomicQuotaClaim();
+    const requestReview = mockReview();
+    const statuses: number[] = [];
+    const remaining: string[] = [];
+
+    for (let index = 1; index <= 6; index += 1) {
+      const response = await handleAiReviewPost(
+        request(validRequestBody(generationIdFor(index))),
+        { claimQuota, requestReview },
+      );
+      statuses.push(response.status);
+      remaining.push(response.headers.get("x-ratelimit-remaining") ?? "");
+      await response.arrayBuffer();
+    }
+
+    expect(statuses).toEqual([200, 200, 200, 200, 200, 429]);
+    expect(remaining).toEqual(["4", "3", "2", "1", "0", "0"]);
+    expect(requestReview).toHaveBeenCalledTimes(5);
   });
 
   it("does not spend or repeat provider work for a duplicate list generation", async () => {
@@ -299,5 +430,54 @@ describe("POST /api/trailpack/ai-review", () => {
     expect(new Headers(requestInit?.headers).get("x-goog-api-key")).toBe(
       "route-test-key",
     );
+  });
+
+  it.each([1, 10, 25, 50])(
+    "keeps %i concurrent unique requests within the five-claim limit across three runs",
+    async (parallelRequests) => {
+      vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+
+      for (let run = 0; run < 3; run += 1) {
+        const claimQuota = createAtomicQuotaClaim();
+        const requestReview = mockReview();
+        const responses = await Promise.all(
+          Array.from({ length: parallelRequests }, (_, index) =>
+            handleAiReviewPost(
+              request(validRequestBody(generationIdFor(index + 1))),
+              { claimQuota, requestReview },
+            ),
+          ),
+        );
+
+        expect(responses.filter((response) => response.status === 200)).toHaveLength(
+          Math.min(parallelRequests, 5),
+        );
+        expect(responses.filter((response) => response.status === 429)).toHaveLength(
+          Math.max(parallelRequests - 5, 0),
+        );
+        expect(requestReview).toHaveBeenCalledTimes(Math.min(parallelRequests, 5));
+      }
+    },
+  );
+
+  it("deduplicates 50 concurrent retries with one provider call across three runs", async () => {
+    vi.stubEnv("GEMINI_API_KEY", "route-test-key");
+
+    for (let run = 0; run < 3; run += 1) {
+      const claimQuota = createAtomicQuotaClaim();
+      const requestReview = mockReview();
+      const responses = await Promise.all(
+        Array.from({ length: 50 }, () =>
+          handleAiReviewPost(request(validRequestBody()), {
+            claimQuota,
+            requestReview,
+          }),
+        ),
+      );
+
+      expect(responses.filter((response) => response.status === 200)).toHaveLength(1);
+      expect(responses.filter((response) => response.status === 409)).toHaveLength(49);
+      expect(requestReview).toHaveBeenCalledOnce();
+    }
   });
 });

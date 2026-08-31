@@ -6,10 +6,15 @@ import {
   isAiReviewGenerationId,
   parseLiveAiReviewResult,
 } from "@/features/trailpack/lib/ai-contract-runtime";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "@/features/trailpack/lib/read-text-with-limit";
 
 const AI_REVIEW_ROUTE = "/api/trailpack/ai-review";
 const REQUEST_ERROR_MESSAGE =
   "TrailPack could not complete the live AI review. The rule-based list remains available.";
+const MAX_RESPONSE_BYTES = 256_000;
 
 interface RequestLiveAiReviewOptions {
   generationId: string;
@@ -44,24 +49,29 @@ export async function requestLiveAiReviewFromRoute(
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
-  let responseBody: unknown;
-  try {
-    responseBody = await response.json();
-  } catch {
-    throw new Error(REQUEST_ERROR_MESSAGE);
-  }
-
-  const result = parseLiveAiReviewResult(responseBody);
-  if (!result) {
-    throw new Error(REQUEST_ERROR_MESSAGE);
-  }
-
   if (
     !response.ok &&
     response.status !== 401 &&
     response.status !== 409 &&
     response.status !== 429
   ) {
+    await discardBody(response);
+    throw new Error(REQUEST_ERROR_MESSAGE);
+  }
+
+  let responseBody: unknown;
+  try {
+    const responseRead = await readTextWithinLimit(response, MAX_RESPONSE_BYTES);
+    if (responseRead.status !== "ok") {
+      throw new Error(REQUEST_ERROR_MESSAGE);
+    }
+    responseBody = JSON.parse(responseRead.text);
+  } catch {
+    throw new Error(REQUEST_ERROR_MESSAGE);
+  }
+
+  const result = parseLiveAiReviewResult(responseBody);
+  if (!result) {
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 

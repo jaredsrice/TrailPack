@@ -54,6 +54,19 @@ function asFetch(response: Response): typeof fetch {
   return vi.fn(async () => response) as unknown as typeof fetch;
 }
 
+function oversizedResponse(onCancel: () => void): Response {
+  return new Response(
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("x".repeat(70_000)));
+      },
+      cancel() {
+        onCancel();
+      },
+    }),
+  );
+}
+
 describe("weather route client", () => {
   it("requests live weather for the selected trail and date", async () => {
     const fetchImpl = asFetch(Response.json(WEATHER_RESPONSE));
@@ -116,6 +129,16 @@ describe("weather route client", () => {
       requestTrailWeather("jenny-lake-loop", { fetchImpl }),
     ).rejects.not.toThrow(/private provider detail/i);
   });
+
+  it("bounds successful route bodies before parsing JSON", async () => {
+    let cancelled = false;
+    const fetchImpl = asFetch(oversizedResponse(() => { cancelled = true; }));
+
+    await expect(
+      requestTrailWeather("jenny-lake-loop", { fetchImpl }),
+    ).rejects.toThrow("TrailPack could not load the live weather forecast.");
+    expect(cancelled).toBe(true);
+  });
 });
 
 describe("weather response parser", () => {
@@ -168,6 +191,19 @@ describe("weather response parser", () => {
       parseWeatherContextResponse({
         ...WEATHER_RESPONSE,
         precipitationChance: 101,
+      }),
+    ).toBeNull();
+  });
+
+  it.each([
+    "2026-02-30T12:00",
+    "2026-07-28T24:00",
+    "2026-07-28T12:60",
+  ])("rejects impossible forecast time %s", (time) => {
+    expect(
+      parseWeatherContextResponse({
+        ...WEATHER_RESPONSE,
+        forecastPeriods: [{ ...WEATHER_RESPONSE.forecastPeriods[0], time }],
       }),
     ).toBeNull();
   });

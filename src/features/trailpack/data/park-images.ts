@@ -112,6 +112,7 @@ const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
     alt: "A trail through low evergreens beneath snow-streaked peaks near Taggart Lake.",
     credit: "NPS Photo / J. Bonney",
     sourceUrl: "https://www.nps.gov/thingstodo/taggartlake.htm",
+    focalPoint: { desktop: "50% 49%", mobile: "50% 50%" },
   },
   "string-lake-loop": {
     id: "grand-teton-string-lake",
@@ -121,6 +122,7 @@ const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
     alt: "Families beside clear green water and lodgepole pines at String Lake.",
     credit: "NPS Photo / Helton",
     sourceUrl: "https://www.nps.gov/places/000/string-lake-picnic-area.htm",
+    focalPoint: { desktop: "48% 48%", mobile: "48% 50%" },
   },
   "colter-bay-lakeshore-trail": {
     id: "grand-teton-colter-bay",
@@ -130,6 +132,7 @@ const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
     alt: "Jackson Lake and the Teton Range framed by sunlit autumn leaves at Colter Bay.",
     credit: "NPS Photo",
     sourceUrl: "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
+    focalPoint: { desktop: "48% 45%", mobile: "47% 50%" },
   },
   "two-ocean-lake-loop": {
     id: "grand-teton-two-ocean-lake",
@@ -139,6 +142,7 @@ const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
     alt: "A hiker beside Two Ocean Lake with the Teton Range in the distance.",
     credit: "NPS Photo / J. Bonney",
     sourceUrl: "https://www.nps.gov/thingstodo/twoocean.htm",
+    focalPoint: { desktop: "50% 52%", mobile: "50% 50%" },
   },
 };
 

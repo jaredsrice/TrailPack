@@ -1,8 +1,13 @@
 import type { SavedResultDraft, SavedResultRecord } from "./saved-results";
 import { parseSavedResultRecord } from "./saved-results-runtime";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "./read-text-with-limit";
 
 const SAVED_RESULTS_ROUTE = "/api/trailpack/saved-results";
 const REQUEST_ERROR_MESSAGE = "TrailPack could not update saved results. Please try again.";
+const MAX_RESPONSE_BYTES = 6_600_000;
 
 export async function saveResultFromRoute(
   draft: SavedResultDraft,
@@ -43,8 +48,10 @@ export async function deleteSavedResultFromRoute(
     method: "DELETE",
   });
   if (!response.ok) {
+    await discardBody(response);
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
+  await discardBody(response);
 }
 
 async function request(
@@ -61,7 +68,8 @@ async function request(
 
 async function parseJson(response: Response): Promise<unknown> {
   try {
-    return await response.json();
+    const responseRead = await readTextWithinLimit(response, MAX_RESPONSE_BYTES);
+    return responseRead.status === "ok" ? JSON.parse(responseRead.text) : null;
   } catch {
     return null;
   }

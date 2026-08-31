@@ -4,6 +4,10 @@ import type {
   WeatherContext,
   WeatherForecastPeriod,
 } from "@/features/trailpack/types";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "@/features/trailpack/lib/read-text-with-limit";
 
 const WEATHER_ROUTE = "/api/trailpack/weather";
 const REQUEST_ERROR_MESSAGE =
@@ -23,6 +27,7 @@ const RETRIEVAL_STATUSES = new Set<RetrievalStatus>([
 ]);
 const MAX_STRING_LENGTH = 2_000;
 const MAX_FORECAST_PERIODS = 24;
+const MAX_RESPONSE_BYTES = 64_000;
 
 interface RequestTrailWeatherOptions {
   plannedDate?: string;
@@ -54,12 +59,17 @@ export async function requestTrailWeather(
   }
 
   if (!response.ok) {
+    await discardBody(response);
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
 
   let responseBody: unknown;
   try {
-    responseBody = await response.json();
+    const responseRead = await readTextWithinLimit(response, MAX_RESPONSE_BYTES);
+    if (responseRead.status !== "ok") {
+      throw new Error(REQUEST_ERROR_MESSAGE);
+    }
+    responseBody = JSON.parse(responseRead.text);
   } catch {
     throw new Error(REQUEST_ERROR_MESSAGE);
   }
@@ -322,8 +332,16 @@ function isIsoDate(value: string): boolean {
 }
 
 function isForecastTime(value: unknown): value is string {
-  return (
-    typeof value === "string" &&
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(value)
-  );
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/.exec(value);
+  if (!match || !isIsoDate(match[1])) {
+    return false;
+  }
+
+  const hour = Number(match[2]);
+  const minute = Number(match[3]);
+  return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
 }

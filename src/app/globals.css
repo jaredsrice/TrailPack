@@ -417,6 +417,11 @@ a {
   background: rgb(6 38 34 / 0.9);
 }
 
+.park-photo-control:disabled {
+  cursor: default;
+  opacity: 0.82;
+}
+
 .park-photo-control-icon {
   width: 16px;
   height: 16px;
@@ -476,8 +481,8 @@ a {
 
 .park-photo-dots button {
   position: relative;
-  width: 23px;
-  height: 24px;
+  width: 32px;
+  height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -485,7 +490,10 @@ a {
 
 .park-photo-dots button::before {
   position: absolute;
-  inset: 11px 4px;
+  right: 4px;
+  bottom: 9px;
+  left: 4px;
+  height: 2px;
   content: "";
   background: rgb(255 255 255 / 0.36);
   transition: background 200ms ease;

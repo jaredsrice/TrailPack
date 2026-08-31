@@ -60,6 +60,21 @@ describe("DELETE /api/trailpack/saved-results/[id]", () => {
     });
   });
 
+  it("fails closed when session validation unexpectedly rejects", async () => {
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: {
+        getUser: vi.fn(async () => {
+          throw new Error("auth unavailable");
+        }),
+      },
+    });
+
+    const response = await DELETE(request(), context());
+
+    expect(response.status).toBe(401);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+  });
+
   it("returns not found when the authenticated user does not own the row", async () => {
     const query = deleteQuery({ data: null, error: null });
     mocks.getSupabaseServerClient.mockResolvedValue({

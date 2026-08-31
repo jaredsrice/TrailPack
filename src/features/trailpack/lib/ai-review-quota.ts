@@ -28,30 +28,34 @@ export async function claimAiReviewQuota(
     return { status: "unavailable" };
   }
 
-  const supabase = await getSupabaseServerClient();
-  if (!supabase) {
+  try {
+    const supabase = await getSupabaseServerClient();
+    if (!supabase) {
+      return { status: "unavailable" };
+    }
+
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) {
+      return { status: "signed-out" };
+    }
+
+    const { data, error } = await supabase.rpc("claim_ai_review_quota", {
+      review_generation_id: generationId,
+    });
+    const row = parseAiReviewQuotaRow(data);
+    if (error || !row) {
+      return { status: "unavailable" };
+    }
+
+    return {
+      status: row.allowed ? "allowed" : row.duplicate ? "duplicate" : "limited",
+      remaining: row.remaining,
+      resetAt: row.reset_at,
+      retryAfterSeconds: getRetryAfterSeconds(row.reset_at),
+    };
+  } catch {
     return { status: "unavailable" };
   }
-
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
-    return { status: "signed-out" };
-  }
-
-  const { data, error } = await supabase.rpc("claim_ai_review_quota", {
-    review_generation_id: generationId,
-  });
-  const row = parseAiReviewQuotaRow(data);
-  if (error || !row) {
-    return { status: "unavailable" };
-  }
-
-  return {
-    status: row.allowed ? "allowed" : row.duplicate ? "duplicate" : "limited",
-    remaining: row.remaining,
-    resetAt: row.reset_at,
-    retryAfterSeconds: getRetryAfterSeconds(row.reset_at),
-  };
 }
 
 export function parseAiReviewQuotaRow(
@@ -75,6 +79,9 @@ export function parseAiReviewQuotaRow(
     !Number.isInteger(row.remaining) ||
     row.remaining < 0 ||
     row.remaining > AI_REVIEW_LIMIT_PER_WINDOW ||
+    (row.allowed && row.remaining >= AI_REVIEW_LIMIT_PER_WINDOW) ||
+    (row.duplicate && row.remaining >= AI_REVIEW_LIMIT_PER_WINDOW) ||
+    (!row.allowed && !row.duplicate && row.remaining !== 0) ||
     !("reset_at" in row) ||
     typeof row.reset_at !== "string" ||
     !Number.isFinite(Date.parse(row.reset_at))

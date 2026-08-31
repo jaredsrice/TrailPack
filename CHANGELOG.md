@@ -10,7 +10,83 @@ corrections within that milestone.
 
 ## [Unreleased]
 
-No unreleased product changes.
+### Added
+
+- A fixed-seed system stress command that exercises 5,000 bounded packing
+  scenarios across all five supported trails, repeats every recommendation for
+  determinism, enforces latency and heap budgets, and now runs in pull-request
+  validation.
+- Focused regression coverage for exact byte limits, strict request and response
+  contracts, provider timeouts, quota races, duplicate retries, stale browser
+  state, responsive image quality, and the monthly NPS publisher boundary.
+
+### Changed
+
+- Weather, daylight, NPS, guarded-AI, and saved-result response bodies are read
+  within explicit byte limits. Weather and daylight provider requests now share
+  the same eight-second upper bound already used for NPS alerts. Browser alert
+  and weather requests also recover to the labeled fallback after 12 and 20
+  seconds, respectively, so a stalled connection cannot leave Generate locked.
+- The four lower-resolution selected-trail photographs now use clearer official
+  NPS originals from the same credited sources, with explicit desktop and mobile
+  focal points for all five supported trails.
+- Reduced-motion mode now exposes the carousel as paused, disables its automatic
+  motion control, and keeps previous, next, and direct selectors available.
+- The monthly NPS refresh validates repository code with read-only permissions
+  and publishes only the validated JSON artifact from an isolated write-scoped
+  job that does not install dependencies or execute repository scripts.
+
+### Fixed
+
+- Prevented two synchronous Generate clicks from creating two generation UUIDs
+  and two guarded-AI requests before React committed the loading state.
+- Prevented an aborted older review from clearing or unlocking a newer
+  generation, and added browser-side cancellation on reset, trail changes, and
+  unmount with a 30-second client timeout.
+- Prevented a non-settling or rejected stream cancellation from hanging an
+  already classified oversized request or response.
+- Rejected conflicting trail/park identifiers, impossible forecast timestamps,
+  out-of-range provider values, widened AI contracts, unsafe NPS links, and
+  unsafe links in stored snapshots.
+- Converted unexpected authentication and OAuth exchange failures into bounded,
+  generic, non-cacheable responses without exposing provider or database detail.
+- Started the two initial carousel layers with different photos, removing the
+  development warning caused by prioritizing the same asset twice, and hid the
+  inactive image from assistive technology.
+
+### Security
+
+- Added source-controlled HSTS with a two-year lifetime, subdomain coverage, and
+  preload, matching the verified Production policy.
+- Require HTTPS saved-result links without embedded credentials or control
+  characters, authenticate saved-result writes before reading their bodies, and
+  fail quota/authentication dependency errors closed before provider or database
+  work.
+- Limit live NPS results to 10 alerts and 2,000 characters per provider string,
+  permit only credential-free HTTPS `nps.gov` links, and keep provider error
+  bodies out of client-visible failures.
+
+### Verification
+
+- The fixed-seed run completed 5,000 cases and 10,200 evaluations with zero
+  invariant failures: 0.053 ms p95 latency, 0.182 ms maximum latency, and
+  6,176,624 bytes of heap growth in the final local run.
+- Mocked unique-request concurrency at 1, 10, 25, and 50 requests enforced at
+  most five successes in each of three runs. Fifty same-generation retries
+  produced one success, 49 duplicates, and one provider call in each run; the
+  50-request unique workload stayed at 5.708 ms p95, and aggregate API heap
+  growth stayed below 13 MB.
+- Focused API checks passed 132 tests and the focused security group passed 54
+  tests. The final full suite passed 345 tests across 33 files; lint and type
+  checking also passed.
+- All five selected-trail photos were visually checked at approximately 1280,
+  768, and 390 pixels with clear subjects, correct credits, and no horizontal
+  overflow. The complete accessibility run passed 17 Firefox/axe flows with no
+  automated violations.
+- The final local build, 5-of-5 live NPS integrity check, and 27-of-27
+  recommendation scenario matrix passed. Protected pull-request checks, CodeQL,
+  and Vercel Preview verification remain pending; this section does not claim a
+  released or production-verified result.
 
 ## [0.6.1] - 2026-08-29
 

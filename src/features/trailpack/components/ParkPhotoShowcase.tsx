@@ -37,7 +37,7 @@ export function ParkPhotoShowcase({
   const desiredPhoto = lockedPhoto ?? PARK_PHOTO_ROTATION[rotationIndex];
   const [layers, setLayers] = useState<PhotoLayers>({
     front: PARK_PHOTO_ROTATION[0],
-    back: PARK_PHOTO_ROTATION[0],
+    back: PARK_PHOTO_ROTATION[1],
     showFront: true,
   });
 
@@ -136,15 +136,20 @@ export function ParkPhotoShowcase({
               type="button"
               className="park-photo-control"
               onClick={() => setIsPaused((current) => !current)}
-              aria-pressed={isPaused}
+              aria-pressed={isPaused || prefersReducedMotion}
+              disabled={prefersReducedMotion}
               aria-label={
-                isPaused
+                prefersReducedMotion
+                  ? "Automatic park photo rotation is paused for reduced motion"
+                  : isPaused
                   ? "Resume park photo rotation"
                   : "Pause park photo rotation"
               }
             >
-              {isPaused ? <PlayIcon /> : <PauseIcon />}
-              <span>{isPaused ? "Play" : "Pause"}</span>
+              {isPaused && !prefersReducedMotion ? <PlayIcon /> : <PauseIcon />}
+              <span>
+                {prefersReducedMotion ? "Paused" : isPaused ? "Play" : "Pause"}
+              </span>
             </button>
             <button
               type="button"
@@ -208,7 +213,8 @@ function PhotoLayer({
     <Image
       key={photo.id}
       src={photo.src}
-      alt={photo.alt}
+      alt={isVisible ? photo.alt : ""}
+      aria-hidden={!isVisible}
       fill
       priority={priority}
       quality={90}
