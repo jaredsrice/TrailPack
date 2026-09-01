@@ -1,18 +1,21 @@
 # Full Project Stress Audit
 
 - Date: 2026-08-31 (America/Denver)
-- Production release: `0.6.1`
+- Release verification: 2026-09-01 (America/Denver)
+- Production version label: `0.6.1`; post-`0.6.1` hardening deployed
 - Baseline commit: `604537f690807b39b5c72e8ccc117d6951618838`
 - Candidate branch: `codex/full-project-stress-audit`
+- Pull request: [#44](https://github.com/jaredsrice/TrailPack/pull/44)
+- Merge commit: `40bb8c2c9448202631df8ef3f324ea8c82b72181`
 - Production target: [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app)
-- Current gate: **NO-SHIP — the complete local matrix passed; protected checks
-  and Preview acceptance are pending**
+- Current gate: **RELEASED — local, hosted, Preview, merge, and Production gates
+  passed**
 
-The no-ship result is procedural, not a known critical failure. The completed
-audit work found no critical or high-severity issue. Reproduced findings were
-fixed and retested except for one explicitly accepted, bounded database-schema
-risk. The candidate completed the full local release matrix but has not yet
-completed the hosted pull-request and Preview gates.
+The completed audit found no unresolved critical or high-severity issue.
+Reproduced findings were fixed and retested except for one explicitly accepted,
+bounded database-schema risk. The complete local matrix, required hosted checks,
+signed-out Preview acceptance, protected merge, and Production smoke check all
+completed successfully.
 
 ## Scope And Safety
 
@@ -57,9 +60,9 @@ five adjacent reliability, security, and presentation defects:
 7. Unexpected authentication/exchange exceptions and unsafe stored URLs needed
    stricter fail-closed handling.
 
-Focused and complete local regression checks are green. The remaining work is
-to publish the protected pull request, wait for required checks, and accept the
-final Preview while signed out.
+Focused and complete local regression checks are green. Pull request #44 passed
+the protected repository and Preview gates, received owner approval, and merged
+to `main` before the final signed-out Production verification.
 
 ## Baseline
 
@@ -85,29 +88,52 @@ Passive Production inspection returned HTTP `200`, redirected HTTP to HTTPS
 with `308`, and included CSP, two-year HSTS with subdomains and preload, frame
 denial, MIME-sniffing denial, strict referrer policy, and permissions policy.
 
-## Candidate Local Gate
+## Final Release Gate
 
 | Check | Current evidence | Final-gate state |
 | --- | --- | --- |
 | ESLint | 0 failures | Pass |
 | TypeScript | 0 errors | Pass |
-| Full Vitest | 33 files; 345 tests; 0 failures | Pass |
+| Full Vitest | 34 files; 354 tests; 0 failures | Pass |
 | Focused API group | 12 files; 132 tests passed | Pass |
 | Focused security group | 8 files; 54 tests passed, including the workflow permission regression | Pass |
 | Fixed-seed system stress | 5,000 cases; 10,200 evaluations; 0 failures | Pass |
-| Firefox/axe | 17 of 17 flows; 0 violations | Pass |
+| Firefox/axe | 18 of 18 flows; 0 violations | Pass |
 | Live NPS integrity | 5 of 5 supported sources unchanged | Pass |
 | Recommendation matrix | 27 of 27 scenarios | Pass |
-| Production build, `/` | 43.7 kB route; 217 kB first-load JavaScript | Pass |
+| Production build, `/` | 44.9 kB route; 218 kB first-load JavaScript | Pass |
 | Production build, `/saved` | 4.88 kB route; 178 kB first-load JavaScript | Pass |
 | Responsive photo review | Five selected trails at approximately 1280, 768, and 390 pixels; 0 broken images and 0 overflow | Pass |
 | Fresh browser console | 0 relevant errors; 0 warnings after duplicate-priority fix | Pass |
-| Hosted CI, CodeQL, Vercel | Not run for this uncommitted candidate | Pending pull request |
+| Hosted CI, CodeQL, Vercel | Validate, CodeQL Actions, CodeQL JavaScript/TypeScript, aggregate CodeQL, and Vercel completed | Pass |
 
-Compared with the baseline, `/` route JavaScript decreased by about 5%, its
-first-load JavaScript increased by about 0.9%, `/saved` route JavaScript
+Compared with the baseline, `/` route JavaScript decreased by about 2%, its
+first-load JavaScript increased by about 1.4%, `/saved` route JavaScript
 decreased by about 38%, and its first-load JavaScript increased by about 0.6%.
 No measured JavaScript-size regression exceeds 10%.
+
+## Preview, Merge, And Production Acceptance
+
+- Final head commit `7ff4684` passed required GitHub checks and Vercel Preview.
+- Signed-out Preview acceptance passed at desktop and 390-pixel widths with the
+  correct page identity, meaningful content, no framework overlay, no relevant
+  console warning or error, no horizontal overflow, and no broken visible image.
+- The carousel image, accessible label, and official NPS credit advanced and
+  returned together. Signed-out Jenny Lake generation produced the deterministic
+  guest review without authentication.
+- Owner review identified low-contrast context labels. Live weather and official
+  NPS labels now use distinct blue and green treatments; fallback is amber,
+  unavailable is neutral, and secondary context labels remain quieter. The
+  deployed Preview was checked in both live and fallback states.
+- Pull request #44 merged to protected `main` at 2026-09-01 21:41:56 UTC as
+  `40bb8c2c9448202631df8ef3f324ea8c82b72181`.
+- The merge commit's Vercel deployment completed successfully. Production
+  returned HTTPS `200`, title `TrailPack`, meaningful application content, no
+  error overlay, no relevant console warning or error, and no horizontal
+  overflow. The immediate signed-out Jenny Lake check received labeled saved
+  provider fallbacks and rendered the new amber state treatment correctly.
+- No interactive OAuth, second-account, real quota, or saved-result operation
+  was requested or rerun for this release acceptance.
 
 ## Findings, Fixes, And Retests
 
@@ -400,22 +426,22 @@ volume or authentication would otherwise affect external systems.
 | Five selected-trail photos at 1280/768/390 | Pass; clear, centered, correct subject/credit/source |
 | Broken images | 0 |
 | Horizontal overflow | 0 |
-| Axe violations | 0 across the complete 17-flow run |
+| Axe violations | 0 across the complete 18-flow run |
 | Fresh relevant console errors/warnings | 0 / 0 |
 | Rendered saved-result create/list/delete | Pending; route/client tests only, no authenticated browser session used |
 | Accepted, duplicate, provider quota, account limit, generic failure, and stalled AI presentation | Pass; each has a rendered assertion and the rule-based list remains |
 | Stalled alerts/weather and stale selected-date response | Pass; fallback unlocks Generate and older weather cannot win |
 
 Temporary visual evidence was inspected outside the repository. No potentially
-sensitive screenshot or browser state was added to the candidate.
+sensitive screenshot or browser state was added to the release record.
 
 ## Security And Operational Readiness
 
 | Control | Result |
 | --- | --- |
-| CodeQL JavaScript/TypeScript and Actions | Baseline `main` had 0 open alerts; candidate hosted analysis pending |
+| CodeQL JavaScript/TypeScript and Actions | Required hosted analyses passed on pull request #44 |
 | Dependency audit | Baseline `npm audit` returned 0 vulnerabilities across 498 dependencies; no dependency changed |
-| Dependabot | 0 open alerts at audit baseline; candidate query pending after PR |
+| Dependabot | 0 open alerts at audit baseline; no dependency changed in this release |
 | Secret scanning/push protection | Enabled with 0 open alerts at baseline |
 | Narrow credential-signature review | No match retained or reported |
 | CSP | Present; existing bounded inline script/style allowances retain the prior documented medium-risk decision |
@@ -432,31 +458,32 @@ sensitive screenshot or browser state was added to the candidate.
 | Protected `main` | Baseline requires Validate, CodeQL Actions, CodeQL JavaScript/TypeScript, and Vercel |
 | OWASP ZAP | Not rerun; scanner unavailable locally. Historical passive scan had no critical/high/low finding. |
 
-The candidate has zero unresolved critical or high-severity findings. Every
+The released change set has zero unresolved critical or high-severity findings. Every
 reproduced medium finding has a code fix and current retest except the direct
 saved-result JSON-shape gap documented in STRESS-08, which is accepted for this
-candidate with explicit size, quota, ownership, canonicalization, and fail-safe
+release with explicit size, quota, ownership, canonicalization, and fail-safe
 read controls. The existing accepted medium CSP decision is unchanged and
 documented in the
 [sanitized security review](2026-08-28-b04-cybersecurity-review.md).
 
 ## Required Scorecard
 
-This scorecard distinguishes measured values from pending final gates.
+This scorecard distinguishes measured values from explicit manual-only
+exclusions.
 
 | Required metric | Current result |
 | --- | --- |
 | Lint failures | `0` in final local matrix |
 | Type errors | `0` in final local matrix |
-| Unit/integration failures | `0`; 345 tests across 33 files |
+| Unit/integration failures | `0`; 354 tests across 34 files |
 | Build failures | `0`; optimized Production build passed |
-| Accessibility violations | `0` across 17 Firefox/axe flows |
+| Accessibility violations | `0` across 18 Firefox/axe flows |
 | Relevant browser console errors | `0` |
 | Relevant browser console warnings | `0` |
 | Broken carousel/selected-trail images | `0` |
 | Tested viewport overflow failures | `0` |
-| NPS integrity | 5 of 5 unchanged in final candidate run |
-| Deterministic existing scenarios | 27 of 27 in final candidate run |
+| NPS integrity | 5 of 5 unchanged in final release run |
+| Deterministic existing scenarios | 27 of 27 in final release run |
 | Added fixed-seed stress | 5,000 of 5,000 cases; 0 invariant failures |
 | Signed-out quota claims | `0` in automated route model |
 | Duplicate-generation extra claims | `0` in automated concurrency model |
@@ -514,10 +541,11 @@ npm run test:a11y
 git diff --check
 ```
 
-GitHub security-alert, branch-protection, and workflow status were inspected
-read-only. Production checks were passive signed-out header/page requests only.
-The complete local matrix is current; candidate GitHub and Vercel evidence
-requires the protected pull request.
+GitHub security-alert, branch-protection, workflow, merge, and Vercel status were
+inspected read-only. Production checks were passive signed-out header/page and
+rendered-page requests only. The complete local matrix, hosted pull-request
+checks, Preview acceptance, protected merge, and Production smoke check are
+recorded above.
 
 ## Tests Added Or Expanded
 
@@ -540,8 +568,7 @@ requires the protected pull request.
 
 ## Remaining Risks And Manual-Only Exclusions
 
-The following are not release blockers if the stated final gates pass, but they
-must remain explicit:
+The following accepted or manual-only exclusions remain explicit:
 
 1. Interactive OAuth and a new real two-account Production walkthrough were not
    rerun. The most recent historical production record remains 2026-08-28.
@@ -558,19 +585,9 @@ must remain explicit:
 5. OWASP ZAP was not rerun because no scanner was already available and adding
    one requires approval. The historical passive result is not treated as a new
    pass.
-6. Candidate CodeQL, GitHub required checks, Vercel deployment, and protected
-   Preview verification cannot occur until the branch is committed and pushed.
+## Release Result
 
-## Recommendation And Next Gate
-
-Do not merge the current working tree yet. The complete local matrix is green
-and the next grouped step should:
-
-1. review the final diff for secrets or private identifiers;
-2. commit and push the branch, open the protected pull request, and wait for
-   Validate, CodeQL, security automation, and Vercel;
-3. run signed-out core and responsive checks against the final Preview; and
-4. stop for owner approval before merge.
-
-If those gates pass without a new critical/high finding or unexplained greater
-than 10% regression, the candidate is suitable for merge review.
+The candidate satisfied the documented ship criteria, merged through protected
+pull request #44, and passed the final Production smoke check. No release action
+remains. Future work is limited to normal monitoring and the manual-only risks
+listed above; none was represented as newly executed during this release.

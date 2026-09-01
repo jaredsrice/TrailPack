@@ -10,6 +10,10 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+The changes below were deployed from protected `main` through
+[pull request #44](https://github.com/jaredsrice/TrailPack/pull/44) on
+2026-09-01 and have not yet been assigned a version tag.
+
 ### Added
 
 - Plain-language **Basis** text in every expanded packing recommendation and
@@ -112,9 +116,11 @@ corrections within that milestone.
   overflow. The complete accessibility run passed 18 Firefox/axe flows with no
   automated violations.
 - The final local build, 5-of-5 live NPS integrity check, and 27-of-27
-  recommendation scenario matrix passed. Protected pull-request checks, CodeQL,
-  and Vercel Preview verification remain pending; this section does not claim a
-  released or production-verified result.
+  recommendation scenario matrix passed. Pull request #44 then passed Validate,
+  CodeQL, Vercel, and signed-out desktop/mobile Preview acceptance before merging
+  as `40bb8c2`. Production returned HTTPS `200` with the `TrailPack` title, the
+  state-aware context-label styling, no relevant console warnings or errors, and
+  no horizontal overflow.
 
 ## [0.6.1] - 2026-08-29
 
