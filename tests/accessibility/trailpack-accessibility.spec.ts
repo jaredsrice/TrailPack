@@ -393,6 +393,19 @@ test("one generated packing list requests one guarded review", async ({
   await expect(criticalSafety.getByText("Essential", { exact: true })).toHaveCount(0);
   await expect(criticalSafety.getByText("Critical danger", { exact: true })).toHaveCount(0);
   await expect(criticalSafety.getByText("Closure", { exact: true })).toHaveCount(0);
+  const tripDecision = criticalSafety
+    .locator(".packing-item")
+    .filter({ hasText: "Trip safety decision" })
+    .first();
+  await tripDecision.getByText("Trip safety decision", { exact: true }).click();
+  await expect(tripDecision.getByText("Official", { exact: true })).toHaveCount(0);
+  await expect(tripDecision.getByText("Inferred", { exact: true })).toHaveCount(0);
+  await expect(
+    tripDecision.getByText(
+      "Official guidance · TrailPack interpretation",
+      { exact: true },
+    ),
+  ).toBeVisible();
   await expect(page.getByText("Item explanation drafts", { exact: true })).toHaveCount(0);
   const reviewDetails = page.getByText("Why and review details", { exact: true });
   await expect(reviewDetails).toBeVisible();

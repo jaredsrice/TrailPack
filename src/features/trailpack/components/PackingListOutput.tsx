@@ -244,9 +244,15 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
           ) : null}
 
           <div className="packing-item-sources">
-            {item.sourceLabels.map((label) => (
-              <SourceBadge key={`${item.name}-${label}`} label={label} />
-            ))}
+            {isCriticalSafety ? (
+              <span className="packing-source-summary">
+                {item.sourceLabels.map(sourceLabelSummary).join(" · ")}
+              </span>
+            ) : (
+              item.sourceLabels.map((label) => (
+                <SourceBadge key={`${item.name}-${label}`} label={label} />
+              ))
+            )}
             {item.links?.map((link) => (
               <a
                 key={`${item.name}-${link.url}`}
@@ -265,7 +271,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                 rel="noreferrer"
                 className="source-link"
               >
-                Source
+                {isCriticalSafety ? "View source" : "Source"}
               </a>
             ) : null}
           </div>
@@ -557,4 +563,30 @@ function alertSourceSummary(alert: TripAlert): string {
   }
 
   return "TrailPack guidance";
+}
+
+function sourceLabelSummary(
+  label: PackingItem["sourceLabels"][number],
+): string {
+  switch (label) {
+    case "supported-profile":
+    case "public-source-import":
+      return "Verified trail profile";
+    case "user-provided":
+      return "Your trip details";
+    case "forecast-based":
+      return "Forecast guidance";
+    case "daylight":
+      return "Daylight timing";
+    case "official":
+      return "Official guidance";
+    case "inferred":
+      return "TrailPack interpretation";
+    case "missing":
+      return "Missing detail";
+    case "unavailable":
+      return "Source unavailable";
+    case "future-work":
+      return "Future work";
+  }
 }

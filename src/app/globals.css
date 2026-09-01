@@ -1017,6 +1017,12 @@ a {
   gap: 7px;
 }
 
+.packing-source-summary {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
 .context-detail-pill {
   padding: 3px 7px;
   color: #49676d;
@@ -1472,7 +1478,7 @@ a {
 }
 
 .packing-detail-label {
-  color: #59747a;
+  color: var(--ink-soft);
   font-size: 0.68rem;
   font-weight: 700;
 }

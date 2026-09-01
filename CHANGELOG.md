@@ -36,7 +36,8 @@ corrections within that milestone.
   explicitly present. Alert cards no longer display category chips that resemble
   inactive filters, while official source links remain visible.
 - Critical Safety rows now show only the one status that changes the hiker's
-  action. An alert-backed trip decision replaces the duplicate generic alert row
+  action, and expanded provenance is one plain line instead of badge-like source
+  tags. An alert-backed trip decision replaces the duplicate generic alert row
   in the rendered list without removing its underlying source data.
 - The bottom review is now a concise guest-ready plan check. Missing details and
   review limits sit behind one optional disclosure, while validation payloads and
