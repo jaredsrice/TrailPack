@@ -9,6 +9,10 @@ import {
   type AiReviewDraft,
 } from "@/features/trailpack/lib/ai-contract";
 import {
+  parseAiReviewDraft,
+  parseAiReviewRequest,
+} from "@/features/trailpack/lib/ai-contract-runtime";
+import {
   generatePackingRecommendation,
   type UserHikeInput,
 } from "@/features/trailpack/lib/packing";
@@ -257,5 +261,51 @@ describe("guarded AI contract", () => {
       }),
     );
     expect(result.validationReasons).toEqual([]);
+  });
+});
+
+describe("guarded AI runtime parser", () => {
+  it("rejects unknown request fields at every contract boundary", () => {
+    const input = buildInput();
+    const baseRequest = {
+      generationId: "3f9a1f5e-6144-4f20-b1ad-32f8cc77d4bc",
+      input,
+    };
+
+    expect(parseAiReviewRequest({ ...baseRequest, unexpected: true })).toBeNull();
+    expect(
+      parseAiReviewRequest({
+        ...baseRequest,
+        input: { ...input, unexpected: true },
+      }),
+    ).toBeNull();
+    expect(
+      parseAiReviewRequest({
+        ...baseRequest,
+        input: {
+          ...input,
+          packing: {
+            ...input.packing,
+            essential: input.packing.essential.map((item, index) =>
+              index === 0 ? { ...item, unexpected: true } : item,
+            ),
+          },
+        },
+      }),
+    ).toBeNull();
+  });
+
+  it("rejects provider drafts containing fields outside the response contract", () => {
+    const draft = validDraft();
+
+    expect(parseAiReviewDraft({ ...draft, hidden: "provider detail" })).toBeNull();
+    expect(
+      parseAiReviewDraft({
+        ...draft,
+        itemExplanationDrafts: draft.itemExplanationDrafts.map((item, index) =>
+          index === 0 ? { ...item, hidden: "provider detail" } : item,
+        ),
+      }),
+    ).toBeNull();
   });
 });

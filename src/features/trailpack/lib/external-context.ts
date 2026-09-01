@@ -10,6 +10,7 @@ import type {
   WeatherContext,
   WeatherForecastPeriod,
 } from "@/features/trailpack/types";
+import { readTextWithinLimit } from "@/features/trailpack/lib/read-text-with-limit";
 
 type Fetcher = (
   input: RequestInfo | URL,
@@ -18,6 +19,8 @@ type Fetcher = (
   ok: boolean;
   status: number;
   json: () => Promise<unknown>;
+  body?: ReadableStream<Uint8Array> | null;
+  headers?: Headers;
 }>;
 
 interface OpenMeteoForecastResponse {
@@ -73,7 +76,13 @@ interface NpsAlertsResponse {
 const OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const SUNRISE_SUNSET_URL = "https://api.sunrise-sunset.org/json";
 const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
-const NPS_REQUEST_TIMEOUT_MS = 8_000;
+const EXTERNAL_REQUEST_TIMEOUT_MS = 8_000;
+const NPS_ALERT_REQUEST_TIMEOUT_MS = 5_000;
+const MAX_WEATHER_RESPONSE_BYTES = 256_000;
+const MAX_DAYLIGHT_RESPONSE_BYTES = 32_000;
+const MAX_NPS_RESPONSE_BYTES = 128_000;
+const MAX_ALERTS = 10;
+const MAX_PROVIDER_TEXT_LENGTH = 2_000;
 const SUPPORTED_PARK_CODES = new Set(SUPPORTED_PARKS.map((park) => park.parkCode));
 
 const RAIN_CODES = new Set([
@@ -82,17 +91,40 @@ const RAIN_CODES = new Set([
 const SNOW_CODES = new Set([71, 73, 75, 77, 85, 86]);
 const MAX_HOURLY_FORECAST_PERIODS = 24;
 
-function firstNumber(values: number[] | undefined): number | undefined {
+function firstNumber(
+  values: number[] | undefined,
+  minimum = Number.NEGATIVE_INFINITY,
+  maximum = Number.POSITIVE_INFINITY,
+  integer = false,
+): number | undefined {
   const value = values?.[0];
-  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+  return boundedNumber(value, minimum, maximum, integer);
 }
 
 function numberAt(
   values: number[] | undefined,
   index: number,
+  minimum = Number.NEGATIVE_INFINITY,
+  maximum = Number.POSITIVE_INFINITY,
+  integer = false,
 ): number | undefined {
   const value = values?.[index];
-  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+  return boundedNumber(value, minimum, maximum, integer);
+}
+
+function boundedNumber(
+  value: unknown,
+  minimum: number,
+  maximum: number,
+  integer = false,
+): number | undefined {
+  return typeof value === "number" &&
+    Number.isFinite(value) &&
+    value >= minimum &&
+    value <= maximum &&
+    (!integer || Number.isInteger(value))
+    ? value
+    : undefined;
 }
 
 function addCondition(
@@ -146,22 +178,25 @@ function buildForecastPeriods(
     if (
       periods.length >= MAX_HOURLY_FORECAST_PERIODS ||
       typeof time !== "string" ||
-      !time.startsWith(datePrefix)
+      !time.startsWith(datePrefix) ||
+      !isForecastLocalTime(time)
     ) {
       continue;
     }
 
-    const temperatureF = round(numberAt(hourly.temperature_2m, index));
+    const temperatureF = round(
+      numberAt(hourly.temperature_2m, index, -150, 150),
+    );
     const apparentTemperatureF = round(
-      numberAt(hourly.apparent_temperature, index),
+      numberAt(hourly.apparent_temperature, index, -150, 150),
     );
     const precipitationChance = round(
-      numberAt(hourly.precipitation_probability, index),
+      numberAt(hourly.precipitation_probability, index, 0, 100),
     );
-    const windMph = round(numberAt(hourly.wind_speed_10m, index));
+    const windMph = round(numberAt(hourly.wind_speed_10m, index, 0, 300));
     const weatherCode =
-      numberAt(hourly.weather_code, index) ??
-      numberAt(hourly.weathercode, index);
+      numberAt(hourly.weather_code, index, 0, 99, true) ??
+      numberAt(hourly.weathercode, index, 0, 99, true);
 
     if (
       temperatureF === undefined &&
@@ -229,17 +264,29 @@ export function buildWeatherContextFromOpenMeteoResponse(
 ): WeatherContext {
   const daily = response.daily ?? {};
   const current = response.current ?? {};
-  const high = round(firstNumber(daily.temperature_2m_max));
-  const low = round(firstNumber(daily.temperature_2m_min));
-  const currentTemperature = round(current.temperature_2m);
-  const precipitationChance = round(firstNumber(daily.precipitation_probability_max));
-  const windMph = round(firstNumber(daily.wind_speed_10m_max) ?? current.wind_speed_10m);
+  const high = round(firstNumber(daily.temperature_2m_max, -150, 150));
+  const low = round(firstNumber(daily.temperature_2m_min, -150, 150));
+  const currentTemperature = round(
+    boundedNumber(current.temperature_2m, -150, 150),
+  );
+  const precipitationChance = round(
+    firstNumber(daily.precipitation_probability_max, 0, 100),
+  );
+  const windMph = round(
+    firstNumber(daily.wind_speed_10m_max, 0, 300) ??
+      boundedNumber(current.wind_speed_10m, 0, 300),
+  );
   const weatherCode =
-    firstNumber(daily.weather_code) ??
-    firstNumber(daily.weathercode) ??
-    current.weather_code ??
-    current.weathercode;
-  const forecastDate = plannedDate ?? daily.time?.[0];
+    firstNumber(daily.weather_code, 0, 99, true) ??
+    firstNumber(daily.weathercode, 0, 99, true) ??
+    boundedNumber(current.weather_code, 0, 99, true) ??
+    boundedNumber(current.weathercode, 0, 99, true);
+  const dailyDate = daily.time?.[0];
+  const forecastDate = isIsoDate(plannedDate)
+    ? plannedDate
+    : isIsoDate(dailyDate)
+      ? dailyDate
+      : undefined;
   const forecastPeriods = buildForecastPeriods(response.hourly, forecastDate);
 
   const conditions: WeatherContext["conditions"] = [];
@@ -270,7 +317,7 @@ export function buildWeatherContextFromOpenMeteoResponse(
 
   return {
     plannedDate: forecastDate,
-    timezone: response.timezone,
+    timezone: boundedProviderText(response.timezone, 100),
     summary: buildWeatherSummary({
       high,
       low,
@@ -293,6 +340,34 @@ export function buildWeatherContextFromOpenMeteoResponse(
   };
 }
 
+function hasUsableOpenMeteoData(
+  response: OpenMeteoForecastResponse,
+  plannedDate?: string,
+): boolean {
+  const daily = response.daily ?? {};
+  const current = response.current ?? {};
+  const dailyDate = daily.time?.[0];
+  const forecastDate = isIsoDate(plannedDate)
+    ? plannedDate
+    : isIsoDate(dailyDate)
+      ? dailyDate
+      : undefined;
+
+  return (
+    firstNumber(daily.temperature_2m_max, -150, 150) !== undefined ||
+    firstNumber(daily.temperature_2m_min, -150, 150) !== undefined ||
+    firstNumber(daily.precipitation_probability_max, 0, 100) !== undefined ||
+    firstNumber(daily.wind_speed_10m_max, 0, 300) !== undefined ||
+    firstNumber(daily.weather_code, 0, 99, true) !== undefined ||
+    firstNumber(daily.weathercode, 0, 99, true) !== undefined ||
+    boundedNumber(current.temperature_2m, -150, 150) !== undefined ||
+    boundedNumber(current.wind_speed_10m, 0, 300) !== undefined ||
+    boundedNumber(current.weather_code, 0, 99, true) !== undefined ||
+    boundedNumber(current.weathercode, 0, 99, true) !== undefined ||
+    buildForecastPeriods(response.hourly, forecastDate).length > 0
+  );
+}
+
 export function buildDaylightContextFromSunriseSunsetResponse(
   response: SunriseSunsetResponse,
   date?: string,
@@ -302,18 +377,31 @@ export function buildDaylightContextFromSunriseSunsetResponse(
   }
 
   const results = response.results ?? {};
-  if (!results.sunset || !results.civil_twilight_end) {
+  const sunrise = boundedIsoDateTime(results.sunrise);
+  const sunset = boundedIsoDateTime(results.sunset);
+  const civilTwilightBegin = boundedIsoDateTime(
+    results.civil_twilight_begin,
+  );
+  const civilTwilightEnd = boundedIsoDateTime(results.civil_twilight_end);
+  const dayLengthSeconds = boundedNumber(results.day_length, 0, 86_400, true);
+  if (
+    !sunset ||
+    !civilTwilightEnd ||
+    (results.sunrise !== undefined && !sunrise) ||
+    (results.civil_twilight_begin !== undefined && !civilTwilightBegin) ||
+    (results.day_length !== undefined && dayLengthSeconds === undefined)
+  ) {
     return null;
   }
 
   return {
-    date,
-    sunrise: results.sunrise,
-    sunset: results.sunset,
-    civilTwilightBegin: results.civil_twilight_begin,
-    civilTwilightEnd: results.civil_twilight_end,
-    dayLengthSeconds: results.day_length,
-    timezone: response.tzid,
+    date: isIsoDate(date) ? date : undefined,
+    sunrise,
+    sunset,
+    civilTwilightBegin,
+    civilTwilightEnd,
+    dayLengthSeconds,
+    timezone: boundedProviderText(response.tzid, 100),
     source: "sunrise-sunset",
     retrievalStatus: "live",
   };
@@ -353,6 +441,50 @@ export function buildSavedWeatherFallback(
   };
 }
 
+async function withExternalRequestTimeout<T>(
+  operation: (signal: AbortSignal) => Promise<T>,
+  timeoutMs = EXTERNAL_REQUEST_TIMEOUT_MS,
+): Promise<T> {
+  const timeoutController = new AbortController();
+  const timeoutId = setTimeout(
+    () => timeoutController.abort(),
+    timeoutMs,
+  );
+
+  try {
+    return await operation(timeoutController.signal);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function readBoundedProviderJson(
+  response: {
+    json: () => Promise<unknown>;
+    body?: ReadableStream<Uint8Array> | null;
+    headers?: Headers;
+  },
+  maximumBytes: number,
+): Promise<unknown> {
+  if ("body" in response && response.headers) {
+    const responseRead = await readTextWithinLimit(
+      {
+        body: response.body ?? null,
+        headers: response.headers,
+      },
+      maximumBytes,
+    );
+    if (responseRead.status !== "ok") {
+      throw new Error("External provider response was not readable.");
+    }
+    return JSON.parse(responseRead.text);
+  }
+
+  // Test doubles and non-Fetch adapters may expose only json(). Production
+  // Response objects always take the byte-bounded branch above.
+  return response.json();
+}
+
 async function fetchSunriseSunsetDaylightContext({
   lat,
   lng,
@@ -380,23 +512,86 @@ async function fetchSunriseSunsetDaylightContext({
   }
 
   try {
-    const response = await fetcher(url, {
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const responseBody = await withExternalRequestTimeout(async (signal) => {
+      const response = await fetcher(url, {
+        headers: {
+          Accept: "application/json",
+        },
+        signal,
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        return null;
+      }
+
+      return readBoundedProviderJson(response, MAX_DAYLIGHT_RESPONSE_BYTES);
+    });
+    if (!isRecord(responseBody)) {
       return null;
     }
 
     return buildDaylightContextFromSunriseSunsetResponse(
-      (await response.json()) as SunriseSunsetResponse,
+      responseBody as SunriseSunsetResponse,
       date,
     );
   } catch {
     return null;
   }
+}
+
+function boundedProviderText(
+  value: unknown,
+  maximumLength: number,
+): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .trim()
+    .slice(0, maximumLength);
+  return normalized || undefined;
+}
+
+function boundedIsoDateTime(value: unknown): string | undefined {
+  const normalized = boundedProviderText(value, 100);
+  if (
+    !normalized ||
+    !/^\d{4}-\d{2}-\d{2}T/.test(normalized) ||
+    !Number.isFinite(Date.parse(normalized))
+  ) {
+    return undefined;
+  }
+
+  return normalized;
+}
+
+function isIsoDate(value: unknown): value is string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return (
+    !Number.isNaN(parsed.getTime()) &&
+    parsed.toISOString().slice(0, 10) === value
+  );
+}
+
+function isForecastLocalTime(value: string): boolean {
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/.exec(value);
+  if (!match || !isIsoDate(match[1])) {
+    return false;
+  }
+
+  const hour = Number(match[2]);
+  const minute = Number(match[3]);
+  return hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 export async function fetchOpenMeteoWeatherContext(
@@ -442,18 +637,31 @@ export async function fetchOpenMeteoWeatherContext(
   url.searchParams.set("timezone", "auto");
 
   try {
-    const response = await fetcher(url, {
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const responseBody = await withExternalRequestTimeout(async (signal) => {
+      const response = await fetcher(url, {
+        headers: {
+          Accept: "application/json",
+        },
+        signal,
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        return null;
+      }
+
+      return readBoundedProviderJson(response, MAX_WEATHER_RESPONSE_BYTES);
+    });
+    if (!isRecord(responseBody)) {
+      return fallback;
+    }
+
+    const providerResponse = responseBody as OpenMeteoForecastResponse;
+    if (!hasUsableOpenMeteoData(providerResponse, plannedDate)) {
       return fallback;
     }
 
     const weather = buildWeatherContextFromOpenMeteoResponse(
-      (await response.json()) as OpenMeteoForecastResponse,
+      providerResponse,
       plannedDate,
     );
     const daylight = await fetchSunriseSunsetDaylightContext({
@@ -486,20 +694,35 @@ export function resolveSupportedParkCode({
   trailId?: string | null;
   parkCode?: string | null;
 }): string | null {
+  const requestedTrailId = trailId?.trim();
+  const requestedParkCode = parkCode?.trim();
   const normalizedParkCode = normalizeParkCode(parkCode);
-  if (normalizedParkCode && SUPPORTED_PARK_CODES.has(normalizedParkCode)) {
+
+  if (requestedTrailId && requestedParkCode) {
+    const trailParkCode = getSupportedParkForTrail(requestedTrailId)?.parkCode;
+    return trailParkCode &&
+      normalizedParkCode === trailParkCode &&
+      SUPPORTED_PARK_CODES.has(normalizedParkCode)
+      ? normalizedParkCode
+      : null;
+  }
+
+  if (
+    normalizedParkCode &&
+    SUPPORTED_PARK_CODES.has(normalizedParkCode)
+  ) {
     return normalizedParkCode;
   }
 
-  if (!trailId) {
+  if (!requestedTrailId) {
     return null;
   }
 
-  return getSupportedParkForTrail(trailId)?.parkCode ?? null;
+  return getSupportedParkForTrail(requestedTrailId)?.parkCode ?? null;
 }
 
-function cleanSourceUrl(url: string | undefined): string | undefined {
-  if (!url) {
+function cleanSourceUrl(url: unknown): string | undefined {
+  if (typeof url !== "string" || url.length > MAX_PROVIDER_TEXT_LENGTH) {
     return undefined;
   }
 
@@ -508,6 +731,9 @@ function cleanSourceUrl(url: string | undefined): string | undefined {
     const host = parsed.hostname.toLowerCase();
     if (
       parsed.protocol === "https:" &&
+      !parsed.username &&
+      !parsed.password &&
+      !parsed.port &&
       (host === "nps.gov" || host.endsWith(".nps.gov"))
     ) {
       return parsed.toString();
@@ -546,12 +772,20 @@ export function buildAlertContextFromNpsResponse(
 ): AlertContext {
   const data = Array.isArray(response.data) ? response.data : [];
   const alerts = data
+    .slice(0, MAX_ALERTS)
+    .filter(isRecord)
     .map((alert) => {
-      const title = alert.title?.trim() || "NPS alert";
+      const title = boundedProviderText(alert.title, MAX_PROVIDER_TEXT_LENGTH) ||
+        "NPS alert";
       return {
         title,
-        description: alert.description?.trim() || "No alert description provided.",
-        severity: mapNpsAlertSeverity(alert.category, title),
+        description:
+          boundedProviderText(alert.description, MAX_PROVIDER_TEXT_LENGTH) ||
+          "No alert description provided.",
+        severity: mapNpsAlertSeverity(
+          typeof alert.category === "string" ? alert.category : undefined,
+          title,
+        ),
         source: "NPS" as const,
         sourceUrl: cleanSourceUrl(alert.url),
       };
@@ -566,17 +800,14 @@ export function buildAlertContextFromNpsResponse(
   };
 }
 
-export function buildSavedAlertFallback(parkCode: string): AlertContext {
-  const supportedPark = SUPPORTED_PARKS.find((park) => park.parkCode === parkCode);
-
+export function buildSavedAlertFallback(): AlertContext {
   return {
     hasActiveAlerts: false,
     alerts: [],
     label: "unavailable",
     retrievalStatus: "saved-fixture",
-    statusReason: supportedPark
-      ? `Using saved ${supportedPark.name} alert fixture because live NPS alerts are unavailable.`
-      : "Using saved alert fixture because live NPS alerts are unavailable.",
+    statusReason:
+      "Live NPS alerts could not be checked. Check current NPS alerts directly before leaving.",
   };
 }
 
@@ -610,31 +841,34 @@ export async function fetchNpsAlertContext(
   const url = new URL(NPS_ALERTS_URL);
   url.searchParams.set("parkCode", normalizedParkCode);
   url.searchParams.set("limit", "10");
-  const timeoutController = new AbortController();
-  const timeoutId = setTimeout(
-    () => timeoutController.abort(),
-    NPS_REQUEST_TIMEOUT_MS,
-  );
 
   try {
-    const response = await fetcher(url, {
-      headers: {
-        Accept: "application/json",
-        "X-Api-Key": apiKey,
-      },
-      signal: timeoutController.signal,
-    });
+    const responseBody = await withExternalRequestTimeout(
+      async (signal) => {
+        const response = await fetcher(url, {
+          headers: {
+            Accept: "application/json",
+            "X-Api-Key": apiKey,
+          },
+          signal,
+        });
 
-    if (!response.ok) {
-      return buildSavedAlertFallback(normalizedParkCode);
+        if (!response.ok) {
+          return null;
+        }
+
+        return readBoundedProviderJson(response, MAX_NPS_RESPONSE_BYTES);
+      },
+      NPS_ALERT_REQUEST_TIMEOUT_MS,
+    );
+    if (!isRecord(responseBody)) {
+      return buildSavedAlertFallback();
     }
 
     return buildAlertContextFromNpsResponse(
-      (await response.json()) as NpsAlertsResponse,
+      responseBody as NpsAlertsResponse,
     );
   } catch {
-    return buildSavedAlertFallback(normalizedParkCode);
-  } finally {
-    clearTimeout(timeoutId);
+    return buildSavedAlertFallback();
   }
 }

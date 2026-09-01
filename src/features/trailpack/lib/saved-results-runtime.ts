@@ -185,7 +185,7 @@ function parseTripAlert(value: unknown): TripAlert | null {
     (value.severity !== "info" &&
       value.severity !== "caution" &&
       value.severity !== "danger") ||
-    !isOptionalString(value.sourceUrl)
+    !isOptionalHttpsUrl(value.sourceUrl)
   ) {
     return null;
   }
@@ -216,7 +216,7 @@ function parsePackingItem(value: unknown): PackingItem | null {
     !isString(value.why) ||
     !isString(value.answer) ||
     !isString(value.reason) ||
-    !isOptionalString(value.sourceUrl)
+    !isOptionalHttpsUrl(value.sourceUrl)
   ) {
     return null;
   }
@@ -254,7 +254,7 @@ function parsePackingItem(value: unknown): PackingItem | null {
 }
 
 function parseItemLink(value: unknown): NonNullable<PackingItem["links"]>[number] | null {
-  return isRecord(value) && isString(value.label) && isString(value.url)
+  return isRecord(value) && isString(value.label) && isHttpsUrl(value.url)
     ? { label: value.label, url: value.url }
     : null;
 }
@@ -325,6 +325,32 @@ function isString(value: unknown): value is string {
 
 function isOptionalString(value: unknown): value is string | undefined {
   return value === undefined || isString(value);
+}
+
+function isHttpsUrl(value: unknown): value is string {
+  if (
+    !isString(value) ||
+    value.trim() !== value ||
+    /[\u0000-\u001f\u007f]/.test(value)
+  ) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      url.hostname.length > 0 &&
+      url.username.length === 0 &&
+      url.password.length === 0
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isOptionalHttpsUrl(value: unknown): value is string | undefined {
+  return value === undefined || isHttpsUrl(value);
 }
 
 function isOptionalNumberOrString(

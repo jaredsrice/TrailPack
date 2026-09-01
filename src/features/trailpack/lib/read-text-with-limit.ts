@@ -46,7 +46,7 @@ export async function readTextWithinLimit(
       }
       totalBytes += value.byteLength;
       if (totalBytes > maximumBytes) {
-        await cancelReader(reader);
+        cancelReader(reader);
         return { status: "too-large" };
       }
       textChunks.push(decoder.decode(value, { stream: true }));
@@ -66,17 +66,19 @@ export async function discardBody(source: Pick<BodySource, "body">): Promise<voi
   }
 
   try {
-    await source.body.cancel();
+    const cancellation = source.body.cancel();
+    void cancellation.catch(() => undefined);
   } catch {
     // Releasing an upstream or client stream is best-effort cleanup.
   }
 }
 
-async function cancelReader(
+function cancelReader(
   reader: ReadableStreamDefaultReader<Uint8Array>,
-): Promise<void> {
+): void {
   try {
-    await reader.cancel();
+    const cancellation = reader.cancel();
+    void cancellation.catch(() => undefined);
   } catch {
     // The measured size still determines the response when cancellation fails.
   }

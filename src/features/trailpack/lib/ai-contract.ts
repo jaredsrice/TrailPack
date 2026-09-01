@@ -317,11 +317,16 @@ function hasUnsupportedSafetyClaim(text: string): boolean {
 
 function buildTemplateFallbackReview(input: AiContractInput): GuardedAiReview {
   const items = allPackingItems(input);
+  const activeContext = input.alerts.hasActiveAlerts
+    ? "the forecast, active alerts, and your trip details"
+    : "the forecast and your trip details";
 
   return {
     tripSummary:
-      `TrailPack is using the rule-based packing list for ${input.trail.name}. ` +
-      "AI-style text was not displayed because it failed validation or was unavailable.",
+      `${input.trail.name} is a ${input.trail.distanceMiles} mi ${input.trail.routeType} ` +
+      `with ${input.trail.elevationGainFeet} ft of gain. TrailPack checked ` +
+      `${input.packing.essential.length} essential and ${input.packing.optional.length} optional ` +
+      `items in the rule-based packing list against ${activeContext}.`,
     missingDataReview:
       input.packing.missingDetails.length > 0
         ? input.packing.missingDetails

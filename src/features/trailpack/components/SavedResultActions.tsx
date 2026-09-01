@@ -99,13 +99,14 @@ export function SavedResultActions({
     <section className="rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-5 shadow-sm" aria-labelledby="save-plan-heading">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="section-kicker">Keep this plan</p>
+          <p className="section-kicker">Optional</p>
           <h2 id="save-plan-heading" className="text-xl font-semibold text-slate-950">
-            Save a private copy
+            Save this plan
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-slate-700">
-            Your saved plan includes the trail summary, trip details that affect
-            the list, recommendation, source labels, and creation time. Free-form notes are not saved.
+            {accountState.status === "signed-in"
+              ? "Keep a private copy so you can return to it later."
+              : "Guest planning and review are complete. Sign in only if you want a private copy."}
           </p>
         </div>
 
@@ -130,10 +131,20 @@ export function SavedResultActions({
             onClick={handleGoogleSignIn}
             className="rounded-lg bg-emerald-800 px-4 py-2 text-sm font-semibold text-white"
           >
-            Continue with Google
+            Sign in with Google to save
           </button>
         ) : null}
       </div>
+
+      <details className="mt-4 border-t border-emerald-200 pt-3 text-sm text-slate-700">
+        <summary className="cursor-pointer font-semibold text-emerald-900">
+          What gets saved?
+        </summary>
+        <p className="mt-2 max-w-3xl">
+          The trail summary, trip details that affect the list, recommendation,
+          source labels, and creation time. Free-form notes are not saved.
+        </p>
+      </details>
 
       {accountState.status === "signed-in" ? (
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-700">

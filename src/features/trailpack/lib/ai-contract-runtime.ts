@@ -72,6 +72,7 @@ const GENERATION_ID_PATTERN =
 export function parseAiReviewRequest(value: unknown): AiReviewRequest | null {
   if (
     !isRecord(value) ||
+    !hasOnlyKeys(value, ["generationId", "input"]) ||
     !isAiReviewGenerationId(value.generationId)
   ) {
     return null;
@@ -93,7 +94,10 @@ export function isAiReviewGenerationId(value: unknown): value is string {
 }
 
 export function parseAiContractInput(value: unknown): AiContractInput | null {
-  if (!isRecord(value)) {
+  if (
+    !isRecord(value) ||
+    !hasOnlyKeys(value, ["trail", "weather", "alerts", "userInput", "packing"])
+  ) {
     return null;
   }
 
@@ -103,7 +107,42 @@ export function parseAiContractInput(value: unknown): AiContractInput | null {
     !isRecord(weather) ||
     !isRecord(alerts) ||
     !isRecord(userInput) ||
-    !isRecord(packing)
+    !isRecord(packing) ||
+    !hasOnlyKeys(trail, [
+      "id",
+      "name",
+      "park",
+      "state",
+      "distanceMiles",
+      "elevationGainFeet",
+      "routeType",
+      "estimatedDuration",
+      "difficulty",
+    ]) ||
+    !hasOnlyKeys(weather, [
+      "summary",
+      "conditions",
+      "sourceLabel",
+      "retrievalStatus",
+    ]) ||
+    !hasOnlyKeys(alerts, [
+      "hasActiveAlerts",
+      "titles",
+      "sourceLabel",
+      "retrievalStatus",
+    ]) ||
+    !hasOnlyKeys(userInput, [
+      "startTime",
+      "expectedDuration",
+      "trailConditions",
+      "notes",
+    ]) ||
+    !hasOnlyKeys(packing, [
+      "essential",
+      "optional",
+      "missingDetails",
+      "confidenceNote",
+    ])
   ) {
     return null;
   }
@@ -164,7 +203,14 @@ export function parseAiContractInput(value: unknown): AiContractInput | null {
 }
 
 export function parseAiReviewDraft(value: unknown): AiReviewDraft | null {
-  if (!isRecord(value)) {
+  if (
+    !isRecord(value) ||
+    !hasOnlyKeys(value, [
+      "tripSummary",
+      "missingDataReview",
+      "itemExplanationDrafts",
+    ])
+  ) {
     return null;
   }
 
@@ -190,12 +236,15 @@ export function parseLiveAiReviewResult(
 ): LiveAiReviewResult | null {
   if (
     !isRecord(value) ||
+    !hasOnlyKeys(value, ["outcome", "provider", "review"]) ||
     !isLiveAiOutcome(value.outcome) ||
     !isRecord(value.provider) ||
+    !hasOnlyKeys(value.provider, ["name", "model"]) ||
     value.provider.name !== "gemini" ||
     !isRequiredString(value.provider.model, 100) ||
     !/^gemini-[a-z0-9.-]+$/.test(value.provider.model) ||
     !isRecord(value.review) ||
+    !hasOnlyKeys(value.review, ["status", "review", "validationReasons"]) ||
     (value.review.status !== "accepted" &&
       value.review.status !== "fallback") ||
     !isStringArray(
@@ -241,6 +290,7 @@ export function parseLiveAiReviewResult(
 function isAiItemExplanationDraft(value: unknown): value is AiItemExplanationDraft {
   return (
     isRecord(value) &&
+    hasOnlyKeys(value, ["itemName", "explanation", "sourceLabels"]) &&
     isRequiredString(value.itemName, MAX_OUTPUT_STRING_LENGTH) &&
     isRequiredString(value.explanation, MAX_OUTPUT_STRING_LENGTH) &&
     isSourceLabelArray(value.sourceLabels)
@@ -254,6 +304,15 @@ function isPackingItemArray(value: unknown): value is AiContractPackingItem[] {
     value.every(
       (item) =>
         isRecord(item) &&
+        hasOnlyKeys(item, [
+          "name",
+          "question",
+          "recommendation",
+          "why",
+          "answer",
+          "reason",
+          "sourceLabels",
+        ]) &&
         isRequiredString(item.name) &&
         isRequiredString(item.question) &&
         isRequiredString(item.recommendation) &&
@@ -267,6 +326,14 @@ function isPackingItemArray(value: unknown): value is AiContractPackingItem[] {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function hasOnlyKeys(
+  value: Record<string, unknown>,
+  allowedKeys: readonly string[],
+): boolean {
+  const allowed = new Set(allowedKeys);
+  return Object.keys(value).every((key) => allowed.has(key));
 }
 
 function isRequiredString(

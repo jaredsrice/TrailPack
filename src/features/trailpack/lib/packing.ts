@@ -530,6 +530,7 @@ interface TripDecisionDanger {
   sourceLabels: PackingItem["sourceLabels"];
   sourceUrl?: string;
   source: "alert" | "weather";
+  matchedAlertTitles?: string[];
 }
 
 interface AlertDecisionRule {
@@ -700,6 +701,7 @@ function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger 
       sourceLabels: sourceLabelsForMatchedAlerts(matchedAlerts),
       sourceUrl: firstOfficialAlertSourceUrl(matchedAlerts),
       source: "alert",
+      matchedAlertTitles: matchedAlerts.map((alert) => alert.title),
     };
   }
 
@@ -861,14 +863,37 @@ function buildWeatherTripAlerts({
     });
   }
 
-  if (weather.conditions.includes("snow") || weather.conditions.includes("cold")) {
+  const hasForecastSnow = weather.conditions.includes("snow");
+  const hasForecastCold = weather.conditions.includes("cold");
+
+  if (hasForecastSnow && hasForecastCold) {
     tripAlerts.push({
       id: "cold-snow",
-      title: "Cold / snow",
+      title: "Cold and snow",
       summary:
-        "Cold, snow, or wind can turn a normal day hike into a slower and colder outing. Treat traction, layers, and dry socks as more important than they are on a dry summer day.",
+        "The forecast explicitly includes both cold and snow. Expect a slower outing, keep warm layers and dry socks accessible, and prepare for snowy or icy footing.",
+      severity: "caution",
+      affectedBy: ["Weather", "Cold", "Snow/Ice"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  } else if (hasForecastSnow) {
+    tripAlerts.push({
+      id: "snow-ice",
+      title: "Snow conditions",
+      summary:
+        "The forecast explicitly includes snow. Expect slower travel and prepare for snowy or icy footing, wet gear, and changing traction.",
       severity: "caution",
       affectedBy: ["Weather", "Snow/Ice"],
+      sourceLabels: ["forecast-based", "inferred"],
+    });
+  } else if (hasForecastCold) {
+    tripAlerts.push({
+      id: "cold",
+      title: "Cold conditions",
+      summary:
+        "Cold conditions can slow the hike and make stops feel colder than expected. Keep a warm layer accessible and protect any wet clothing or socks.",
+      severity: "caution",
+      affectedBy: ["Weather", "Cold"],
       sourceLabels: ["forecast-based", "inferred"],
     });
   }
@@ -888,6 +913,18 @@ function buildActiveAlertTripAlert(
   const closure = alerts.alerts.some((alert) => alert.severity === "closure");
   const titles = alertTitles(alerts.alerts);
   const alertDanger = tripDecisionDanger?.source === "alert" ? tripDecisionDanger : null;
+  const otherAlertTitles = alertDanger
+    ? alerts.alerts
+        .map((alert) => alert.title)
+        .filter((title) => !alertDanger.matchedAlertTitles?.includes(title))
+    : [];
+  const alertDangerSummary = alertDanger
+    ? `${alertDanger.summary}${
+        otherAlertTitles.length > 0
+          ? ` Also review: ${otherAlertTitles.join("; ")}.`
+          : ""
+      }`
+    : null;
 
   return {
     id: "active-alerts",
@@ -896,8 +933,8 @@ function buildActiveAlertTripAlert(
       : closure
         ? "Active closure or trail alert"
         : "Active trail alert",
-    summary: alertDanger
-      ? alertDanger.summary
+    summary: alertDangerSummary
+      ? alertDangerSummary
       : `Current alert context includes: ${titles}. Review it before leaving because closures, maintenance, high water, or wildlife activity can change the route and packing plan.`,
     severity: alertDanger || closure ? "danger" : "caution",
     affectedBy: alertDanger?.affectedBy ?? ["Official alert"],

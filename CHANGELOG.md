@@ -10,7 +10,111 @@ corrections within that milestone.
 
 ## [Unreleased]
 
-No unreleased product changes.
+### Added
+
+- Plain-language **Basis** text in every expanded packing recommendation and
+  overall alert, distinguishing standard rules from live NPS alerts, live or
+  saved forecasts, daylight timing, and user-entered trip details.
+- One bounded background NPS retry after the initial live-alert attempt falls
+  back. A late live result offers an explicit list update without silently
+  changing the generated snapshot.
+- A fixed-seed system stress command that exercises 5,000 bounded packing
+  scenarios across all five supported trails, repeats every recommendation for
+  determinism, enforces latency and heap budgets, and now runs in pull-request
+  validation.
+- Focused regression coverage for exact byte limits, strict request and response
+  contracts, provider timeouts, quota races, duplicate retries, stale browser
+  state, responsive image quality, and the monthly NPS publisher boundary.
+
+### Changed
+
+- Weather, daylight, NPS, guarded-AI, and saved-result response bodies are read
+  within explicit byte limits. Weather and daylight provider requests retain an
+  eight-second upper bound; NPS alerts now use a five-second provider budget and
+  a six-second browser budget before generation unlocks with the labeled
+  fallback. Weather keeps its 20-second browser bound.
+- The four lower-resolution selected-trail photographs now use clearer official
+  NPS originals from the same credited sources, with explicit desktop and mobile
+  focal points for all five supported trails.
+- Reduced-motion mode now exposes the carousel as paused, disables its automatic
+  motion control, and keeps previous, next, and direct selectors available.
+- Forecast alerts now keep cold and snow separate unless both signals are
+  explicitly present. Alert cards no longer display category chips that resemble
+  inactive filters, while official source links remain visible.
+- Critical Safety rows now show only the one status that changes the hiker's
+  action, and expanded provenance is one plain line instead of badge-like source
+  tags. An alert-backed trip decision replaces the duplicate generic alert row
+  in the rendered list without removing its underlying source data.
+- The bottom review is now a concise guest-ready plan check. Missing details and
+  review limits sit behind one optional disclosure, while validation payloads and
+  per-item explanation drafts are no longer exposed as user interface content.
+- Saving now reads as an optional follow-up instead of an account gate; the saved
+  data explanation is available under a compact disclosure.
+- Live status, source, and context-detail pills now use stronger fills, borders,
+  and text weights so weather and alert provenance remains easy to scan without
+  making the non-interactive labels resemble filter controls.
+- The monthly NPS refresh validates repository code with read-only permissions
+  and publishes only the validated JSON artifact from an isolated write-scoped
+  job that does not install dependencies or execute repository scripts.
+
+### Fixed
+
+- Replaced the misleading saved-alert “no active alerts” state with an explicit
+  notice that live NPS alerts could not be evaluated. A failed live request now
+  clears saved demo alerts before generation, so fixture closures cannot trigger
+  alert-specific recommendations.
+- Prevented two synchronous Generate clicks from creating two generation UUIDs
+  and two guarded-AI requests before React committed the loading state.
+- Prevented an aborted older review from clearing or unlocking a newer
+  generation, and added browser-side cancellation on reset, trail changes, and
+  unmount with a 30-second client timeout.
+- Prevented a non-settling or rejected stream cancellation from hanging an
+  already classified oversized request or response.
+- Rejected conflicting trail/park identifiers, impossible forecast timestamps,
+  out-of-range provider values, widened AI contracts, unsafe NPS links, and
+  unsafe links in stored snapshots.
+- Converted unexpected authentication and OAuth exchange failures into bounded,
+  generic, non-cacheable responses without exposing provider or database detail.
+- Started the two initial carousel layers with different photos, removing the
+  development warning caused by prioritizing the same asset twice, and hid the
+  inactive image from assistive technology.
+- Removed repeated fallback and sign-in messaging that made the standard guest
+  review look unavailable even though the deterministic plan check had completed.
+
+### Security
+
+- Added source-controlled HSTS with a two-year lifetime, subdomain coverage, and
+  preload, matching the verified Production policy.
+- Require HTTPS saved-result links without embedded credentials or control
+  characters, authenticate saved-result writes before reading their bodies, and
+  fail quota/authentication dependency errors closed before provider or database
+  work.
+- Limit live NPS results to 10 alerts and 2,000 characters per provider string,
+  permit only credential-free HTTPS `nps.gov` links, and keep provider error
+  bodies out of client-visible failures.
+
+### Verification
+
+- The fixed-seed run completed 5,000 cases and 10,200 evaluations with zero
+  invariant failures: 0.053 ms p95 latency, 0.182 ms maximum latency, and
+  6,176,624 bytes of heap growth in the final local run.
+- Mocked unique-request concurrency at 1, 10, 25, and 50 requests enforced at
+  most five successes in each of three runs. Fifty same-generation retries
+  produced one success, 49 duplicates, and one provider call in each run; the
+  50-request unique workload stayed at 5.708 ms p95, and aggregate API heap
+  growth stayed below 13 MB.
+- Focused API checks passed 132 tests and the focused security group passed 54
+  tests. The final full suite passed 354 tests across 34 files; lint, type
+  checking, the production build, and all 18 Firefox accessibility and
+  interaction checks also passed.
+- All five selected-trail photos were visually checked at approximately 1280,
+  768, and 390 pixels with clear subjects, correct credits, and no horizontal
+  overflow. The complete accessibility run passed 18 Firefox/axe flows with no
+  automated violations.
+- The final local build, 5-of-5 live NPS integrity check, and 27-of-27
+  recommendation scenario matrix passed. Protected pull-request checks, CodeQL,
+  and Vercel Preview verification remain pending; this section does not claim a
+  released or production-verified result.
 
 ## [0.6.1] - 2026-08-29
 

@@ -20,7 +20,13 @@ export async function DELETE(
     return jsonResponse({ error: "Saved results are unavailable." }, { status: 503 });
   }
 
-  const { data: authData, error: authError } = await supabase.auth.getUser();
+  let authData: Awaited<ReturnType<typeof supabase.auth.getUser>>["data"];
+  let authError: Awaited<ReturnType<typeof supabase.auth.getUser>>["error"];
+  try {
+    ({ data: authData, error: authError } = await supabase.auth.getUser());
+  } catch {
+    return jsonResponse({ error: "Authentication is required." }, { status: 401 });
+  }
   if (authError || !authData.user) {
     return jsonResponse({ error: "Authentication is required." }, { status: 401 });
   }

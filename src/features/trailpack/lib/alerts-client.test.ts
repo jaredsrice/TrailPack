@@ -24,6 +24,19 @@ function asFetch(response: Response): typeof fetch {
   return vi.fn(async () => response) as unknown as typeof fetch;
 }
 
+function oversizedResponse(onCancel: () => void): Response {
+  return new Response(
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("x".repeat(70_000)));
+      },
+      cancel() {
+        onCancel();
+      },
+    }),
+  );
+}
+
 describe("NPS alert route client", () => {
   it("requests live alerts for the selected trail", async () => {
     const fetchImpl = asFetch(Response.json(LIVE_ALERT_RESPONSE));
@@ -57,6 +70,16 @@ describe("NPS alert route client", () => {
     await expect(
       requestTrailAlerts("jenny-lake-loop", { fetchImpl }),
     ).rejects.not.toThrow(/private provider detail/i);
+  });
+
+  it("bounds successful route bodies before parsing JSON", async () => {
+    let cancelled = false;
+    const fetchImpl = asFetch(oversizedResponse(() => { cancelled = true; }));
+
+    await expect(
+      requestTrailAlerts("jenny-lake-loop", { fetchImpl }),
+    ).rejects.toThrow("TrailPack could not load the live NPS alerts.");
+    expect(cancelled).toBe(true);
   });
 });
 
@@ -100,6 +123,25 @@ describe("NPS alert response parser", () => {
           sourceUrl: "https://nps.gov.example.com/closure",
         },
       ],
+    },
+    {
+      ...LIVE_ALERT_RESPONSE,
+      alerts: [
+        {
+          ...LIVE_ALERT_RESPONSE.alerts[0],
+          sourceUrl: "https://attacker.example@nps.gov/looks-official",
+        },
+      ],
+    },
+    {
+      ...LIVE_ALERT_RESPONSE,
+      label: "unavailable",
+      retrievalStatus: "live",
+    },
+    {
+      ...LIVE_ALERT_RESPONSE,
+      label: "official",
+      retrievalStatus: "unavailable",
     },
     {
       ...LIVE_ALERT_RESPONSE,

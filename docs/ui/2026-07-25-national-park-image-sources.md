@@ -1,7 +1,7 @@
 # TrailPack National Park Image Sources
 
 Created: 2026-07-25  
-Last verified: 2026-08-28
+Last verified: 2026-08-31
 
 TrailPack uses a curated local copy of official National Park Service
 photographs for the homepage rotation and selected Grand Teton trail context.
@@ -34,13 +34,13 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 
 ## Selected Grand Teton trail images
 
-| Local file | Trail/location mapping | Displayed credit | Official source |
-| --- | --- | --- | --- |
-| `public/park-images/grand-teton-jenny-lake-trail.jpg` | `jenny-lake-loop` | NPS Photo | [Jenny Lake](https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5) |
-| `public/park-images/grand-teton-taggart-lake.jpg` | `taggart-lake` | NPS Photo / J. Bonney | [Taggart Lake](https://www.nps.gov/thingstodo/taggartlake.htm) |
-| `public/park-images/grand-teton-string-lake.jpg` | `string-lake-loop` (location-level String Lake photo) | NPS Photo / Helton | [String Lake Picnic Area](https://www.nps.gov/places/000/string-lake-picnic-area.htm) |
-| `public/park-images/grand-teton-colter-bay.jpg` | `colter-bay-lakeshore-trail` | NPS Photo | [Colter Bay Lakeshore Trail](https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm) |
-| `public/park-images/grand-teton-two-ocean-lake.jpg` | `two-ocean-lake-loop` | NPS Photo / J. Bonney | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) |
+| Local file | Trail/location mapping | Resolution | Desktop / mobile focal point | Displayed credit | Official source |
+| --- | --- | --- | --- | --- | --- |
+| `public/park-images/grand-teton-jenny-lake-trail.jpg` | `jenny-lake-loop` | 2,000 x 1,500 | `50% 48%` / `50% 50%` | NPS Photo | [Jenny Lake](https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5) |
+| `public/park-images/grand-teton-taggart-lake.jpg` | `taggart-lake` | 2,600 x 1,462 | `50% 49%` / `50% 50%` | NPS Photo / J. Bonney | [Taggart Lake](https://www.nps.gov/thingstodo/taggartlake.htm) |
+| `public/park-images/grand-teton-string-lake.jpg` | `string-lake-loop` (location-level String Lake photo) | 3,200 x 1,799 | `48% 48%` / `48% 50%` | NPS Photo / Helton | [String Lake Picnic Area](https://www.nps.gov/places/000/string-lake-picnic-area.htm) |
+| `public/park-images/grand-teton-colter-bay.jpg` | `colter-bay-lakeshore-trail` | 3,200 x 1,800 | `48% 45%` / `47% 50%` | NPS Photo | [Colter Bay Lakeshore Trail](https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm) |
+| `public/park-images/grand-teton-two-ocean-lake.jpg` | `two-ocean-lake-loop` | 2,600 x 1,462 | `50% 52%` / `50% 50%` | NPS Photo / J. Bonney | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) |
 
 ## Display rules
 
@@ -48,8 +48,9 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
   nine seconds.
 - The user can pause/resume, move to the previous or next photograph, or choose
   any park directly from the seven slide selectors.
-- `prefers-reduced-motion: reduce` prevents automatic rotation and removes
-  image-transition motion.
+- `prefers-reduced-motion: reduce` prevents automatic rotation, removes
+  image-transition motion, and exposes the disabled motion control as
+  **Paused**. Previous, next, and direct selectors remain available.
 - Selecting Grand Teton locks the image to the park-level Teton Range scene.
 - Selecting a supported trail locks the image to that trail or the most honest
   available NPS location-level photograph.
@@ -57,8 +58,12 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
   rotation instead of implying that a photograph depicts the entered hike.
 - Each photograph has location-specific alternative text, a visible place
   label, a visible credit, and a link to the official source page.
+- The outgoing and incoming layers start with different assets, keep their own
+  synchronized metadata, and expose only the visible image to assistive
+  technology.
 - The rotation originals are at least 2,560 pixels wide (3,200 pixels for the
   Yellowstone panorama), are served at image quality `90`, and use explicit
   desktop/mobile focal points so the subject remains intentional when cropped.
-- The Jenny Lake trail image is a separate 2,000-by-1,500-pixel NPS original;
-  it is not reused as a generic Grand Teton rotation image.
+- Selected-trail originals range from 2,000 to 3,200 pixels wide and use
+  trail-specific desktop/mobile focal points. The Jenny Lake trail image remains
+  separate from the generic Grand Teton rotation image.

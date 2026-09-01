@@ -344,7 +344,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Overall alerts: Rain / wet trail; Cold / snow.
+  - Overall alerts: Rain / wet trail; Cold and snow.
 - Jenny Lake Loop / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
@@ -394,7 +394,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Overall alerts: Rain / wet trail; Cold / snow.
+  - Overall alerts: Rain / wet trail; Cold and snow.
 - String Lake Loop / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
@@ -446,7 +446,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
   - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Rain / wet trail; Cold / snow; Unusual duration; Closed route or area.
+  - Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
@@ -583,7 +583,7 @@ Intent: Stress traction, footwear, socks, layer placement, and non-summer wordin
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
-Trip alerts: Rain / wet trail; Cold / snow.
+Trip alerts: Rain / wet trail; Cold and snow.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
@@ -609,7 +609,7 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Overall alerts: Rain / wet trail; Cold / snow.
+- Middle: Overall alerts: Rain / wet trail; Cold and snow.
 
 ### Hot, exposed long day
 
@@ -892,7 +892,7 @@ Intent: Stress traction, footwear, socks, layer placement, and non-summer wordin
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
-Trip alerts: Rain / wet trail; Cold / snow.
+Trip alerts: Rain / wet trail; Cold and snow.
 
 Key outputs:
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
@@ -918,7 +918,7 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Overall alerts: Rain / wet trail; Cold / snow.
+- Middle: Overall alerts: Rain / wet trail; Cold and snow.
 
 ### Hot, exposed long day
 
@@ -1220,7 +1220,7 @@ Intent: Stress traction, footwear, socks, layer placement, and non-summer wordin
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
-Trip alerts: Rain / wet trail; Cold / snow; Unusual duration; Closed route or area.
+Trip alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
 
 Key outputs:
 - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
@@ -1254,7 +1254,7 @@ Hiker lens read:
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
 - Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Rain / wet trail; Cold / snow; Unusual duration; Closed route or area.
+- Middle: Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### Hot, exposed long day

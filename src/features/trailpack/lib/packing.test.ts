@@ -350,6 +350,50 @@ describe("trail-condition rules", () => {
   });
 });
 
+describe("forecast cold and snow alerts", () => {
+  it("does not imply snow when the forecast only reports cold", () => {
+    const rec = build({}, {
+      ...CLEAR_WEATHER,
+      summary: "Cold morning with a mild afternoon.",
+      temperatureF: { high: 45, low: 28, current: 31 },
+      conditions: ["cold"],
+    });
+
+    const alert = rec.tripAlerts.find((item) => item.id === "cold");
+    expect(alert?.title).toBe("Cold conditions");
+    expect(alert?.affectedBy).toEqual(["Weather", "Cold"]);
+    expect(alert?.summary).not.toMatch(/snow|ice|traction/i);
+    expect(rec.tripAlerts.some((item) => item.id === "cold-snow")).toBe(false);
+  });
+
+  it("shows snow only when the forecast explicitly reports snow", () => {
+    const rec = build({}, {
+      ...CLEAR_WEATHER,
+      summary: "Snow showers are possible in the afternoon.",
+      conditions: ["snow"],
+    });
+
+    const alert = rec.tripAlerts.find((item) => item.id === "snow-ice");
+    expect(alert?.title).toBe("Snow conditions");
+    expect(alert?.summary).toMatch(/forecast explicitly includes snow/i);
+    expect(rec.tripAlerts.some((item) => item.id === "cold-snow")).toBe(false);
+  });
+
+  it("combines cold and snow only when both forecast signals are present", () => {
+    const rec = build({}, {
+      ...CLEAR_WEATHER,
+      summary: "Cold with snow showers.",
+      conditions: ["cold", "snow"],
+    });
+
+    const alert = rec.tripAlerts.find((item) => item.id === "cold-snow");
+    expect(alert?.title).toBe("Cold and snow");
+    expect(alert?.affectedBy).toEqual(["Weather", "Cold", "Snow/Ice"]);
+    expect(rec.tripAlerts.some((item) => item.id === "cold")).toBe(false);
+    expect(rec.tripAlerts.some((item) => item.id === "snow-ice")).toBe(false);
+  });
+});
+
 describe("condition negation", () => {
   it("does not trigger for negated snow/ice phrases", () => {
     for (const phrase of ["no snow or ice", "not icy", "no snow", "without ice"]) {
@@ -1026,6 +1070,36 @@ describe("source provenance", () => {
 
     expect(decision.recommendation).toMatch(/Do not start the closed route/i);
     expect(decision.why).toMatch(/A closure is a trip decision/i);
+    expect(names(rec.essential)).toContain("Review active alerts before leaving");
+  });
+
+  it("keeps every active alert visible when a critical decision condenses the list", () => {
+    const alerts: AlertContext = {
+      hasActiveAlerts: true,
+      alerts: [
+        {
+          title: "Trail closure near Hidden Falls",
+          description: "Section closed for maintenance.",
+          severity: "closure",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+        },
+        {
+          title: "Bear activity near the lakeshore",
+          description: "Use extra caution and keep food secured.",
+          severity: "caution",
+          source: "NPS",
+          sourceUrl: "https://www.nps.gov/grte/planyourvisit/bearsafety.htm",
+        },
+      ],
+      label: "official",
+    };
+
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, alerts, {});
+    const overallAlert = rec.tripAlerts.find((item) => item.id === "active-alerts");
+
+    expect(overallAlert?.summary).toContain("Trail closure near Hidden Falls");
+    expect(overallAlert?.summary).toContain("Bear activity near the lakeshore");
     expect(names(rec.essential)).toContain("Review active alerts before leaving");
   });
 

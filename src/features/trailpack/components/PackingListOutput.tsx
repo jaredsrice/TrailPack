@@ -1,8 +1,15 @@
 import type {
+  AlertContext,
   PackingItem,
   PackingRecommendation,
   TripAlert,
+  WeatherContext,
 } from "@/features/trailpack/types";
+import {
+  packingItemBasis,
+  tripAlertBasis,
+  type RecommendationBasisContext,
+} from "@/features/trailpack/lib/recommendation-basis";
 import { SourceBadge } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 
@@ -42,10 +49,15 @@ const CRITICAL_SAFETY_ITEM_ORDER = new Map([
 
 export function PackingListOutput({
   recommendation,
+  weather,
+  alerts,
 }: {
   recommendation: PackingRecommendation;
+  weather?: WeatherContext;
+  alerts?: AlertContext;
 }) {
   const groups = groupRecommendationItems(recommendation);
+  const basisContext = { weather, alerts };
 
   return (
     <section
@@ -82,7 +94,10 @@ export function PackingListOutput({
         </p>
       </div>
 
-      <TripAlerts alerts={recommendation.tripAlerts} />
+      <TripAlerts
+        alerts={recommendation.tripAlerts}
+        basisContext={basisContext}
+      />
 
       <div className="packing-groups">
         {groups.map((group) => (
@@ -90,27 +105,22 @@ export function PackingListOutput({
             key={group.title}
             title={group.title}
             items={group.items}
+            basisContext={basisContext}
           />
         ))}
       </div>
 
-      {recommendation.missingDetails.length > 0 ? (
-        <div className="packing-missing-details">
-          <h3>
-            Missing details that could improve this list
-          </h3>
-          <ul>
-            {recommendation.missingDetails.map((detail) => (
-              <li key={detail}>{detail}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </section>
   );
 }
 
-function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
+function TripAlerts({
+  alerts,
+  basisContext,
+}: {
+  alerts: TripAlert[];
+  basisContext: RecommendationBasisContext;
+}) {
   if (alerts.length === 0) {
     return null;
   }
@@ -135,15 +145,10 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
             <div className="trip-alert-title">
               <TrailPackIcon name="alert" className="h-4 w-4" />
               <p className="text-sm font-semibold">{alert.title}</p>
-              {alert.affectedBy.map((tag) => (
-                <ContextChip key={`${alert.id}-${tag}`} label={tag} />
-              ))}
             </div>
             <p className="trip-alert-summary">{alert.summary}</p>
-            <div className="trip-alert-sources">
-              {alert.sourceLabels.map((label) => (
-                <SourceBadge key={`${alert.id}-${label}`} label={label} />
-              ))}
+            <div className="trip-alert-source-line">
+              <span>{tripAlertBasis(alert, basisContext)}</span>
               {alert.sourceUrl ? (
                 <a
                   href={alert.sourceUrl}
@@ -151,7 +156,7 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
                   rel="noreferrer"
                   className="source-link"
                 >
-                  Source
+                  View official alert
                 </a>
               ) : null}
             </div>
@@ -165,9 +170,11 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
 function RecommendationGroup({
   title,
   items,
+  basisContext,
 }: {
   title: GroupTitle;
   items: PrioritizedItem[];
+  basisContext: RecommendationBasisContext;
 }) {
   if (items.length === 0) {
     return null;
@@ -183,16 +190,27 @@ function RecommendationGroup({
       </div>
       <ul className="packing-item-list">
         {items.map((item) => (
-          <RecommendationRow key={`${item.priority}-${item.name}`} item={item} />
+          <RecommendationRow
+            key={`${item.priority}-${item.name}`}
+            item={item}
+            basisContext={basisContext}
+          />
         ))}
       </ul>
     </section>
   );
 }
 
-function RecommendationRow({ item }: { item: PrioritizedItem }) {
+function RecommendationRow({
+  item,
+  basisContext,
+}: {
+  item: PrioritizedItem;
+  basisContext: RecommendationBasisContext;
+}) {
   const rowClassName = recommendationRowClassName(item);
   const accentClassName = recommendationAccentClassName(item);
+  const isCriticalSafety = groupForItem(item.name) === "Critical Safety";
 
   return (
     <li>
@@ -209,23 +227,25 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-semibold text-slate-950">{item.name}</p>
-                <PriorityBadge priority={item.priority} />
+                {!isCriticalSafety ? <PriorityBadge priority={item.priority} /> : null}
                 {item.criticalKind === "trip-decision" ? (
                   <StatusBadge tone="danger" label="Change plan" />
                 ) : null}
                 {item.criticalKind === "safety-critical" ? (
                   <StatusBadge tone="critical" label="Safety-critical" />
                 ) : null}
-                {item.alertImpactTags.length > 0 ? (
+                {!isCriticalSafety && item.alertImpactTags.length > 0 ? (
                   <StatusBadge tone="alert" label="Alert changes this" />
                 ) : null}
-                {item.affectedBy?.map((tag) => (
-                  <ContextChip
-                    key={`${item.name}-${tag}`}
-                    label={tag}
-                    active={item.alertImpactTags.includes(tag)}
-                  />
-                ))}
+                {!isCriticalSafety
+                  ? item.affectedBy?.map((tag) => (
+                      <ContextChip
+                        key={`${item.name}-${tag}`}
+                        label={tag}
+                        active={item.alertImpactTags.includes(tag)}
+                      />
+                    ))
+                  : null}
               </div>
               <p className="packing-item-recommendation">
                 {item.recommendation}
@@ -234,6 +254,10 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
           </div>
         </summary>
         <div className="packing-item-details">
+          <div className="packing-item-basis">
+            <p className="packing-detail-label">Basis</p>
+            <p>{packingItemBasis(item, basisContext)}</p>
+          </div>
           <div>
             <p className="packing-detail-label">
               Why
@@ -258,9 +282,15 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
           ) : null}
 
           <div className="packing-item-sources">
-            {item.sourceLabels.map((label) => (
-              <SourceBadge key={`${item.name}-${label}`} label={label} />
-            ))}
+            {isCriticalSafety ? (
+              <span className="packing-source-summary">
+                {item.sourceLabels.map(sourceLabelSummary).join(" · ")}
+              </span>
+            ) : (
+              item.sourceLabels.map((label) => (
+                <SourceBadge key={`${item.name}-${label}`} label={label} />
+              ))
+            )}
             {item.links?.map((link) => (
               <a
                 key={`${item.name}-${link.url}`}
@@ -279,7 +309,7 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
                 rel="noreferrer"
                 className="source-link"
               >
-                Source
+                {isCriticalSafety ? "View source" : "Source"}
               </a>
             ) : null}
           </div>
@@ -400,8 +430,19 @@ function groupRecommendationItems(recommendation: PackingRecommendation): Array<
       prioritizeItem(item, "Optional", activeAlertTags),
     ),
   ];
+  const hasAlertBackedTripDecision = prioritized.some(
+    (item) =>
+      item.criticalKind === "trip-decision" &&
+      item.affectedBy?.includes("Official alert"),
+  );
 
   for (const item of prioritized) {
+    if (
+      hasAlertBackedTripDecision &&
+      item.name === "Review active alerts before leaving"
+    ) {
+      continue;
+    }
     grouped.get(groupForItem(item.name))?.push(item);
   }
 
@@ -544,4 +585,30 @@ function alertClassName(severity: TripAlert["severity"]): string {
   }
 
   return "border-slate-200 bg-white text-slate-800";
+}
+
+function sourceLabelSummary(
+  label: PackingItem["sourceLabels"][number],
+): string {
+  switch (label) {
+    case "supported-profile":
+    case "public-source-import":
+      return "Verified trail profile";
+    case "user-provided":
+      return "Your trip details";
+    case "forecast-based":
+      return "Forecast guidance";
+    case "daylight":
+      return "Daylight timing";
+    case "official":
+      return "Official guidance";
+    case "inferred":
+      return "TrailPack interpretation";
+    case "missing":
+      return "Missing detail";
+    case "unavailable":
+      return "Source unavailable";
+    case "future-work":
+      return "Future work";
+  }
 }

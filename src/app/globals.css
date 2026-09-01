@@ -417,6 +417,11 @@ a {
   background: rgb(6 38 34 / 0.9);
 }
 
+.park-photo-control:disabled {
+  cursor: default;
+  opacity: 0.82;
+}
+
 .park-photo-control-icon {
   width: 16px;
   height: 16px;
@@ -476,8 +481,8 @@ a {
 
 .park-photo-dots button {
   position: relative;
-  width: 23px;
-  height: 24px;
+  width: 32px;
+  height: 44px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -485,7 +490,10 @@ a {
 
 .park-photo-dots button::before {
   position: absolute;
-  inset: 11px 4px;
+  right: 4px;
+  bottom: 9px;
+  left: 4px;
+  height: 2px;
   content: "";
   background: rgb(255 255 255 / 0.36);
   transition: background 200ms ease;
@@ -835,7 +843,7 @@ a {
 
 .source-confidence-details,
 .forecast-details,
-.ai-explanation-details {
+.ai-review-details {
   margin-top: 20px;
   background: rgb(243 248 247 / 0.62);
   border: 1px solid var(--line);
@@ -844,7 +852,7 @@ a {
 
 .source-confidence-details > summary,
 .forecast-details > summary,
-.ai-explanation-details > summary {
+.ai-review-details > summary {
   min-height: 56px;
   display: flex;
   align-items: center;
@@ -857,7 +865,7 @@ a {
 
 .source-confidence-details > summary::-webkit-details-marker,
 .forecast-details > summary::-webkit-details-marker,
-.ai-explanation-details > summary::-webkit-details-marker,
+.ai-review-details > summary::-webkit-details-marker,
 .packing-item > summary::-webkit-details-marker {
   display: none;
 }
@@ -975,12 +983,31 @@ a {
 
 .retrieval-pill {
   flex: 0 0 auto;
-  padding: 5px 8px;
-  color: #49676d;
-  font-size: 0.65rem;
-  background: #e3efed;
-  border: 1px solid #b7ceca;
+  padding: 5px 9px;
+  color: #3f585d;
+  font-size: 0.68rem;
+  font-weight: 680;
+  background: #e0e9e8;
+  border: 1px solid #9bafad;
   border-radius: 999px;
+}
+
+.context-card:first-child .retrieval-pill[data-retrieval-status="live"] {
+  color: #174f70;
+  background: #d3e7f2;
+  border-color: #759eb6;
+}
+
+.context-card:nth-child(2) .retrieval-pill[data-retrieval-status="live"] {
+  color: #174d38;
+  background: #d6eadf;
+  border-color: #79a58e;
+}
+
+.retrieval-pill[data-retrieval-status="saved-fixture"] {
+  color: #754316;
+  background: #f4e2c7;
+  border-color: #c69a5f;
 }
 
 .context-summary {
@@ -1001,7 +1028,6 @@ a {
 }
 
 .context-badges,
-.trip-alert-sources,
 .packing-item-sources {
   margin-top: 14px;
   display: flex;
@@ -1010,13 +1036,39 @@ a {
   gap: 7px;
 }
 
+.packing-source-summary {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
 .context-detail-pill {
   padding: 3px 7px;
-  color: #49676d;
+  color: #2a535e;
   font-size: 0.67rem;
-  background: #e8f2f0;
-  border: 1px solid #b8cfcc;
+  font-weight: 560;
+  background: #dce9e9;
+  border: 1px solid #8badb0;
   border-radius: 999px;
+}
+
+.context-card .source-badge {
+  color: #0d5c7c;
+  font-weight: 680;
+  background: #d5edf8;
+  border-color: #5e9ebd;
+}
+
+.context-card:nth-child(2) .source-badge {
+  color: #115c3b;
+  background: #d5efdf;
+  border-color: #65a782;
+}
+
+.context-card:nth-child(2) .context-detail-pill {
+  color: #2b5247;
+  background: #dce9e4;
+  border-color: #8aaca0;
 }
 
 .forecast-details {
@@ -1341,6 +1393,16 @@ a {
   line-height: 1.55;
 }
 
+.trip-alert-source-line {
+  margin-top: 9px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  color: #6f5a44;
+  font-size: 0.68rem;
+}
+
 .packing-groups {
   margin-top: 30px;
   display: grid;
@@ -1455,9 +1517,15 @@ a {
 }
 
 .packing-detail-label {
-  color: #59747a;
+  color: var(--ink-soft);
   font-size: 0.68rem;
   font-weight: 700;
+}
+
+.packing-item-basis {
+  margin-bottom: 13px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgb(166 190 189 / 0.55);
 }
 
 .packing-context-notes {
@@ -1472,134 +1540,74 @@ a {
   border: 1px solid var(--line-soft);
 }
 
-.packing-missing-details {
-  margin-top: 28px;
-  padding: 16px 18px;
-  color: #744417;
-  background: var(--sunrise-soft);
-  border: 1px solid #ddb579;
-}
-
-.packing-missing-details h3 {
-  margin: 0;
-  font-size: 0.8rem;
-}
-
-.packing-missing-details ul {
-  margin: 8px 0 0;
-  padding-left: 18px;
-  font-size: 0.77rem;
-  line-height: 1.5;
-}
-
-.ai-status-badge {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  font-size: 0.69rem;
-  font-weight: 700;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-}
-
-.ai-status-panel {
+.ai-review-summary-card {
   margin-top: 21px;
-  padding: 13px 15px;
+  padding: 16px 17px;
   border-width: 1px;
   border-style: solid;
   border-radius: 6px;
 }
 
-.ai-action-row {
-  margin-top: 16px;
+.ai-review-label {
+  margin: 0 0 7px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 13px;
-}
-
-.ai-action-row > p {
-  max-width: 590px;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.7rem;
-  line-height: 1.5;
-}
-
-.ai-review-button {
-  min-height: 44px;
-  padding: 10px 15px;
-  color: #f5fbf9;
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: var(--evergreen);
-  border-radius: 6px;
-  transition: background 160ms ease;
-}
-
-.ai-review-button:hover {
-  background: var(--evergreen-2);
-}
-
-.ai-review-button:disabled {
-  cursor: wait;
-  opacity: 0.58;
+  gap: 6px;
+  font-size: 0.69rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .ai-trip-summary {
-  margin: 17px 0 0;
-  padding: 13px 15px;
-  color: #35565c;
+  margin: 0;
   font-size: 0.8rem;
+  font-weight: 600;
   line-height: 1.55;
-  background: rgb(243 248 247 / 0.56);
-  border: 1px solid #abc3c1;
 }
 
-.ai-review-grid {
-  margin-top: 22px;
+.ai-review-status-copy {
+  margin: 7px 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  opacity: 0.82;
+}
+
+.ai-review-details {
+  background: rgb(243 248 247 / 0.5);
+}
+
+.ai-review-details > summary {
+  color: var(--evergreen);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ai-review-details-body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
+  padding: 16px 18px 18px;
+  color: #45656b;
+  border-top: 1px solid var(--line-soft);
 }
 
-.ai-review-grid h3 {
+.ai-review-details-body h3 {
   margin: 0;
   color: var(--evergreen);
   font-size: 0.8rem;
 }
 
-.ai-review-grid p,
-.ai-review-grid ul {
+.ai-review-details-body p,
+.ai-review-details-body ul {
   margin-top: 8px;
   color: var(--ink-soft);
   font-size: 0.76rem;
   line-height: 1.55;
 }
 
-.ai-review-grid ul {
+.ai-review-details-body ul {
   padding-left: 18px;
-}
-
-.ai-explanation-details {
-  background: rgb(243 248 247 / 0.5);
-}
-
-.ai-explanation-details > summary {
-  color: var(--evergreen);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.ai-explanation-details > ul {
-  margin: 0;
-  padding: 14px 18px 18px 36px;
-  color: #45656b;
-  font-size: 0.76rem;
-  line-height: 1.5;
-  border-top: 1px solid var(--line-soft);
 }
 
 .site-footer {
@@ -1685,7 +1693,7 @@ a {
 
   .trip-detail-grid,
   .plan-generation-section,
-  .ai-review-grid {
+  .ai-review-details-body {
     grid-template-columns: 1fr;
   }
 

@@ -84,6 +84,19 @@ function asFetch(response: Response): typeof fetch {
   return vi.fn(async () => response) as unknown as typeof fetch;
 }
 
+function oversizedResponse(onCancel: () => void): Response {
+  return new Response(
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("x".repeat(257_000)));
+      },
+      cancel() {
+        onCancel();
+      },
+    }),
+  );
+}
+
 describe("live AI review client", () => {
   it("posts the structured contract and accepts a validated live result", async () => {
     const fetchImpl = asFetch(
@@ -178,6 +191,19 @@ describe("live AI review client", () => {
         fetchImpl,
       }),
     ).rejects.not.toThrow(/private route detail/i);
+  });
+
+  it("bounds successful route bodies and retains the generic client error", async () => {
+    let cancelled = false;
+    const fetchImpl = asFetch(oversizedResponse(() => { cancelled = true; }));
+
+    await expect(
+      requestLiveAiReviewFromRoute(INPUT, {
+        generationId: GENERATION_ID,
+        fetchImpl,
+      }),
+    ).rejects.toThrow("TrailPack could not complete the live AI review.");
+    expect(cancelled).toBe(true);
   });
 
   it("rejects an invalid generation id before making a request", async () => {

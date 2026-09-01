@@ -48,6 +48,9 @@ jobs:
       - name: Run deterministic stress scenarios
         run: npm run scenario:stress
 
+      - name: Run fixed-seed system stress
+        run: npm run stress:system
+
       - name: Confirm generated evidence is current
         run: git diff --exit-code
 

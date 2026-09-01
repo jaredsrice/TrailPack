@@ -13,7 +13,8 @@ describe("context status summaries", () => {
     expect(status.weather.summary).toMatch(/Partly sunny/);
     expect(status.weather.details).toContain("Civil twilight ends 9:42 PM");
     expect(status.weather.notice).toMatch(/deterministic TrailPack testing/);
-    expect(status.alerts.status).toBe("No active alerts in saved fixture");
+    expect(status.alerts.status).toBe("Live NPS alerts unavailable");
+    expect(status.alerts.summary).toMatch(/could not be evaluated from live NPS data/i);
     expect(status.alerts.details).toEqual([]);
   });
 
