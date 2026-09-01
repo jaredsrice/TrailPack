@@ -94,18 +94,6 @@ export function PackingListOutput({
         ))}
       </div>
 
-      {recommendation.missingDetails.length > 0 ? (
-        <div className="packing-missing-details">
-          <h3>
-            Missing details that could improve this list
-          </h3>
-          <ul>
-            {recommendation.missingDetails.map((detail) => (
-              <li key={detail}>{detail}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </section>
   );
 }
@@ -135,15 +123,10 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
             <div className="trip-alert-title">
               <TrailPackIcon name="alert" className="h-4 w-4" />
               <p className="text-sm font-semibold">{alert.title}</p>
-              {alert.affectedBy.map((tag) => (
-                <ContextChip key={`${alert.id}-${tag}`} label={tag} />
-              ))}
             </div>
             <p className="trip-alert-summary">{alert.summary}</p>
-            <div className="trip-alert-sources">
-              {alert.sourceLabels.map((label) => (
-                <SourceBadge key={`${alert.id}-${label}`} label={label} />
-              ))}
+            <div className="trip-alert-source-line">
+              <span>{alertSourceSummary(alert)}</span>
               {alert.sourceUrl ? (
                 <a
                   href={alert.sourceUrl}
@@ -151,7 +134,7 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
                   rel="noreferrer"
                   className="source-link"
                 >
-                  Source
+                  View official alert
                 </a>
               ) : null}
             </div>
@@ -193,6 +176,7 @@ function RecommendationGroup({
 function RecommendationRow({ item }: { item: PrioritizedItem }) {
   const rowClassName = recommendationRowClassName(item);
   const accentClassName = recommendationAccentClassName(item);
+  const isCriticalSafety = groupForItem(item.name) === "Critical Safety";
 
   return (
     <li>
@@ -209,23 +193,25 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-semibold text-slate-950">{item.name}</p>
-                <PriorityBadge priority={item.priority} />
+                {!isCriticalSafety ? <PriorityBadge priority={item.priority} /> : null}
                 {item.criticalKind === "trip-decision" ? (
                   <StatusBadge tone="danger" label="Change plan" />
                 ) : null}
                 {item.criticalKind === "safety-critical" ? (
                   <StatusBadge tone="critical" label="Safety-critical" />
                 ) : null}
-                {item.alertImpactTags.length > 0 ? (
+                {!isCriticalSafety && item.alertImpactTags.length > 0 ? (
                   <StatusBadge tone="alert" label="Alert changes this" />
                 ) : null}
-                {item.affectedBy?.map((tag) => (
-                  <ContextChip
-                    key={`${item.name}-${tag}`}
-                    label={tag}
-                    active={item.alertImpactTags.includes(tag)}
-                  />
-                ))}
+                {!isCriticalSafety
+                  ? item.affectedBy?.map((tag) => (
+                      <ContextChip
+                        key={`${item.name}-${tag}`}
+                        label={tag}
+                        active={item.alertImpactTags.includes(tag)}
+                      />
+                    ))
+                  : null}
               </div>
               <p className="packing-item-recommendation">
                 {item.recommendation}
@@ -400,8 +386,19 @@ function groupRecommendationItems(recommendation: PackingRecommendation): Array<
       prioritizeItem(item, "Optional", activeAlertTags),
     ),
   ];
+  const hasAlertBackedTripDecision = prioritized.some(
+    (item) =>
+      item.criticalKind === "trip-decision" &&
+      item.affectedBy?.includes("Official alert"),
+  );
 
   for (const item of prioritized) {
+    if (
+      hasAlertBackedTripDecision &&
+      item.name === "Review active alerts before leaving"
+    ) {
+      continue;
+    }
     grouped.get(groupForItem(item.name))?.push(item);
   }
 
@@ -544,4 +541,20 @@ function alertClassName(severity: TripAlert["severity"]): string {
   }
 
   return "border-slate-200 bg-white text-slate-800";
+}
+
+function alertSourceSummary(alert: TripAlert): string {
+  if (alert.sourceLabels.includes("official")) {
+    return "Official NPS alert";
+  }
+
+  if (alert.sourceLabels.includes("forecast-based")) {
+    return "Forecast guidance";
+  }
+
+  if (alert.sourceLabels.includes("user-provided")) {
+    return "Based on your trip details";
+  }
+
+  return "TrailPack guidance";
 }

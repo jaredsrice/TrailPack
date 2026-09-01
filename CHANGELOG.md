@@ -32,6 +32,17 @@ corrections within that milestone.
   focal points for all five supported trails.
 - Reduced-motion mode now exposes the carousel as paused, disables its automatic
   motion control, and keeps previous, next, and direct selectors available.
+- Forecast alerts now keep cold and snow separate unless both signals are
+  explicitly present. Alert cards no longer display category chips that resemble
+  inactive filters, while official source links remain visible.
+- Critical Safety rows now show only the one status that changes the hiker's
+  action. An alert-backed trip decision replaces the duplicate generic alert row
+  in the rendered list without removing its underlying source data.
+- The bottom review is now a concise guest-ready plan check. Missing details and
+  review limits sit behind one optional disclosure, while validation payloads and
+  per-item explanation drafts are no longer exposed as user interface content.
+- Saving now reads as an optional follow-up instead of an account gate; the saved
+  data explanation is available under a compact disclosure.
 - The monthly NPS refresh validates repository code with read-only permissions
   and publishes only the validated JSON artifact from an isolated write-scoped
   job that does not install dependencies or execute repository scripts.
@@ -53,6 +64,8 @@ corrections within that milestone.
 - Started the two initial carousel layers with different photos, removing the
   development warning caused by prioritizing the same asset twice, and hid the
   inactive image from assistive technology.
+- Removed repeated fallback and sign-in messaging that made the standard guest
+  review look unavailable even though the deterministic plan check had completed.
 
 ### Security
 
@@ -77,7 +90,7 @@ corrections within that milestone.
   50-request unique workload stayed at 5.708 ms p95, and aggregate API heap
   growth stayed below 13 MB.
 - Focused API checks passed 132 tests and the focused security group passed 54
-  tests. The final full suite passed 345 tests across 33 files; lint and type
+  tests. The final full suite passed 349 tests across 33 files; lint and type
   checking also passed.
 - All five selected-trail photos were visually checked at approximately 1280,
   768, and 390 pixels with clear subjects, correct credits, and no horizontal

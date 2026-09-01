@@ -19,7 +19,7 @@ silently change the packing decisions or their sources.
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
 | Active track | Bug-focused stress, boundary, and browser hardening |
 | Supported catalog | Five manually verified Grand Teton day hikes |
-| Guest workflow | Fully available without an account |
+| Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
 lifecycle, fresh account chooser, and a real two-account production walkthrough
@@ -40,8 +40,9 @@ distinct generated lists per account per hour.
    reported conditions.
 5. Select **Generate packing list** to snapshot those inputs and create
    essential and optional recommendations with visible rationale and provenance.
-6. For signed-in hikers, that same action requests one guarded Gemini review of
-   the explanation. Editing fields does not spend the allowance; **Update
+6. Every generated list includes a concise deterministic plan review without an
+   account. For signed-in hikers, that same action also requests one guarded
+   Gemini wording check. Editing fields does not spend the allowance; **Update
    packing list** explicitly generates a new snapshot and review. The rule-based
    packing list remains authoritative.
 

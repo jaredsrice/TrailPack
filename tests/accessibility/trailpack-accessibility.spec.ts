@@ -372,9 +372,37 @@ test("one generated packing list requests one guarded review", async ({
     (button as HTMLButtonElement).click();
   });
 
-  await expect(page.getByText("Sign in for live AI", { exact: true })).toBeVisible({
+  await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible({
     timeout: 10_000,
   });
+  const overallAlerts = page.locator(".trip-alerts");
+  await expect(overallAlerts.getByText("Weather", { exact: true })).toHaveCount(0);
+  await expect(overallAlerts.getByText("Wet", { exact: true })).toHaveCount(0);
+  await expect(overallAlerts.getByText("Official alert", { exact: true })).toHaveCount(0);
+
+  const criticalSafety = page
+    .getByRole("heading", { name: "Critical Safety" })
+    .locator("xpath=../..");
+  await expect(
+    criticalSafety.getByText("Trip safety decision", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    criticalSafety.getByText("Review active alerts before leaving", { exact: true }),
+  ).toHaveCount(0);
+  await expect(criticalSafety.getByText("Change plan", { exact: true })).toBeVisible();
+  await expect(criticalSafety.getByText("Essential", { exact: true })).toHaveCount(0);
+  await expect(criticalSafety.getByText("Critical danger", { exact: true })).toHaveCount(0);
+  await expect(criticalSafety.getByText("Closure", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Item explanation drafts", { exact: true })).toHaveCount(0);
+  const reviewDetails = page.getByText("Why and review details", { exact: true });
+  await expect(reviewDetails).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "What could improve this plan" }),
+  ).toBeHidden();
+  await reviewDetails.click();
+  await expect(
+    page.getByRole("heading", { name: "What could improve this plan" }),
+  ).toBeVisible();
   expect(reviewRequests).toBe(1);
   await expect(
     page.getByRole("button", { name: "Packing list is current" }),
@@ -395,7 +423,7 @@ for (const scenario of [
     name: "accepted",
     outcome: "accepted",
     status: 200,
-    badge: "Live review accepted",
+    badge: "Live review complete",
   },
   {
     name: "duplicate",
@@ -407,13 +435,13 @@ for (const scenario of [
     name: "provider quota",
     outcome: "quota-limited",
     status: 200,
-    badge: "Live quota unavailable",
+    badge: "Standard review ready",
   },
   {
     name: "account rate limit",
     outcome: "rate-limited",
     status: 429,
-    badge: "Hourly review limit reached",
+    badge: "Standard review ready",
   },
 ] as const) {
   test(`renders the mocked ${scenario.name} AI state without changing the packing list`, async ({
@@ -461,7 +489,10 @@ test("renders a generic AI failure without exposing the route body", async ({
   await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
   await page.getByRole("button", { name: "Generate packing list" }).click();
 
-  await expect(page.getByText("Live request failed", { exact: true })).toBeVisible();
+  await expect(page.getByText("Standard review ready", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(/optional live review was unavailable/i),
+  ).toBeVisible();
   await expect(page.getByText(/private mocked provider detail/i)).toHaveCount(0);
   await expect(
     page.getByRole("heading", { name: /Packing list for Jenny Lake Loop/i }),
@@ -502,10 +533,10 @@ test("a stalled AI browser request times out while the rule-based list remains",
   await page.goto("/");
   await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
   await page.getByRole("button", { name: "Generate packing list" }).click();
-  await expect(page.getByText("Checking live AI", { exact: true })).toBeVisible();
+  await expect(page.getByText("Checking plan", { exact: true })).toBeVisible();
 
   await page.clock.fastForward(30_000);
-  await expect(page.getByText("Live request failed", { exact: true })).toBeVisible();
+  await expect(page.getByText("Standard review ready", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /Packing list for Jenny Lake Loop/i }),
   ).toBeVisible();

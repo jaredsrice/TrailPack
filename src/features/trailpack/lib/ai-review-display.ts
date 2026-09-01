@@ -5,6 +5,7 @@ import type {
 
 export type AiReviewDisplayTone =
   | "accepted"
+  | "ready"
   | "fallback"
   | "loading"
   | "error";
@@ -28,105 +29,106 @@ export function getAiReviewPresentation({
 }): AiReviewPresentation {
   if (isLoading) {
     return {
-      badge: "Checking live AI",
+      badge: "Checking plan",
       description:
-        "TrailPack is checking a Gemini explanation against the existing rule-based list and safety guardrails.",
+        "TrailPack is checking the optional explanation. Your packing list is already available.",
       tone: "loading",
     };
   }
 
   if (requestError) {
     return {
-      badge: "Live request failed",
-      description: requestError,
-      tone: "error",
+      badge: "Standard review ready",
+      description:
+        "The optional live review was unavailable. Your packing list and standard review are ready to use.",
+      tone: "ready",
     };
   }
 
   switch (liveOutcome) {
     case "accepted":
       return {
-        badge: "Live review accepted",
+        badge: "Live review complete",
         description:
-          "The explanation passed TrailPack's schema, packing-item, source-label, trail-fact, and safety checks. The rule-based list remains unchanged.",
+          "The optional AI wording passed TrailPack's safety and source checks.",
         tone: "accepted",
       };
     case "rejected":
       return {
         badge: "Live review rejected",
         description:
-          "TrailPack discarded the provider text because it failed validation and replaced it with the deterministic template fallback. The rule-based list remains unchanged.",
+          "The AI wording did not pass TrailPack's checks, so the standard review is shown instead.",
         tone: "fallback",
       };
     case "timed-out":
       return {
-        badge: "Live review timed out",
+        badge: "Standard review ready",
         description:
-          "The provider did not finish within TrailPack's time limit, so the deterministic template fallback is shown and the rule-based list remains unchanged.",
-        tone: "fallback",
+          "The optional live review did not finish in time. Your packing list and standard review are ready.",
+        tone: "ready",
       };
     case "quota-limited":
       return {
-        badge: "Live quota unavailable",
+        badge: "Standard review ready",
         description:
-          "The provider could not accept this request, so the deterministic template fallback is shown and the rule-based list remains unchanged.",
-        tone: "fallback",
+          "The optional live provider could not accept this request. Your standard review is ready.",
+        tone: "ready",
       };
     case "rate-limited":
       return {
-        badge: "Hourly review limit reached",
+        badge: "Standard review ready",
         description:
-          "This account has reviewed five distinct generated packing lists in the current hour. TrailPack kept the deterministic rule-based list and explanation and will allow another live review after the window resets.",
-        tone: "fallback",
+          "Five optional live reviews have been used this hour. Your packing list and standard review still work.",
+        tone: "ready",
       };
     case "duplicate-generation":
       return {
         badge: "List already reviewed",
         description:
-          "TrailPack recognized this packing-list generation and did not spend another live review. The deterministic rule-based list remains available.",
-        tone: "fallback",
+          "TrailPack recognized this generated list and did not spend another optional live review.",
+        tone: "ready",
       };
     case "sign-in-required":
       return {
-        badge: "Sign in for live AI",
+        badge: "Guest review ready",
         description:
-          "TrailPack generated the rule-based list and deterministic explanation. Sign in with Google before generating the next list to add a validated live Gemini review.",
-        tone: "fallback",
+          "This one-time plan is complete without an account. Sign in only if you want an optional live AI wording check or a private saved copy.",
+        tone: "ready",
       };
     case "missing-key":
       return {
-        badge: "Live AI not configured",
+        badge: "Standard review ready",
         description:
-          "No Gemini key is available in this deployment. TrailPack made no provider request and kept the deterministic template fallback.",
-        tone: "fallback",
+          "The optional live provider is not configured here. Your standard review is ready.",
+        tone: "ready",
       };
     case "invalid-response":
       return {
         badge: "Invalid live response",
         description:
-          "The provider response did not match TrailPack's runtime contract, so it was discarded and replaced with the deterministic template fallback.",
+          "The AI wording did not match TrailPack's required format, so the standard review is shown instead.",
         tone: "fallback",
       };
     case "provider-error":
       return {
-        badge: "Live provider unavailable",
+        badge: "Standard review ready",
         description:
-          "The provider request failed without exposing upstream details. TrailPack kept the deterministic template fallback and rule-based list.",
-        tone: "fallback",
+          "The optional live provider was unavailable. Your packing list and standard review are ready.",
+        tone: "ready",
       };
     default:
       return reviewStatus === "accepted"
         ? {
-            badge: "Saved review accepted",
+            badge: "Review ready",
             description:
-              "This saved explanation fixture passed the same TrailPack guardrails used for live responses. Generating a list while signed in requests one live review when the provider and account allowance are available.",
+              "TrailPack checked the explanation against the current packing items and source labels.",
             tone: "accepted",
           }
         : {
-            badge: "Template fallback",
+            badge: "Standard review ready",
             description:
-              "No validated AI explanation is displayed. TrailPack is showing deterministic text derived from the unchanged rule-based list.",
-            tone: "fallback",
+              "TrailPack completed a deterministic review of the current packing plan.",
+            tone: "ready",
           };
   }
 }

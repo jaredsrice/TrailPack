@@ -761,9 +761,8 @@ export function TrailPackShell() {
                   : "Generate your packing list"}
               </h2>
               <p className="section-subtitle">
-                Editing trip details does not use the AI allowance. Each button
-                press creates one rule-based list and requests at most one
-                guarded review for that list.
+                Finish your trip details, then generate once. You can keep
+                editing before you update the list.
               </p>
             </div>
             <div className="plan-generation-action">

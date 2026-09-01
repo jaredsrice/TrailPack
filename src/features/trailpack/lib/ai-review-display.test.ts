@@ -14,25 +14,26 @@ describe("AI review display states", () => {
       isLoading: false,
     });
 
-    expect(saved.badge).toBe("Saved review accepted");
-    expect(live.badge).toBe("Live review accepted");
-    expect(live.description).toMatch(/rule-based list remains unchanged/i);
+    expect(saved.badge).toBe("Review ready");
+    expect(live.badge).toBe("Live review complete");
+    expect(live.description).toMatch(/safety and source checks/i);
   });
 
   it.each<{
     outcome: Exclude<LiveAiOutcome, "accepted">;
     badge: string;
+    tone: "fallback" | "ready";
   }>([
-    { outcome: "rejected", badge: "Live review rejected" },
-    { outcome: "timed-out", badge: "Live review timed out" },
-    { outcome: "quota-limited", badge: "Live quota unavailable" },
-    { outcome: "rate-limited", badge: "Hourly review limit reached" },
-    { outcome: "duplicate-generation", badge: "List already reviewed" },
-    { outcome: "sign-in-required", badge: "Sign in for live AI" },
-    { outcome: "missing-key", badge: "Live AI not configured" },
-    { outcome: "invalid-response", badge: "Invalid live response" },
-    { outcome: "provider-error", badge: "Live provider unavailable" },
-  ])("labels $outcome as a fallback state", ({ outcome, badge }) => {
+    { outcome: "rejected", badge: "Live review rejected", tone: "fallback" },
+    { outcome: "timed-out", badge: "Standard review ready", tone: "ready" },
+    { outcome: "quota-limited", badge: "Standard review ready", tone: "ready" },
+    { outcome: "rate-limited", badge: "Standard review ready", tone: "ready" },
+    { outcome: "duplicate-generation", badge: "List already reviewed", tone: "ready" },
+    { outcome: "sign-in-required", badge: "Guest review ready", tone: "ready" },
+    { outcome: "missing-key", badge: "Standard review ready", tone: "ready" },
+    { outcome: "invalid-response", badge: "Invalid live response", tone: "fallback" },
+    { outcome: "provider-error", badge: "Standard review ready", tone: "ready" },
+  ])("labels $outcome with a usable review state", ({ outcome, badge, tone }) => {
     const presentation = getAiReviewPresentation({
       reviewStatus: "fallback",
       liveOutcome: outcome,
@@ -40,8 +41,8 @@ describe("AI review display states", () => {
     });
 
     expect(presentation.badge).toBe(badge);
-    expect(presentation.tone).toBe("fallback");
-    expect(presentation.description).toMatch(/fallback|rule-based list/i);
+    expect(presentation.tone).toBe(tone);
+    expect(presentation.description).toMatch(/review|packing list|AI wording/i);
   });
 
   it("gives loading and request failure their own understandable states", () => {
@@ -50,7 +51,7 @@ describe("AI review display states", () => {
         reviewStatus: "accepted",
         isLoading: true,
       }).badge,
-    ).toBe("Checking live AI");
+    ).toBe("Checking plan");
 
     expect(
       getAiReviewPresentation({
@@ -59,9 +60,8 @@ describe("AI review display states", () => {
         requestError: "A safe generic message.",
       }),
     ).toMatchObject({
-      badge: "Live request failed",
-      description: "A safe generic message.",
-      tone: "error",
+      badge: "Standard review ready",
+      tone: "ready",
     });
   });
 });
