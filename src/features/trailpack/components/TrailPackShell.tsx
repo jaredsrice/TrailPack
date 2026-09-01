@@ -54,8 +54,11 @@ const QUICK_START_TRAIL_IDS = [
 ] as const;
 
 const AI_REVIEW_CLIENT_TIMEOUT_MS = 30_000;
-const ALERT_REQUEST_TIMEOUT_MS = 12_000;
+const ALERT_REQUEST_TIMEOUT_MS = 6_000;
+const ALERT_RETRY_DELAY_MS = 1_500;
 const WEATHER_REQUEST_TIMEOUT_MS = 20_000;
+const ALERT_FALLBACK_NOTICE =
+  "Check current NPS alerts directly before leaving.";
 
 type LiveAiUiState =
   | { status: "idle" }
@@ -78,7 +81,7 @@ type WeatherUiState =
 type AlertUiState =
   | { status: "idle" }
   | {
-      status: "loading" | "ready";
+      status: "loading" | "retrying" | "ready";
       requestKey: string;
       alerts: AlertContext;
     };
@@ -142,6 +145,44 @@ function sameUserHikeInput(
     left.distanceMiles === right.distanceMiles &&
     left.elevationGainFeet === right.elevationGainFeet &&
     left.routeType === right.routeType
+  );
+}
+
+function buildUnavailableAlertContext(
+  savedAlerts: AlertContext,
+  receivedAlerts?: AlertContext,
+): AlertContext {
+  return {
+    ...savedAlerts,
+    ...receivedAlerts,
+    hasActiveAlerts: false,
+    alerts: [],
+    label: "unavailable",
+    retrievalStatus:
+      receivedAlerts?.retrievalStatus === "unavailable"
+        ? "unavailable"
+        : "saved-fixture",
+    statusReason: ALERT_FALLBACK_NOTICE,
+  };
+}
+
+function sameAlertSnapshot(left: AlertContext, right: AlertContext): boolean {
+  return (
+    left.retrievalStatus === right.retrievalStatus &&
+    left.label === right.label &&
+    left.hasActiveAlerts === right.hasActiveAlerts &&
+    left.alerts.length === right.alerts.length &&
+    left.alerts.every((alert, index) => {
+      const other = right.alerts[index];
+      return (
+        other !== undefined &&
+        alert.title === other.title &&
+        alert.description === other.description &&
+        alert.severity === other.severity &&
+        alert.source === other.source &&
+        alert.sourceUrl === other.sourceUrl
+      );
+    })
   );
 }
 
@@ -270,6 +311,9 @@ export function TrailPackShell() {
     alertRequestKey &&
       (!hasCurrentAlertState || alertState.status === "loading"),
   );
+  const isAlertRetrying = Boolean(
+    hasCurrentAlertState && alertState.status === "retrying",
+  );
 
   useEffect(() => {
     if (!alertRequestKey || !selectedTrail || !savedAlerts) {
@@ -277,10 +321,13 @@ export function TrailPackShell() {
       return;
     }
 
-    const controller = new AbortController();
+    const initialController = new AbortController();
+    let retryController: AbortController | null = null;
     let active = true;
-    const timeoutId = window.setTimeout(
-      () => controller.abort(),
+    let retryDelayId: number | null = null;
+    let retryTimeoutId: number | null = null;
+    const initialTimeoutId = window.setTimeout(
+      () => initialController.abort(),
       ALERT_REQUEST_TIMEOUT_MS,
     );
 
@@ -290,9 +337,78 @@ export function TrailPackShell() {
       alerts: savedAlerts,
     });
 
-    void requestTrailAlerts(selectedTrail.id, { signal: controller.signal })
+    const retryInBackground = (receivedAlerts?: AlertContext) => {
+      if (!active) {
+        return;
+      }
+
+      const fallbackAlerts = buildUnavailableAlertContext(
+        savedAlerts,
+        receivedAlerts,
+      );
+      setAlertState({
+        status: "retrying",
+        requestKey: alertRequestKey,
+        alerts: fallbackAlerts,
+      });
+
+      retryDelayId = window.setTimeout(() => {
+        if (!active) {
+          return;
+        }
+
+        retryController = new AbortController();
+        retryTimeoutId = window.setTimeout(
+          () => retryController?.abort(),
+          ALERT_REQUEST_TIMEOUT_MS,
+        );
+
+        void requestTrailAlerts(selectedTrail.id, {
+          signal: retryController.signal,
+        })
+          .then((retryAlerts) => {
+            if (!active) {
+              return;
+            }
+
+            setAlertState({
+              status: "ready",
+              requestKey: alertRequestKey,
+              alerts:
+                retryAlerts.retrievalStatus === "live"
+                  ? retryAlerts
+                  : buildUnavailableAlertContext(savedAlerts, retryAlerts),
+            });
+          })
+          .catch(() => {
+            if (!active) {
+              return;
+            }
+
+            setAlertState({
+              status: "ready",
+              requestKey: alertRequestKey,
+              alerts: fallbackAlerts,
+            });
+          })
+          .finally(() => {
+            if (retryTimeoutId !== null) {
+              window.clearTimeout(retryTimeoutId);
+            }
+          });
+      }, ALERT_RETRY_DELAY_MS);
+    };
+
+    void requestTrailAlerts(selectedTrail.id, {
+      signal: initialController.signal,
+    })
       .then((liveAlerts) => {
         if (!active) {
+          return;
+        }
+
+        if (liveAlerts.retrievalStatus !== "live") {
+          retryInBackground(liveAlerts);
           return;
         }
 
@@ -302,27 +418,20 @@ export function TrailPackShell() {
           alerts: liveAlerts,
         });
       })
-      .catch(() => {
-        if (!active) {
-          return;
-        }
-
-        setAlertState({
-          status: "ready",
-          requestKey: alertRequestKey,
-          alerts: {
-            ...savedAlerts,
-            statusReason:
-              "Live NPS alerts could not be loaded. TrailPack is showing saved alert context instead.",
-          },
-        });
-      })
-      .finally(() => window.clearTimeout(timeoutId));
+      .catch(() => retryInBackground())
+      .finally(() => window.clearTimeout(initialTimeoutId));
 
     return () => {
       active = false;
-      window.clearTimeout(timeoutId);
-      controller.abort();
+      window.clearTimeout(initialTimeoutId);
+      if (retryDelayId !== null) {
+        window.clearTimeout(retryDelayId);
+      }
+      if (retryTimeoutId !== null) {
+        window.clearTimeout(retryTimeoutId);
+      }
+      initialController.abort();
+      retryController?.abort();
     };
   }, [alertRequestKey, savedAlerts, selectedTrail]);
 
@@ -423,6 +532,14 @@ export function TrailPackShell() {
     currentGeneratedPlan &&
       !sameUserHikeInput(userInput, currentGeneratedPlan.userInput),
   );
+  const hasNewerAlertContext = Boolean(
+    currentGeneratedPlan &&
+      alerts &&
+      alerts.retrievalStatus === "live" &&
+      !sameAlertSnapshot(currentGeneratedPlan.alerts, alerts),
+  );
+  const hasPendingPlanUpdate =
+    hasPendingPlanChanges || hasNewerAlertContext;
   const isPlanContextLoading = isWeatherLoading || isAlertLoading;
   const canGeneratePlan = Boolean(
     selectedTrail &&
@@ -430,7 +547,7 @@ export function TrailPackShell() {
       alerts &&
       !isPlanContextLoading &&
       liveAiState.status !== "loading" &&
-      (!currentGeneratedPlan || hasPendingPlanChanges),
+      (!currentGeneratedPlan || hasPendingPlanUpdate),
   );
 
   function handleGeneratePlan() {
@@ -736,6 +853,7 @@ export function TrailPackShell() {
             alerts={alerts}
             isWeatherLoading={isWeatherLoading}
             isAlertLoading={isAlertLoading}
+            isAlertRetrying={isAlertRetrying}
             startTime={userInput.startTime}
           />
         ) : null}
@@ -778,16 +896,22 @@ export function TrailPackShell() {
                     ? "Reviewing generated list..."
                     : !currentGeneratedPlan
                       ? "Generate packing list"
-                      : hasPendingPlanChanges
-                        ? "Update packing list"
-                        : "Packing list is current"}
+                      : hasNewerAlertContext
+                        ? "Update list with live alerts"
+                        : hasPendingPlanChanges
+                          ? "Update packing list"
+                          : "Packing list is current"}
               </button>
               <p aria-live="polite">
-                {currentGeneratedPlan && hasPendingPlanChanges
-                  ? "Your edits are ready. Update the list when you are finished."
-                  : currentGeneratedPlan
-                    ? "The displayed list matches the trip details above."
-                    : "Finish your trip details, then generate the list once."}
+                {currentGeneratedPlan && hasNewerAlertContext
+                  ? hasPendingPlanChanges
+                    ? "New live NPS alert data and your edits are ready. Update the list when you are finished."
+                    : "A newer live NPS alert check is available. Update the list when you are ready."
+                  : currentGeneratedPlan && hasPendingPlanChanges
+                    ? "Your edits are ready. Update the list when you are finished."
+                    : currentGeneratedPlan
+                      ? "The displayed list matches the trip details above."
+                      : "Finish your trip details, then generate the list once."}
               </p>
             </div>
           </section>
@@ -795,7 +919,11 @@ export function TrailPackShell() {
 
         {recommendation ? (
           <>
-            <PackingListOutput recommendation={recommendation} />
+            <PackingListOutput
+              recommendation={recommendation}
+              weather={currentGeneratedPlan?.weather}
+              alerts={currentGeneratedPlan?.alerts}
+            />
             <SavedResultActions
               trail={selectedTrail}
               userInput={currentGeneratedPlan?.userInput ?? userInput}

@@ -77,6 +77,7 @@ const OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const SUNRISE_SUNSET_URL = "https://api.sunrise-sunset.org/json";
 const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
 const EXTERNAL_REQUEST_TIMEOUT_MS = 8_000;
+const NPS_ALERT_REQUEST_TIMEOUT_MS = 5_000;
 const MAX_WEATHER_RESPONSE_BYTES = 256_000;
 const MAX_DAYLIGHT_RESPONSE_BYTES = 32_000;
 const MAX_NPS_RESPONSE_BYTES = 128_000;
@@ -442,11 +443,12 @@ export function buildSavedWeatherFallback(
 
 async function withExternalRequestTimeout<T>(
   operation: (signal: AbortSignal) => Promise<T>,
+  timeoutMs = EXTERNAL_REQUEST_TIMEOUT_MS,
 ): Promise<T> {
   const timeoutController = new AbortController();
   const timeoutId = setTimeout(
     () => timeoutController.abort(),
-    EXTERNAL_REQUEST_TIMEOUT_MS,
+    timeoutMs,
   );
 
   try {
@@ -798,17 +800,14 @@ export function buildAlertContextFromNpsResponse(
   };
 }
 
-export function buildSavedAlertFallback(parkCode: string): AlertContext {
-  const supportedPark = SUPPORTED_PARKS.find((park) => park.parkCode === parkCode);
-
+export function buildSavedAlertFallback(): AlertContext {
   return {
     hasActiveAlerts: false,
     alerts: [],
     label: "unavailable",
     retrievalStatus: "saved-fixture",
-    statusReason: supportedPark
-      ? `Using saved ${supportedPark.name} alert fixture because live NPS alerts are unavailable.`
-      : "Using saved alert fixture because live NPS alerts are unavailable.",
+    statusReason:
+      "Live NPS alerts could not be checked. Check current NPS alerts directly before leaving.",
   };
 }
 
@@ -844,29 +843,32 @@ export async function fetchNpsAlertContext(
   url.searchParams.set("limit", "10");
 
   try {
-    const responseBody = await withExternalRequestTimeout(async (signal) => {
-      const response = await fetcher(url, {
-        headers: {
-          Accept: "application/json",
-          "X-Api-Key": apiKey,
-        },
-        signal,
-      });
+    const responseBody = await withExternalRequestTimeout(
+      async (signal) => {
+        const response = await fetcher(url, {
+          headers: {
+            Accept: "application/json",
+            "X-Api-Key": apiKey,
+          },
+          signal,
+        });
 
-      if (!response.ok) {
-        return null;
-      }
+        if (!response.ok) {
+          return null;
+        }
 
-      return readBoundedProviderJson(response, MAX_NPS_RESPONSE_BYTES);
-    });
+        return readBoundedProviderJson(response, MAX_NPS_RESPONSE_BYTES);
+      },
+      NPS_ALERT_REQUEST_TIMEOUT_MS,
+    );
     if (!isRecord(responseBody)) {
-      return buildSavedAlertFallback(normalizedParkCode);
+      return buildSavedAlertFallback();
     }
 
     return buildAlertContextFromNpsResponse(
       responseBody as NpsAlertsResponse,
     );
   } catch {
-    return buildSavedAlertFallback(normalizedParkCode);
+    return buildSavedAlertFallback();
   }
 }

@@ -1483,6 +1483,12 @@ a {
   font-weight: 700;
 }
 
+.packing-item-basis {
+  margin-bottom: 13px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgb(166 190 189 / 0.55);
+}
+
 .packing-context-notes {
   margin-top: 13px;
   display: grid;

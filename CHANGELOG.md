@@ -12,6 +12,12 @@ corrections within that milestone.
 
 ### Added
 
+- Plain-language **Basis** text in every expanded packing recommendation and
+  overall alert, distinguishing standard rules from live NPS alerts, live or
+  saved forecasts, daylight timing, and user-entered trip details.
+- One bounded background NPS retry after the initial live-alert attempt falls
+  back. A late live result offers an explicit list update without silently
+  changing the generated snapshot.
 - A fixed-seed system stress command that exercises 5,000 bounded packing
   scenarios across all five supported trails, repeats every recommendation for
   determinism, enforces latency and heap budgets, and now runs in pull-request
@@ -23,10 +29,10 @@ corrections within that milestone.
 ### Changed
 
 - Weather, daylight, NPS, guarded-AI, and saved-result response bodies are read
-  within explicit byte limits. Weather and daylight provider requests now share
-  the same eight-second upper bound already used for NPS alerts. Browser alert
-  and weather requests also recover to the labeled fallback after 12 and 20
-  seconds, respectively, so a stalled connection cannot leave Generate locked.
+  within explicit byte limits. Weather and daylight provider requests retain an
+  eight-second upper bound; NPS alerts now use a five-second provider budget and
+  a six-second browser budget before generation unlocks with the labeled
+  fallback. Weather keeps its 20-second browser bound.
 - The four lower-resolution selected-trail photographs now use clearer official
   NPS originals from the same credited sources, with explicit desktop and mobile
   focal points for all five supported trails.
@@ -50,6 +56,10 @@ corrections within that milestone.
 
 ### Fixed
 
+- Replaced the misleading saved-alert “no active alerts” state with an explicit
+  notice that live NPS alerts could not be evaluated. A failed live request now
+  clears saved demo alerts before generation, so fixture closures cannot trigger
+  alert-specific recommendations.
 - Prevented two synchronous Generate clicks from creating two generation UUIDs
   and two guarded-AI requests before React committed the loading state.
 - Prevented an aborted older review from clearing or unlocking a newer
@@ -91,11 +101,12 @@ corrections within that milestone.
   50-request unique workload stayed at 5.708 ms p95, and aggregate API heap
   growth stayed below 13 MB.
 - Focused API checks passed 132 tests and the focused security group passed 54
-  tests. The final full suite passed 349 tests across 33 files; lint and type
-  checking also passed.
+  tests. The final full suite passed 354 tests across 34 files; lint, type
+  checking, the production build, and all 18 Firefox accessibility and
+  interaction checks also passed.
 - All five selected-trail photos were visually checked at approximately 1280,
   768, and 390 pixels with clear subjects, correct credits, and no horizontal
-  overflow. The complete accessibility run passed 17 Firefox/axe flows with no
+  overflow. The complete accessibility run passed 18 Firefox/axe flows with no
   automated violations.
 - The final local build, 5-of-5 live NPS integrity check, and 27-of-27
   recommendation scenario matrix passed. Protected pull-request checks, CodeQL,

@@ -569,7 +569,7 @@ describe("external-context fallbacks", () => {
       retrievalStatus: "saved-fixture",
     });
 
-    await vi.advanceTimersByTimeAsync(8_000);
+    await vi.advanceTimersByTimeAsync(5_000);
     await expectation;
     expect(observedAbort).toBe(true);
   });
@@ -578,7 +578,7 @@ describe("external-context fallbacks", () => {
     expect(buildSavedWeatherFallback("taggart-lake")?.retrievalStatus).toBe(
       "saved-fixture",
     );
-    expect(buildSavedAlertFallback("grte").retrievalStatus).toBe("saved-fixture");
+    expect(buildSavedAlertFallback().retrievalStatus).toBe("saved-fixture");
   });
 });
 

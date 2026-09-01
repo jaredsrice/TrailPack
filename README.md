@@ -40,6 +40,9 @@ distinct generated lists per account per hour.
    reported conditions.
 5. Select **Generate packing list** to snapshot those inputs and create
    essential and optional recommendations with visible rationale and provenance.
+   Each expanded recommendation identifies whether its basis is a standard
+   TrailPack rule, trip details, forecast data, daylight timing, or a live NPS
+   alert.
 6. Every generated list includes a concise deterministic plan review without an
    account. For signed-in hikers, that same action also requests one guarded
    Gemini wording check. Editing fields does not spend the allowance; **Update
@@ -237,9 +240,9 @@ matching changelog entry.
 The current reliability candidate adds a fixed-seed 5,000-case system stress
 run, exact request and provider-response boundaries, repeated quota-concurrency
 checks, stale-request and double-submission regressions, and responsive photo
-quality coverage. Its complete local matrix passed lint, type checking, 345
-tests across 33 files, 5 of 5 live NPS source checks, all 27 recommendation
-scenarios, the optimized Production build, and 17 Firefox/axe flows. The run
+quality coverage. Its complete local matrix passed lint, type checking, 354
+tests across 34 files, 5 of 5 live NPS source checks, all 27 recommendation
+scenarios, the optimized Production build, and 18 Firefox/axe flows. The run
 recorded zero invariant failures, console errors, console warnings, automated
 accessibility violations, broken images, or overflow at the tested widths.
 Protected pull-request and Preview checks remain pending; current evidence and
@@ -261,8 +264,12 @@ in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cy
 - Weather is a coordinate-based forecast rather than an exact high-elevation
   observation. Dates outside the provider range use a labeled saved example.
 - The main planning flow requests current park alerts from the NPS API. If the
-  service or key is unavailable, it keeps planning usable with an explicitly
-  labeled saved fixture and tells the hiker to check live NPS alerts.
+  service or key is unavailable, the first attempt stops after a five-second
+  provider budget and a six-second browser budget. TrailPack keeps planning
+  usable with an explicitly labeled fallback, does not evaluate alert-based
+  recommendations from saved demo alerts, and retries once in the background.
+  If that retry returns live data after generation, the hiker must explicitly
+  update the list; TrailPack never silently changes a generated plan.
 - Gemini is optional, available only to signed-in users, and capped at five
   distinct generated-list reviews per account per hour. Field edits, signed-out
   attempts, and duplicate requests do not spend that allowance. Authentication,

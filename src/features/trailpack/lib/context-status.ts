@@ -81,9 +81,9 @@ function alertStatusText(alerts: AlertContext): string {
     case "live":
       return "No active official alerts";
     case "saved-fixture":
-      return "No active alerts in saved fixture";
+      return "Live NPS alerts unavailable";
     case "unavailable":
-      return "Alert data unavailable";
+      return "Live NPS alerts unavailable";
   }
 }
 
@@ -96,8 +96,8 @@ function alertSummaryText(alerts: AlertContext): string {
     case "live":
       return "NPS returned no active alerts for this park.";
     case "saved-fixture":
-      return "The saved demo alert fixture has no active alerts for this scenario.";
+      return "Alert-based recommendations could not be evaluated from live NPS data. Standard safety rules remain active.";
     case "unavailable":
-      return alerts.statusReason ?? "NPS alert data is unavailable.";
+      return "Alert-based recommendations could not be evaluated from live NPS data. Standard safety rules remain active.";
   }
 }

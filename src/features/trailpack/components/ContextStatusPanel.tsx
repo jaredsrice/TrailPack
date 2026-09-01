@@ -24,12 +24,14 @@ export function ContextStatusPanel({
   alerts,
   isWeatherLoading = false,
   isAlertLoading = false,
+  isAlertRetrying = false,
   startTime,
 }: {
   weather: WeatherContext;
   alerts: AlertContext;
   isWeatherLoading?: boolean;
   isAlertLoading?: boolean;
+  isAlertRetrying?: boolean;
   startTime?: string;
 }) {
   const status = buildContextStatus(weather, alerts);
@@ -76,14 +78,20 @@ export function ContextStatusPanel({
           icon="alert"
           title="NPS alerts"
           status={isAlertLoading ? "Updating live alerts" : status.alerts.status}
-          summary={status.alerts.summary}
+          summary={
+            isAlertLoading
+              ? "Checking NPS for current park alerts before generation."
+              : status.alerts.summary
+          }
           label={status.alerts.label}
           retrievalStatus={status.alerts.retrievalStatus}
           details={status.alerts.details}
           notice={
             isAlertLoading
               ? "Saved alert context remains visible while TrailPack requests current NPS alerts."
-              : status.alerts.notice
+              : isAlertRetrying
+                ? "TrailPack is retrying once in the background. You can generate now using standard safety rules."
+                : status.alerts.notice
           }
         />
       </div>
@@ -125,7 +133,7 @@ function ContextCard({
           </div>
         </div>
         <span className="retrieval-pill">
-          {retrievalStatus}
+          {retrievalStatusLabel(retrievalStatus)}
         </span>
       </div>
 
@@ -138,7 +146,7 @@ function ContextCard({
       ) : null}
 
       <div className="context-badges">
-        <SourceBadge label={label} />
+        {label !== "unavailable" ? <SourceBadge label={label} /> : null}
         {details.map((detail) => (
           <span key={detail} className="context-detail-pill">
             {detail}
@@ -149,6 +157,19 @@ function ContextCard({
       {children}
     </div>
   );
+}
+
+function retrievalStatusLabel(retrievalStatus: string): string {
+  switch (retrievalStatus) {
+    case "live":
+      return "Live";
+    case "saved-fixture":
+      return "Fallback";
+    case "unavailable":
+      return "Unavailable";
+    default:
+      return retrievalStatus;
+  }
 }
 
 function DayForecast({

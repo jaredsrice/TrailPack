@@ -1,8 +1,15 @@
 import type {
+  AlertContext,
   PackingItem,
   PackingRecommendation,
   TripAlert,
+  WeatherContext,
 } from "@/features/trailpack/types";
+import {
+  packingItemBasis,
+  tripAlertBasis,
+  type RecommendationBasisContext,
+} from "@/features/trailpack/lib/recommendation-basis";
 import { SourceBadge } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 
@@ -42,10 +49,15 @@ const CRITICAL_SAFETY_ITEM_ORDER = new Map([
 
 export function PackingListOutput({
   recommendation,
+  weather,
+  alerts,
 }: {
   recommendation: PackingRecommendation;
+  weather?: WeatherContext;
+  alerts?: AlertContext;
 }) {
   const groups = groupRecommendationItems(recommendation);
+  const basisContext = { weather, alerts };
 
   return (
     <section
@@ -82,7 +94,10 @@ export function PackingListOutput({
         </p>
       </div>
 
-      <TripAlerts alerts={recommendation.tripAlerts} />
+      <TripAlerts
+        alerts={recommendation.tripAlerts}
+        basisContext={basisContext}
+      />
 
       <div className="packing-groups">
         {groups.map((group) => (
@@ -90,6 +105,7 @@ export function PackingListOutput({
             key={group.title}
             title={group.title}
             items={group.items}
+            basisContext={basisContext}
           />
         ))}
       </div>
@@ -98,7 +114,13 @@ export function PackingListOutput({
   );
 }
 
-function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
+function TripAlerts({
+  alerts,
+  basisContext,
+}: {
+  alerts: TripAlert[];
+  basisContext: RecommendationBasisContext;
+}) {
   if (alerts.length === 0) {
     return null;
   }
@@ -126,7 +148,7 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
             </div>
             <p className="trip-alert-summary">{alert.summary}</p>
             <div className="trip-alert-source-line">
-              <span>{alertSourceSummary(alert)}</span>
+              <span>{tripAlertBasis(alert, basisContext)}</span>
               {alert.sourceUrl ? (
                 <a
                   href={alert.sourceUrl}
@@ -148,9 +170,11 @@ function TripAlerts({ alerts }: { alerts: TripAlert[] }) {
 function RecommendationGroup({
   title,
   items,
+  basisContext,
 }: {
   title: GroupTitle;
   items: PrioritizedItem[];
+  basisContext: RecommendationBasisContext;
 }) {
   if (items.length === 0) {
     return null;
@@ -166,14 +190,24 @@ function RecommendationGroup({
       </div>
       <ul className="packing-item-list">
         {items.map((item) => (
-          <RecommendationRow key={`${item.priority}-${item.name}`} item={item} />
+          <RecommendationRow
+            key={`${item.priority}-${item.name}`}
+            item={item}
+            basisContext={basisContext}
+          />
         ))}
       </ul>
     </section>
   );
 }
 
-function RecommendationRow({ item }: { item: PrioritizedItem }) {
+function RecommendationRow({
+  item,
+  basisContext,
+}: {
+  item: PrioritizedItem;
+  basisContext: RecommendationBasisContext;
+}) {
   const rowClassName = recommendationRowClassName(item);
   const accentClassName = recommendationAccentClassName(item);
   const isCriticalSafety = groupForItem(item.name) === "Critical Safety";
@@ -220,6 +254,10 @@ function RecommendationRow({ item }: { item: PrioritizedItem }) {
           </div>
         </summary>
         <div className="packing-item-details">
+          <div className="packing-item-basis">
+            <p className="packing-detail-label">Basis</p>
+            <p>{packingItemBasis(item, basisContext)}</p>
+          </div>
           <div>
             <p className="packing-detail-label">
               Why
@@ -547,22 +585,6 @@ function alertClassName(severity: TripAlert["severity"]): string {
   }
 
   return "border-slate-200 bg-white text-slate-800";
-}
-
-function alertSourceSummary(alert: TripAlert): string {
-  if (alert.sourceLabels.includes("official")) {
-    return "Official NPS alert";
-  }
-
-  if (alert.sourceLabels.includes("forecast-based")) {
-    return "Forecast guidance";
-  }
-
-  if (alert.sourceLabels.includes("user-provided")) {
-    return "Based on your trip details";
-  }
-
-  return "TrailPack guidance";
 }
 
 function sourceLabelSummary(

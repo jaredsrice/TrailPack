@@ -398,6 +398,9 @@ test("one generated packing list requests one guarded review", async ({
     .filter({ hasText: "Trip safety decision" })
     .first();
   await tripDecision.getByText("Trip safety decision", { exact: true }).click();
+  await expect(tripDecision.locator(".packing-item-basis")).toContainText(
+    "Triggered by a live NPS alert.",
+  );
   await expect(tripDecision.getByText("Official", { exact: true })).toHaveCount(0);
   await expect(tripDecision.getByText("Inferred", { exact: true })).toHaveCount(0);
   await expect(
@@ -583,22 +586,131 @@ test("a stalled alert request falls back and cannot leave Generate disabled", as
   });
   await page.clock.install();
   await mockWeather(page);
+  await page.route("**/api/trailpack/ai-review", async (route) => {
+    await route.fulfill({
+      status: 401,
+      contentType: "application/json",
+      body: signedOutReviewBody("Taggart Lake"),
+    });
+  });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await page.getByRole("button", { name: /Taggart Lake/i }).click();
   await expect(
     page.getByRole("button", { name: "Loading current conditions..." }),
   ).toBeDisabled();
 
-  await page.clock.fastForward(12_000);
+  await page.clock.fastForward(6_000);
   await expect(
-    page.getByText(
-      "Live NPS alerts could not be loaded. TrailPack is showing saved alert context instead.",
-    ),
+    page.getByRole("heading", { name: "Live NPS alerts unavailable" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/Alert-based recommendations could not be evaluated from live NPS data/i),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Generate packing list" }),
   ).toBeEnabled();
+  await page.getByRole("button", { name: "Generate packing list" }).click();
+  await expect(
+    page.getByText("Trip safety decision", { exact: true }),
+  ).toHaveCount(0);
+});
+
+test("a background NPS retry offers an explicit list update without mutating the generated list", async ({
+  page,
+}) => {
+  let alertRequests = 0;
+  await page.clock.install();
+  await mockWeather(page);
+  await page.route("**/api/trailpack/alerts?*", async (route) => {
+    alertRequests += 1;
+    if (alertRequests === 1) {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          hasActiveAlerts: false,
+          alerts: [],
+          label: "unavailable",
+          retrievalStatus: "saved-fixture",
+          statusReason: "Live NPS alerts are temporarily unavailable.",
+        }),
+      });
+      return;
+    }
+
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        hasActiveAlerts: true,
+        alerts: [
+          {
+            title: "Death Canyon Trailhead Construction Closure",
+            description: "Death Canyon Road and Trailhead are closed to all use.",
+            severity: "closure",
+            source: "NPS",
+            sourceUrl:
+              "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+          },
+        ],
+        label: "official",
+        retrievalStatus: "live",
+      }),
+    });
+  });
+  await page.route("**/api/trailpack/ai-review", async (route) => {
+    await route.fulfill({
+      status: 401,
+      contentType: "application/json",
+      body: signedOutReviewBody("Jenny Lake Loop"),
+    });
+  });
+
+  await page.goto("/");
+  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  const generateButton = page.getByRole("button", {
+    name: "Generate packing list",
+  });
+  await expect(generateButton).toBeEnabled();
+  await generateButton.click();
+
+  await expect(
+    page.getByText("Trip safety decision", { exact: true }),
+  ).toHaveCount(0);
+  const bearSpray = page
+    .locator(".packing-item")
+    .filter({ hasText: "Bear spray" })
+    .first();
+  await bearSpray.getByText("Bear spray", { exact: true }).click();
+  await expect(bearSpray.locator(".packing-item-basis")).toContainText(
+    "Standard TrailPack safety rule",
+  );
+
+  await page.clock.fastForward(1_500);
+  await expect.poll(() => alertRequests).toBe(2);
+  await expect(
+    page.getByRole("button", { name: "Update list with live alerts" }),
+  ).toBeEnabled();
+  await expect(
+    page.getByText("Trip safety decision", { exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByText(/A newer live NPS alert check is available/i),
+  ).toBeVisible();
+
+  await page
+    .getByRole("button", { name: "Update list with live alerts" })
+    .click();
+  const tripDecision = page
+    .locator(".packing-item")
+    .filter({ hasText: "Trip safety decision" })
+    .first();
+  await expect(tripDecision).toBeVisible();
+  await tripDecision.getByText("Trip safety decision", { exact: true }).click();
+  await expect(tripDecision.locator(".packing-item-basis")).toContainText(
+    "Triggered by a live NPS alert.",
+  );
 });
 
 test("a stalled weather request falls back and cannot leave Generate disabled", async ({
