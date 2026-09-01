@@ -13,11 +13,11 @@ silently change the packing decisions or their sources.
 
 | Item | Current state |
 |---|---|
-| Release | `0.6.1` in Production; reliability hardening is in review |
+| Release | `0.6.1` in Production; post-`0.6.1` reliability hardening is deployed |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Bug-focused stress, boundary, and browser hardening |
+| Active track | Production monitoring and release-documentation closeout |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Full planner and standard plan review available without an account |
 
@@ -237,7 +237,7 @@ Preview displayed the current official NPS alerts and preserved the explicit
 Generate/Update boundary. Deployment-specific evidence is recorded in the
 matching changelog entry.
 
-The current reliability candidate adds a fixed-seed 5,000-case system stress
+The deployed reliability hardening adds a fixed-seed 5,000-case system stress
 run, exact request and provider-response boundaries, repeated quota-concurrency
 checks, stale-request and double-submission regressions, and responsive photo
 quality coverage. Its complete local matrix passed lint, type checking, 354
@@ -245,8 +245,10 @@ tests across 34 files, 5 of 5 live NPS source checks, all 27 recommendation
 scenarios, the optimized Production build, and 18 Firefox/axe flows. The run
 recorded zero invariant failures, console errors, console warnings, automated
 accessibility violations, broken images, or overflow at the tested widths.
-Protected pull-request and Preview checks remain pending; current evidence and
-exclusions are tracked in the
+Pull request #44 passed Validate, CodeQL, Vercel, desktop and 390-pixel Preview
+acceptance, then merged to protected `main`. Production returned HTTPS `200`
+with the `TrailPack` title and the new state-aware context labels. Current
+evidence and exclusions are tracked in the
 [full project stress audit](docs/superpowers/validation/2026-08-31-full-project-stress-audit.md).
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
@@ -300,7 +302,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Google login and private saved results | Complete and production-verified with two separate identities |
 | Security audit, remediation, and release-candidate verification | Complete |
 | Final everyday-hiker acceptance | Complete; owner approved the final preview and release state |
-| Reliability and stress hardening | In review; local gate passed and hosted gates pending |
+| Reliability and stress hardening | Complete and production-verified through pull request #44 |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and
