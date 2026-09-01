@@ -132,7 +132,10 @@ function ContextCard({
             <h3>{status}</h3>
           </div>
         </div>
-        <span className="retrieval-pill">
+        <span
+          className="retrieval-pill"
+          data-retrieval-status={retrievalStatus}
+        >
           {retrievalStatusLabel(retrievalStatus)}
         </span>
       </div>

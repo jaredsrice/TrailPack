@@ -50,6 +50,9 @@ corrections within that milestone.
   per-item explanation drafts are no longer exposed as user interface content.
 - Saving now reads as an optional follow-up instead of an account gate; the saved
   data explanation is available under a compact disclosure.
+- Live status, source, and context-detail pills now use stronger fills, borders,
+  and text weights so weather and alert provenance remains easy to scan without
+  making the non-interactive labels resemble filter controls.
 - The monthly NPS refresh validates repository code with read-only permissions
   and publishes only the validated JSON artifact from an isolated write-scoped
   job that does not install dependencies or execute repository scripts.

@@ -983,12 +983,31 @@ a {
 
 .retrieval-pill {
   flex: 0 0 auto;
-  padding: 5px 8px;
-  color: #49676d;
-  font-size: 0.65rem;
-  background: #e3efed;
-  border: 1px solid #b7ceca;
+  padding: 5px 9px;
+  color: #3f585d;
+  font-size: 0.68rem;
+  font-weight: 680;
+  background: #e0e9e8;
+  border: 1px solid #9bafad;
   border-radius: 999px;
+}
+
+.context-card:first-child .retrieval-pill[data-retrieval-status="live"] {
+  color: #174f70;
+  background: #d3e7f2;
+  border-color: #759eb6;
+}
+
+.context-card:nth-child(2) .retrieval-pill[data-retrieval-status="live"] {
+  color: #174d38;
+  background: #d6eadf;
+  border-color: #79a58e;
+}
+
+.retrieval-pill[data-retrieval-status="saved-fixture"] {
+  color: #754316;
+  background: #f4e2c7;
+  border-color: #c69a5f;
 }
 
 .context-summary {
@@ -1025,11 +1044,31 @@ a {
 
 .context-detail-pill {
   padding: 3px 7px;
-  color: #49676d;
+  color: #2a535e;
   font-size: 0.67rem;
-  background: #e8f2f0;
-  border: 1px solid #b8cfcc;
+  font-weight: 560;
+  background: #dce9e9;
+  border: 1px solid #8badb0;
   border-radius: 999px;
+}
+
+.context-card .source-badge {
+  color: #0d5c7c;
+  font-weight: 680;
+  background: #d5edf8;
+  border-color: #5e9ebd;
+}
+
+.context-card:nth-child(2) .source-badge {
+  color: #115c3b;
+  background: #d5efdf;
+  border-color: #65a782;
+}
+
+.context-card:nth-child(2) .context-detail-pill {
+  color: #2b5247;
+  background: #dce9e4;
+  border-color: #8aaca0;
 }
 
 .forecast-details {
