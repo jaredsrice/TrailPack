@@ -12,8 +12,10 @@ const ROTATION_INTERVAL_MS = 9000;
 
 interface PhotoLayers {
   front: ParkPhoto;
-  back: ParkPhoto;
+  back: ParkPhoto | null;
   showFront: boolean;
+  frontReady: boolean;
+  backReady: boolean;
 }
 
 export function ParkPhotoShowcase({
@@ -37,8 +39,10 @@ export function ParkPhotoShowcase({
   const desiredPhoto = lockedPhoto ?? PARK_PHOTO_ROTATION[rotationIndex];
   const [layers, setLayers] = useState<PhotoLayers>({
     front: PARK_PHOTO_ROTATION[0],
-    back: PARK_PHOTO_ROTATION[1],
+    back: null,
     showFront: true,
+    frontReady: false,
+    backReady: false,
   });
 
   useEffect(() => {
@@ -65,18 +69,41 @@ export function ParkPhotoShowcase({
 
   useEffect(() => {
     setLayers((current) => {
-      const visiblePhoto = current.showFront ? current.front : current.back;
+      const visiblePhoto =
+        current.showFront || !current.back ? current.front : current.back;
       if (visiblePhoto.id === desiredPhoto.id) {
         return current;
       }
 
-      return current.showFront
-        ? { ...current, back: desiredPhoto, showFront: false }
-        : { ...current, front: desiredPhoto, showFront: true };
-    });
-  }, [desiredPhoto]);
+      const nextPhoto = current.showFront ? current.back : current.front;
+      const nextReady = current.showFront
+        ? current.backReady
+        : current.frontReady;
+      if (nextPhoto?.id === desiredPhoto.id) {
+        return nextReady
+          ? { ...current, showFront: !current.showFront }
+          : current;
+      }
 
-  const visiblePhoto = layers.showFront ? layers.front : layers.back;
+      // Keep the current photo and credit visible until its replacement loads.
+      return current.showFront
+        ? { ...current, back: desiredPhoto, backReady: false }
+        : { ...current, front: desiredPhoto, frontReady: false };
+    });
+  }, [desiredPhoto, layers.backReady, layers.frontReady]);
+
+  const markPhotoReady = (layer: "front" | "back", photoId: string) => {
+    setLayers((current) => {
+      if (current[layer]?.id !== photoId) {
+        return current;
+      }
+      const readyKey = layer === "front" ? "frontReady" : "backReady";
+      return current[readyKey] ? current : { ...current, [readyKey]: true };
+    });
+  };
+
+  const visiblePhoto =
+    layers.showFront || !layers.back ? layers.front : layers.back;
   const rotationStopped = Boolean(lockedPhoto);
   const isParkSelection = Boolean(selectedParkId && !selectedTrailId);
   const captionTitle = isParkSelection
@@ -100,16 +127,21 @@ export function ParkPhotoShowcase({
     <figure
       className="park-photo-showcase"
       aria-label={`${captionTitle}, ${captionSubtitle}`}
+      aria-busy={visiblePhoto.id !== desiredPhoto.id}
     >
-      <PhotoLayer
-        photo={layers.back}
-        isVisible={!layers.showFront}
-        priority={!layers.showFront}
-      />
+      {layers.back ? (
+        <PhotoLayer
+          photo={layers.back}
+          isVisible={!layers.showFront}
+          priority={!layers.showFront}
+          onReady={(photoId) => markPhotoReady("back", photoId)}
+        />
+      ) : null}
       <PhotoLayer
         photo={layers.front}
         isVisible={layers.showFront}
         priority={layers.showFront}
+        onReady={(photoId) => markPhotoReady("front", photoId)}
       />
 
       <div className="park-photo-scrim" aria-hidden="true" />
@@ -185,10 +217,10 @@ export function ParkPhotoShowcase({
             <button
               type="button"
               key={photo.id}
-              className={index === rotationIndex ? "is-active" : undefined}
+              className={photo.id === visiblePhoto.id ? "is-active" : undefined}
               onClick={() => setRotationIndex(index)}
               aria-label={`Show ${photo.parkName}`}
-              aria-current={index === rotationIndex ? "true" : undefined}
+              aria-current={photo.id === visiblePhoto.id ? "true" : undefined}
             />
           ))}
         </div>
@@ -201,10 +233,12 @@ function PhotoLayer({
   photo,
   isVisible,
   priority,
+  onReady,
 }: {
   photo: ParkPhoto;
   isVisible: boolean;
   priority: boolean;
+  onReady: (photoId: string) => void;
 }) {
   const focalPoint = photo.focalPoint?.desktop ?? "50% 50%";
   const mobileFocalPoint = photo.focalPoint?.mobile ?? focalPoint;
@@ -217,6 +251,7 @@ function PhotoLayer({
       aria-hidden={!isVisible}
       fill
       priority={priority}
+      onLoad={() => onReady(photo.id)}
       quality={90}
       sizes="(max-width: 1199px) 100vw, 1120px"
       className={`park-photo-layer ${isVisible ? "is-visible" : ""}`}

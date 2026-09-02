@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
@@ -42,10 +43,13 @@ import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { ParkPhotoShowcase } from "./ParkPhotoShowcase";
 import { PackingListOutput } from "./PackingListOutput";
-import { SavedResultActions } from "./SavedResultActions";
 import { VERIFIED_TRAIL_PROFILE_LABEL } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
+
+const SavedResultActions = dynamic(() =>
+  import("./SavedResultActions").then((module) => module.SavedResultActions),
+);
 
 const QUICK_START_TRAIL_IDS = [
   "jenny-lake-loop",

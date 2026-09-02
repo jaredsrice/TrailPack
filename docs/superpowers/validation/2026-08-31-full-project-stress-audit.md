@@ -175,8 +175,10 @@ No measured JavaScript-size regression exceeds 10%.
   conflicting trail and park identifiers.
 - Root cause: NPS had a timeout, but the other providers did not share it;
   provider normalization accepted a broader range than the client contract.
-- Fix: add an eight-second abort boundary for all three public providers,
-  12-second alert and 20-second weather browser deadlines, bounded response
+- Fix: add bounded provider/browser aborts, finalized during owner review at
+  five seconds for NPS and six seconds for the initial alert browser request.
+  Weather and daylight retain eight-second provider budgets and a 20-second
+  weather browser deadline. The fix also adds bounded response
   readers, 24-period weather and 10-alert NPS caps, 2,000-character provider
   strings, strict time/value checks, and credential-free HTTPS `nps.gov` URL
   validation.
@@ -307,8 +309,8 @@ Status meanings:
 | Too many alerts / oversized strings | Pass — automated | Maximum 10 alerts and 2,000 characters per provider string. |
 | Unsafe/unapproved source URL | Pass — automated | Only credential-free HTTPS `nps.gov` hosts survive normalization. |
 | Oversized upstream response | Pass — automated | 128,000-byte provider ceiling; oversized response uses saved fallback. |
-| Timeout | Pass — automated | Abort at 8 seconds and labeled saved fallback. |
-| Stalled alerts leave Generate disabled | Pass — automated browser lifecycle | A stalled browser request is aborted at 12 seconds, renders the saved fallback, and re-enables Generate; the server provider timeout remains 8 seconds. |
+| Timeout | Pass — automated | Abort at 5 seconds and labeled saved fallback. |
+| Stalled alerts leave Generate disabled | Pass — automated browser lifecycle | The initial stalled browser request is aborted at 6 seconds, renders the labeled fallback, and re-enables Generate; the server provider budget is 5 seconds. One background retry does not re-lock generation or mutate a generated list. |
 | `Cache-Control: no-store` | Pass — automated | Success/unavailable and invalid route responses assert the header. |
 
 ### Weather and daylight
