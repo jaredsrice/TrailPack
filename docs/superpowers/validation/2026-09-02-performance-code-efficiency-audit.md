@@ -4,8 +4,11 @@
 - Final local validation: 2026-09-02 (America/Denver)
 - Baseline commit: `aa15833`
 - Candidate branch: `codex/performance-code-efficiency-audit`
+- Measured application commit: `da06e534bfd42ae255b0019698383fecf0f93c1b`
+- Pull request: [#47](https://github.com/jaredsrice/TrailPack/pull/47)
+- Preview: [performance candidate](https://trailpack-git-codex-performance-code-effici-0c2716-jared-s-rice.vercel.app/)
 - Production baseline: [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app/)
-- Current gate: **LOCAL PASS — hosted checks and Preview acceptance pending**
+- Current gate: **READY FOR OWNER REVIEW — local, hosted, and Preview checks passed; not merged**
 - Merge policy: explicit owner approval required; do not merge automatically
 
 ## Result
@@ -16,6 +19,12 @@ now reports 149 kB of homepage first-load JavaScript instead of 218 kB, a 31.7%
 reduction. The initial page requests one image instead of two. Photo quality,
 crop positions, credits, packing decisions, provider freshness, authentication,
 quota behavior, and safety fallbacks are unchanged.
+
+The hosted comparison confirms a 43.1% desktop and 33.5% mobile reduction in
+initial application-asset transfer. Both viewports passed signed-out Preview
+acceptance with live weather/NPS context and a complete guest review. Required
+Validate, CodeQL, and Vercel checks passed on the measured application commit.
+Only documentation changed after that measurement.
 
 The packing engine is not the observed bottleneck. It remained below 0.06 ms
 p95 in the bounded 5,000-case runs. Live provider waiting was the slowest
@@ -77,8 +86,8 @@ and event timing. No browser or benchmark package was installed.
 | Homepage route size | 44.9 kB | 46.3 kB | Small loader/readiness overhead; total first load is smaller |
 | `/saved` first-load JavaScript | 178 kB | 178 kB | Optional account code still exists where needed |
 | Initial resource requests | 15 | 11 | One image and three script requests deferred |
-| Desktop resource transfer | 938,147 B | 530,688 B | Hosted comparison remains pending |
-| Mobile resource transfer | 501,273 B | 329,998 B | Hosted comparison remains pending |
+| Desktop resource transfer | 938,147 B | 530,688 B | Hosted app-asset result is 533,818 B below |
+| Mobile resource transfer | 501,273 B | 329,998 B | Hosted app-asset result is 333,128 B below |
 | Script-initiated transfer | 224,013 B | 149,339 B | Excludes the small preloaded runtime chunk |
 | Initial desktop image transfer | 628,704 B | 296,984 B | Invisible 331,720 B photo removed from startup |
 | Initial mobile image transfer | 191,830 B | 96,294 B | Invisible 95,536 B photo removed from startup |
@@ -110,9 +119,41 @@ sample does not establish real-user percentile compliance.
 
 ### Hosted candidate comparison
 
-Pending the first Vercel Preview. Repeat the same cold probe against that exact
-candidate and record its URL, current head, cache state, and median/worst timings
-before treating the release gate as complete.
+Two fresh-context Firefox runs per viewport used the exact linked Preview and
+the same cold probe as the Production baseline. Both HTML and hero-image
+responses were Vercel cache hits. All responses had the expected page identity,
+one initial image, and no application console issue or horizontal overflow.
+
+| Application assets | Production baseline | Hosted candidate | Change |
+| --- | ---: | ---: | ---: |
+| Desktop transfer | 938,147 B | 533,818 B | −43.1% |
+| Mobile transfer | 501,273 B | 333,128 B | −33.5% |
+| All initial JavaScript assets, including runtime preload | 226,305 B | 153,699 B | −32.1% |
+| Initial app requests | 15 | 11 | −4 |
+| Desktop images | 628,704 B | 296,984 B | −52.8% |
+| Mobile images | 191,830 B | 96,294 B | −49.8% |
+| Fonts | 67,680 B | 67,680 B | Unchanged |
+| CSS | 14,778 B | 14,775 B | Effectively unchanged |
+
+The Preview adds five Vercel review-tool requests: a script, an iframe, and
+three empty fetches. Its total observed resource count is therefore 16, not 11.
+Cross-origin timing restrictions hide the review script/iframe byte sizes, so
+no complete wire-byte total is claimed for that tooling. The table includes
+only the 11 same-origin application assets and excludes HTML and review tools.
+
+| Hosted timing, median / worst | Baseline desktop | Preview desktop | Baseline mobile | Preview mobile |
+| --- | ---: | ---: | ---: | ---: |
+| TTFB | 226 / 279 ms | 278 / 355 ms | 396 / 452 ms | 219 / 254 ms |
+| FCP | 596 / 817 ms | 459 / 505 ms | 868 / 944 ms | 462 / 493 ms |
+| LCP | 652 / 817 ms | 543 / 572 ms | 1,062 / 1,180 ms | 494 / 495 ms |
+| Load event | 714 / 941 ms | 927 / 1,066 ms | 1,062 / 1,173 ms | 814 / 885 ms |
+| Network-idle wall time | 1,322 / 1,558 ms | 1,871 / 1,979 ms | 1,679 / 1,847 ms | 1,737 / 1,779 ms |
+
+LCP and FCP improved in these samples, but not every navigation metric did.
+The Preview's review tooling adds post-render requests, and ordinary network
+variation affects TTFB. No load-event or network-idle speedup is claimed. The
+repeatable improvement is the removed asset work; this small unthrottled sample
+does not prove a field percentile or predict every connection.
 
 ## Planning And Interaction Timing
 
@@ -287,7 +328,8 @@ one success, 49 duplicates, and one mocked provider call per run.
 | Optimized production build | Pass; homepage first-load JavaScript 149 kB |
 | Mocked desktop/mobile performance journeys | 6 passed; zero broken images, overflow, or application console issues |
 | `git diff --check` | Pass |
-| Required hosted checks and exact Preview | Pending |
+| Required hosted checks | Validate, CodeQL JavaScript/TypeScript, CodeQL Actions, aggregate CodeQL, Vercel, and Preview comment check passed |
+| Exact Preview acceptance | Desktop and 390px passed; live weather/NPS, guest review, synchronized carousel, clean logs, no overflow or broken visible images |
 
 ## Files And Remaining Limits
 
@@ -307,6 +349,16 @@ Core Web Vitals, React commit-count profiler, sustained browser heap/leak test,
 database query plan, or cold serverless experiment was performed. No speculative
 render-count or memory improvement is claimed.
 
-The next gate is the exact hosted Preview at desktop and 390 pixels, followed by
-an owner review. The code remains a merge candidate only; Production and the
-protected main branch are unchanged by this audit.
+The hosted Preview is the deliverable. Desktop and 390px acceptance confirmed
+the correct TrailPack page, no blank/error overlay, no horizontal overflow, no
+broken visible image, and clean fresh warning/error logs. Carousel image,
+caption, credit, and selection indicator advanced and returned together. Both
+signed-out Jenny Lake flows received live weather and NPS alerts, then displayed
+the deterministic guest review without authentication. Full-page Firefox
+screenshots were also visually checked at both widths.
+
+Recommendation: **merge after owner approval**. The changes reduce confirmed
+startup work and preserve the tested product boundaries. No blocking runtime or
+accessibility regression remains. Broader refactoring and unsupported field,
+CLS, long-task, database, and low-end-device measurements stay explicitly
+deferred. Production and protected main remain unchanged until approval.
