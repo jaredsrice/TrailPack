@@ -200,6 +200,43 @@ describe("buildAlertContextFromNpsResponse", () => {
 });
 
 describe("external-context fallbacks", () => {
+  it.each([
+    [400, /rejected the forecast request \(HTTP 400\)/],
+    [401, /denied this forecast request \(HTTP 401\)/],
+    [403, /denied this forecast request \(HTTP 403\)/],
+    [429, /limiting forecast requests/],
+    [503, /temporarily unavailable \(HTTP 503\)/],
+  ])("explains weather HTTP %s without exposing the provider body", async (status, reason) => {
+    const fetcher = vi.fn(async () => new Response("private upstream diagnostic", { status: Number(status) }));
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", { fetcher });
+
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(weather?.retrievalStatus).toBe("saved-fixture");
+    expect(weather?.statusReason).toMatch(reason as RegExp);
+    expect(weather?.statusReason).not.toContain("private upstream diagnostic");
+    expect(weather?.statusReason?.length).toBeLessThanOrEqual(500);
+  });
+
+  it.each([
+    ["{", /unreadable forecast response/],
+    ["null", /unusable forecast response/],
+    ["{}", /no usable forecast values/],
+  ])("explains invalid forecast data %s", async (body, reason) => {
+    const fetcher = vi.fn(async () => new Response(String(body)));
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", { fetcher });
+
+    expect(weather?.retrievalStatus).toBe("saved-fixture");
+    expect(weather?.statusReason).toMatch(reason as RegExp);
+  });
+
+  it("explains a connection failure without reflecting exception details", async () => {
+    const fetcher = vi.fn().mockRejectedValue(new Error("private network detail"));
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", { fetcher });
+
+    expect(weather?.statusReason).toMatch(/could not be reached from TrailPack/);
+    expect(weather?.statusReason).not.toContain("private network detail");
+  });
+
   it("returns the saved weather fixture when live weather is unavailable", async () => {
     const fetcher = vi.fn().mockResolvedValue({
       ok: false,
@@ -284,6 +321,7 @@ describe("external-context fallbacks", () => {
     });
     const expectation = expect(weatherPromise).resolves.toMatchObject({
       retrievalStatus: "saved-fixture",
+      statusReason: expect.stringContaining("did not respond within eight seconds"),
     });
 
     await vi.advanceTimersByTimeAsync(8_000);

@@ -1,4 +1,16 @@
-import type { AlertContext, RetrievalStatus, SourceLabel, WeatherContext } from "@/features/trailpack/types";
+import type {
+  AlertContext,
+  RetrievalStatus,
+  SourceLabel,
+  WeatherContext,
+} from "@/features/trailpack/types";
+
+export type ContextTone =
+  | "neutral"
+  | "clear"
+  | "warning"
+  | "danger"
+  | "unavailable";
 
 export interface ContextStatusItem {
   status: string;
@@ -7,6 +19,7 @@ export interface ContextStatusItem {
   retrievalStatus: RetrievalStatus;
   details: string[];
   notice?: string;
+  tone: ContextTone;
 }
 
 export interface ContextStatusSummary {
@@ -21,21 +34,43 @@ export function buildContextStatus(
   return {
     weather: {
       status: weatherStatusText(weather),
-      summary: weather.summary,
+      summary:
+        weather.retrievalStatus === "live"
+          ? weather.summary
+          : "Packing guidance is using saved example conditions, not a current forecast.",
       label: weather.label,
       retrievalStatus: weather.retrievalStatus ?? "saved-fixture",
-      details: weatherDetails(weather),
+      details: weather.retrievalStatus === "live" ? weatherDetails(weather) : [],
       notice: weather.statusReason,
+      tone: weather.retrievalStatus === "live" ? "neutral" : "unavailable",
     },
     alerts: {
       status: alertStatusText(alerts),
       summary: alertSummaryText(alerts),
       label: alerts.label,
       retrievalStatus: alerts.retrievalStatus ?? "saved-fixture",
-      details: alerts.alerts.map((alert) => alert.title),
+      details:
+        alerts.retrievalStatus === "live"
+          ? alerts.alerts.map((alert) => alert.title)
+          : [],
       notice: alerts.statusReason,
+      tone: alertTone(alerts),
     },
   };
+}
+
+function alertTone(alerts: AlertContext): ContextTone {
+  if (alerts.retrievalStatus !== "live") {
+    return "unavailable";
+  }
+
+  if (!alerts.hasActiveAlerts) {
+    return "clear";
+  }
+
+  return alerts.alerts.some((alert) => alert.severity === "closure")
+    ? "danger"
+    : "warning";
 }
 
 function formatClock(isoValue?: string): string | null {
@@ -66,14 +101,14 @@ function weatherStatusText(weather: WeatherContext): string {
     case "live":
       return "Live forecast";
     case "saved-fixture":
-      return "Saved demo forecast";
+      return "Live forecast unavailable";
     case "unavailable":
       return "Weather unavailable";
   }
 }
 
 function alertStatusText(alerts: AlertContext): string {
-  if (alerts.hasActiveAlerts) {
+  if (alerts.retrievalStatus === "live" && alerts.hasActiveAlerts) {
     return alerts.label === "official" ? "Active official alert" : "Active alert";
   }
 
@@ -88,7 +123,7 @@ function alertStatusText(alerts: AlertContext): string {
 }
 
 function alertSummaryText(alerts: AlertContext): string {
-  if (alerts.hasActiveAlerts) {
+  if (alerts.retrievalStatus === "live" && alerts.hasActiveAlerts) {
     return alerts.alerts.map((alert) => alert.title).join("; ");
   }
 

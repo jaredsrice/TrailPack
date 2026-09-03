@@ -10,7 +10,10 @@ import type {
   WeatherContext,
   WeatherForecastPeriod,
 } from "@/features/trailpack/types";
-import { readTextWithinLimit } from "@/features/trailpack/lib/read-text-with-limit";
+import {
+  discardBody,
+  readTextWithinLimit,
+} from "@/features/trailpack/lib/read-text-with-limit";
 
 type Fetcher = (
   input: RequestInfo | URL,
@@ -606,6 +609,10 @@ export async function fetchOpenMeteoWeatherContext(
 ): Promise<WeatherContext | null> {
   const trail = TRAIL_CATALOG[trailId];
   const fallback = buildSavedWeatherFallback(trailId, plannedDate);
+  const unavailable = (reason: string): WeatherContext | null =>
+    fallback
+      ? { ...fallback, statusReason: `${reason} ${fallback.statusReason}` }
+      : null;
 
   if (!trail?.coordinates) {
     return fallback;
@@ -637,7 +644,7 @@ export async function fetchOpenMeteoWeatherContext(
   url.searchParams.set("timezone", "auto");
 
   try {
-    const responseBody = await withExternalRequestTimeout(async (signal) => {
+    const result = await withExternalRequestTimeout(async (signal) => {
       const response = await fetcher(url, {
         headers: {
           Accept: "application/json",
@@ -646,18 +653,40 @@ export async function fetchOpenMeteoWeatherContext(
       });
 
       if (!response.ok) {
-        return null;
+        await discardBody({ body: response.body ?? null });
+        return {
+          status: "error" as const,
+          reason: weatherHttpFailureReason(response.status),
+        };
       }
 
-      return readBoundedProviderJson(response, MAX_WEATHER_RESPONSE_BYTES);
+      try {
+        return {
+          status: "ok" as const,
+          body: await readBoundedProviderJson(
+            response,
+            MAX_WEATHER_RESPONSE_BYTES,
+          ),
+        };
+      } catch {
+        return {
+          status: "error" as const,
+          reason: signal.aborted
+            ? "The weather service did not respond within eight seconds."
+            : "Open-Meteo returned an unreadable forecast response.",
+        };
+      }
     });
-    if (!isRecord(responseBody)) {
-      return fallback;
+    if (result.status === "error") {
+      return unavailable(result.reason);
+    }
+    if (!isRecord(result.body)) {
+      return unavailable("Open-Meteo returned an unusable forecast response.");
     }
 
-    const providerResponse = responseBody as OpenMeteoForecastResponse;
+    const providerResponse = result.body as OpenMeteoForecastResponse;
     if (!hasUsableOpenMeteoData(providerResponse, plannedDate)) {
-      return fallback;
+      return unavailable("Open-Meteo returned no usable forecast values.");
     }
 
     const weather = buildWeatherContextFromOpenMeteoResponse(
@@ -673,9 +702,26 @@ export async function fetchOpenMeteoWeatherContext(
     });
 
     return daylight ? { ...weather, daylight } : weather;
-  } catch {
-    return fallback;
+  } catch (error) {
+    return unavailable(
+      error instanceof Error && error.name === "AbortError"
+        ? "The weather service did not respond within eight seconds."
+        : "The weather service could not be reached from TrailPack.",
+    );
   }
+}
+
+function weatherHttpFailureReason(status: number): string {
+  if (status === 429) {
+    return "Open-Meteo is limiting forecast requests. Try again later; refreshing may not help.";
+  }
+  if (status === 400) {
+    return "Open-Meteo rejected the forecast request (HTTP 400). The selected date may be outside its forecast range.";
+  }
+  if (status === 401 || status === 403) {
+    return `Open-Meteo denied this forecast request (HTTP ${status}).`;
+  }
+  return `Open-Meteo is temporarily unavailable (HTTP ${status}). Try again later.`;
 }
 
 function normalizeParkCode(parkCode: string | null | undefined): string | null {
