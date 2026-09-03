@@ -153,20 +153,84 @@ test("featured photos stay sharp, synchronized, and reduced-motion safe", async 
         images.map((image) => (image as HTMLImageElement).currentSrc),
       ),
     )
-    .toHaveLength(2);
+    .toHaveLength(1);
   const initialImageSources = await page
     .locator(".park-photo-layer")
     .evaluateAll((images) =>
       images.map((image) => (image as HTMLImageElement).currentSrc),
     );
-  expect(new Set(initialImageSources).size).toBe(2);
+  expect(new Set(initialImageSources).size).toBe(1);
 
   for (const photo of PARK_PHOTO_ROTATION) {
     await page.getByRole("button", { name: `Show ${photo.parkName}` }).click();
     await expectCurrentPhoto(page, photo);
   }
 
+  const transitionedImageSources = await page
+    .locator(".park-photo-layer")
+    .evaluateAll((images) =>
+      images.map((image) => (image as HTMLImageElement).currentSrc),
+    );
+  expect(new Set(transitionedImageSources).size).toBe(2);
+
   await expectNoAccessibilityViolations(page);
+});
+
+test("keeps the current photo and credit while the next photo loads", async ({
+  page,
+}) => {
+  let releaseNextPhoto = () => {};
+  const nextPhotoReady = new Promise<void>((resolve) => {
+    releaseNextPhoto = resolve;
+  });
+  let markNextPhotoRequested = () => {};
+  const nextPhotoRequested = new Promise<void>((resolve) => {
+    markNextPhotoRequested = resolve;
+  });
+
+  await page.route("**/_next/image?*", async (route) => {
+    const imagePath = new URL(route.request().url()).searchParams.get("url");
+    if (imagePath === PARK_PHOTO_ROTATION[1].src) {
+      markNextPhotoRequested();
+      await nextPhotoReady;
+    }
+    await route.continue();
+  });
+
+  await page.goto("/");
+  await expectCurrentPhoto(page, PARK_PHOTO_ROTATION[0]);
+  await page.getByRole("button", { name: "Show next park photo" }).click();
+  await nextPhotoRequested;
+
+  try {
+    await expectCurrentPhoto(page, PARK_PHOTO_ROTATION[0]);
+    await expect(page.locator(".park-photo-showcase")).toHaveAttribute(
+      "aria-busy",
+      "true",
+    );
+    await page.getByRole("button", { name: "Show previous park photo" }).click();
+    await expect(page.locator(".park-photo-showcase")).toHaveAttribute(
+      "aria-busy",
+      "false",
+    );
+  } finally {
+    releaseNextPhoto();
+  }
+
+  await expect
+    .poll(() =>
+      page.locator(".park-photo-layer").evaluateAll((images) =>
+        images.every(
+          (image) =>
+            (image as HTMLImageElement).complete &&
+            (image as HTMLImageElement).naturalWidth > 0,
+        ),
+      ),
+    )
+    .toBe(true);
+  await expectCurrentPhoto(page, PARK_PHOTO_ROTATION[0]);
+  await page.getByRole("button", { name: "Show next park photo" }).click();
+  await expectCurrentPhoto(page, PARK_PHOTO_ROTATION[1]);
 });
 
 test("featured photo auto-rotation and controls stay synchronized", async ({

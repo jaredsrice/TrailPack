@@ -10,6 +10,35 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+### Changed
+
+- The trail chooser now downloads only the visible park photograph at startup.
+  The second photo layer is created on the first transition, preserving sharp
+  images, smooth crossfades, focal points, and synchronized credits.
+- The current photograph, credit, and selection indicator now remain in place
+  until the next photograph loads, including when a pending selection is canceled.
+- Optional save/account controls now load after a packing list exists, keeping
+  their authentication code out of the initial planner bundle.
+
+### Verification
+
+- The optimized homepage's first-load JavaScript decreased from 218 kB to
+  149 kB, about 32%, without changing packing rules, provider budgets, or access
+  controls.
+- Hosted initial app-asset transfer decreased from 938 kB to 534 kB on desktop
+  and from 501 kB to 333 kB on mobile. Vercel's Preview-only review tooling is
+  reported separately rather than counted as application code.
+- The local candidate passed lint, type checking, 354 unit tests, 19 Firefox/axe
+  flows, 27 recommendation scenarios, the 5,000-case stress run, and the
+  production build. Pull request [#47](https://github.com/jaredsrice/TrailPack/pull/47)
+  passed hosted checks and desktop/mobile Preview acceptance. Owner approval is
+  pending; the performance changes are not deployed to Production.
+- The [performance and code-efficiency audit](docs/superpowers/validation/2026-09-02-performance-code-efficiency-audit.md)
+  separates download savings, interface timings, provider waits, and remaining
+  measurement limits.
+
+## Deployed reliability hardening - 2026-09-01
+
 The changes below were deployed from protected `main` through
 [pull request #44](https://github.com/jaredsrice/TrailPack/pull/44) on
 2026-09-01 and have not yet been assigned a version tag.
