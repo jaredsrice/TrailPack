@@ -76,15 +76,15 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Jenny Lake Loop / Flash flood warning:
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Jenny Lake Loop / Severe storm and lightning risk:
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Jenny Lake Loop / Extreme heat warning:
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - String Lake Loop / Saved demo baseline:
   - Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - String Lake Loop / Normal clear day with start time:
@@ -107,60 +107,60 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
 - String Lake Loop / Flash flood warning:
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - String Lake Loop / Severe storm and lightning risk:
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - String Lake Loop / Extreme heat warning:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Taggart Lake / Saved demo baseline:
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / Normal clear day with start time:
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / Wet, rainy, slower day:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / Snow or ice with cold weather:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: snow/ice becomes traction plus footwear support, and the app now explains what microspikes are.
   - Good: cold or snow promotes the layer to essential instead of treating it like a summer comfort item.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / Hot, exposed long day:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
   - Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / 18-hour edge case:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: long-day water is capped at a realistic frontcountry carry range instead of scaling into unrealistic multi-gallon totals.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Taggart Lake / Flash flood warning:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Taggart Lake / Severe storm and lightning risk:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Taggart Lake / Extreme heat warning:
   - Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
   - Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
   - Good: official alert context is visible before the user commits to the route.
-  - Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 
 ### Scenario B: Casual / New Hiker
 
@@ -197,18 +197,18 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Jenny Lake Loop / Flash flood warning:
   - Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Jenny Lake Loop / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -247,42 +247,42 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - String Lake Loop / Flash flood warning:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - String Lake Loop / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Taggart Lake / Saved demo baseline:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Taggart Lake / Normal clear day with start time:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Taggart Lake / Wet, rainy, slower day:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Snow or ice with cold weather:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
@@ -290,14 +290,14 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Hot, exposed long day:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
 - Taggart Lake / 18-hour edge case:
   - Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
   - Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -305,20 +305,20 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: headlamp is a direct instruction, not a paragraph that hides the action.
 - Taggart Lake / Flash flood warning:
   - Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Severe storm and lightning risk:
   - Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
   - Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Taggart Lake / Extreme heat warning:
   - Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-  - Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
   - Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
   - Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -360,14 +360,14 @@ Review this TrailPack output as someone with basic hiking experience but limited
 - Jenny Lake Loop / Flash flood warning:
   - Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
-  - Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Overall alerts: Rain / wet trail; Flash flood danger.
   - Route context: Review active alerts before leaving: Flash Flood Warning.
 - Jenny Lake Loop / Severe storm and lightning risk:
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Overall alerts: Rain / wet trail; Lightning or severe storm danger.
   - Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 - Jenny Lake Loop / Extreme heat warning:
@@ -375,7 +375,7 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Overall alerts: Extreme heat danger.
   - Route context: Review active alerts before leaving: Extreme Heat Warning.
 - String Lake Loop / Saved demo baseline:
@@ -407,77 +407,77 @@ Review this TrailPack output as someone with basic hiking experience but limited
   - Overall alerts: Heat / sun exposure; Unusual duration.
 - String Lake Loop / Flash flood warning:
   - Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
-  - Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Overall alerts: Rain / wet trail; Flash flood danger.
   - Route context: Review active alerts before leaving: Flash Flood Warning.
 - String Lake Loop / Severe storm and lightning risk:
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Overall alerts: Rain / wet trail; Lightning or severe storm danger.
   - Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 - String Lake Loop / Extreme heat warning:
   - Trip tie-in: water and food are tied to 6 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Overall alerts: Unusual duration; Extreme heat danger.
   - Route context: Review active alerts before leaving: Extreme Heat Warning.
 - Taggart Lake / Saved demo baseline:
   - Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Park closure reported.
   - Still asks for: Current trail conditions (muddy, icy, snow) are not known from official data alone. Your expected time out improves food, water, and daylight/headlamp guidance. Your start time would improve daylight and headlamp guidance.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Normal clear day with start time:
   - Trip tie-in: water and food are tied to 2 hours plus route difficulty/weather where available.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Park closure reported.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Wet, rainy, slower day:
   - Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Rain / wet trail; Unusual duration; Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Rain / wet trail; Unusual duration; Park closure reported.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Snow or ice with cold weather:
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: poles are presented as optional support unless snow/ice changes the balance need.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Park closure reported.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Hot, exposed long day:
   - Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Heat / sun exposure; Unusual duration; Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Heat / sun exposure; Unusual duration; Park closure reported.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / 18-hour edge case:
   - Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-  - Overall alerts: Unusual duration; Closed route or area.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+  - Overall alerts: Unusual duration; Park closure reported.
   - Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 - Taggart Lake / Flash flood warning:
   - Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
-  - Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
   - Overall alerts: Rain / wet trail; Unusual duration; Flash flood danger.
   - Route context: Review active alerts before leaving: Flash Flood Warning.
 - Taggart Lake / Severe storm and lightning risk:
   - Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+  - Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
   - Overall alerts: Rain / wet trail; Unusual duration; Lightning or severe storm danger.
   - Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 - Taggart Lake / Extreme heat warning:
   - Trip tie-in: water and food are tied to 6 hours plus route difficulty/weather where available.
   - Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
   - Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-  - Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+  - Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
   - Overall alerts: Unusual duration; Extreme heat danger.
   - Route context: Review active alerts before leaving: Extreme Heat Warning.
 
@@ -689,7 +689,7 @@ Optional: Extra dry socks, Insect repellent, Trekking poles, Light jacket or war
 Trip alerts: Rain / wet trail; Flash flood danger.
 
 Key outputs:
-- Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Water: Bring 2-3 liters per adult. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -704,14 +704,14 @@ Key outputs:
 
 Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 2-3 liters per adult. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
-- Middle: Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Middle: Overall alerts: Rain / wet trail; Flash flood danger.
 - Middle: Route context: Review active alerts before leaving: Flash Flood Warning.
 
@@ -724,7 +724,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, T
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
 Key outputs:
-- Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -740,16 +740,16 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Middle: Overall alerts: Rain / wet trail; Lightning or severe storm danger.
 - Middle: Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 
@@ -762,7 +762,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra foo
 Trip alerts: Extreme heat danger.
 
 Key outputs:
-- Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -778,9 +778,9 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks on all-day hikes where hot spots have more time to turn into blisters.
@@ -788,7 +788,7 @@ Hiker lens read:
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Middle: Overall alerts: Extreme heat danger.
 - Middle: Route context: Review active alerts before leaving: Extreme Heat Warning.
 
@@ -999,7 +999,7 @@ Optional: Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Flash flood danger.
 
 Key outputs:
-- Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1014,13 +1014,13 @@ Key outputs:
 
 Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
-- Middle: Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Middle: Overall alerts: Rain / wet trail; Flash flood danger.
 - Middle: Route context: Review active alerts before leaving: Flash Flood Warning.
 
@@ -1033,7 +1033,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, L
 Trip alerts: Rain / wet trail; Lightning or severe storm danger.
 
 Key outputs:
-- Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1049,15 +1049,15 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Pack lunch plus 2-3 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Middle: Overall alerts: Rain / wet trail; Lightning or severe storm danger.
 - Middle: Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 
@@ -1070,7 +1070,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra foo
 Trip alerts: Unusual duration; Extreme heat danger.
 
 Key outputs:
-- Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1087,9 +1087,9 @@ Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1097,7 +1097,7 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 6 hours plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Middle: Overall alerts: Unusual duration; Extreme heat danger.
 - Middle: Route context: Review active alerts before leaving: Extreme Heat Warning.
 
@@ -1111,10 +1111,10 @@ Intent: What the app shows before the user adds trip details.
 User input: duration none, start none, conditions none.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
-Trip alerts: Closed route or area.
+Trip alerts: Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
@@ -1129,14 +1129,14 @@ Key outputs:
 
 Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to the trail profile plus route difficulty/weather where available.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Park closure reported.
 - Middle: Still asks for: Current trail conditions (muddy, icy, snow) are not known from official data alone. Your expected time out improves food, water, and daylight/headlamp guidance. Your start time would improve daylight and headlamp guidance.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
@@ -1146,10 +1146,10 @@ Intent: Expected day-hike behavior with duration and daylight context.
 User input: duration 2 hours, start 09:00, conditions dry and clear.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Extra dry socks, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
-Trip alerts: Closed route or area.
+Trip alerts: Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
@@ -1164,14 +1164,14 @@ Key outputs:
 
 Hiker lens read:
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Sock guidance is visible: Pack one dry pair of socks as a small backup if your feet get wet or a shoe starts rubbing.
 - Middle: Trip tie-in: water and food are tied to 2 hours plus route difficulty/weather where available.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Park closure reported.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### Wet, rainy, slower day
@@ -1180,10 +1180,10 @@ Intent: Stress footwear, socks, jacket, food, water, and clarity under wet condi
 User input: duration 7 hours, start 10:30, conditions muddy sections and wet rocks.
 Essential: Trail footwear, Water, Food, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra food reserve, Electrolytes, Insect repellent, Light jacket or warm layer.
-Trip alerts: Rain / wet trail; Unusual duration; Closed route or area.
+Trip alerts: Rain / wet trail; Unusual duration; Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1200,9 +1200,9 @@ Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 1 meal plus 3-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1210,8 +1210,8 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 7 hours plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Rain / wet trail; Unusual duration; Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Rain / wet trail; Unusual duration; Park closure reported.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### Snow or ice with cold weather
@@ -1220,10 +1220,10 @@ Intent: Stress traction, footwear, socks, layer placement, and non-summer wordin
 User input: duration 5 hours, start 09:30, conditions patchy snow and icy shaded sections.
 Essential: Trail footwear, Water, Food, Bear spray, Navigation / offline map, Power bank / extra battery, Rain shell, Traction devices (microspikes), First-aid basics, Review active alerts before leaving, Trip safety decision, Light jacket or warm layer.
 Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, Trekking poles.
-Trip alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
+Trip alerts: Rain / wet trail; Cold and snow; Unusual duration; Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
@@ -1242,9 +1242,9 @@ Hiker lens read:
 - Seasoned: Good: snow/ice becomes traction plus footwear support, and the app now explains what microspikes are.
 - Seasoned: Good: cold or snow promotes the layer to essential instead of treating it like a summer comfort item.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Traction is clearer: microspikes are described as pull-on metal traction that should fit the user's shoes or boots.
@@ -1253,8 +1253,8 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: poles are presented as optional support unless snow/ice changes the balance need.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Rain / wet trail; Cold and snow; Unusual duration; Park closure reported.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### Hot, exposed long day
@@ -1263,10 +1263,10 @@ Intent: Stress water, food, salt/electrolytes, sun layer, and upper-range explan
 User input: duration 8 hours, start 08:00, conditions dry trail with exposed sunny sections.
 Essential: Trail footwear, Water, Food, Extra food reserve, Electrolytes, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Salty snacks, Light rain or wind shell, Insect repellent, Breathable sun layer, Light jacket or warm layer.
-Trip alerts: Heat / sun exposure; Unusual duration; Closed route or area.
+Trip alerts: Heat / sun exposure; Unusual duration; Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1284,9 +1284,9 @@ Hiker lens read:
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
 - Seasoned: Good: heat/sun exposure appears as a trip-level warning, not only as a water note.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 1 meal plus 3-5 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1294,8 +1294,8 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 8 hours plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Heat / sun exposure; Unusual duration; Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Heat / sun exposure; Unusual duration; Park closure reported.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### 18-hour edge case
@@ -1304,10 +1304,10 @@ Intent: Stress bad input, ultra-long-day scaling, refill/treatment language, hea
 User input: duration 18 hrs, start 12:00, conditions unknown trail conditions and possible delayed exit.
 Essential: Trail footwear, Water, Food, Headlamp, Extra food reserve, Salty snacks, Bear spray, Navigation / offline map, Power bank / extra battery, Sun protection, First-aid basics, Review active alerts before leaving, Trip safety decision.
 Optional: Water filter or treatment backup, Extra dry socks, Electrolytes, Light rain or wind shell, Insect repellent, Light jacket or warm layer.
-Trip alerts: Unusual duration; Closed route or area.
+Trip alerts: Unusual duration; Park closure reported.
 
 Key outputs:
-- Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Water: Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1325,9 +1325,9 @@ Hiker lens read:
 - Seasoned: Good: long-day water is capped at a realistic frontcountry carry range instead of scaling into unrealistic multi-gallon totals.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Clear action seen: Water - Carry 3-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
 - Casual: Food is concrete: Pack 2 meals plus 6-8 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1336,8 +1336,8 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 18 hrs plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
-- Middle: Overall alerts: Unusual duration; Closed route or area.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start the closed route. Choose another open route, follow the posted detour, or wait until the closure is lifted.
+- Middle: Overall alerts: Unusual duration; Park closure reported.
 - Middle: Route context: Review active alerts before leaving: Taggart Trail 2026 construction closure.
 
 ### Flash flood warning
@@ -1349,7 +1349,7 @@ Optional: Extra dry socks, Insect repellent, Light jacket or warm layer.
 Trip alerts: Rain / wet trail; Unusual duration; Flash flood danger.
 
 Key outputs:
-- Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Water: Bring 1-2 liters per person. Do not treat this as a group total.
 - Water backup: not shown
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
@@ -1365,14 +1365,14 @@ Key outputs:
 Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Clear action seen: Water - Bring 1-2 liters per person. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 4 hours plus route difficulty/weather where available.
-- Middle: Trip decision: Do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not start this hike while a flash flood warning is active. Delay, choose another route away from drainages and crossings, or turn back if heavy rain or rising water develops.
 - Middle: Overall alerts: Rain / wet trail; Unusual duration; Flash flood danger.
 - Middle: Route context: Review active alerts before leaving: Flash Flood Warning.
 
@@ -1385,7 +1385,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Insect repellent, L
 Trip alerts: Rain / wet trail; Unusual duration; Lightning or severe storm danger.
 
 Key outputs:
-- Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Water: Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
@@ -1402,16 +1402,16 @@ Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Clear action seen: Water - Carry 2-3 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Casual: Food is concrete: Bring 1-2 easy trail snacks per person, such as bars, trail mix, fruit, or a small sandwich for kids who may need breaks.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
 - Casual: Sock guidance is visible: Pack one dry pair of socks when rain, mud, snow, or wet trail sections are possible.
 - Middle: Trip tie-in: water and food are tied to 5 hours plus route difficulty/weather where available.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, delay the hike or choose another plan while severe storm or lightning risk is active. Turn back before exposed sections if thunder develops.
 - Middle: Overall alerts: Rain / wet trail; Unusual duration; Lightning or severe storm danger.
 - Middle: Route context: Review active alerts before leaving: Severe Thunderstorm Warning.
 
@@ -1424,7 +1424,7 @@ Optional: Water filter or treatment backup, Extra dry socks, Headlamp, Extra foo
 Trip alerts: Unusual duration; Extreme heat danger.
 
 Key outputs:
-- Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Water: Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
 - Water backup: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Food: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
@@ -1441,9 +1441,9 @@ Hiker lens read:
 - Seasoned: Good: the app challenges a duration that does not match the official trail profile as an overall trip alert instead of burying it in gear.
 - Seasoned: Good: the refill/treatment backup is optional and avoids inventing route-specific water sources.
 - Seasoned: Good: official alert context is visible before the user commits to the route.
-- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Seasoned: Good: trip-decision danger is separated from required gear, with a direct plan action: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Clear action seen: Water - Carry 2.5-4 liters per adult. Drink according to thirst; you do not need to finish it all. Do not treat this as a group total.
-- Casual: Change-plan decision is hard to miss: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Casual: Change-plan decision is hard to miss: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Casual: Food is concrete: Pack 1 meal plus 2-4 trail snacks per person. Good options are sandwiches or wraps plus bars, trail mix, jerky, fruit, and nuts.
 - Casual: Water backup is clear and optional: Optional unless you plan to refill from an unverified source. If you do, confirm the source before leaving and bring a filter, purification tablets, or a way to boil water.
 - Casual: Good: the app explains the entered time may be a typo, side trip, closure detour, or non-standard route.
@@ -1451,7 +1451,7 @@ Hiker lens read:
 - Middle: Trip tie-in: water and food are tied to 6 hours plus route difficulty/weather where available.
 - Middle: Good: salt support is explicit, with electrolytes and salty snacks split into primary and optional paths.
 - Middle: Good: long-day water keeps treatment/refill as a separate optional backup instead of burying it in the water quantity.
-- Middle: Trip decision: Do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
+- Middle: Trip decision: Check whether this notice affects your route or access. If affected, do not treat extra water as making this plan safe. Start much earlier, shorten the hike, choose a cooler route, or move the hike to another day.
 - Middle: Overall alerts: Unusual duration; Extreme heat danger.
 - Middle: Route context: Review active alerts before leaving: Extreme Heat Warning.
 
