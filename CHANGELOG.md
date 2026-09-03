@@ -12,6 +12,43 @@ corrections within that milestone.
 
 ### Changed
 
+- **Trip safety decision** names the notices that triggered it and makes
+  **Park-wide alert; impact on this trail unconfirmed** visible without
+  expanding the row. These alerts say **Check route**, with conditional advice,
+  instead of assuming the selected hike must change.
+- **Why and source details** keeps each triggering notice's supplied description
+  and its own source link. The generic **Decision type** paragraph and repeated
+  safety-gear explanation are removed.
+- Forecast heat decisions show the temperature that triggered the existing
+  95°F planning rule, with live-versus-example uncertainty retained.
+
+### Fixed
+
+- The overall alert links to the notice that triggered the safety decision,
+  even when a different park notice appears first in the feed.
+- New saved lists retain bounded safety details. Older snapshots remain
+  readable; malformed nested details and unsafe URLs are rejected.
+
+### Verification
+
+- 374 unit tests, the 5,000-case deterministic/mocked-API stress run, lint, type
+  checking, and the production build passed. All 23 Firefox/axe flows passed,
+  including desktop/mobile notice details and keyboard expansion; the three
+  affected flows also passed again after final wording changes.
+- No authentication, second account, live AI review, or saved-result write was
+  needed. Saved-detail compatibility was checked with local contract tests.
+
+## Deployed alert contrast and weather clarity - 2026-09-02
+
+Approved and deployed through
+[pull request #48](https://github.com/jaredsrice/TrailPack/pull/48) as `5728e36`.
+Vercel confirmed Production success on 2026-09-02 America/Denver
+(2026-09-03 UTC); the public homepage returned HTTPS `200` with title `TrailPack`.
+The reviewed change passed 368 unit tests, 21 Firefox/axe flows, lint, type
+checking, the production build, and the required hosted checks.
+
+### Changed
+
 - Active NPS closure alerts use a red card accent and high-contrast red labels;
   other active alerts use amber. Unavailable data is visibly distinct from a
   successful no-alert check, and the **Live** badge describes retrieval only.
@@ -33,8 +70,8 @@ corrections within that milestone.
 Approved and deployed from protected `main` through
 [pull request #47](https://github.com/jaredsrice/TrailPack/pull/47). The merge
 commit is `c7ee839`; deployment completed on 2026-09-02 America/Denver
-(2026-09-03 UTC). These performance changes are separate from the alert UI work
-listed under Unreleased.
+(2026-09-03 UTC). These performance changes are separate from the alert UI
+release listed above.
 
 ### Changed
 

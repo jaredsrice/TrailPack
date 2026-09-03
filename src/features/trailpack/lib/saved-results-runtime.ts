@@ -8,6 +8,7 @@ import type {
   PackingItem,
   PackingRecommendation,
   RouteType,
+  SafetyDecisionContext,
   SourceLabel,
   TripAlert,
 } from "@/features/trailpack/types";
@@ -229,11 +230,15 @@ function parsePackingItem(value: unknown): PackingItem | null {
     MAX_ITEM_LINKS,
     parseContextNote,
   );
+  const safetyContext = value.safetyContext === undefined
+    ? undefined
+    : parseSafetyContext(value.safetyContext);
   if (
     !sourceLabels ||
     affectedBy === null ||
     links === null ||
-    contextNotes === null
+    contextNotes === null ||
+    safetyContext === null
   ) {
     return null;
   }
@@ -250,7 +255,43 @@ function parsePackingItem(value: unknown): PackingItem | null {
     ...(value.sourceUrl === undefined ? {} : { sourceUrl: value.sourceUrl }),
     ...(links === undefined ? {} : { links }),
     ...(contextNotes === undefined ? {} : { contextNotes }),
+    ...(safetyContext === undefined ? {} : { safetyContext }),
   };
+}
+
+function parseSafetyContext(value: unknown): SafetyDecisionContext | null {
+  if (
+    !isRecord(value) ||
+    (value.scope !== "park-wide" && value.scope !== "forecast") ||
+    !isString(value.issue) ||
+    !isString(value.impact)
+  ) {
+    return null;
+  }
+
+  const evidence = parseRecordArray(value.evidence, 10, (entry) => {
+    if (
+      !isRecord(entry) ||
+      !isString(entry.title) ||
+      !isString(entry.description) ||
+      !isOptionalHttpsUrl(entry.sourceUrl)
+    ) {
+      return null;
+    }
+
+    return {
+      title: entry.title,
+      description: entry.description,
+      ...(entry.sourceUrl === undefined ? {} : { sourceUrl: entry.sourceUrl }),
+    };
+  });
+
+  return evidence ? {
+    scope: value.scope,
+    issue: value.issue,
+    impact: value.impact,
+    evidence,
+  } : null;
 }
 
 function parseItemLink(value: unknown): NonNullable<PackingItem["links"]>[number] | null {

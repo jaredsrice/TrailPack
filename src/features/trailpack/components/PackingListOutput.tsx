@@ -211,6 +211,7 @@ function RecommendationRow({
   const rowClassName = recommendationRowClassName(item);
   const accentClassName = recommendationAccentClassName(item);
   const isCriticalSafety = groupForItem(item.name) === "Critical Safety";
+  const safetyContext = item.safetyContext;
 
   return (
     <li>
@@ -229,7 +230,10 @@ function RecommendationRow({
                 <p className="text-sm font-semibold text-slate-950">{item.name}</p>
                 {!isCriticalSafety ? <PriorityBadge priority={item.priority} /> : null}
                 {item.criticalKind === "trip-decision" ? (
-                  <StatusBadge tone="danger" label="Change plan" />
+                  <StatusBadge
+                    tone={safetyContext?.scope === "park-wide" ? "alert" : "danger"}
+                    label={safetyContext?.scope === "park-wide" ? "Check route" : "Change plan"}
+                  />
                 ) : null}
                 {item.criticalKind === "safety-critical" ? (
                   <StatusBadge tone="critical" label="Safety-critical" />
@@ -247,9 +251,18 @@ function RecommendationRow({
                     ))
                   : null}
               </div>
+              {safetyContext ? (
+                <div className="packing-safety-context">
+                  <p className="packing-safety-issue">{safetyContext.issue}</p>
+                  <p className="packing-safety-impact">{safetyContext.impact}</p>
+                </div>
+              ) : null}
               <p className="packing-item-recommendation">
                 {item.recommendation}
               </p>
+              {safetyContext ? (
+                <span className="packing-safety-disclosure">Why and source details</span>
+              ) : null}
             </div>
           </div>
         </summary>
@@ -263,6 +276,29 @@ function RecommendationRow({
               Why
             </p>
             <p>{item.why}</p>
+            {safetyContext ? (
+              <ul className="packing-safety-evidence">
+                {safetyContext.evidence.map((evidence, index) => (
+                  <li key={`${index}-${evidence.title}`}>
+                    <h4>{evidence.title}</h4>
+                    <p>{evidence.description}</p>
+                    {evidence.sourceUrl ? (
+                      <a
+                        href={evidence.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="source-link"
+                      >
+                        View source
+                        <span className="sr-only"> for {evidence.title}</span>
+                      </a>
+                    ) : safetyContext.scope === "park-wide" ? (
+                      <span className="packing-safety-source-missing">Source link unavailable</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           {item.contextNotes && item.contextNotes.length > 0 ? (
@@ -281,38 +317,40 @@ function RecommendationRow({
             </div>
           ) : null}
 
-          <div className="packing-item-sources">
-            {isCriticalSafety ? (
-              <span className="packing-source-summary">
-                {item.sourceLabels.map(sourceLabelSummary).join(" · ")}
-              </span>
-            ) : (
-              item.sourceLabels.map((label) => (
-                <SourceBadge key={`${item.name}-${label}`} label={label} />
-              ))
-            )}
-            {item.links?.map((link) => (
-              <a
-                key={`${item.name}-${link.url}`}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer"
-                className="source-link"
-              >
-                {link.label}
-              </a>
-            ))}
-            {!item.links && item.sourceUrl ? (
-              <a
-                href={item.sourceUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="source-link"
-              >
-                {isCriticalSafety ? "View source" : "Source"}
-              </a>
-            ) : null}
-          </div>
+          {!safetyContext ? (
+            <div className="packing-item-sources">
+              {isCriticalSafety ? (
+                <span className="packing-source-summary">
+                  {item.sourceLabels.map(sourceLabelSummary).join(" · ")}
+                </span>
+              ) : (
+                item.sourceLabels.map((label) => (
+                  <SourceBadge key={`${item.name}-${label}`} label={label} />
+                ))
+              )}
+              {item.links?.map((link) => (
+                <a
+                  key={`${item.name}-${link.url}`}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="source-link"
+                >
+                  {link.label}
+                </a>
+              ))}
+              {!item.links && item.sourceUrl ? (
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="source-link"
+                >
+                  {isCriticalSafety ? "View source" : "Source"}
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </details>
     </li>

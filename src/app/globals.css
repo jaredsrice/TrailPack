@@ -1558,6 +1558,76 @@ a {
   line-height: 1.55;
 }
 
+.packing-safety-context {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.packing-safety-issue,
+.packing-safety-impact {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.packing-safety-issue {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.packing-safety-impact {
+  color: #77381e;
+  font-weight: 600;
+}
+
+.packing-safety-disclosure {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--evergreen);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.packing-safety-evidence {
+  display: grid;
+  gap: 14px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+
+.packing-safety-evidence > li {
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.packing-safety-evidence h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.packing-safety-evidence p {
+  white-space: pre-line;
+}
+
+.packing-safety-evidence .source-link,
+.packing-safety-source-missing {
+  display: inline-block;
+  margin-top: 6px;
+}
+
+.packing-safety-source-missing {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+}
+
 .packing-item-details {
   padding: 14px 15px 16px 54px;
   color: #38575e;

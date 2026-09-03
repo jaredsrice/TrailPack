@@ -25,6 +25,58 @@ describe("saved result runtime contract", () => {
     expect(parseSavedResultDraft(value)).toEqual(value);
   });
 
+  it("retains the bounded safety explanation in saved results", () => {
+    const value = draft();
+    value.recommendation.essential[0].safetyContext = {
+      scope: "park-wide",
+      issue: "Death Canyon Trailhead Construction Closure",
+      impact: "Park-wide alert; impact on this trail unconfirmed.",
+      evidence: [{
+        title: "Death Canyon Trailhead Construction Closure",
+        description: "Death Canyon Road and Trailhead are closed to all use.",
+        sourceUrl: "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+      }],
+    };
+
+    expect(parseSavedResultDraft(value)).toEqual(value);
+  });
+
+  it("validates safety details instead of persisting arbitrary nested data", () => {
+    const value = draft();
+    const safetyContext = {
+      scope: "park-wide",
+      issue: "Park closure",
+      impact: "Trail impact unconfirmed.",
+      evidence: [{ title: "Park closure", description: "Check the affected location." }],
+    };
+    const withContext = (context: unknown) => ({
+      ...value,
+      recommendation: {
+        ...value.recommendation,
+        essential: value.recommendation.essential.map((item, index) =>
+          index === 0 ? { ...item, safetyContext: context } : item,
+        ),
+      },
+    });
+
+    const parsed = parseSavedResultDraft(withContext({
+      ...safetyContext,
+      privateNote: "Do not retain this",
+      evidence: [{ ...safetyContext.evidence[0], privateNote: "Do not retain this" }],
+    }));
+    expect(parsed?.recommendation.essential[0].safetyContext).toEqual(safetyContext);
+    for (const invalid of [
+      null,
+      { ...safetyContext, scope: "confirmed-closed" },
+      { ...safetyContext, issue: "x".repeat(2_001) },
+      { ...safetyContext, evidence: Array(11).fill(safetyContext.evidence[0]) },
+      { ...safetyContext, evidence: [{ ...safetyContext.evidence[0], description: 123 }] },
+      { ...safetyContext, evidence: [{ ...safetyContext.evidence[0], sourceUrl: "javascript:alert(1)" }] },
+    ]) {
+      expect(parseSavedResultDraft(withContext(invalid))).toBeNull();
+    }
+  });
+
   it("rejects an extra free-form trip field rather than persisting it", () => {
     const value = draft();
     expect(

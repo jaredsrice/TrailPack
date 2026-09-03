@@ -1039,7 +1039,7 @@ describe("source provenance", () => {
     expect(decision.recommendation).toMatch(/Do not start/i);
     expect(decision.recommendation).toMatch(/Delay|turn back/i);
     expect(decision.why).toMatch(/gear does not make/i);
-    expect(decision.why).toMatch(/different from safety-critical gear like bear spray/i);
+    expect(decision.why).not.toMatch(/different from safety-critical gear like bear spray/i);
     expect(decision.affectedBy).toEqual(
       expect.arrayContaining(["Critical danger", "Flash flood", "Official alert"]),
     );
@@ -1103,6 +1103,118 @@ describe("source provenance", () => {
     expect(names(rec.essential)).toContain("Review active alerts before leaving");
   });
 
+  it("preserves closure evidence without claiming the selected trail is closed", () => {
+    const notices: AlertContext["alerts"] = [
+      {
+        title: "Construction on North Park Road",
+        description: "Expect traffic delays on North Park Road.",
+        severity: "info",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/planyourvisit/roads.htm",
+      },
+      {
+        title: "Death Canyon Trailhead Construction Closure",
+        description: "Death Canyon Road and Trailhead are closed to all use.",
+        severity: "closure",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+      },
+      {
+        title: "South End construction closure",
+        description: "The southern work zone is closed; follow posted detours.",
+        severity: "closure",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+      },
+    ];
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, {
+      hasActiveAlerts: true,
+      label: "official",
+      retrievalStatus: "live",
+      alerts: notices,
+    }, {});
+    const decision = itemNamed(rec, "Trip safety decision");
+
+    expect(decision.safetyContext).toEqual({
+      scope: "park-wide",
+      issue: "Death Canyon Trailhead Construction Closure; South End construction closure",
+      impact: "Park-wide alert; impact on this trail unconfirmed.",
+      evidence: notices.slice(1).map(({ title, description, sourceUrl }) => ({
+        title, description, sourceUrl,
+      })),
+    });
+    expect(decision.recommendation).toMatch(/^Check whether/i);
+    expect(decision.recommendation).toMatch(/If affected/i);
+    expect(decision.contextNotes?.some((note) => note.label === "Decision type")).not.toBe(true);
+    expect(decision.why).not.toMatch(/different from safety-critical gear like bear spray/i);
+    const overall = rec.tripAlerts.find((alert) => alert.id === "active-alerts");
+    expect(overall?.title).toBe("Park closure reported");
+    expect(overall?.summary).toContain("impact on this trail unconfirmed");
+    expect(overall?.summary).toContain(notices[0].title);
+    expect(overall?.sourceUrl).toBe(notices[1].sourceUrl);
+  });
+
+  it("does not infer confirmed route impact from a trail-name keyword match", () => {
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, {
+      hasActiveAlerts: true,
+      label: "official",
+      retrievalStatus: "live",
+      alerts: [{
+        title: "Jenny Lake Loop access and nearby closures",
+        description: "Jenny Lake Loop remains open. A nearby road is closed.",
+        severity: "closure",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+      }],
+    }, {});
+
+    expect(itemNamed(rec, "Trip safety decision").safetyContext?.scope).toBe("park-wide");
+    expect(itemNamed(rec, "Trip safety decision").recommendation).toMatch(/^Check whether/i);
+  });
+
+  it("keeps a long safety summary compact without losing any notice details", () => {
+    const notices: AlertContext["alerts"] = Array.from({ length: 10 }, (_, index) => ({
+      title: `Closure ${index + 1}: ${"long-location-name ".repeat(12)}`,
+      description: `Affected location ${index + 1}; check the posted notice.`,
+      severity: "closure",
+      source: "NPS",
+      sourceUrl: `https://www.nps.gov/grte/alerts.htm#notice-${index + 1}`,
+    }));
+    const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, {
+      hasActiveAlerts: true,
+      label: "official",
+      retrievalStatus: "live",
+      alerts: notices,
+    }, {});
+    const context = itemNamed(rec, "Trip safety decision").safetyContext;
+
+    expect(context?.issue.length).toBeLessThanOrEqual(180);
+    expect(context?.issue).toContain("(+9 more)");
+    expect(context?.evidence).toHaveLength(10);
+    expect(context?.evidence[9].title).toBe(notices[9].title);
+    expect(context?.evidence[9].description).toBe(notices[9].description);
+  });
+
+  it("does not attach an unsafe or unofficial URL to safety evidence", () => {
+    for (const sourceUrl of [undefined, "javascript:alert(1)", "https://nps.gov.example.com/closure"]) {
+      const rec = generatePackingRecommendation(JENNY_LAKE_LOOP, CLEAR_WEATHER, {
+        hasActiveAlerts: true,
+        label: "unavailable",
+        alerts: [{
+          title: "Park closure notice",
+          description: "A closure was reported; confirm details with NPS.",
+          severity: "closure",
+          source: "NPS",
+          sourceUrl,
+        }],
+      }, {});
+      const decision = itemNamed(rec, "Trip safety decision");
+      expect(decision.safetyContext?.evidence[0].description).toContain("confirm details");
+      expect(decision.safetyContext?.evidence[0].sourceUrl).toBeUndefined();
+      expect(decision.sourceLabels).not.toContain("official");
+    }
+  });
+
   it("adds a forecast-based trip safety decision for dangerous heat", () => {
     const rec = generatePackingRecommendation(
       JENNY_LAKE_LOOP,
@@ -1122,6 +1234,9 @@ describe("source provenance", () => {
     expect(decision.sourceLabels).toContain("forecast-based");
     expect(decision.sourceLabels).not.toContain("official");
     expect(names(rec.essential)).not.toContain("Review active alerts before leaving");
+    expect(decision.safetyContext?.scope).toBe("forecast");
+    expect(decision.safetyContext?.issue).toContain(`${EXTREME_HEAT_WEATHER.temperatureF?.high}°F`);
+    expect(decision.safetyContext?.evidence[0].description).toContain("95°F");
   });
 
   it("uses official extreme heat alerts without duplicating the forecast heat alert", () => {

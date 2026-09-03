@@ -79,6 +79,72 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await expectNoAccessibilityViolations(page);
     }
   });
+
+  test(`trip safety preserves notice details without claiming route closure at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await mockWeather(page);
+    const notices = [
+      {
+        title: "Death Canyon Trailhead Construction Closure",
+        description: "Death Canyon Road and Trailhead are closed to all use.\n\nFollow signs around the construction zone.",
+        severity: "closure",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+      },
+      {
+        title: "South End construction closure",
+        description: "The southern work zone is closed; follow posted detours.",
+        severity: "closure",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+      },
+    ];
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "error" || message.type() === "warning") errors.push(message.text());
+    });
+    await page.route("**/api/trailpack/alerts?*", (route) => route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ hasActiveAlerts: true, alerts: notices, label: "official", retrievalStatus: "live" }),
+    }));
+    await page.route("**/api/trailpack/ai-review", (route) => route.fulfill({
+      status: 401,
+      contentType: "application/json",
+      body: signedOutReviewBody("Jenny Lake Loop"),
+    }));
+
+    await page.goto("/");
+    await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+    await page.getByRole("button", { name: "Generate packing list" }).click();
+    const decision = page.locator(".packing-item").filter({ hasText: "Trip safety decision" }).first();
+    const summary = decision.locator("summary");
+    await expect(summary.getByText("Check route", { exact: true })).toBeVisible();
+    await expect(summary).toContainText("Park-wide alert; impact on this trail unconfirmed.");
+    await expect(summary).toContainText(notices[0].title);
+    await expect(summary).toContainText(notices[1].title);
+    await expect(summary.getByText("Change plan", { exact: true })).toHaveCount(0);
+    await expect(decision.locator(".packing-safety-evidence")).toBeHidden();
+    await expect(page.locator(".trip-alerts")).toContainText("impact on this trail unconfirmed");
+
+    await summary.focus();
+    await page.keyboard.press("Enter");
+    await expect(decision).toHaveAttribute("open", "");
+    await expect(decision.getByText("Decision type", { exact: true })).toHaveCount(0);
+    for (const notice of notices) {
+      await expect(decision.getByRole("heading", { name: notice.title, exact: true })).toBeVisible();
+      await expect(decision.getByText(notice.description, { exact: true })).toBeVisible();
+      await expect(decision.getByRole("link", { name: `View source for ${notice.title}`, exact: true })).toHaveAttribute("href", notice.sourceUrl);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+    await expectNoAccessibilityViolations(page);
+    await decision.screenshot({ path: `/tmp/trailpack-safety-${viewport.width}.png` });
+    await summary.focus();
+    await page.keyboard.press("Space");
+    await expect(decision.locator(".packing-safety-evidence")).toBeHidden();
+    expect(errors).toEqual([]);
+  });
 }
 
 async function mockWeather(page: Page) {
@@ -525,7 +591,7 @@ test("one generated packing list requests one guarded review", async ({
   await expect(
     criticalSafety.getByText("Review active alerts before leaving", { exact: true }),
   ).toHaveCount(0);
-  await expect(criticalSafety.getByText("Change plan", { exact: true })).toBeVisible();
+  await expect(criticalSafety.getByText("Check route", { exact: true })).toBeVisible();
   await expect(criticalSafety.getByText("Essential", { exact: true })).toHaveCount(0);
   await expect(criticalSafety.getByText("Critical danger", { exact: true })).toHaveCount(0);
   await expect(criticalSafety.getByText("Closure", { exact: true })).toHaveCount(0);
@@ -539,12 +605,10 @@ test("one generated packing list requests one guarded review", async ({
   );
   await expect(tripDecision.getByText("Official", { exact: true })).toHaveCount(0);
   await expect(tripDecision.getByText("Inferred", { exact: true })).toHaveCount(0);
-  await expect(
-    tripDecision.getByText(
-      "Official guidance · TrailPack interpretation",
-      { exact: true },
-    ),
-  ).toBeVisible();
+  await expect(tripDecision.locator(".packing-safety-evidence")).toContainText(
+    "Death Canyon Road and Trailhead are closed to all use.",
+  );
+  await expect(tripDecision.getByText("Decision type", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Item explanation drafts", { exact: true })).toHaveCount(0);
   const reviewDetails = page.getByText("Why and review details", { exact: true });
   await expect(reviewDetails).toBeVisible();

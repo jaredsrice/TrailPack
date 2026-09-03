@@ -3,6 +3,7 @@ import type {
   PackingItem,
   PackingRecommendation,
   RouteType,
+  SafetyDecisionContext,
   TrailProfile,
   TripAlert,
   WeatherContext,
@@ -510,6 +511,8 @@ export function analyzeTrailConditions(input?: string): TrailConditionFlags {
 }
 
 type AlertItem = AlertContext["alerts"][number];
+const DANGEROUS_HEAT_THRESHOLD_F = 95;
+
 type TripDecisionDangerKind =
   | "closure"
   | "flash-flood"
@@ -531,6 +534,7 @@ interface TripDecisionDanger {
   sourceUrl?: string;
   source: "alert" | "weather";
   matchedAlertTitles?: string[];
+  safetyContext: SafetyDecisionContext;
 }
 
 interface AlertDecisionRule {
@@ -547,7 +551,7 @@ const ALERT_DECISION_RULES: AlertDecisionRule[] = [
   {
     kind: "closure",
     tag: "Closure",
-    title: "Closed route or area",
+    title: "Park closure reported",
     matcher: (alert, text) =>
       alert.severity === "closure" ||
       /\b(closure|closed|do not enter|area closed|trail closed)\b/i.test(text),
@@ -673,6 +677,17 @@ function sourceLabelsForMatchedAlerts(alerts: AlertItem[]): PackingItem["sourceL
     : ["unavailable", "inferred"];
 }
 
+function compactAlertIssue(alerts: AlertItem[]): string {
+  const titles = alertTitles(alerts);
+  if (titles.length <= 180) {
+    return titles;
+  }
+
+  const first = alerts[0].title;
+  const shortTitle = first.length <= 140 ? first : `${first.slice(0, 137).trimEnd()}…`;
+  return alerts.length > 1 ? `${shortTitle} (+${alerts.length - 1} more)` : shortTitle;
+}
+
 function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger | null {
   if (!alerts.hasActiveAlerts || alerts.alerts.length === 0) {
     return null;
@@ -685,13 +700,20 @@ function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger 
     }
 
     const titles = alertTitles(matchedAlerts);
+    // NPS supplies park-wide notices, not a verified match to the selected
+    // route. Retain the evidence without turning a name match into certainty.
+    const impact = alerts.retrievalStatus === "saved-fixture"
+      ? "Saved park alert; current status and impact on this trail unconfirmed."
+      : "Park-wide alert; impact on this trail unconfirmed.";
+    const noticeSubject = matchedAlerts.length === 1 ? "this notice affects" : "these notices affect";
+    const recommendation = `Check whether ${noticeSubject} your route or access. If affected, ${rule.recommendation[0].toLowerCase()}${rule.recommendation.slice(1)}`;
     return {
       kind: rule.kind,
       title: rule.title,
       tag: rule.tag,
-      recommendation: rule.recommendation,
+      recommendation,
       why: rule.why,
-      summary: `${rule.title}: ${titles}. ${rule.recommendation}`,
+      summary: `${rule.title}: ${titles}. ${impact} ${recommendation}`,
       affectedBy: uniqueStrings([
         "Critical danger",
         rule.tag,
@@ -702,6 +724,16 @@ function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger 
       sourceUrl: firstOfficialAlertSourceUrl(matchedAlerts),
       source: "alert",
       matchedAlertTitles: matchedAlerts.map((alert) => alert.title),
+      safetyContext: {
+        scope: "park-wide",
+        issue: compactAlertIssue(matchedAlerts),
+        impact,
+        evidence: matchedAlerts.map((alert) => ({
+          title: alert.title,
+          description: alert.description || "No alert description provided.",
+          ...(isOfficialNpsAlert(alert) ? { sourceUrl: alert.sourceUrl } : {}),
+        })),
+      },
     };
   }
 
@@ -711,9 +743,14 @@ function buildAlertTripDecisionDanger(alerts: AlertContext): TripDecisionDanger 
 function buildWeatherTripDecisionDanger(weather: WeatherContext): TripDecisionDanger | null {
   const high = weather.temperatureF?.high ?? Number.NEGATIVE_INFINITY;
   const current = weather.temperatureF?.current ?? Number.NEGATIVE_INFINITY;
-  if (high < 95 && current < 95) {
+  if (high < DANGEROUS_HEAT_THRESHOLD_F && current < DANGEROUS_HEAT_THRESHOLD_F) {
     return null;
   }
+
+  const readings = [
+    ...(high >= DANGEROUS_HEAT_THRESHOLD_F ? [`Forecast high ${high}°F`] : []),
+    ...(current >= DANGEROUS_HEAT_THRESHOLD_F ? [`Current temperature ${current}°F`] : []),
+  ].join("; ");
 
   return {
     kind: "extreme-heat",
@@ -728,6 +765,19 @@ function buildWeatherTripDecisionDanger(weather: WeatherContext): TripDecisionDa
     affectedBy: ["Critical danger", "Extreme heat", "Heat"],
     sourceLabels: ["forecast-based", "inferred"],
     source: "weather",
+    safetyContext: {
+      scope: "forecast",
+      issue: readings,
+      impact: weather.retrievalStatus === "live"
+        ? "Forecast for your hike; conditions along the trail can differ."
+        : weather.retrievalStatus === "saved-fixture"
+          ? "Saved weather example; not a current forecast for your hike."
+          : "Weather context; current conditions on your trail are unconfirmed.",
+      evidence: [{
+        title: "Extreme heat rule",
+        description: `${readings}. TrailPack's planning rule flags a high or current temperature of ${DANGEROUS_HEAT_THRESHOLD_F}°F or more; this is a rule-based caution, not an official closure or a measurement along the trail.`,
+      }],
+    },
   };
 }
 
@@ -939,7 +989,9 @@ function buildActiveAlertTripAlert(
     severity: alertDanger || closure ? "danger" : "caution",
     affectedBy: alertDanger?.affectedBy ?? ["Official alert"],
     sourceLabels: allAlertsOfficial ? ["official"] : ["unavailable"],
-    sourceUrl: allAlertsOfficial ? alerts.alerts[0].sourceUrl : undefined,
+    sourceUrl: allAlertsOfficial
+      ? alertDanger?.sourceUrl ?? alerts.alerts[0].sourceUrl
+      : undefined,
   };
 }
 
@@ -950,15 +1002,9 @@ function buildTripSafetyDecisionItem(danger: TripDecisionDanger): PackingItem {
     name: "Trip safety decision",
     question: "Is this hike safe to start?",
     recommendation: danger.recommendation,
-    why:
-      `${danger.why} This is different from safety-critical gear like bear spray: the safer action may be to delay, reroute, shorten, turn back, or not start.`,
+    why: danger.why,
     affectedBy: danger.affectedBy,
-    contextNotes: [
-      {
-        label: "Decision type",
-        text: "Trip decision danger means changing the plan may matter more than adding gear.",
-      },
-    ],
+    safetyContext: danger.safetyContext,
     sourceLabels: danger.sourceLabels,
     sourceUrl,
   });
@@ -1394,8 +1440,8 @@ export function generatePackingRecommendation(
     (weather.temperatureF?.high ?? 0) >= 85 ||
     (weather.temperatureF?.current ?? 0) >= 85;
   const dangerousHeatConditions =
-    (weather.temperatureF?.high ?? 0) >= 95 ||
-    (weather.temperatureF?.current ?? 0) >= 95;
+    (weather.temperatureF?.high ?? 0) >= DANGEROUS_HEAT_THRESHOLD_F ||
+    (weather.temperatureF?.current ?? 0) >= DANGEROUS_HEAT_THRESHOLD_F;
   const tripDecisionDanger = buildTripDecisionDanger({ alerts, weather });
   const tripAlerts = buildWeatherTripAlerts({
     weather,

@@ -13,11 +13,11 @@ silently change the packing decisions or their sources.
 
 | Item | Current state |
 |---|---|
-| Release | `0.6.1` in Production; post-`0.6.1` reliability and startup-performance improvements are deployed |
+| Release | `0.6.1` in Production; post-`0.6.1` reliability, startup-performance, and alert-clarity improvements are deployed |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Alert contrast and weather-fallback clarity in a separate review branch |
+| Active track | Specific trip-safety evidence and explicit park-wide alert uncertainty in review |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Full planner and standard plan review available without an account |
 
@@ -36,7 +36,7 @@ distinct generated lists per account per hour.
    terrain guidance, and current NPS alerts when the live service is available.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
    markers, with clearly labeled saved fallbacks when a provider is unavailable.
-   The review branch makes active NPS closures red, other active alerts amber,
+   Active NPS closures are red, other active alerts amber,
    and unavailable feeds explicit. A blue **Live** label describes retrieval,
    not whether a route is safe. Saved weather examples stay behind a labelled
    disclosure instead of appearing as current condition pills.
@@ -47,6 +47,11 @@ distinct generated lists per account per hour.
    Each expanded recommendation identifies whether its basis is a standard
    TrailPack rule, trip details, forecast data, daylight timing, or a live NPS
    alert.
+   The safety-context update names the triggering notices, states that a
+   park-wide alert's impact on the selected trail is unconfirmed, and shows
+   **Check route** instead of assuming the hike must change. **Why and source
+   details** contains the supplied descriptions and each notice's source link.
+   Forecast heat decisions show the temperature that triggered the planning rule.
 6. Every generated list includes a concise deterministic plan review without an
    account. For signed-in hikers, that same action also requests one guarded
    Gemini wording check. Editing fields does not spend the allowance; **Update
@@ -274,6 +279,13 @@ returned HTTPS `200` with the `TrailPack` title. Measurements, code review
 findings, and exclusions are recorded in the
 [performance and code-efficiency audit](docs/superpowers/validation/2026-09-02-performance-code-efficiency-audit.md).
 
+The alert-contrast and weather-clarity update was approved and merged in
+[#48](https://github.com/jaredsrice/TrailPack/pull/48) as `5728e36`. Its local
+gate passed 368 unit tests, 21 Firefox/axe flows, lint, type checking, and the
+build. Required hosted checks passed, Vercel confirmed successful Production
+deployment, and the public homepage returned HTTPS `200` with title `TrailPack`.
+The subsequent safety-context work is separate and remains in review.
+
 The underlying `0.5.0` security release also passed CodeQL analysis, a
 zero-vulnerability dependency audit, production browser/API smoke checks, a
 real two-account privacy walkthrough, and an updated OWASP ZAP passive scan with
@@ -288,7 +300,7 @@ in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cy
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
   observation. Dates outside the provider range use a labeled saved example.
-  The separate alert/availability review distinguishes provider rate limits,
+  Availability messages distinguish provider rate limits,
   denied requests, timeouts, connection failures, and unusable responses without
   exposing raw provider diagnostics. Refreshing cannot guarantee recovery from
   a provider-side limit or outage. Weather still has an eight-second provider
@@ -300,6 +312,13 @@ in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cy
   recommendations from saved demo alerts, and retries once in the background.
   If that retry returns live data after generation, the hiker must explicitly
   update the list; TrailPack never silently changes a generated plan.
+- NPS notices are park-wide. TrailPack does not verify that a selected trail,
+  its approach road, or the user's exact route is affected, and a trail-name
+  keyword match is not proof of a closure. Safety details retain the supplied
+  notice text and source links without inventing affected locations or dates.
+- New saved-list snapshots retain bounded safety evidence; older saved lists
+  still load without it. No additional database table, migration, or account
+  permission is required.
 - Gemini is optional, available only to signed-in users, and capped at five
   distinct generated-list reviews per account per hour. Field edits, signed-out
   attempts, and duplicate requests do not spend that allowance. Authentication,
@@ -332,6 +351,8 @@ current local conditions, emergency preparation, or personal judgment.
 | Final everyday-hiker acceptance | Complete; owner approved the final preview and release state |
 | Reliability and stress hardening | Complete and production-verified through pull request #44 |
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
+| Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
+| Specific trip-safety evidence and route uncertainty | Implemented in the current review branch; not yet released |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

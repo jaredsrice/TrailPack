@@ -156,6 +156,18 @@ export interface AlertContext {
   statusReason?: string;
 }
 
+export interface SafetyDecisionContext {
+  /** Park alerts do not establish whether the selected trail is affected. */
+  scope: "park-wide" | "forecast";
+  issue: string;
+  impact: string;
+  evidence: Array<{
+    title: string;
+    description: string;
+    sourceUrl?: string;
+  }>;
+}
+
 export interface PackingItem {
   name: string;
   /**
@@ -199,6 +211,8 @@ export interface PackingItem {
     label: string;
     text: string;
   }>;
+  /** Snapshot of the specific trigger, uncertainty, and supporting notices. */
+  safetyContext?: SafetyDecisionContext;
 }
 
 export interface TripAlert {
