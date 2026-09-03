@@ -376,5 +376,9 @@ GitHub confirmed the merge above. Vercel deployment `6234387766` reported
 Production success at 2026-09-03 00:19:42 UTC, and
 [the production homepage](https://trailpack-ten.vercel.app/) returned HTTPS
 `200` with title `TrailPack`. The weather fallback reported during subsequent
-owner review is being investigated separately; this production smoke check is
-not a claim that all optional providers were available.
+owner review was investigated separately in
+[PR #48](https://github.com/jaredsrice/TrailPack/pull/48), approved and deployed
+as `5728e36`. That follow-up makes alert severity and provider failures explicit;
+it does not change the performance measurements or guarantee that every
+optional provider will remain available. The newer trip-safety evidence and
+route-uncertainty work is separate from both releases.
