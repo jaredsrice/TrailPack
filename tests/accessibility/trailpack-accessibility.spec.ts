@@ -6,8 +6,80 @@ import {
   type ParkPhoto,
 } from "../../src/features/trailpack/data/park-images";
 import type { LiveAiOutcome } from "../../src/features/trailpack/lib/ai-contract";
+import type { AlertContext } from "../../src/features/trailpack/types";
 
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
+
+for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+  test(`weather fallback and alert severity stay clear at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await mockWeather(page);
+    const exampleAlert: AlertContext["alerts"][number] = {
+      title: "Death Canyon Trailhead Construction Closure",
+      description: "A park notice to review before leaving.",
+      severity: "closure",
+      source: "NPS",
+      sourceUrl: "https://www.nps.gov/grte/alerts.htm",
+    };
+    let currentAlerts: AlertContext = {
+      hasActiveAlerts: true,
+      label: "official",
+      retrievalStatus: "live",
+      alerts: [exampleAlert],
+    };
+    await page.route("**/api/trailpack/alerts?*", async (route) => {
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(currentAlerts) });
+    });
+
+    for (const state of [
+      { tone: "danger", retrievalStatus: "live", severity: "closure", active: true, heading: "Active official alert", title: "Death Canyon Trailhead Construction Closure" },
+      { tone: "warning", retrievalStatus: "live", severity: "caution", active: true, heading: "Active official alert", title: "Construction on North Park Road" },
+      { tone: "clear", retrievalStatus: "live", severity: "info", active: false, heading: "No active official alerts", title: "" },
+      { tone: "unavailable", retrievalStatus: "saved-fixture", severity: "info", active: false, heading: "Live NPS alerts unavailable", title: "" },
+    ] as const) {
+      currentAlerts = {
+        ...currentAlerts,
+        hasActiveAlerts: state.active,
+        retrievalStatus: state.retrievalStatus,
+        alerts: state.active ? [{ ...exampleAlert, title: state.title, severity: state.severity }] : [],
+      };
+      await page.goto("/");
+      await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+
+      const alertCard = page.locator('.context-card[data-context="alert"]');
+      await expect(alertCard).toHaveAttribute("data-tone", state.tone);
+      await expect(alertCard.getByRole("heading", { name: state.heading, exact: true })).toBeVisible();
+      await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
+
+      const weatherCard = page.locator('.context-card[data-context="weather"]');
+      await expect(weatherCard).toHaveAttribute("data-tone", "unavailable");
+      await expect(weatherCard.getByRole("heading", { name: "Live forecast unavailable" })).toBeVisible();
+      await expect(weatherCard.locator(".context-detail-pill")).toHaveCount(0);
+      await expect(weatherCard.locator(".source-badge")).toHaveCount(0);
+      await expect(weatherCard.getByText("Example values only — not current weather")).toBeVisible();
+
+      const contrast = await alertCard.locator(".context-detail-pill, .source-badge, .retrieval-pill").evaluateAll((pills) => {
+        const luminance = (colour: string) => {
+          const channels = (colour.match(/[\d.]+/g) ?? []).slice(0, 3).map((value) => {
+            const channel = Number(value) / 255;
+            return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+          });
+          return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+        };
+        return pills.map((pill) => {
+          const style = getComputedStyle(pill);
+          const text = luminance(style.color);
+          const fill = luminance(style.backgroundColor);
+          return (Math.max(text, fill) + 0.05) / (Math.min(text, fill) + 0.05);
+        });
+      });
+      expect(contrast.length).toBeGreaterThan(0);
+      for (const ratio of contrast) expect(ratio).toBeGreaterThanOrEqual(4.5);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+      await expectNoAccessibilityViolations(page);
+    }
+  });
+}
 
 async function mockWeather(page: Page) {
   await page.route("**/api/trailpack/weather?*", async (route) => {

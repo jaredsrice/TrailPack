@@ -944,7 +944,7 @@ a {
   border-top: 2px solid var(--alpine-blue);
 }
 
-.context-card:nth-child(2) {
+.context-card[data-context="alert"] {
   border-top-color: var(--forest);
 }
 
@@ -962,7 +962,7 @@ a {
   color: var(--alpine-blue);
 }
 
-.context-card:nth-child(2) .context-card-title {
+.context-card[data-context="alert"] .context-card-title {
   color: var(--forest);
 }
 
@@ -992,16 +992,10 @@ a {
   border-radius: 999px;
 }
 
-.context-card:first-child .retrieval-pill[data-retrieval-status="live"] {
+.retrieval-pill[data-retrieval-status="live"] {
   color: #174f70;
   background: #d3e7f2;
   border-color: #759eb6;
-}
-
-.context-card:nth-child(2) .retrieval-pill[data-retrieval-status="live"] {
-  color: #174d38;
-  background: #d6eadf;
-  border-color: #79a58e;
 }
 
 .retrieval-pill[data-retrieval-status="saved-fixture"] {
@@ -1059,16 +1053,76 @@ a {
   border-color: #5e9ebd;
 }
 
-.context-card:nth-child(2) .source-badge {
+.context-card[data-context="alert"] .source-badge {
   color: #115c3b;
   background: #d5efdf;
   border-color: #65a782;
 }
 
-.context-card:nth-child(2) .context-detail-pill {
+.context-card[data-context="alert"] .context-detail-pill {
   color: #2b5247;
   background: #dce9e4;
   border-color: #8aaca0;
+}
+
+.context-card[data-tone="warning"],
+.context-card[data-tone="unavailable"] {
+  background: #fff4d8;
+  border-color: #a85a12;
+  border-top-width: 5px;
+}
+
+.context-card[data-tone="danger"] {
+  background: #fff0eb;
+  border-color: #b93827;
+  border-top-width: 5px;
+}
+
+.context-card[data-tone="warning"] .context-card-title,
+.context-card[data-tone="warning"] h3,
+.context-card[data-tone="unavailable"] .context-card-title,
+.context-card[data-tone="unavailable"] h3 {
+  color: #713b0b;
+}
+
+.context-card[data-tone="danger"] .context-card-title,
+.context-card[data-tone="danger"] h3 {
+  color: #8a2419;
+}
+
+.context-card[data-tone="warning"] .context-summary,
+.context-card[data-tone="unavailable"] .context-summary {
+  color: #603a12;
+}
+
+.context-card[data-tone="danger"] .context-summary {
+  color: #692a22;
+}
+
+.context-card[data-tone="warning"] .context-detail-pill {
+  color: #fff;
+  font-weight: 650;
+  background: #85430b;
+  border-color: #85430b;
+}
+
+.context-card[data-tone="danger"] .context-detail-pill {
+  color: #fff;
+  font-weight: 650;
+  background: #982b1d;
+  border-color: #982b1d;
+}
+
+.context-card[data-tone="warning"] .source-badge {
+  color: #713b0b;
+  background: #ffe3a3;
+  border-color: #a85a12;
+}
+
+.context-card[data-tone="danger"] .source-badge {
+  color: #8a2419;
+  background: #ffdacd;
+  border-color: #b93827;
 }
 
 .forecast-details {

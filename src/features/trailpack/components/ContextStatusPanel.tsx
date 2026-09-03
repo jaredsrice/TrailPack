@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { buildContextStatus } from "@/features/trailpack/lib/context-status";
+import {
+  buildContextStatus,
+  type ContextTone,
+} from "@/features/trailpack/lib/context-status";
 import {
   buildForecastTimelineMarkers,
   type ForecastTimelineMarker,
@@ -58,13 +61,16 @@ export function ContextStatusPanel({
       <div className="context-grid">
         <ContextCard
           icon="weather"
+          tone={isWeatherLoading ? "neutral" : status.weather.tone}
           title="Weather"
           status={
             isWeatherLoading ? "Updating live forecast" : status.weather.status
           }
           summary={status.weather.summary}
           label={status.weather.label}
-          retrievalStatus={status.weather.retrievalStatus}
+          retrievalStatus={
+            isWeatherLoading ? "loading" : status.weather.retrievalStatus
+          }
           details={status.weather.details}
           notice={
             isWeatherLoading
@@ -76,6 +82,7 @@ export function ContextStatusPanel({
         </ContextCard>
         <ContextCard
           icon="alert"
+          tone={isAlertLoading ? "neutral" : status.alerts.tone}
           title="NPS alerts"
           status={isAlertLoading ? "Updating live alerts" : status.alerts.status}
           summary={
@@ -84,7 +91,9 @@ export function ContextStatusPanel({
               : status.alerts.summary
           }
           label={status.alerts.label}
-          retrievalStatus={status.alerts.retrievalStatus}
+          retrievalStatus={
+            isAlertLoading ? "loading" : status.alerts.retrievalStatus
+          }
           details={status.alerts.details}
           notice={
             isAlertLoading
@@ -101,6 +110,7 @@ export function ContextStatusPanel({
 
 function ContextCard({
   icon,
+  tone,
   title,
   status,
   summary,
@@ -111,6 +121,7 @@ function ContextCard({
   children,
 }: {
   icon: TrailPackIconName;
+  tone: ContextTone;
   title: string;
   status: string;
   summary: string;
@@ -120,15 +131,22 @@ function ContextCard({
   notice?: string;
   children?: ReactNode;
 }) {
+  const showSource = retrievalStatus === "live" && label !== "unavailable";
+
   return (
-    <div className="context-card">
+    <div
+      className="context-card"
+      data-context={icon}
+      data-tone={tone}
+      aria-busy={retrievalStatus === "loading"}
+    >
       <div className="context-card-heading">
         <div className="context-card-title">
           <TrailPackIcon name={icon} className="h-6 w-6" />
           <div>
             <p className="context-card-label">
-            {title}
-          </p>
+              {title}
+            </p>
             <h3>{status}</h3>
           </div>
         </div>
@@ -148,14 +166,16 @@ function ContextCard({
         </p>
       ) : null}
 
-      <div className="context-badges">
-        {label !== "unavailable" ? <SourceBadge label={label} /> : null}
-        {details.map((detail) => (
-          <span key={detail} className="context-detail-pill">
-            {detail}
-          </span>
-        ))}
-      </div>
+      {details.length > 0 || showSource ? (
+        <div className="context-badges">
+          {showSource ? <SourceBadge label={label} /> : null}
+          {details.map((detail) => (
+            <span key={detail} className="context-detail-pill">
+              {detail}
+            </span>
+          ))}
+        </div>
+      ) : null}
 
       {children}
     </div>
@@ -164,6 +184,8 @@ function ContextCard({
 
 function retrievalStatusLabel(retrievalStatus: string): string {
   switch (retrievalStatus) {
+    case "loading":
+      return "Checking";
     case "live":
       return "Live";
     case "saved-fixture":
@@ -183,6 +205,7 @@ function DayForecast({
   startTime?: string;
 }) {
   const periods = weather.forecastPeriods ?? [];
+  const isLiveForecast = weather.retrievalStatus === "live";
   const highlights = selectForecastHighlights(periods);
   const canShowHourly = periods.length > highlights.length;
   const timelineMarkers = buildForecastTimelineMarkers({
@@ -199,9 +222,13 @@ function DayForecast({
     <details className="forecast-details group">
       <summary>
         <div>
-          <p className="forecast-details-title">Day forecast</p>
+          <p className="forecast-details-title">
+            {isLiveForecast ? "Day forecast" : "Saved weather example"}
+          </p>
           <p className="forecast-details-subtitle">
-            {periods.length > 4
+            {!isLiveForecast
+              ? "Example values only — not current weather"
+              : periods.length > 4
               ? `${periods.length} hourly periods available`
               : periods.length === 4
                 ? "Four representative times"
@@ -247,8 +274,9 @@ function DayForecast({
               </div>
             ) : (
               <p className="forecast-availability-note">
-                This saved fallback includes representative times. Full hourly
-                detail appears when a live forecast is available.
+                {isLiveForecast
+                  ? "These are the forecast periods available for this response."
+                  : "These saved values support the fallback packing list. They are not a forecast for your hike; check current weather before leaving."}
               </p>
             )}
 

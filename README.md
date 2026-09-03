@@ -13,11 +13,11 @@ silently change the packing decisions or their sources.
 
 | Item | Current state |
 |---|---|
-| Release | `0.6.1` in Production; post-`0.6.1` reliability hardening is deployed |
+| Release | `0.6.1` in Production; post-`0.6.1` reliability and startup-performance improvements are deployed |
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Startup-performance Preview verified; owner approval pending |
+| Active track | Alert contrast and weather-fallback clarity in a separate review branch |
 | Supported catalog | Five manually verified Grand Teton day hikes |
 | Guest workflow | Full planner and standard plan review available without an account |
 
@@ -36,6 +36,10 @@ distinct generated lists per account per hour.
    terrain guidance, and current NPS alerts when the live service is available.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
    markers, with clearly labeled saved fallbacks when a provider is unavailable.
+   The review branch makes active NPS closures red, other active alerts amber,
+   and unavailable feeds explicit. A blue **Live** label describes retrieval,
+   not whether a route is safe. Saved weather examples stay behind a labelled
+   disclosure instead of appearing as current condition pills.
 4. Add trip details such as date, start time, expected duration, route type, or
    reported conditions.
 5. Select **Generate packing list** to snapshot those inputs and create
@@ -258,14 +262,16 @@ with the `TrailPack` title and the new state-aware context labels. Current
 evidence and exclusions are tracked in the
 [full project stress audit](docs/superpowers/validation/2026-08-31-full-project-stress-audit.md).
 
-The current performance candidate reduces the homepage's production-build
+The deployed performance update reduces the homepage's production-build
 first-load JavaScript from 218 kB to 149 kB. Its local gate passed all 354 unit
 tests, 19 Firefox/axe flows, 27 recommendation scenarios, the 5,000-case stress
 run, lint, type checking, and the optimized build. Pull request
 [#47](https://github.com/jaredsrice/TrailPack/pull/47) passed hosted checks and
 desktop/mobile Preview acceptance. Hosted app-asset transfer decreased by 43%
-on desktop and 34% on mobile. Owner approval is still pending; these changes are
-not yet on Production. Measurements, code review findings, and exclusions are recorded in the
+on desktop and 34% on mobile. After owner approval, the PR merged as `c7ee839`.
+Vercel reported a successful Production deployment, and the production homepage
+returned HTTPS `200` with the `TrailPack` title. Measurements, code review
+findings, and exclusions are recorded in the
 [performance and code-efficiency audit](docs/superpowers/validation/2026-09-02-performance-code-efficiency-audit.md).
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
@@ -282,6 +288,11 @@ in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cy
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
   observation. Dates outside the provider range use a labeled saved example.
+  The separate alert/availability review distinguishes provider rate limits,
+  denied requests, timeouts, connection failures, and unusable responses without
+  exposing raw provider diagnostics. Refreshing cannot guarantee recovery from
+  a provider-side limit or outage. Weather still has an eight-second provider
+  budget and a 20-second browser bound; provider and account quotas are unchanged.
 - The main planning flow requests current park alerts from the NPS API. If the
   service or key is unavailable, the first attempt stops after a five-second
   provider budget and a six-second browser budget. TrailPack keeps planning
@@ -320,7 +331,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Security audit, remediation, and release-candidate verification | Complete |
 | Final everyday-hiker acceptance | Complete; owner approved the final preview and release state |
 | Reliability and stress hardening | Complete and production-verified through pull request #44 |
-| Startup performance and code efficiency | Local and hosted Preview verified; owner approval pending in pull request #47 |
+| Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

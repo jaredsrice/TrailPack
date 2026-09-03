@@ -12,6 +12,32 @@ corrections within that milestone.
 
 ### Changed
 
+- Active NPS closure alerts use a red card accent and high-contrast red labels;
+  other active alerts use amber. Unavailable data is visibly distinct from a
+  successful no-alert check, and the **Live** badge describes retrieval only.
+- Weather fallback now says **Live forecast unavailable**. Saved conditions and
+  daylight values are kept under **Saved weather example**, rather than shown as
+  current weather pills. Pending requests say **Checking**, not **Fallback**.
+
+### Fixed
+
+- Weather failures now explain provider rate limits or rejections, timeouts,
+  connection failures, and unreadable or unusable responses. Raw provider bodies
+  and exception details remain private. This does not change provider limits,
+  timeout budgets, packing rules, or AI allowance behavior.
+- Saved NPS closure fixtures cannot acquire the live-alert presentation or
+  appear as current official alert titles.
+
+## Deployed startup performance - 2026-09-02
+
+Approved and deployed from protected `main` through
+[pull request #47](https://github.com/jaredsrice/TrailPack/pull/47). The merge
+commit is `c7ee839`; deployment completed on 2026-09-02 America/Denver
+(2026-09-03 UTC). These performance changes are separate from the alert UI work
+listed under Unreleased.
+
+### Changed
+
 - The trail chooser now downloads only the visible park photograph at startup.
   The second photo layer is created on the first transition, preserving sharp
   images, smooth crossfades, focal points, and synchronized credits.
@@ -31,8 +57,9 @@ corrections within that milestone.
 - The local candidate passed lint, type checking, 354 unit tests, 19 Firefox/axe
   flows, 27 recommendation scenarios, the 5,000-case stress run, and the
   production build. Pull request [#47](https://github.com/jaredsrice/TrailPack/pull/47)
-  passed hosted checks and desktop/mobile Preview acceptance. Owner approval is
-  pending; the performance changes are not deployed to Production.
+  passed hosted checks and desktop/mobile Preview acceptance. After owner
+  approval, the PR merged and Vercel reported successful Production deployment.
+  The production homepage returned HTTPS `200` with the `TrailPack` title.
 - The [performance and code-efficiency audit](docs/superpowers/validation/2026-09-02-performance-code-efficiency-audit.md)
   separates download savings, interface timings, provider waits, and remaining
   measurement limits.

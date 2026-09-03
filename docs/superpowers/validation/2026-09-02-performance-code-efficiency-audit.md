@@ -8,8 +8,9 @@
 - Pull request: [#47](https://github.com/jaredsrice/TrailPack/pull/47)
 - Preview: [performance candidate](https://trailpack-git-codex-performance-code-effici-0c2716-jared-s-rice.vercel.app/)
 - Production baseline: [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app/)
-- Current gate: **READY FOR OWNER REVIEW — local, hosted, and Preview checks passed; not merged**
-- Merge policy: explicit owner approval required; do not merge automatically
+- Current gate: **APPROVED, MERGED, AND DEPLOYED — performance-only PR #47**
+- Owner approval received before the separate alert UI and weather investigation.
+- Merge: `c7ee8391ea0477f3e16a33bb97c9d9cad61424d0` at 2026-09-03 00:18:57 UTC
 
 ## Result
 
@@ -337,8 +338,8 @@ one success, 49 duplicates, and one mocked provider call per run.
 - `TrailPackShell.tsx`: defer the existing optional account/save component.
 - `trailpack-accessibility.spec.ts`: enforce the new initial-layer invariant and
   retain post-transition quality/synchronization coverage.
-- `README.md` and `CHANGELOG.md`: explain pending startup improvements without
-  claiming a production deployment.
+- `README.md` and `CHANGELOG.md`: describe startup improvements and their
+  verified release status.
 - This validation record: measurements, scope, decisions, regressions, and
   release gate. The prior stress record only corrects its stale final NPS budget.
 
@@ -357,8 +358,23 @@ signed-out Jenny Lake flows received live weather and NPS alerts, then displayed
 the deterministic guest review without authentication. Full-page Firefox
 screenshots were also visually checked at both widths.
 
-Recommendation: **merge after owner approval**. The changes reduce confirmed
+Release decision: **merged after owner approval**. The changes reduce confirmed
 startup work and preserve the tested product boundaries. No blocking runtime or
 accessibility regression remains. Broader refactoring and unsupported field,
 CLS, long-task, database, and low-end-device measurements stay explicitly
-deferred. Production and protected main remain unchanged until approval.
+deferred.
+
+## Approved Release Verification
+
+The owner approved publishing the performance PR before starting separate alert
+contrast and weather-availability work. The reviewed head remained `7d22aa4`,
+the worktree was clean, and all four required checks passed: Validate, CodeQL
+JavaScript/TypeScript, CodeQL Actions, and Vercel. No new UI or weather-provider
+code was added to PR #47.
+
+GitHub confirmed the merge above. Vercel deployment `6234387766` reported
+Production success at 2026-09-03 00:19:42 UTC, and
+[the production homepage](https://trailpack-ten.vercel.app/) returned HTTPS
+`200` with title `TrailPack`. The weather fallback reported during subsequent
+owner review is being investigated separately; this production smoke check is
+not a claim that all optional providers were available.
