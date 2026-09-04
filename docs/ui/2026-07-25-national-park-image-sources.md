@@ -4,6 +4,7 @@ Created: 2026-07-25
 Original image set last verified: 2026-08-31
 
 Lunch Tree Hill and Christian Pond additions reviewed: 2026-09-03 (UTC)
+Preserve shoreline addition reviewed: 2026-09-04 (UTC)
 
 TrailPack uses a curated local copy of official National Park Service
 photographs for the homepage rotation and selected Grand Teton trail context.
@@ -45,12 +46,16 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 | `public/park-images/grand-teton-two-ocean-lake.jpg` | `two-ocean-lake-loop` | 2,600 x 1,462 | `50% 52%` / `50% 50%` | NPS Photo / J. Bonney | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) |
 | `public/park-images/grand-teton-lunch-tree-hill.jpg` | `lunch-tree-hill` (Teton Range and Jackson Lake view) | 5,184 x 2,916 | `50% 48%` / `50% 54%` | NPS Photo | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) |
 | `public/park-images/grand-teton-christian-pond.jpg` | `christian-pond-loop` | 5,472 x 3,078 | `50% 62%` / `51% 58%` | NPS Photo / J. Bonney | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) |
+| `public/park-images/grand-teton-phelps-lake-shore.jpg` | `lake-creek-woodland-loop` and `phelps-lake-loop` (both reach this south shore) | 5,472 x 3,078 | `55% 5%` / `55% 42%` | NPS Photo / C. Adams | [Lake Creek–Woodland Trail Loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) |
 
 Selected-trail paths, credits, and focal points are maintained in each
 [approved trail definition](../../src/features/trailpack/data/trails/), not in
-a second photo registry. The two additions do not change the homepage rotation
+a second photo registry. Catalog additions do not change the homepage rotation
 or replace any existing photograph. Source permissions and the originals were
 reviewed for this admission; viewport checks verify the actual displayed crops.
+The Preserve routes share one image of their common shore, not duplicate image
+files. The smaller Phelps-page image (2,048 x 1,152) was not shipped or enlarged
+because its height falls below the current admission minimum.
 
 ## Display rules
 

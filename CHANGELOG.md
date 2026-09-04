@@ -10,6 +10,38 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+## Preserve loop expansion - 2026-09-04
+
+### Added
+
+- Lake Creek–Woodland Trail Loop and Phelps Lake Loop in the reviewed
+  catalog, using NPS facts, connected USGS comparisons within 2% of official
+  distance, the official Preserve trailhead weather point, and retained terrain
+  guidance. Computed elevation gains and missing live conditions stay unknown.
+- One sharp, credited Phelps Lake south-shore photograph shared by both routes.
+- A dated Grand Teton coverage checklist for 39 in-park NPS Hiking pages and
+  two adjacent Parkway listings, with route variants and unfinished reviews
+  explicit. This does not claim complete park coverage.
+- Reproducible access-trail clipping, route connectivity, source, weather-point,
+  and desktop/mobile guest regression coverage for the new admissions.
+
+These two additions are separate from the approved seven-trail release in
+[PR #50](https://github.com/jaredsrice/TrailPack/pull/50), deployed as `1894f52`
+on 2026-09-04. The owner separately approved this expansion for the protected
+release workflow; deployment status is tracked by its pull request.
+
+### Verification
+
+- 540 unit tests, 36 Firefox/axe flows, all nine offline catalog/photo checks,
+  all nine live NPS comparisons, lint, type checking, and the production build
+  passed. The four new-route flows passed again after final crop tuning.
+- The 5,000-case system stress run had zero invariant failures. Both new routes
+  completed signed-out live-context generation in the in-app Browser with
+  clean error/warning logs and no horizontal overflow or broken visible images.
+- README, onboarding guidance, photo credits, coverage inventory, and the
+  [dated admission record](docs/data/preserve-admission-2026-09-04.md) distinguish
+  the original seven-trail catalog from these two reviewed additions.
+
 ## Catalog expansion and live-context refinements - 2026-09-04
 
 ### Added

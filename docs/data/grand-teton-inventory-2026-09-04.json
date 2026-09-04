@@ -1,0 +1,459 @@
+{
+  "checkedAt": "2026-09-04T04:23:08.395Z",
+  "sourceUrl": "https://developer.nps.gov/api/v1/thingstodo?parkCode=grte&limit=100",
+  "totalRecords": 53,
+  "returnedRecords": 53,
+  "hikingListings": [
+    {
+      "id": "AA68F7B6-31C3-4F5D-837F-E92F284C5412",
+      "title": "Phelps Lake Loop",
+      "url": "https://www.nps.gov/thingstodo/phelpslake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "6A918D07-228D-4459-A666-51A394E6984B",
+      "title": "Lake Creek - Woodland Trail Loop",
+      "url": "https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "4FA858B6-189E-43DD-8D09-5B1D7597C2E8",
+      "title": "Hermitage Point",
+      "url": "https://www.nps.gov/thingstodo/hermitagepoint.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "0803AC78-03FF-408D-80B0-750596406505",
+      "title": "Aspen Ridge - Boulder Ridge",
+      "url": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "90FB7ADA-11C4-4078-A402-7FA70F7C9546",
+      "title": "Valley Trail - Phelps Lake Overlook",
+      "url": "https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "049C1BB1-D05D-4834-8776-1A6AE0AB25BE",
+      "title": "Granite Canyon",
+      "url": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "A4B154BA-6A62-4D1E-9F7E-4C7884491668",
+      "title": "Marion Lake",
+      "url": "https://www.nps.gov/thingstodo/marionlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "B980452F-E115-4FBC-8D53-D75B1D836A38",
+      "title": "Death Canyon - Static Peak Divide Junction",
+      "url": "https://www.nps.gov/thingstodo/deathcanyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "A7875609-C7AF-4DBA-8144-FD6598AC389F",
+      "title": "Phelps Lake",
+      "url": "https://www.nps.gov/thingstodo/phelps.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "62E3A2BD-C2CC-42EC-A6C4-5C4866061E80",
+      "title": "Open Canyon",
+      "url": "https://www.nps.gov/thingstodo/open-canyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "2B201226-440F-450B-B024-B7ADE2343696",
+      "title": "Static Peak Divide Trail",
+      "url": "https://www.nps.gov/thingstodo/staticpeak.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "458099EE-85B1-489A-B810-DC474F57E372",
+      "title": "Phelps Lake Overlook",
+      "url": "https://www.nps.gov/thingstodo/phelpsoverlook.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "65CBB755-47CE-4070-B7BC-0B5EF0FC55C6",
+      "title": "Taggart Lake",
+      "url": "https://www.nps.gov/thingstodo/taggartlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "D5FB109C-019B-48DA-8812-9F157B3D37E1",
+      "title": "Murie Ranch Hike",
+      "url": "https://www.nps.gov/thingstodo/murieranchhike.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "B2B679DA-B507-4D7B-AA58-79C854371870",
+      "title": "Polecat Creek Loop",
+      "url": "https://www.nps.gov/thingstodo/polecatcreek.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "29C890B1-1ADB-4F45-B71D-30AE883D22DD",
+      "title": "Flagg Canyon",
+      "url": "https://www.nps.gov/thingstodo/flaggcanyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "1E2AD37E-D3C2-4D9C-87D4-0A05C8E2F3CF",
+      "title": "Heron Pond - Swan Lake Loop Trail",
+      "url": "https://www.nps.gov/thingstodo/heronpond-swanlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "20E48231-A444-4BFD-BA85-4C2219D3D004",
+      "title": "Lakeshore Trail",
+      "url": "https://www.nps.gov/thingstodo/colterlakeshore.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "D93D1646-E1A0-46F1-91CE-A28D992BBC73",
+      "title": "Grand View Point",
+      "url": "https://www.nps.gov/thingstodo/grandview.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "EFD06A6E-2931-45B4-BE4E-8C84D96A1853",
+      "title": "Christian Pond Loop",
+      "url": "https://www.nps.gov/thingstodo/christianpond.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "C6504196-15EB-4C12-ADB4-511466C6CFF8",
+      "title": "Lunch Tree Hill",
+      "url": "https://www.nps.gov/thingstodo/lunchtreehill.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "463AADA0-84E4-4FEC-B5A8-F7F5B60DA57D",
+      "title": "Two Ocean Lake - Emma Matilda Lake Loop",
+      "url": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "55D06B7A-B756-4518-91F5-4986E2C397DB",
+      "title": "Emma Matilda Lake",
+      "url": "https://www.nps.gov/thingstodo/emmamatilda.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "5C816DBE-DBEF-406B-B095-AB0C400A4101",
+      "title": "Two Ocean Lake",
+      "url": "https://www.nps.gov/thingstodo/twoocean.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "98FF009C-139B-41A5-B0E0-7A7B8630FBFC",
+      "title": "Signal Mountain Trail",
+      "url": "https://www.nps.gov/thingstodo/signalmountain.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "D52EB140-0BE0-4F84-B4FE-845EA3409EF4",
+      "title": "Holly Lake",
+      "url": "https://www.nps.gov/thingstodo/hollylake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "3604914F-0D84-46EC-9276-FAA4EFC55BA9",
+      "title": "Bearpaw and Trapper Lakes",
+      "url": "https://www.nps.gov/thingstodo/bearpaw-trapper.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "34E4B765-0C5D-4011-8471-3AD6045C237B",
+      "title": "Leigh Lake",
+      "url": "https://www.nps.gov/thingstodo/leighlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "BDA19223-06D8-4360-9EC5-770EE100C5F5",
+      "title": "Paintbrush Canyon - Cascade Canyon Loop",
+      "url": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "176001DB-4FC9-43E7-A200-4E0AF8EF1775",
+      "title": "String Lake",
+      "url": "https://www.nps.gov/thingstodo/stringlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "0BFC34EE-1EE8-41CD-9E6B-6325E30FA4BB",
+      "title": "Garnet Canyon",
+      "url": "https://www.nps.gov/thingstodo/garnetcanyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "A58D2B71-B34E-4FD3-8DA3-C303FA1EBEFD",
+      "title": "Surprise and Amphitheater Lakes",
+      "url": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "D0585FAC-A08A-45EC-B7CA-1A4E2687DE67",
+      "title": "Jenny Lake Loop",
+      "url": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "05090225-79C1-4371-BD1E-0B960F05755C",
+      "title": "Taggart Lake - Beaver Creek Loop",
+      "url": "https://www.nps.gov/thingstodo/taggartloop.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "AA61C88A-A8A9-4CE9-9E2E-DE64EA98360F",
+      "title": "Taggart Lake - Bradley Lake Loop",
+      "url": "https://www.nps.gov/thingstodo/taggartbradley.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "A0E973A1-18A9-4A26-9F18-36B00B714635",
+      "title": "Forks of Cascade Canyon",
+      "url": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "31FC65D4-4F7E-4534-BA5B-8CDEB597FDE0",
+      "title": "Hurricane Pass",
+      "url": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "584DA048-31E8-4BDA-8FBF-DC34CE913C39",
+      "title": "Lake Solitude",
+      "url": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "EA2CFDAB-D634-45FA-BD91-A6CA1D6C8D92",
+      "title": "Inspiration Point",
+      "url": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "E5C96D2B-78FD-4AF9-ADFC-C44D32CB5018",
+      "title": "Hidden Falls",
+      "url": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    },
+    {
+      "id": "CFC12357-A34A-45F8-8143-4FE5EBE62BB9",
+      "title": "Moose Ponds",
+      "url": "https://www.nps.gov/thingstodo/mooseponds.htm",
+      "parks": [
+        {
+          "code": "grte",
+          "name": "Grand Teton National Park"
+        }
+      ]
+    }
+  ]
+}
