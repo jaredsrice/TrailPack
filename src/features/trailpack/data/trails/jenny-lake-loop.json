@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "profileKind": "curated",
+  "trail": {
+    "id": "jenny-lake-loop",
+    "name": "Jenny Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.7514,
+      "lng": -110.7222
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+    "coordinateCheckedAt": "2026-06-14",
+    "coordinateNote": "Previously reviewed trail-area point, retained during catalog migration. Used for weather context, not navigation or a guaranteed trailhead position."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-06-14",
+    "sourceRecordIds": [],
+    "recordIdNote": "The original 2026-06-14 review retained this comparison value but not its exact segment identifiers. Preserve it as a historical estimate, not a newly verified route match.",
+    "distanceMiles": 6.947,
+    "distanceMatch": "ok",
+    "elevationGainFeet": 698,
+    "gainMatch": "conflict",
+    "note": "Official NPS trail stats are the display values. USGS geometry closely matches the loop distance, but the USGS-computed elevation gain conflicts with the official NPS gain and is shown only as an estimate.",
+    "gainNote": "Computed estimate only; varies roughly 700–1,200 ft by method and does not match the official NPS gain.",
+    "elevationSourceUrl": "https://www.usgs.gov/3d-elevation-program",
+    "elevationRangeFeet": {
+      "min": 6785,
+      "max": 6901
+    }
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-jenny-lake-trail.jpg",
+    "locationName": "Jenny Lake Loop",
+    "alt": "The Cathedral Group and Cascade Canyon reflected in Jenny Lake.",
+    "credit": "NPS Photo",
+    "sourceUrl": "https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5",
+    "permissionNote": "Existing locally hosted NPS-credited image retained without modification. Preserve its displayed NPS credit and source link; no NPS endorsement is implied.",
+    "focalPoint": {
+      "desktop": "50% 48%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Jenny Lake Loop"
+    ],
+    "skipRouteTypeReason": null
+  }
+}

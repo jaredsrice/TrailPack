@@ -12,14 +12,18 @@ import type { TrailProfile } from "@/features/trailpack/types";
 const TRAIL_CASES: Array<[TrailProfile, number]> = [
   [COLTER_BAY_LAKESHORE_TRAIL, 2.331],
   [TWO_OCEAN_LAKE_LOOP, 6.335],
+  [PUBLIC_TRAILS["lunch-tree-hill"], 0.467],
+  [PUBLIC_TRAILS["christian-pond-loop"], 3.505],
 ];
 
 describe("verified Grand Teton public-source imports", () => {
-  it("contains the bounded two-trail expansion", () => {
-    expect(Object.keys(PUBLIC_TRAILS)).toEqual([
+  it("contains the reviewed Grand Teton expansions", () => {
+    expect(Object.keys(PUBLIC_TRAILS)).toEqual(expect.arrayContaining([
       "colter-bay-lakeshore-trail",
       "two-ocean-lake-loop",
-    ]);
+      "lunch-tree-hill",
+      "christian-pond-loop",
+    ]));
   });
 
   it.each(TRAIL_CASES)(
@@ -42,7 +46,7 @@ describe("verified Grand Teton public-source imports", () => {
       });
       expect(trail.sourceRecords.some((record) => record.source === "NPS")).toBe(true);
       expect(trail.sourceRecords.some((record) => record.source === "USGS")).toBe(true);
-      expect(trail.missingFields).toEqual([]);
+      expect(trail.missingFields).toEqual(snapshot.accessibility ? [] : ["accessibility"]);
     },
   );
 

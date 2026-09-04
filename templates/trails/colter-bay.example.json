@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "colter-bay-lakeshore-trail",
+    "name": "Colter Bay Lakeshore Trail",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.90068945, "lng": -110.65001068 },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-07-20",
+    "coordinateNote": "Center of the reconciled USGS geometry extent, used for area weather; not an official trailhead position."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
+    "checkedAt": "2026-08-04",
+    "distanceMiles": 2.2,
+    "elevationGainFeet": 100,
+    "estimatedDuration": "1 hour",
+    "difficulty": "Easy",
+    "routeType": "loop",
+    "accessibility": null,
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-07-20",
+    "sourceRecordIds": ["4757", "4770", "4771", "4776", "4778", "4779", "4796", "4798", "4799", "4888", "4889", "4890", "4891", "4929", "7293"],
+    "distanceMiles": 2.331,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Fifteen NPS-origin USGS Lakeshore Trail segments total 2.331 miles, about 6% above the official NPS round-trip distance. The reconciled segments form a close geometry bridge.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-colter-bay.jpg",
+    "locationName": "Colter Bay lakeshore",
+    "alt": "Jackson Lake and the Teton Range framed by sunlit autumn leaves at Colter Bay.",
+    "credit": "NPS Photo",
+    "sourceUrl": "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
+    "permissionNote": "Existing reviewed TrailPack NPS asset; retain the NPS Photo credit and source link. See docs/ui/2026-07-25-national-park-image-sources.md.",
+    "focalPoint": { "desktop": "48% 45%", "mobile": "47% 50%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Colter Bay Lakeshore Trail", "Lakeshore Trail"],
+    "skipRouteTypeReason": "The tracked NPS place page does not expose the route type in the parser's supported form; manually verified as a loop."
+  }
+}

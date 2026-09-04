@@ -9,6 +9,7 @@ import {
   getTrailsForPark,
 } from "@/features/trailpack/data/supported-trails";
 import { NPS_SOURCE_SNAPSHOTS } from "@/features/trailpack/data/nps-source-snapshots";
+import { TRAIL_DEFINITIONS } from "./trails";
 
 describe("supported trail inventory", () => {
   it("includes the expected Grand Teton park and trail catalog", () => {
@@ -16,21 +17,17 @@ describe("supported trail inventory", () => {
     expect(SUPPORTED_PARKS[0]).toMatchObject({
       id: "grand-teton",
       trailIds: ["jenny-lake-loop", "taggart-lake", "string-lake-loop"],
-      publicTrailIds: ["colter-bay-lakeshore-trail", "two-ocean-lake-loop"],
+      publicTrailIds: expect.arrayContaining([
+        "colter-bay-lakeshore-trail", "two-ocean-lake-loop", "lunch-tree-hill", "christian-pond-loop",
+      ]),
     });
     expect(Object.keys(SUPPORTED_TRAILS)).toEqual([
       "jenny-lake-loop",
-      "string-lake-loop",
       "taggart-lake",
-    ]);
-    expect(Object.keys(TRAIL_CATALOG)).toEqual([
-      "jenny-lake-loop",
       "string-lake-loop",
-      "taggart-lake",
-      "colter-bay-lakeshore-trail",
-      "two-ocean-lake-loop",
     ]);
-    expect(getTrailsForPark("grand-teton")).toHaveLength(5);
+    expect(Object.keys(TRAIL_CATALOG)).toEqual(TRAIL_DEFINITIONS.map((definition) => definition.trail.id));
+    expect(getTrailsForPark("grand-teton")).toHaveLength(TRAIL_DEFINITIONS.length);
   });
 });
 

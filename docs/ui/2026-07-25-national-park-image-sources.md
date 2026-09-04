@@ -1,7 +1,9 @@
 # TrailPack National Park Image Sources
 
 Created: 2026-07-25  
-Last verified: 2026-08-31
+Original image set last verified: 2026-08-31
+
+Lunch Tree Hill and Christian Pond additions reviewed: 2026-09-03 (UTC)
 
 TrailPack uses a curated local copy of official National Park Service
 photographs for the homepage rotation and selected Grand Teton trail context.
@@ -41,6 +43,14 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 | `public/park-images/grand-teton-string-lake.jpg` | `string-lake-loop` (location-level String Lake photo) | 3,200 x 1,799 | `48% 48%` / `48% 50%` | NPS Photo / Helton | [String Lake Picnic Area](https://www.nps.gov/places/000/string-lake-picnic-area.htm) |
 | `public/park-images/grand-teton-colter-bay.jpg` | `colter-bay-lakeshore-trail` | 3,200 x 1,800 | `48% 45%` / `47% 50%` | NPS Photo | [Colter Bay Lakeshore Trail](https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm) |
 | `public/park-images/grand-teton-two-ocean-lake.jpg` | `two-ocean-lake-loop` | 2,600 x 1,462 | `50% 52%` / `50% 50%` | NPS Photo / J. Bonney | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) |
+| `public/park-images/grand-teton-lunch-tree-hill.jpg` | `lunch-tree-hill` (Teton Range and Jackson Lake view) | 5,184 x 2,916 | `50% 48%` / `50% 54%` | NPS Photo | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) |
+| `public/park-images/grand-teton-christian-pond.jpg` | `christian-pond-loop` | 5,472 x 3,078 | `50% 62%` / `51% 58%` | NPS Photo / J. Bonney | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) |
+
+Selected-trail paths, credits, and focal points are maintained in each
+[approved trail definition](../../src/features/trailpack/data/trails/), not in
+a second photo registry. The two additions do not change the homepage rotation
+or replace any existing photograph. Source permissions and the originals were
+reviewed for this admission; viewport checks verify the actual displayed crops.
 
 ## Display rules
 
@@ -64,6 +74,6 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 - The rotation originals are at least 2,560 pixels wide (3,200 pixels for the
   Yellowstone panorama), are served at image quality `90`, and use explicit
   desktop/mobile focal points so the subject remains intentional when cropped.
-- Selected-trail originals range from 2,000 to 3,200 pixels wide and use
+- Selected-trail originals range from 2,000 to 5,472 pixels wide and use
   trail-specific desktop/mobile focal points. The Jenny Lake trail image remains
   separate from the generic Grand Teton rotation image.

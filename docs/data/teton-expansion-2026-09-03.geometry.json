@@ -1,0 +1,160 @@
+{
+  "checkedAt": "2026-09-03T04:17:37.806Z",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "queryUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37/query?f=json&where=1%3D1&geometry=-110.87%2C43.62%2C-110.37%2C44.05&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=objectid%2Cname%2Cnamealternate%2Csourcefeatureid%2Csourceoriginator%2Cprimarytrailmaintainer%2Clengthmiles%2Cnetworklength%2Croutetype%2Csourceeditdate&outSR=4326&returnGeometry=true&resultRecordCount=2000",
+  "note": "Selected NPS-origin feature lengths and endpoint topology; planning comparison only, not a navigable route or current conditions.",
+  "trails": {
+    "lunch-tree-hill": {
+      "officialSourceUrl": "https://www.nps.gov/thingstodo/lunchtreehill.htm",
+      "comparisonMiles": 0.46720373,
+      "segments": [
+        {
+          "sourceRecordId": "4797",
+          "name": "Lunchtree Hill Loop Trail",
+          "lengthMiles": 0.18554077,
+          "traversals": 1,
+          "start": [
+            -110.57869178327034,
+            43.88040065037638
+          ],
+          "end": [
+            -110.57825758257776,
+            43.87782144992752
+          ]
+        },
+        {
+          "sourceRecordId": "4800",
+          "name": "Lunchtree Hill Loop Trail",
+          "lengthMiles": 0.17889098,
+          "traversals": 1,
+          "start": [
+            -110.57728378365697,
+            43.87833475032004
+          ],
+          "end": [
+            -110.57850698274842,
+            43.8804262503852
+          ]
+        },
+        {
+          "sourceRecordId": "4804",
+          "name": "Lunchtree Hill Loop Trail",
+          "lengthMiles": 0.032203419999999996,
+          "traversals": 1,
+          "start": [
+            -110.57825758257776,
+            43.87782144992752
+          ],
+          "end": [
+            -110.57772718219974,
+            43.878041850209755
+          ]
+        },
+        {
+          "sourceRecordId": "4805",
+          "name": "Lunchtree Hill Loop Trail",
+          "lengthMiles": 0.04005617,
+          "traversals": 1,
+          "start": [
+            -110.57850698274842,
+            43.8804262503852
+          ],
+          "end": [
+            -110.57869178327034,
+            43.88040065037638
+          ]
+        },
+        {
+          "sourceRecordId": "7294",
+          "name": "Lunchtree Hill Loop Trail",
+          "lengthMiles": 0.030512390000000004,
+          "traversals": 1,
+          "start": [
+            -110.57772718219974,
+            43.878041850209755
+          ],
+          "end": [
+            -110.57728378365697,
+            43.87833475032004
+          ]
+        }
+      ]
+    },
+    "christian-pond-loop": {
+      "officialSourceUrl": "https://www.nps.gov/thingstodo/christianpond.htm",
+      "comparisonMiles": 3.50532502,
+      "segments": [
+        {
+          "sourceRecordId": "4904",
+          "name": "Christian Pond Loop Trail",
+          "lengthMiles": 0.47743219000000003,
+          "traversals": 1,
+          "start": [
+            -110.55858698325687,
+            43.87513445062121
+          ],
+          "end": [
+            -110.56546548310038,
+            43.871911250673094
+          ]
+        },
+        {
+          "sourceRecordId": "4935",
+          "name": "Christian Pond Loop Trail",
+          "lengthMiles": 0.57468243,
+          "traversals": 1,
+          "start": [
+            -110.56546548310038,
+            43.871911250673094
+          ],
+          "end": [
+            -110.57051388743636,
+            43.878304711325114
+          ]
+        },
+        {
+          "sourceRecordId": "5079",
+          "name": "Christian Pond Loop",
+          "lengthMiles": 1.2960065,
+          "traversals": 1,
+          "start": [
+            -110.57051388743636,
+            43.878304711325114
+          ],
+          "end": [
+            -110.56058098267619,
+            43.8883540504368
+          ]
+        },
+        {
+          "sourceRecordId": "4911",
+          "name": "Emma Matilda Loop Trail",
+          "lengthMiles": 0.93340456,
+          "traversals": 1,
+          "start": [
+            -110.56058098267619,
+            43.8883540504368
+          ],
+          "end": [
+            -110.55858698325687,
+            43.87513445062121
+          ]
+        },
+        {
+          "sourceRecordId": "5078",
+          "name": "Jackson Lake Lodge Spur",
+          "lengthMiles": 0.11189967,
+          "traversals": 2,
+          "start": [
+            -110.57242237891872,
+            43.878019760682875
+          ],
+          "end": [
+            -110.57051388743636,
+            43.878304711325114
+          ]
+        }
+      ]
+    }
+  }
+}

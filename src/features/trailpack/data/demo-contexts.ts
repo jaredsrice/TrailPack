@@ -1,3 +1,4 @@
+import { TRAIL_CATALOG_ENTRIES } from "./trail-catalog";
 import type {
   AlertContext,
   WeatherContext,
@@ -9,15 +10,7 @@ export interface DemoScenario {
   alerts: AlertContext;
 }
 
-const TRAIL_CATALOG_IDS = [
-  "jenny-lake-loop",
-  "taggart-lake",
-  "string-lake-loop",
-  "colter-bay-lakeshore-trail",
-  "two-ocean-lake-loop",
-] as const;
-
-export type TrailCatalogId = (typeof TRAIL_CATALOG_IDS)[number];
+export type TrailCatalogId = string;
 
 const NO_ALERTS: AlertContext = {
   hasActiveAlerts: false,
@@ -61,7 +54,7 @@ function savedForecastPeriods(
   }));
 }
 
-export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
+const SAVED_DEMO_CONTEXTS: Record<string, DemoScenario> = {
   "jenny-lake-loop": {
     weather: {
       plannedDate: "2026-06-15",
@@ -389,16 +382,18 @@ export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = {
   },
 };
 
-function isTrailCatalogId(trailId: string): trailId is TrailCatalogId {
-  return TRAIL_CATALOG_IDS.includes(trailId as TrailCatalogId);
-}
+// Historical demo scenarios remain explicit fixtures, never current conditions.
+// Newly admitted trails automatically receive the compiler's unknown-data fallback.
+export const DEMO_CONTEXTS: Record<TrailCatalogId, DemoScenario> = Object.fromEntries(
+  Object.entries(TRAIL_CATALOG_ENTRIES).map(([id, entry]) => [id, SAVED_DEMO_CONTEXTS[id] ?? entry.demo]),
+);
 
 export function getDemoScenario(trailId: string | null | undefined): DemoScenario | null {
   if (!trailId) {
     return null;
   }
 
-  if (!isTrailCatalogId(trailId)) {
+  if (!Object.hasOwn(DEMO_CONTEXTS, trailId)) {
     return null;
   }
 

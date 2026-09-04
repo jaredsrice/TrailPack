@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import { DEMO_CONTEXTS } from "../data/demo-contexts";
 import {
   parseWeatherContextResponse,
   requestTrailWeather,
@@ -142,6 +143,21 @@ describe("weather route client", () => {
 });
 
 describe("weather response parser", () => {
+  it.each(["lunch-tree-hill", "christian-pond-loop"])("accepts the explicitly unknown weather response for %s", (id) => {
+    const response = { ...DEMO_CONTEXTS[id].weather, plannedDate: "2026-09-03" };
+    expect(parseWeatherContextResponse(response)).toEqual(response);
+  });
+
+  it.each([
+    { conditions: ["snow"] }, { temperatureF: { high: 20 } },
+    { precipitationChance: 80 }, { windMph: 40 },
+    { retrievalStatus: "live" }, { label: "forecast-based" },
+    { forecastPeriods: [] }, { daylight: {} }, { plannedDate: "2026-02-30" },
+    { statusReason: "x".repeat(501) },
+  ])("rejects invented facts or false provenance on a no-data response: %j", (override) => {
+    expect(parseWeatherContextResponse({ ...DEMO_CONTEXTS["lunch-tree-hill"].weather, ...override })).toBeNull();
+  });
+
   it("keeps only the bounded weather response shape", () => {
     const weather = parseWeatherContextResponse({
       ...WEATHER_RESPONSE,

@@ -85,6 +85,21 @@ export async function requestTrailWeather(
 export function parseWeatherContextResponse(
   value: unknown,
 ): WeatherContext | null {
+  // A valid no-data response is distinct from an Open-Meteo forecast. Do not
+  // allow it to smuggle weather measurements or claim live/forecast provenance.
+  if (isRecord(value) && value.source === "trailpack") {
+    if (!isRequiredString(value.summary) || value.label !== "unavailable" ||
+        value.retrievalStatus !== "unavailable" || !isOptionalIsoDate(value.plannedDate) ||
+        !isOptionalString(value.statusReason, 500) ||
+        !Array.isArray(value.conditions) || value.conditions.length !== 0 ||
+        [value.temperatureF, value.precipitationChance, value.windMph, value.forecastPeriods, value.daylight]
+          .some((field) => field !== undefined)) return null;
+    return {
+      summary: value.summary, plannedDate: value.plannedDate,
+      source: "trailpack", label: "unavailable", retrievalStatus: "unavailable",
+      conditions: [], statusReason: value.statusReason,
+    };
+  }
   if (
     !isRecord(value) ||
     !isRequiredString(value.summary) ||

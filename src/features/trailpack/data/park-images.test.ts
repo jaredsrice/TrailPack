@@ -1,36 +1,16 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
+import { inspectTrailPhoto } from "../lib/trail-photo";
 import {
   getContextParkPhoto,
   PARK_PHOTO_ROTATION,
 } from "./park-images";
 
 function readJpegDimensions(src: string): { width: number; height: number } {
-  const bytes = readFileSync(
+  return inspectTrailPhoto(readFileSync(
     resolve(process.cwd(), "public", src.replace(/^\//, "")),
-  );
-  let offset = 2;
-
-  while (offset + 8 < bytes.length) {
-    if (bytes[offset] !== 0xff) {
-      offset += 1;
-      continue;
-    }
-
-    const marker = bytes[offset + 1];
-    if (marker >= 0xc0 && marker <= 0xc3) {
-      return {
-        height: bytes.readUInt16BE(offset + 5),
-        width: bytes.readUInt16BE(offset + 7),
-      };
-    }
-
-    const segmentLength = bytes.readUInt16BE(offset + 2);
-    offset += segmentLength + 2;
-  }
-
-  throw new Error(`Could not read JPEG dimensions for ${src}.`);
+  ));
 }
 
 describe("park photo selection", () => {

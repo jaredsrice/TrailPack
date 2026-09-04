@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Specific trip-safety evidence and explicit park-wide alert uncertainty in review |
-| Supported catalog | Five manually verified Grand Teton day hikes |
+| Active track | Shared trail definitions, original-profile migration, and two verified Teton additions; awaiting release |
+| Supported catalog | Seven verified Grand Teton day hikes in current source; five in Production until this change is released |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -35,11 +35,14 @@ distinct generated lists per account per hour.
 2. Review verified trail facts, source labels, available NPS accessibility or
    terrain guidance, and current NPS alerts when the live service is available.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
-   markers, with clearly labeled saved fallbacks when a provider is unavailable.
+   markers, with clearly labeled saved fallbacks when available, or explicit
+   unknown weather when no saved example exists.
    Active NPS closures are red, other active alerts amber,
    and unavailable feeds explicit. A blue **Live** label describes retrieval,
    not whether a route is safe. Saved weather examples stay behind a labelled
    disclosure instead of appearing as current condition pills.
+   The NPS card shows a notice count and closure hint; **NPS notices and
+   sources** expands every supplied notice without repeating titles as pills.
 4. Add trip details such as date, start time, expected duration, route type, or
    reported conditions.
 5. Select **Generate packing list** to snapshot those inputs and create
@@ -51,6 +54,9 @@ distinct generated lists per account per hour.
    park-wide alert's impact on the selected trail is unconfirmed, and shows
    **Check route** instead of assuming the hike must change. **Why and source
    details** contains the supplied descriptions and each notice's source link.
+   NPS guidance appears once in Critical Safety; a duplicate NPS warning is
+   omitted from Overall alerts when the safety row already covers it. Weather
+   warnings remain separate.
    Forecast heat decisions show the temperature that triggered the planning rule.
 6. Every generated list includes a concise deterministic plan review without an
    account. For signed-in hikers, that same action also requests one guarded
@@ -63,6 +69,9 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
+The catalog contains seven Grand Teton day hikes. Lunch Tree Hill and Christian
+Pond Loop use the same reviewed definition format as the original five trails.
+
 | Trail | Profile evidence | NPS accessibility details |
 |---|---|---|
 | Jenny Lake Loop | Official NPS facts with reconciled USGS comparison data | Available |
@@ -70,14 +79,44 @@ and condition inputs to produce a limited fallback list.
 | String Lake Loop | Official NPS facts with a labeled USGS bridge estimate | Available |
 | Colter Bay Lakeshore Trail | Official NPS facts with 15 reconciled USGS trail segments | Not found on the tracked NPS page |
 | Two Ocean Lake Loop | Official NPS facts with three reconciled USGS trail segments | Not found on the tracked NPS page |
+| Lunch Tree Hill (new) | Official NPS facts with five connected USGS segments | Available |
+| Christian Pond Loop (new) | Official NPS facts with five connected USGS segments, including a repeated access spur | Available |
 
-All five appear in the application as a `Verified NPS + USGS profile`. Internal
-`curated` and `public-source-import` values remain only for milestone
+All seven appear in the application as a `Verified NPS + USGS profile`. Internal
+`curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
+
+Every trail uses the same approved definition and compiler. The original five
+retain their official facts and review history. The original three USGS
+comparisons lack retained feature IDs; that historical evidence gap is explicit
+and cannot be used to bypass exact-ID requirements for new admissions. The
+[migration and admission record](docs/data/teton-expansion-2026-09-03.md)
+documents both the preserved evidence and the new route checks.
 
 Accessibility text is displayed only when the official trail page publishes a
 matching trail-specific block. TrailPack presents it as sourced terrain
 information, not as an accessibility certification.
+
+### Adding another trail
+
+Start with one [trail onboarding draft](templates/trails/trail.template.json),
+then use the offline checker to find missing fields, duplicate identities,
+source-format issues, or undersized local photos. The optional preparation mode
+creates a four-file review package. Once approved, add its official snapshot
+and register its JSON definition once. Profiles, park membership, source checks,
+photos, and honest unknown-data fallbacks derive from that registration.
+The preparation command does not edit the application or publish a trail.
+
+```sh
+npm run trail:new -- example-lake-loop
+npm run trail:check -- .artifacts/trail-onboarding/example-lake-loop/trail.json
+npm run trail:check -- --catalog
+```
+
+The [onboarding guide](docs/trail-onboarding.md) includes a worked example,
+registration instructions, and troubleshooting. This intake is deliberately
+Grand Teton-only until park-specific safety rules are reviewed for another park.
+No authentication, external API call, or new dependency is needed to check a draft.
 
 ## Data and Trust Model
 
@@ -96,6 +135,8 @@ missing, unavailable, and saved-fixture evidence distinguishable.
 
 - NPS values remain visible when a USGS calculation differs.
 - AllTrails is comparison-only and never populates or overrides TrailPack data.
+  The [seven-trail comparison](docs/data/teton-expansion-2026-09-03.md#alltrails-cross-check)
+  records distance, gain, duration, difficulty, and route-variant differences.
 - Nominatim was rejected after a 24-trail reliability study and is not used at
   runtime.
 - Trailforks is not used without suitable API access or written permission.
@@ -111,12 +152,12 @@ sourced NPS photographs. Each image has desktop and mobile focal-point tuning;
 the carousel also provides previous/next controls, pause/resume, and a selector
 for every park. Reduced-motion preferences stop automatic rotation while
 leaving manual navigation available. Selecting Grand Teton or a supported trail
-locks the visual to the most specific verified scene available. The five
-selected-trail photographs are 2,000 to 3,200 pixels wide and have their own
+locks the visual to the most specific verified scene available. The seven
+selected-trail photographs are 2,000 to 5,472 pixels wide and have their own
 responsive focal points. Manual entry retains general park imagery instead of
 claiming an unsupported location match.
 
-The performance candidate initially loads only the visible photograph. The
+The carousel initially loads only the visible photograph. The
 second crossfade layer is created when navigation or rotation first needs it;
 the current image and credit remain visible until its replacement loads. Image
 quality, responsive sizes, focal points, and source credits are unchanged.
@@ -136,11 +177,15 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and search for `Jenny Lake`,
-`Taggart`, `String Lake`, `Colter Bay`, or `Two Ocean`.
+`Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, or `Christian Pond`.
 
 ### Optional Environment Variables
 
 Store local values in `.env.local`; never commit that file or print its values.
+Hosted Preview/Production settings do not automatically configure a local
+server. Add `NPS_API_KEY` locally for live alerts, then restart the server.
+Keep it server-only: never use a `NEXT_PUBLIC_` prefix or put it in browser code.
+Open-Meteo's current forecast integration does not require an API key.
 
 | Name | Required | Purpose | Current Vercel scope |
 |---|---|---|---|
@@ -157,7 +202,7 @@ packing engine work without either provider key.
 
 | Route | Behavior |
 |---|---|
-| `GET /api/trailpack/weather?trailId=...` | Returns normalized live weather or a labeled saved fallback |
+| `GET /api/trailpack/weather?trailId=...` | Returns normalized live weather, a labeled saved example, or explicit unknown weather when no example exists |
 | `GET /api/trailpack/weather?trailId=...&date=YYYY-MM-DD` | Requests the selected forecast date when supported |
 | `GET /api/trailpack/alerts?trailId=...` | Returns normalized NPS alerts for a supported trail |
 | `GET /api/trailpack/alerts?parkCode=grte` | Returns normalized Grand Teton alerts |
@@ -211,7 +256,7 @@ Run the guarded refresh used by automation:
 npm run refresh:nps-sources
 ```
 
-The refresh requests only the five saved official NPS URLs. It requires two
+The refresh requests only registered official NPS URLs (seven in current source). It requires two
 matching reads, validates identity and bounded values, and can update only
 `src/features/trailpack/data/nps-source-snapshots.json`. Missing fields,
 inconsistent responses, implausible values, removed pages, or parser failures
@@ -231,6 +276,7 @@ requires the normal validation, CodeQL, and Vercel checks before merge.
 ```bash
 npm run lint
 npm run typecheck
+npm run trail:check -- --catalog
 npm test
 npm run check:nps-integrity
 npm run scenario:stress
@@ -284,7 +330,10 @@ The alert-contrast and weather-clarity update was approved and merged in
 gate passed 368 unit tests, 21 Firefox/axe flows, lint, type checking, and the
 build. Required hosted checks passed, Vercel confirmed successful Production
 deployment, and the public homepage returned HTTPS `200` with title `TrailPack`.
-The subsequent safety-context work is separate and remains in review.
+The subsequent safety-context work was approved and merged separately through
+[PR #49](https://github.com/jaredsrice/TrailPack/pull/49) as `e99b5f4`.
+Vercel confirmed Production success at 2026-09-03 03:09:55 UTC; the public
+homepage returned HTTPS `200` with the `TrailPack` title.
 
 The underlying `0.5.0` security release also passed CodeQL analysis, a
 zero-vulnerability dependency audit, production browser/API smoke checks, a
@@ -292,19 +341,41 @@ real two-account privacy walkthrough, and an updated OWASP ZAP passive scan with
 no critical or high-severity issue. The sanitized review and risk decisions are
 in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cybersecurity-review.md).
 
+The seven-trail update, local weather-timeout follow-up, compact NPS presentation,
+and independent weather-coordinate review pass 521 unit tests across 40 files,
+32 Firefox/axe flows, lint, type checking, and the production build. The
+5,000-case system stress run passed with no invariant failures. Each weather
+point was checked against NPS-origin USGS geometry in its intended trail area;
+these are area-forecast references, not navigation coordinates. NPS distance
+values remain authoritative; unavailable or disputed computed gains are not
+described as confirmed matches.
+After configuring the private local NPS
+key and restarting the server, local requests returned three live official
+park notices plus live weather and daylight. The key remains Git-ignored and
+absent from browser assets. These live feed checks are separate from the
+trail-page integrity checks, which verify catalog facts.
+See the [current verification record](docs/data/teton-expansion-2026-09-03.md).
+
 ## Current Limitations
 
-- The verified catalog contains five Grand Teton trails, not a nationwide trail
-  database.
+- The catalog contains seven Grand Teton day hikes, not the entire park trail
+  network or a nationwide database. Further trails require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
-  observation. Dates outside the provider range use a labeled saved example.
+  observation. Dates outside the provider range use a labeled saved example
+  only when one exists; otherwise forecast adjustments stay unavailable and
+  standard packing rules remain active. New trail definitions do not invent
+  forecast or daylight data.
   Availability messages distinguish provider rate limits,
   denied requests, timeouts, connection failures, and unusable responses without
   exposing raw provider diagnostics. Refreshing cannot guarantee recovery from
-  a provider-side limit or outage. Weather still has an eight-second provider
-  budget and a 20-second browser bound; provider and account quotas are unchanged.
+  a provider-side limit or outage. Weather has a 15-second provider budget,
+  followed by up to three seconds for optional daylight context. Missing
+  daylight never discards a valid live forecast. The browser allows 25 seconds
+  overall, including network overhead, before restoring the labeled fallback.
+  Fast responses display as soon as they finish; these are maximum waits, not
+  added delays. Provider and account quotas are unchanged.
 - The main planning flow requests current park alerts from the NPS API. If the
   service or key is unavailable, the first attempt stops after a five-second
   provider budget and a six-second browser budget. TrailPack keeps planning
@@ -352,7 +423,8 @@ current local conditions, emergency preparation, or personal judgment.
 | Reliability and stress hardening | Complete and production-verified through pull request #44 |
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
-| Specific trip-safety evidence and route uncertainty | Implemented in the current review branch; not yet released |
+| Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
+| Repeatable trail onboarding and Teton expansion | All five existing trails migrated; Lunch Tree Hill and Christian Pond Loop added to current source, pending release |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and
@@ -365,6 +437,10 @@ Detailed implementation plans and validation evidence are maintained under
   planner UI
 - [`src/features/trailpack/data/`](src/features/trailpack/data/) — verified
   profiles, fixtures, images, and managed snapshots
+- [`src/features/trailpack/data/trails/`](src/features/trailpack/data/trails/) —
+  one approved metadata definition per trail
+- [`docs/trail-onboarding.md`](docs/trail-onboarding.md) — reusable admission
+  checklist and troubleshooting
 - [`src/features/trailpack/lib/`](src/features/trailpack/lib/) — search,
   weather, validation, AI, packing, and refresh logic
 - [`tests/accessibility/`](tests/accessibility/) — Firefox/axe browser checks

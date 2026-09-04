@@ -1,3 +1,5 @@
+import { TRAIL_CATALOG_ENTRIES } from "./trail-catalog";
+
 export interface ParkPhoto {
   id: string;
   src: string;
@@ -92,59 +94,9 @@ export const PARK_PHOTO_ROTATION: readonly ParkPhoto[] = [
   },
 ] as const;
 
-const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
-  "jenny-lake-loop": {
-    id: "grand-teton-jenny-lake",
-    src: "/park-images/grand-teton-jenny-lake-trail.jpg",
-    parkName: "Grand Teton National Park",
-    locationName: "Jenny Lake Loop",
-    alt: "The Cathedral Group and Cascade Canyon reflected in Jenny Lake.",
-    credit: "NPS Photo",
-    sourceUrl:
-      "https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5",
-    focalPoint: { desktop: "50% 48%", mobile: "50% 50%" },
-  },
-  "taggart-lake": {
-    id: "grand-teton-taggart-lake",
-    src: "/park-images/grand-teton-taggart-lake.jpg",
-    parkName: "Grand Teton National Park",
-    locationName: "Taggart Lake Trail",
-    alt: "A trail through low evergreens beneath snow-streaked peaks near Taggart Lake.",
-    credit: "NPS Photo / J. Bonney",
-    sourceUrl: "https://www.nps.gov/thingstodo/taggartlake.htm",
-    focalPoint: { desktop: "50% 49%", mobile: "50% 50%" },
-  },
-  "string-lake-loop": {
-    id: "grand-teton-string-lake",
-    src: "/park-images/grand-teton-string-lake.jpg",
-    parkName: "Grand Teton National Park",
-    locationName: "String Lake",
-    alt: "Families beside clear green water and lodgepole pines at String Lake.",
-    credit: "NPS Photo / Helton",
-    sourceUrl: "https://www.nps.gov/places/000/string-lake-picnic-area.htm",
-    focalPoint: { desktop: "48% 48%", mobile: "48% 50%" },
-  },
-  "colter-bay-lakeshore-trail": {
-    id: "grand-teton-colter-bay",
-    src: "/park-images/grand-teton-colter-bay.jpg",
-    parkName: "Grand Teton National Park",
-    locationName: "Colter Bay lakeshore",
-    alt: "Jackson Lake and the Teton Range framed by sunlit autumn leaves at Colter Bay.",
-    credit: "NPS Photo",
-    sourceUrl: "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
-    focalPoint: { desktop: "48% 45%", mobile: "47% 50%" },
-  },
-  "two-ocean-lake-loop": {
-    id: "grand-teton-two-ocean-lake",
-    src: "/park-images/grand-teton-two-ocean-lake.jpg",
-    parkName: "Grand Teton National Park",
-    locationName: "Two Ocean Lake",
-    alt: "A hiker beside Two Ocean Lake with the Teton Range in the distance.",
-    credit: "NPS Photo / J. Bonney",
-    sourceUrl: "https://www.nps.gov/thingstodo/twoocean.htm",
-    focalPoint: { desktop: "50% 52%", mobile: "50% 50%" },
-  },
-};
+const TRAIL_PHOTOS: Readonly<Record<string, ParkPhoto>> = Object.fromEntries(
+  Object.entries(TRAIL_CATALOG_ENTRIES).map(([id, entry]) => [id, entry.photo]),
+);
 
 const PARK_PHOTOS: Readonly<Record<string, ParkPhoto>> = {
   "grand-teton": PARK_PHOTO_ROTATION[0],

@@ -37,7 +37,9 @@ export function buildContextStatus(
       summary:
         weather.retrievalStatus === "live"
           ? weather.summary
-          : "Packing guidance is using saved example conditions, not a current forecast.",
+          : weather.retrievalStatus === "unavailable"
+            ? "Forecast-based adjustments are unavailable. Standard packing rules remain active."
+            : "Packing guidance is using saved example conditions, not a current forecast.",
       label: weather.label,
       retrievalStatus: weather.retrievalStatus ?? "saved-fixture",
       details: weather.retrievalStatus === "live" ? weatherDetails(weather) : [],
@@ -49,10 +51,7 @@ export function buildContextStatus(
       summary: alertSummaryText(alerts),
       label: alerts.label,
       retrievalStatus: alerts.retrievalStatus ?? "saved-fixture",
-      details:
-        alerts.retrievalStatus === "live"
-          ? alerts.alerts.map((alert) => alert.title)
-          : [],
+      details: [],
       notice: alerts.statusReason,
       tone: alertTone(alerts),
     },
@@ -109,7 +108,8 @@ function weatherStatusText(weather: WeatherContext): string {
 
 function alertStatusText(alerts: AlertContext): string {
   if (alerts.retrievalStatus === "live" && alerts.hasActiveAlerts) {
-    return alerts.label === "official" ? "Active official alert" : "Active alert";
+    const count = alerts.alerts.length;
+    return `${count} park ${count === 1 ? "notice" : "notices"}`;
   }
 
   switch (alerts.retrievalStatus ?? "saved-fixture") {
@@ -124,7 +124,9 @@ function alertStatusText(alerts: AlertContext): string {
 
 function alertSummaryText(alerts: AlertContext): string {
   if (alerts.retrievalStatus === "live" && alerts.hasActiveAlerts) {
-    return alerts.alerts.map((alert) => alert.title).join("; ");
+    return alerts.alerts.some((alert) => alert.severity === "closure")
+      ? "Includes a closure. Check whether it affects your route or access."
+      : "Check park notices for changes that may affect your visit.";
   }
 
   switch (alerts.retrievalStatus ?? "saved-fixture") {

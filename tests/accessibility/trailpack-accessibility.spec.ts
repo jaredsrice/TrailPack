@@ -3,14 +3,109 @@ import { expect, test, type Page } from "@playwright/test";
 import { DEMO_CONTEXTS } from "../../src/features/trailpack/data/demo-contexts";
 import {
   PARK_PHOTO_ROTATION,
+  getContextParkPhoto,
   type ParkPhoto,
 } from "../../src/features/trailpack/data/park-images";
 import type { LiveAiOutcome } from "../../src/features/trailpack/lib/ai-contract";
 import type { AlertContext } from "../../src/features/trailpack/types";
+import { TRAIL_CATALOG } from "../../src/features/trailpack/data/trail-catalog";
 
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
 
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+  for (const id of ["lunch-tree-hill", "christian-pond-loop"]) {
+    test(`new trail ${id} works as a guest with unknown live conditions at ${viewport.width}px`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      const errors: string[] = [];
+      page.on("pageerror", (error) => errors.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "error" || message.type() === "warning") errors.push(message.text());
+      });
+      const trail = TRAIL_CATALOG[id];
+      const scenario = DEMO_CONTEXTS[id];
+      let weatherRequests = 0;
+      await page.route("**/api/trailpack/weather?*", (route) => {
+        weatherRequests += 1;
+        return route.fulfill({
+          status: 200, contentType: "application/json",
+          // Exercise both the valid unknown-data contract and the client failure path.
+          body: JSON.stringify(viewport.width === 390 ? { invalid: true } : scenario.weather),
+        });
+      });
+      await page.route("**/api/trailpack/alerts?*", (route) => route.fulfill({
+        status: 200, contentType: "application/json", body: JSON.stringify(scenario.alerts),
+      }));
+      await page.route("**/api/trailpack/ai-review", (route) => route.fulfill({
+        status: 401, contentType: "application/json", body: signedOutReviewBody(trail.name),
+      }));
+      await page.goto("/");
+      await expect(page).toHaveTitle(/TrailPack/);
+      await page.getByRole("searchbox", { name: /Search a park or trail/i }).fill(trail.name);
+      await page.locator(".suggestion-button").filter({ hasText: trail.name }).click();
+      await expect(page.locator("#trail-profile-heading")).toContainText(trail.name);
+      await expect(page.locator(".trail-accessibility-note")).toContainText(trail.accessibility!.value);
+      await expectCurrentPhoto(page, getContextParkPhoto({ selectedParkId: "grand-teton", selectedTrailId: id })!);
+      await expect(page.getByRole("heading", { name: "Weather unavailable", exact: true })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Live NPS alerts unavailable", exact: true })).toBeVisible();
+      await expect(page.getByRole("button", { name: "Generate packing list", exact: true })).toBeEnabled();
+      await page.getByLabel(/When do you plan to hike/i).fill("2026-09-05");
+      await expect.poll(() => weatherRequests).toBe(2);
+      await expect(page.getByRole("button", { name: "Generate packing list", exact: true })).toBeEnabled();
+      await expect(page.getByRole("heading", { name: "Weather unavailable", exact: true })).toBeVisible();
+      await expect(page.getByText("Saved weather example", { exact: true })).toHaveCount(0);
+      await page.getByRole("button", { name: "Generate packing list", exact: true }).click();
+      await expect(page.locator("#packing-list-heading")).toContainText(trail.name);
+      await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
+      expect(await page.locator(".packing-item").count()).toBeGreaterThan(0);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+      await expectNoAccessibilityViolations(page);
+      await page.locator(".park-photo-showcase").screenshot({ path: `/tmp/trailpack-${id}-${viewport.width}.png` });
+      expect(errors).toEqual([]);
+    });
+  }
+}
+
+for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+  for (const hot of [false, true]) {
+    test(`non-closure NPS guidance remains once with hot weather ${hot} at ${viewport.width}px`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.route("**/api/trailpack/weather?*", (route) => route.fulfill({
+        status: 200, contentType: "application/json",
+        body: JSON.stringify({
+          ...JENNY_SCENARIO.weather,
+          retrievalStatus: "live",
+          temperatureF: { high: hot ? 99 : 70, low: 60, current: 65 },
+          conditions: ["sun"], precipitationChance: 0, windMph: 5,
+        }),
+      }));
+      await page.route("**/api/trailpack/alerts?*", (route) => route.fulfill({
+        status: 200, contentType: "application/json",
+        body: JSON.stringify({
+          hasActiveAlerts: true, label: "official", retrievalStatus: "live",
+          alerts: [{ title: "Visitor center hours", description: "Check opening hours before visiting.", severity: "info", source: "NPS", sourceUrl: "https://www.nps.gov/grte/planyourvisit/hours.htm" }],
+        }),
+      }));
+      await page.route("**/api/trailpack/ai-review", (route) => route.fulfill({
+        status: 401, contentType: "application/json", body: signedOutReviewBody("Jenny Lake Loop"),
+      }));
+      await page.goto("/");
+      await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+      await page.getByRole("button", { name: "Generate packing list" }).click();
+      await expect(page.getByText("Review active alerts before leaving", { exact: true })).toHaveCount(1);
+      const guidance = page.locator(".packing-item > summary").filter({ hasText: "Review active alerts before leaving" });
+      await expect(guidance).toContainText("Visitor center hours");
+      await expect(page.locator(".trip-alerts").filter({ hasText: "Visitor center hours" })).toHaveCount(0);
+      if (hot) {
+        await expect(page.getByText("Trip safety decision", { exact: true })).toHaveCount(1);
+        await expect(page.locator(".trip-alerts")).toContainText(/heat/i);
+      } else {
+        await expect(page.getByText("Trip safety decision", { exact: true })).toHaveCount(0);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+      await expectNoAccessibilityViolations(page);
+    });
+  }
+
   test(`weather fallback and alert severity stay clear at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await mockWeather(page);
@@ -32,8 +127,8 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     });
 
     for (const state of [
-      { tone: "danger", retrievalStatus: "live", severity: "closure", active: true, heading: "Active official alert", title: "Death Canyon Trailhead Construction Closure" },
-      { tone: "warning", retrievalStatus: "live", severity: "caution", active: true, heading: "Active official alert", title: "Construction on North Park Road" },
+      { tone: "danger", retrievalStatus: "live", severity: "closure", active: true, heading: "1 park notice", title: "Death Canyon Trailhead Construction Closure" },
+      { tone: "warning", retrievalStatus: "live", severity: "caution", active: true, heading: "1 park notice", title: "Construction on North Park Road" },
       { tone: "clear", retrievalStatus: "live", severity: "info", active: false, heading: "No active official alerts", title: "" },
       { tone: "unavailable", retrievalStatus: "saved-fixture", severity: "info", active: false, heading: "Live NPS alerts unavailable", title: "" },
     ] as const) {
@@ -49,6 +144,15 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       const alertCard = page.locator('.context-card[data-context="alert"]');
       await expect(alertCard).toHaveAttribute("data-tone", state.tone);
       await expect(alertCard.getByRole("heading", { name: state.heading, exact: true })).toBeVisible();
+      await expect(alertCard.locator(".context-detail-pill")).toHaveCount(0);
+      if (state.active) {
+        await expect(alertCard.locator(".context-summary")).not.toContainText(state.title);
+        await expect(alertCard.getByRole("heading", { name: state.title, exact: true })).toBeHidden();
+        await alertCard.getByText("NPS notices and sources", { exact: true }).click();
+        await expect(alertCard.getByRole("heading", { name: state.title, exact: true })).toBeVisible();
+      } else {
+        await expect(alertCard.locator(".alert-notice-details")).toHaveCount(0);
+      }
       await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
 
       const weatherCard = page.locator('.context-card[data-context="weather"]');
@@ -98,6 +202,13 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
         source: "NPS",
         sourceUrl: "https://www.nps.gov/grte/alerts.htm",
       },
+      {
+        title: "Visitor center hours",
+        description: "The visitor center closes early; check hours before visiting.",
+        severity: "info",
+        source: "NPS",
+        sourceUrl: "https://www.nps.gov/grte/planyourvisit/hours.htm",
+      },
     ];
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
@@ -117,6 +228,21 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
 
     await page.goto("/");
     await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+    const alertCard = page.locator('.context-card[data-context="alert"]');
+    await expect(alertCard.getByRole("heading", { name: "3 park notices" })).toBeVisible();
+    const noticeToggle = alertCard.locator(".alert-notice-details > summary");
+    await expect(alertCard.locator(".alert-notice-list")).toBeHidden();
+    await noticeToggle.focus();
+    await page.keyboard.press("Enter");
+    for (const notice of notices) {
+      await expect(alertCard.getByRole("heading", { name: notice.title, exact: true })).toBeVisible();
+      await expect(alertCard.getByText(notice.description, { exact: true })).toBeVisible();
+      await expect(alertCard.getByRole("link", { name: `View NPS notice for ${notice.title}`, exact: true })).toHaveAttribute("href", notice.sourceUrl);
+    }
+    await expectNoAccessibilityViolations(page);
+    await noticeToggle.focus();
+    await page.keyboard.press("Space");
+    await expect(alertCard.locator(".alert-notice-list")).toBeHidden();
     await page.getByRole("button", { name: "Generate packing list" }).click();
     const decision = page.locator(".packing-item").filter({ hasText: "Trip safety decision" }).first();
     const summary = decision.locator("summary");
@@ -126,13 +252,17 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     await expect(summary).toContainText(notices[1].title);
     await expect(summary.getByText("Change plan", { exact: true })).toHaveCount(0);
     await expect(decision.locator(".packing-safety-evidence")).toBeHidden();
-    await expect(page.locator(".trip-alerts")).toContainText("impact on this trail unconfirmed");
+    await expect(page.locator(".trip-alerts").filter({ hasText: "impact on this trail unconfirmed" })).toHaveCount(0);
+    await expect(page.locator(".trip-alerts").getByRole("link", { name: "View official alert" })).toHaveCount(0);
+    await expect(page.getByText("Review active alerts before leaving", { exact: true })).toHaveCount(0);
+    // Non-NPS weather warnings are still shown in the overview.
+    await expect(page.locator(".trip-alerts")).toContainText("Rain / wet trail");
 
     await summary.focus();
     await page.keyboard.press("Enter");
     await expect(decision).toHaveAttribute("open", "");
     await expect(decision.getByText("Decision type", { exact: true })).toHaveCount(0);
-    for (const notice of notices) {
+    for (const notice of notices.filter((notice) => notice.severity === "closure")) {
       await expect(decision.getByRole("heading", { name: notice.title, exact: true })).toBeVisible();
       await expect(decision.getByText(notice.description, { exact: true })).toBeVisible();
       await expect(decision.getByRole("link", { name: `View source for ${notice.title}`, exact: true })).toHaveAttribute("href", notice.sourceUrl);
@@ -430,7 +560,7 @@ test("park selection returns to search and opens the selected trail", async ({
     page.getByRole("button", { name: /Two Ocean Lake Loop/i }),
   ).toBeVisible();
   await expect(page.locator(".park-trail-source")).toHaveText(
-    Array(5).fill("Verified NPS + USGS profile"),
+    Array(Object.keys(TRAIL_CATALOG).length).fill("Verified NPS + USGS profile"),
   );
   await expectNoAccessibilityViolations(page);
 
@@ -551,7 +681,7 @@ test("one generated packing list requests one guarded review", async ({
   await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
 
   await expect(
-    page.getByRole("heading", { name: "Active official alert" }),
+    page.getByRole("heading", { name: "1 park notice", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("textbox", { name: /What time will you start/i })
@@ -950,6 +1080,10 @@ test("a stalled weather request falls back and cannot leave Generate disabled", 
 
   await page.clock.fastForward(20_000);
   await expect(
+    page.getByRole("button", { name: "Loading current conditions..." }),
+  ).toBeDisabled();
+  await page.clock.fastForward(5_000);
+  await expect(
     page.getByText(
       "The live forecast could not be loaded. TrailPack is showing saved example conditions instead.",
     ),
@@ -957,6 +1091,64 @@ test("a stalled weather request falls back and cannot leave Generate disabled", 
   await expect(
     page.getByRole("button", { name: "Generate packing list" }),
   ).toBeEnabled();
+});
+
+test("a weather response arriving after the old browser deadline is still accepted", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const originalFetch = window.fetch.bind(window);
+    window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url =
+        typeof input === "string"
+          ? input
+          : input instanceof Request
+            ? input.url
+            : input.toString();
+      if (!url.includes("/api/trailpack/weather?")) {
+        return originalFetch(input, init);
+      }
+
+      return new Promise<Response>((resolve, reject) => {
+        const abort = () => {
+          clearTimeout(timer);
+          reject(new DOMException("Aborted", "AbortError"));
+        };
+        const timer = setTimeout(() => {
+          init?.signal?.removeEventListener("abort", abort);
+          resolve(new Response(JSON.stringify({
+            summary: "Slow but valid live forecast",
+            temperatureF: { high: 70, low: 40, current: 55 },
+            precipitationChance: 10,
+            windMph: 5,
+            conditions: ["sun"],
+            source: "open-meteo",
+            label: "forecast-based",
+            retrievalStatus: "live",
+            forecastPeriods: [],
+          }), { status: 200, headers: { "Content-Type": "application/json" } }));
+        }, 22_000);
+        if (init?.signal?.aborted) {
+          abort();
+        } else {
+          init?.signal?.addEventListener("abort", abort, { once: true });
+        }
+      });
+    }) as typeof window.fetch;
+  });
+  await page.clock.install();
+  await mockAlerts(page);
+  await page.goto("/");
+  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+
+  await page.clock.fastForward(20_000);
+  await expect(page.getByRole("button", { name: "Loading current conditions..." })).toBeDisabled();
+  await page.clock.fastForward(2_000);
+  await expect(page.getByText("Slow but valid live forecast")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
+  await page.clock.fastForward(3_000);
+  await expect(page.getByText("Slow but valid live forecast")).toBeVisible();
+  await expect(page.getByText("Saved weather example", { exact: true })).toHaveCount(0);
 });
 
 test("an older weather response cannot replace the newest selected date", async ({

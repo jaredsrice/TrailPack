@@ -1,3 +1,4 @@
+import { TRAIL_CATALOG_ENTRIES } from "../data/trail-catalog";
 import type { RouteType, TrailProfile } from "@/features/trailpack/types";
 
 export type NpsIntegrityFieldName =
@@ -93,28 +94,9 @@ const ALL_FIELDS: NpsIntegrityFieldName[] = [
   "accessibility",
 ];
 
-const POLICIES: Record<string, IntegrityPolicy> = {
-  "jenny-lake-loop": {
-    aliases: ["Jenny Lake Loop"],
-    checkedFields: ALL_FIELDS,
-  },
-  "taggart-lake": {
-    aliases: ["Taggart Lake"],
-    checkedFields: ALL_FIELDS,
-  },
-  "string-lake-loop": {
-    aliases: ["String Lake Loop"],
-    checkedFields: ALL_FIELDS,
-  },
-  "colter-bay-lakeshore-trail": {
-    aliases: ["Colter Bay Lakeshore Trail", "Lakeshore Trail"],
-    checkedFields: ALL_FIELDS.filter((field) => field !== "routeType"),
-  },
-  "two-ocean-lake-loop": {
-    aliases: ["Two Ocean Lake Loop", "Two Ocean Lake"],
-    checkedFields: ALL_FIELDS,
-  },
-};
+const POLICIES: Record<string, IntegrityPolicy> = Object.fromEntries(
+  Object.entries(TRAIL_CATALOG_ENTRIES).map(([id, entry]) => [id, entry.integrityPolicy]),
+);
 
 function decodeHtmlEntities(value: string): string {
   const namedEntities: Record<string, string> = {
@@ -183,8 +165,11 @@ function parseElevationGain(value: string): number | undefined {
 }
 
 function parseDuration(value: string): string | undefined {
-  const match = value.match(/\b(\d+(?:\s*[-–—]\s*\d+)?)\s*hours?\b/i);
-  return match ? `${match[1].replace(/\s*[-–—]\s*/g, "-")} ${match[1].includes("-") ? "hours" : Number(match[1]) === 1 ? "hour" : "hours"}` : undefined;
+  const match = value.match(/\b(\d+(?:\.\d+)?(?:\s*[-–—]\s*\d+(?:\.\d+)?)?)\s*(hours?|minutes?)\b/i);
+  if (!match) return undefined;
+  const amount = match[1].replace(/\s*[-–—]\s*/g, "-");
+  const unit = match[2].toLowerCase().startsWith("minute") ? "minute" : "hour";
+  return `${amount} ${unit}${Number(amount) === 1 ? "" : "s"}`;
 }
 
 function parseDifficulty(value: string): string | undefined {
