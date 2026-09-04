@@ -171,9 +171,12 @@ function validateProposedSnapshot(
   }
 
   const duration = proposed.estimatedDuration.match(
-    /^(\d+)(?:-(\d+))?\s+hours?$/i,
+    /^(\d+(?:\.\d+)?)(?:-(\d+(?:\.\d+)?))?\s+(hours?|minutes?)$/i,
   );
-  if (!duration || Number(duration[2] ?? duration[1]) > 24) {
+  const maximumHours = duration
+    ? Number(duration[2] ?? duration[1]) / (duration[3].toLowerCase().startsWith("minute") ? 60 : 1)
+    : Number.POSITIVE_INFINITY;
+  if (!duration || Number(duration[1]) <= 0 || Number(duration[2] ?? duration[1]) < Number(duration[1]) || maximumHours > 24) {
     blockers.push(`${profile.name}: duration is outside the automatic format bounds.`);
   }
 

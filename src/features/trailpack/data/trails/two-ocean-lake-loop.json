@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "profileKind": "public-source-import",
+  "trail": {
+    "id": "two-ocean-lake-loop",
+    "name": "Two Ocean Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.9096367,
+      "lng": -110.52399853
+    },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-07-20",
+    "coordinateNote": "Previously reviewed trail-area point, retained during catalog migration. Used for weather context, not navigation or a guaranteed trailhead position."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/thingstodo/twoocean.htm",
+        "checkedAt": "2026-07-20",
+        "note": "Older official activity page agrees on the route identity but lists different duration and elevation-gain values."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-07-20",
+    "sourceRecordIds": [
+      "4882",
+      "7248",
+      "7285"
+    ],
+    "distanceMiles": 6.335,
+    "distanceMatch": "ok",
+    "elevationGainFeet": null,
+    "gainMatch": "conflict",
+    "note": "Three NPS-origin USGS trail segments total 6.335 miles, about 1% below the official NPS round-trip distance.",
+    "gainNote": "Official NPS pages conflict on elevation gain. AllTrails remains a comparison only; TrailPack keeps the newer official page's value and flags the conflict."
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-two-ocean-lake.jpg",
+    "locationName": "Two Ocean Lake",
+    "alt": "A hiker beside Two Ocean Lake with the Teton Range in the distance.",
+    "credit": "NPS Photo / J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/twoocean.htm",
+    "permissionNote": "Existing locally hosted NPS-credited image retained without modification. Preserve its displayed NPS credit and source link; no NPS endorsement is implied.",
+    "focalPoint": {
+      "desktop": "50% 52%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Two Ocean Lake Loop",
+      "Two Ocean Lake"
+    ],
+    "skipRouteTypeReason": null
+  }
+}

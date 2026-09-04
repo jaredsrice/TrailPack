@@ -4,6 +4,13 @@ import { buildContextStatus } from "@/features/trailpack/lib/context-status";
 import type { AlertContext } from "@/features/trailpack/types";
 
 describe("context status summaries", () => {
+  it("does not claim an example forecast exists when the trail has no weather data", () => {
+    const scenario = DEMO_CONTEXTS["lunch-tree-hill"];
+    const status = buildContextStatus(scenario.weather, scenario.alerts);
+    expect(status.weather).toMatchObject({ status: "Weather unavailable", retrievalStatus: "unavailable", details: [] });
+    expect(status.weather.summary).toMatch(/Standard packing rules remain active/);
+    expect(status.weather.summary).not.toMatch(/saved example/);
+  });
   it("labels saved demo weather and no-active alert fixtures", () => {
     const scenario = DEMO_CONTEXTS["jenny-lake-loop"];
 
@@ -20,7 +27,7 @@ describe("context status summaries", () => {
     expect(status.alerts.tone).toBe("unavailable");
   });
 
-  it("summarizes active official alerts by title", () => {
+  it("summarizes the feed without repeating notice titles or hiding closure severity", () => {
     const scenario = DEMO_CONTEXTS["jenny-lake-loop"];
     const alerts: AlertContext = {
       hasActiveAlerts: true,
@@ -39,9 +46,16 @@ describe("context status summaries", () => {
 
     const status = buildContextStatus(scenario.weather, alerts);
 
-    expect(status.alerts.status).toBe("Active official alert");
-    expect(status.alerts.details).toEqual(["Moose-Wilson Road closure"]);
+    expect(status.alerts.status).toBe("1 park notice");
+    expect(status.alerts.summary).toBe("Includes a closure. Check whether it affects your route or access.");
+    expect(status.alerts.summary).not.toContain(alerts.alerts[0].title);
+    expect(status.alerts.details).toEqual([]);
     expect(status.alerts.tone).toBe("danger");
+
+    expect(buildContextStatus(scenario.weather, {
+      ...alerts,
+      alerts: [...alerts.alerts, { ...alerts.alerts[0], title: "Another notice" }],
+    }).alerts.status).toBe("2 park notices");
   });
 
   it.each(["info", "caution"] as const)("uses an attention colour for live %s alerts without claiming a closure", (severity) => {
@@ -55,7 +69,8 @@ describe("context status summaries", () => {
 
     expect(buildContextStatus(scenario.weather, alerts).alerts).toMatchObject({
       tone: "warning",
-      status: "Active official alert",
+      status: "1 park notice",
+      summary: "Check park notices for changes that may affect your visit.",
     });
   });
 

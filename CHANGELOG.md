@@ -10,6 +10,109 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+## Catalog expansion and live-context refinements - 2026-09-04
+
+### Added
+
+- A reusable trail-onboarding draft, a worked example, and an offline checker
+  with field-specific fixes. Missing facts remain blank, duplicate trail
+  identities are rejected, and photo checks preserve the site's existing
+  minimum image resolution.
+- Optional preparation of a four-file review package: completed draft, approved
+  definition, managed NPS snapshot entry, and registration instructions. Existing
+  files are never overwritten and no trail is automatically published.
+- Lunch Tree Hill and Christian Pond Loop, with reviewed NPS facts, connected
+  USGS geometry comparisons, official accessibility context, and sharp credited
+  NPS photographs with desktop/mobile framing.
+- A whole-catalog offline check for matching definitions, managed facts, local
+  photographs, and orphaned snapshot entries.
+- A concise [onboarding and troubleshooting guide](docs/trail-onboarding.md).
+  The intake remains Grand Teton-only.
+
+### Changed
+
+- All five original trails now use the same definition and compiler as new
+  admissions. Official facts remain in one managed snapshot; profile metadata,
+  park membership, photo credits/crops, source-check policies, and unknown-data
+  fallbacks no longer need separate registration lists.
+- Existing NPS facts, source-review dates, comparison estimates, photo assets,
+  and recommendation outputs are preserved. Historical missing USGS feature IDs
+  for the original three are explicit, with no exception allowed for new trails.
+- New trails start with unknown conditions, not invented saved forecasts or
+  closure claims. The homepage rotation and existing image crops are unchanged.
+- NPS status now shows a compact notice count and closure hint, with every
+  supplied notice and source available in an expandable section. Generated
+  lists keep the actionable NPS guidance in Critical Safety instead of repeating
+  it in Overall alerts. Weather warnings and safety rules are unchanged.
+- All seven profiles were cross-checked against public AllTrails listings.
+  Differences and non-equivalent route variants are recorded in the admission
+  evidence; official NPS values remain authoritative and unchanged.
+
+### Fixed
+
+- Taggart Lake and String Lake now have sourced trail-area coordinates for live
+  weather requests; those profiles previously lacked coordinates and skipped
+  the live forecast. The coordinates are not navigation or trailhead guidance.
+- All seven weather points have an independent, dated NPS-origin USGS geometry
+  review and regression checks. They represent the intended trail areas;
+  provider grid resolution and mountain-weather limitations remain explicit.
+- NPS duration checking and guarded refresh now support minutes as well as
+  hours, preserving positive, ordered, bounded duration checks.
+- Separate source-evidence entries retain unique display identities even when
+  their geometry and weather-coordinate reviews link to the same USGS layer.
+  The hosted development-mode browser gate caught and now guards this case.
+- Coordinate-source labels use an exact NPS hostname or genuine subdomain,
+  consistent with the intake validator; lookalike domains remain rejected.
+- A valid unknown-weather response now survives client validation, failed
+  requests, and date changes without becoming a fictitious saved example.
+  Standard packing rules remain available, and the page hides an empty forecast
+  disclosure when no forecast exists.
+- Slow live forecasts now have 15 seconds to respond instead of eight. Optional
+  daylight lookup stops after three seconds without discarding valid weather,
+  and the page allows 25 seconds overall before returning to a labeled fallback.
+  Timeout messages match the new limit; NPS budgets, retries, and quotas are
+  unchanged.
+
+### Verification
+
+- All 527 unit tests across 40 files and 32 Firefox/axe flows passed, including
+  both new trails at desktop and 390-pixel widths, failed forecasts, date changes,
+  guest generation, and photo/credit checks. The four new guest flows reported
+  no console errors/warnings, automated accessibility violations, or overflow.
+- Compact NPS status and keyboard-accessible notice details pass desktop/mobile
+  checks. Closure evidence remains available, ordinary notices retain their
+  safety row alongside heat decisions, and independent rain/heat overview
+  warnings remain visible. The in-app preview also passed a live-feed guest
+  generation check at 1280 and 390 pixels with no error/warning logs, broken
+  visible images, or horizontal overflow.
+- Timeout regressions cover stalled forecast headers/body, valid weather at
+  14 seconds, optional daylight cancellation without losing live weather, a
+  browser response at 22 seconds, and usable fallback at the 25-second deadline.
+  A normal local weather request returned live forecast and daylight data.
+  After the private local key was configured and the server restarted, the
+  NPS route returned three live official park notices. The key remains
+  Git-ignored and absent from browser assets; hosted settings were not changed.
+- All seven live NPS source comparisons passed. The 5,000-case system stress
+  run covered all seven trails with zero invariant failures. The original
+  27-scenario recommendation report remains unchanged; its generation now sorts
+  trail IDs independently of the catalog's display order.
+- Offline catalog and preparation/no-overwrite checks, lint, type checking, and
+  the production build passed. Homepage first-load JavaScript is 152 kB versus
+  150 kB before this catalog update; the offline validator is not imported by
+  the runtime compiler.
+- Validation required no interactive authentication, second account, live AI,
+  or saved-result write. See the [migration and admission evidence](docs/data/teton-expansion-2026-09-03.md).
+  The protected PR checks and deployment status are the release authority;
+  these local results do not by themselves establish a successful deployment.
+
+## Deployed trip-safety evidence - 2026-09-02
+
+Approved and deployed through
+[pull request #49](https://github.com/jaredsrice/TrailPack/pull/49) as `e99b5f4`.
+All four required hosted checks passed. Vercel confirmed Production success at
+2026-09-03 03:09:55 UTC (2026-09-02 America/Denver); the public homepage returned
+HTTPS `200` with title `TrailPack`.
+
 ### Changed
 
 - **Trip safety decision** names the notices that triggered it and makes

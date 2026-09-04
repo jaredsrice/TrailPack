@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "profileKind": "curated",
+  "trail": {
+    "id": "string-lake-loop",
+    "name": "String Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.79032645,
+      "lng": -110.73139983
+    },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-09-03",
+    "coordinateNote": "Center of the NPS-origin USGS String Lake Loop named-segment extent (source feature IDs 4809, 4826, 4830, 4831, 4833, 4937, 5098, 5099, 7303). Approximate trail-area weather point only; not a trailhead or navigation coordinate."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/stringlake.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-06-17",
+    "sourceRecordIds": [],
+    "recordIdNote": "The original 2026-06-17 review retained this comparison value but not its exact segment identifiers. Preserve it as a historical estimate, not a newly verified route match.",
+    "distanceMiles": 3.708,
+    "distanceMatch": "moderate_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Official NPS display values are used, and the validated USGS route length is close but should be treated as a bridge estimate rather than an exact one-to-one match.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-string-lake.jpg",
+    "locationName": "String Lake",
+    "alt": "Families beside clear green water and lodgepole pines at String Lake.",
+    "credit": "NPS Photo / Helton",
+    "sourceUrl": "https://www.nps.gov/places/000/string-lake-picnic-area.htm",
+    "permissionNote": "Existing locally hosted NPS-credited image retained without modification. Preserve its displayed NPS credit and source link; no NPS endorsement is implied.",
+    "focalPoint": {
+      "desktop": "48% 48%",
+      "mobile": "48% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "String Lake Loop"
+    ],
+    "skipRouteTypeReason": null
+  }
+}

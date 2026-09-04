@@ -74,11 +74,15 @@ export function ContextStatusPanel({
           details={status.weather.details}
           notice={
             isWeatherLoading
-              ? "Saved values remain visible while TrailPack requests the latest forecast."
+              ? weather.retrievalStatus === "unavailable"
+                ? "Checking the forecast. No saved weather is available for this trail."
+                : "Saved values remain visible while TrailPack requests the latest forecast."
               : status.weather.notice
           }
         >
-          <DayForecast startTime={startTime} weather={weather} />
+          {weather.retrievalStatus !== "unavailable" ? (
+            <DayForecast startTime={startTime} weather={weather} />
+          ) : null}
         </ContextCard>
         <ContextCard
           icon="alert"
@@ -102,9 +106,37 @@ export function ContextStatusPanel({
                 ? "TrailPack is retrying once in the background. You can generate now using standard safety rules."
                 : status.alerts.notice
           }
-        />
+        >
+          {!isAlertLoading && alerts.retrievalStatus === "live" && alerts.hasActiveAlerts && alerts.alerts.length > 0 ? (
+            <NpsNoticeDetails alerts={alerts.alerts} />
+          ) : null}
+        </ContextCard>
       </div>
     </section>
+  );
+}
+
+function NpsNoticeDetails({ alerts }: { alerts: AlertContext["alerts"] }) {
+  return (
+    <details className="alert-notice-details group">
+      <summary>
+        <span>NPS notices and sources</span>
+        <TrailPackIcon name="chevron" className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" />
+      </summary>
+      <ul className="alert-notice-list">
+        {alerts.map((alert, index) => (
+          <li key={`${alert.title}-${index}`}>
+            <h4>{alert.title}</h4>
+            <p>{alert.description}</p>
+            {alert.sourceUrl ? (
+              <a href={alert.sourceUrl} target="_blank" rel="noreferrer" className="source-link">
+                View NPS notice<span className="sr-only"> for {alert.title}</span>
+              </a>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 

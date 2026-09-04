@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "christian-pond-loop",
+    "name": "Christian Pond Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.88064255,
+      "lng": -110.56550468
+    },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-09-03",
+    "coordinateNote": "Center of the connected Christian Pond route extents, including the Jackson Lake Lodge access spur and shared Emma Matilda segment. Approximate trail-area weather point, not a trailhead or navigation coordinate."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/christianpond.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-03",
+    "sourceRecordIds": [
+      "4904",
+      "4935",
+      "5079",
+      "4911",
+      "5078"
+    ],
+    "distanceMiles": 3.505,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "USGS geometry is about 3.505 miles, including the loop and the out-and-back access from Jackson Lake Lodge.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-christian-pond.jpg",
+    "locationName": "Christian Pond Loop",
+    "alt": "A narrow dirt path winds through golden marsh grasses toward a forested ridge on the Christian Pond Loop.",
+    "credit": "NPS Photo / J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/christianpond.htm",
+    "permissionNote": "The official NPS activity page credits this photo to NPS Photo/J. Bonney with no third-party rights restriction displayed. Retain the photographer credit and source; no endorsement is implied.",
+    "focalPoint": {
+      "desktop": "50% 62%",
+      "mobile": "51% 58%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Christian Pond Loop"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

@@ -299,6 +299,26 @@ describe("external-context fallbacks", () => {
     expect(weather?.summary).toMatch(/Two Ocean Lake/);
   });
 
+  it.each(Object.keys(TRAIL_CATALOG))("attempts the live weather provider for %s using its own coordinates", async (trailId) => {
+    const fetcher = vi.fn().mockResolvedValue(new Response("Unavailable", { status: 503 }));
+    const weather = await fetchOpenMeteoWeatherContext(trailId, { fetcher, plannedDate: "2026-09-03" });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const requestedUrl = new URL(String(fetcher.mock.calls[0]?.[0]));
+    const coordinates = TRAIL_CATALOG[trailId].coordinates!;
+    expect(requestedUrl.searchParams.get("latitude")).toBe(String(coordinates.lat));
+    expect(requestedUrl.searchParams.get("longitude")).toBe(String(coordinates.lng));
+    expect(requestedUrl.searchParams.get("start_date")).toBe("2026-09-03");
+    expect(weather?.retrievalStatus).not.toBe("live");
+  });
+
+  it.each(["lunch-tree-hill", "christian-pond-loop"])("does not invent a saved forecast for new trail %s", async (trailId) => {
+    const fetcher = vi.fn(async () => new Response("Unavailable", { status: 503 }));
+    const weather = await fetchOpenMeteoWeatherContext(trailId, { fetcher });
+    expect(weather).toMatchObject({ retrievalStatus: "unavailable", label: "unavailable", conditions: [] });
+    expect(weather?.temperatureF).toBeUndefined();
+    expect(weather?.statusReason).not.toMatch(/saved example conditions/);
+  });
+
   it("bounds a stalled Open-Meteo request and returns the saved fallback", async () => {
     vi.useFakeTimers();
     let observedAbort = false;
@@ -321,12 +341,43 @@ describe("external-context fallbacks", () => {
     });
     const expectation = expect(weatherPromise).resolves.toMatchObject({
       retrievalStatus: "saved-fixture",
-      statusReason: expect.stringContaining("did not respond within eight seconds"),
+      statusReason: expect.stringContaining("did not respond within 15 seconds"),
     });
 
     await vi.advanceTimersByTimeAsync(8_000);
+    expect(observedAbort).toBe(false);
+    await vi.advanceTimersByTimeAsync(6_999);
+    expect(observedAbort).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
     await expectation;
     expect(observedAbort).toBe(true);
+  });
+
+  it("keeps the weather deadline active while reading the response body", async () => {
+    vi.useFakeTimers();
+    let observedAbort = false;
+    const fetcher = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) =>
+      new Response(new ReadableStream<Uint8Array>({
+        start(controller) {
+          init?.signal?.addEventListener("abort", () => {
+            observedAbort = true;
+            controller.error(new DOMException("Timed out", "AbortError"));
+          }, { once: true });
+        },
+      })),
+    );
+
+    const weatherPromise = fetchOpenMeteoWeatherContext("jenny-lake-loop", { fetcher });
+    await vi.advanceTimersByTimeAsync(14_999);
+    expect(observedAbort).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+
+    await expect(weatherPromise).resolves.toMatchObject({
+      retrievalStatus: "saved-fixture",
+      statusReason: expect.stringContaining("did not respond within 15 seconds"),
+    });
+    expect(observedAbort).toBe(true);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it("attaches live civil-twilight context when weather and daylight calls succeed", async () => {
@@ -387,13 +438,18 @@ describe("external-context fallbacks", () => {
     expect(weather?.daylight?.civilTwilightEnd).toBe("2026-06-15T21:42:37-06:00");
   });
 
-  it("bounds a stalled daylight request without discarding live weather", async () => {
+  it.each([0, 14_000])("bounds stalled daylight without discarding a live forecast arriving after %i ms", async (forecastDelay) => {
     vi.useFakeTimers();
     let observedAbort = false;
+    let forecastSignal: AbortSignal | null | undefined;
     const fetcher = vi.fn(
       async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = new URL(String(input));
         if (url.hostname === "api.open-meteo.com") {
+          forecastSignal = init?.signal;
+          if (forecastDelay) {
+            await new Promise((resolve) => setTimeout(resolve, forecastDelay));
+          }
           return {
             ok: true,
             status: 200,
@@ -425,12 +481,18 @@ describe("external-context fallbacks", () => {
     const weatherPromise = fetchOpenMeteoWeatherContext("jenny-lake-loop", {
       fetcher,
     });
-    await vi.advanceTimersByTimeAsync(8_000);
+    await vi.advanceTimersByTimeAsync(forecastDelay + 2_999);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(observedAbort).toBe(false);
+    expect(forecastSignal?.aborted).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
 
     const weather = await weatherPromise;
     expect(weather).toMatchObject({ retrievalStatus: "live" });
     expect(weather?.daylight).toBeUndefined();
     expect(observedAbort).toBe(true);
+    expect(forecastSignal?.aborted).toBe(false);
+    expect(vi.getTimerCount()).toBe(0);
   });
 
   it("rejects oversized upstream weather and alert payloads", async () => {
@@ -622,7 +684,7 @@ describe("external-context fallbacks", () => {
 
 describe("resolveSupportedParkCode", () => {
   it("resolves every supported trail to the Grand Teton park code", () => {
-    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(5);
+    expect(Object.keys(TRAIL_CATALOG).length).toBeGreaterThan(0);
     for (const trailId of Object.keys(TRAIL_CATALOG)) {
       expect(resolveSupportedParkCode({ trailId })).toBe("grte");
     }

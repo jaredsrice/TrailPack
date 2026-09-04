@@ -79,8 +79,10 @@ interface NpsAlertsResponse {
 const OPEN_METEO_FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
 const SUNRISE_SUNSET_URL = "https://api.sunrise-sunset.org/json";
 const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
-const EXTERNAL_REQUEST_TIMEOUT_MS = 8_000;
+const WEATHER_REQUEST_TIMEOUT_MS = 15_000;
+const DAYLIGHT_REQUEST_TIMEOUT_MS = 3_000;
 const NPS_ALERT_REQUEST_TIMEOUT_MS = 5_000;
+const WEATHER_TIMEOUT_REASON = `The weather service did not respond within ${WEATHER_REQUEST_TIMEOUT_MS / 1_000} seconds.`;
 const MAX_WEATHER_RESPONSE_BYTES = 256_000;
 const MAX_DAYLIGHT_RESPONSE_BYTES = 32_000;
 const MAX_NPS_RESPONSE_BYTES = 128_000;
@@ -419,6 +421,11 @@ export function buildSavedWeatherFallback(
     return null;
   }
 
+  if (scenario.weather.retrievalStatus === "unavailable") {
+    // A newly admitted trail has no example forecast to fall back to.
+    return { ...scenario.weather, plannedDate: plannedDate ?? scenario.weather.plannedDate };
+  }
+
   const forecastPeriods = plannedDate
     ? scenario.weather.forecastPeriods?.map((period) => ({
         ...period,
@@ -446,7 +453,7 @@ export function buildSavedWeatherFallback(
 
 async function withExternalRequestTimeout<T>(
   operation: (signal: AbortSignal) => Promise<T>,
-  timeoutMs = EXTERNAL_REQUEST_TIMEOUT_MS,
+  timeoutMs: number,
 ): Promise<T> {
   const timeoutController = new AbortController();
   const timeoutId = setTimeout(
@@ -528,7 +535,7 @@ async function fetchSunriseSunsetDaylightContext({
       }
 
       return readBoundedProviderJson(response, MAX_DAYLIGHT_RESPONSE_BYTES);
-    });
+    }, DAYLIGHT_REQUEST_TIMEOUT_MS);
     if (!isRecord(responseBody)) {
       return null;
     }
@@ -672,11 +679,11 @@ export async function fetchOpenMeteoWeatherContext(
         return {
           status: "error" as const,
           reason: signal.aborted
-            ? "The weather service did not respond within eight seconds."
+            ? WEATHER_TIMEOUT_REASON
             : "Open-Meteo returned an unreadable forecast response.",
         };
       }
-    });
+    }, WEATHER_REQUEST_TIMEOUT_MS);
     if (result.status === "error") {
       return unavailable(result.reason);
     }
@@ -705,7 +712,7 @@ export async function fetchOpenMeteoWeatherContext(
   } catch (error) {
     return unavailable(
       error instanceof Error && error.name === "AbortError"
-        ? "The weather service did not respond within eight seconds."
+        ? WEATHER_TIMEOUT_REASON
         : "The weather service could not be reached from TrailPack.",
     );
   }

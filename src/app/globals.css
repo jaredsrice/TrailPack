@@ -843,6 +843,7 @@ a {
 
 .source-confidence-details,
 .forecast-details,
+.alert-notice-details,
 .ai-review-details {
   margin-top: 20px;
   background: rgb(243 248 247 / 0.62);
@@ -852,6 +853,7 @@ a {
 
 .source-confidence-details > summary,
 .forecast-details > summary,
+.alert-notice-details > summary,
 .ai-review-details > summary {
   min-height: 56px;
   display: flex;
@@ -865,6 +867,7 @@ a {
 
 .source-confidence-details > summary::-webkit-details-marker,
 .forecast-details > summary::-webkit-details-marker,
+.alert-notice-details > summary::-webkit-details-marker,
 .ai-review-details > summary::-webkit-details-marker,
 .packing-item > summary::-webkit-details-marker {
   display: none;
@@ -1123,6 +1126,43 @@ a {
   color: #8a2419;
   background: #ffdacd;
   border-color: #b93827;
+}
+
+.alert-notice-details {
+  color: var(--ink);
+  border-color: currentColor;
+  font-size: 0.78rem;
+}
+
+.alert-notice-details > summary {
+  font-weight: 650;
+}
+
+.alert-notice-list {
+  margin: 0;
+  padding: 0 16px 16px;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+
+.alert-notice-list li {
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.alert-notice-list li + li {
+  margin-top: 14px;
+}
+
+.alert-notice-list h4 {
+  margin: 0;
+  font-size: inherit;
+}
+
+.alert-notice-list p {
+  margin: 8px 0;
+  line-height: 1.55;
+  white-space: pre-line;
 }
 
 .forecast-details {

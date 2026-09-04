@@ -60,7 +60,7 @@ const QUICK_START_TRAIL_IDS = [
 const AI_REVIEW_CLIENT_TIMEOUT_MS = 30_000;
 const ALERT_REQUEST_TIMEOUT_MS = 6_000;
 const ALERT_RETRY_DELAY_MS = 1_500;
-const WEATHER_REQUEST_TIMEOUT_MS = 20_000;
+const WEATHER_REQUEST_TIMEOUT_MS = 25_000;
 const ALERT_FALLBACK_NOTICE =
   "Check current NPS alerts directly before leaving.";
 
@@ -106,6 +106,10 @@ function alignSavedWeatherToDate(
 ): WeatherContext {
   if (!plannedDate || plannedDate === weather.plannedDate) {
     return weather;
+  }
+
+  if (weather.retrievalStatus === "unavailable") {
+    return { ...weather, plannedDate };
   }
 
   return {
@@ -285,9 +289,11 @@ export function TrailPackShell() {
           requestKey: weatherRequestKey,
           weather: {
             ...savedWeather,
-            retrievalStatus: "saved-fixture",
+            retrievalStatus: savedWeather.retrievalStatus === "unavailable" ? "unavailable" : "saved-fixture",
             statusReason:
-              "The live forecast could not be loaded. TrailPack is showing saved example conditions instead.",
+              savedWeather.retrievalStatus === "unavailable"
+                ? "The live forecast could not be loaded. No saved forecast is available; standard packing rules remain active."
+                : "The live forecast could not be loaded. TrailPack is showing saved example conditions instead.",
           },
         });
       })

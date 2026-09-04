@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "lunch-tree-hill",
+    "name": "Lunch Tree Hill",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.8792214,
+      "lng": -110.57800853
+    },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-09-03",
+    "coordinateNote": "Center of the five connected NPS-origin Lunchtree Hill Loop Trail segment extents. Approximate trail-area weather point, not a trailhead or navigation coordinate."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/lunchtreehill.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-03",
+    "sourceRecordIds": [
+      "4797",
+      "4800",
+      "4804",
+      "4805",
+      "7294"
+    ],
+    "distanceMiles": 0.467,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "USGS mapped-loop geometry is about 0.467 miles, roughly 7% shorter than the NPS route. Treat it as an approximate comparison.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-lunch-tree-hill.jpg",
+    "locationName": "Lunch Tree Hill view",
+    "alt": "The Teton Range rises above Jackson Lake and golden Willow Flats, seen from Lunch Tree Hill.",
+    "credit": "NPS Photo",
+    "sourceUrl": "https://www.nps.gov/thingstodo/lunchtreehill.htm",
+    "permissionNote": "The official NPS activity page credits this photo to NPS with no third-party rights restriction displayed. Retain NPS credit and source; no endorsement is implied.",
+    "focalPoint": {
+      "desktop": "50% 48%",
+      "mobile": "50% 54%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Lunch Tree Hill"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

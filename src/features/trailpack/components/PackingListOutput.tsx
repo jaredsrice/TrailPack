@@ -58,6 +58,17 @@ export function PackingListOutput({
 }) {
   const groups = groupRecommendationItems(recommendation);
   const basisContext = { weather, alerts };
+  // Keep the NPS action in Critical Safety, not a second overview warning.
+  // Only omit it when an equivalent row actually survived presentation grouping.
+  const hasAlertGuidance = groups.some((group) =>
+    group.items.some((item) =>
+      item.name === "Review active alerts before leaving" ||
+      (item.criticalKind === "trip-decision" && item.affectedBy?.includes("Official alert")),
+    ),
+  );
+  const overviewAlerts = hasAlertGuidance
+    ? recommendation.tripAlerts.filter((alert) => alert.id !== "active-alerts")
+    : recommendation.tripAlerts;
 
   return (
     <section
@@ -95,7 +106,7 @@ export function PackingListOutput({
       </div>
 
       <TripAlerts
-        alerts={recommendation.tripAlerts}
+        alerts={overviewAlerts}
         basisContext={basisContext}
       />
 

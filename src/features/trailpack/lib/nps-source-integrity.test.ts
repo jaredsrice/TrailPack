@@ -156,7 +156,7 @@ describe("checkNpsSourceIntegrity", () => {
     );
     const report = checkNpsSourceIntegrity(profiles, snapshots, CHECKED_AT);
 
-    expect(report.results).toHaveLength(5);
+    expect(report.results).toHaveLength(profiles.length);
     expect(report.results.every((result) => result.status !== "configuration-error")).toBe(
       true,
     );

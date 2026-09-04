@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "",
+    "name": "",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": null, "lng": null },
+    "coordinateSourceUrl": "",
+    "coordinateCheckedAt": "",
+    "coordinateNote": ""
+  },
+  "official": {
+    "sourceUrl": "",
+    "checkedAt": "",
+    "distanceMiles": null,
+    "elevationGainFeet": null,
+    "estimatedDuration": "",
+    "difficulty": "",
+    "routeType": "",
+    "accessibility": null,
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "",
+    "sourceRecordIds": [],
+    "distanceMiles": null,
+    "distanceMatch": "",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "",
+    "locationName": "",
+    "alt": "",
+    "credit": "",
+    "sourceUrl": "",
+    "permissionNote": "",
+    "focalPoint": { "desktop": "", "mobile": "" }
+  },
+  "sourceCheck": {
+    "aliases": [],
+    "skipRouteTypeReason": null
+  }
+}

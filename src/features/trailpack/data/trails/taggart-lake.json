@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "profileKind": "curated",
+  "trail": {
+    "id": "taggart-lake",
+    "name": "Taggart Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.69617884,
+      "lng": -110.7445076
+    },
+    "coordinateSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "coordinateCheckedAt": "2026-09-03",
+    "coordinateNote": "Center of the NPS-origin USGS Taggart Lake Loop named-segment extent (source feature IDs 4908, 7251, 7253, 7883, 7888, 7889, 7892). Approximate trail-area weather point only; not a trailhead or navigation coordinate."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartlake.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-06-17",
+    "sourceRecordIds": [],
+    "recordIdNote": "The original 2026-06-17 review retained this comparison value but not its exact segment identifiers. Preserve it as a historical estimate, not a newly verified route match.",
+    "distanceMiles": 2.958,
+    "distanceMatch": "ok",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Official NPS display values are used, and the validated USGS route length is a close match for the short out-and-back route.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-taggart-lake.jpg",
+    "locationName": "Taggart Lake Trail",
+    "alt": "A trail through low evergreens beneath snow-streaked peaks near Taggart Lake.",
+    "credit": "NPS Photo / J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartlake.htm",
+    "permissionNote": "Existing locally hosted NPS-credited image retained without modification. Preserve its displayed NPS credit and source link; no NPS endorsement is implied.",
+    "focalPoint": {
+      "desktop": "50% 49%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Taggart Lake"
+    ],
+    "skipRouteTypeReason": null
+  }
+}

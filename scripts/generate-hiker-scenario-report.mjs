@@ -7,6 +7,8 @@ const jiti = createJiti(import.meta.url, { interopDefault: true });
 const { DEMO_CONTEXTS } = jiti("../src/features/trailpack/data/demo-contexts.ts");
 const { SUPPORTED_TRAILS } = jiti("../src/features/trailpack/data/supported-trails.ts");
 const { generatePackingRecommendation } = jiti("../src/features/trailpack/lib/packing.ts");
+// Keep historical evidence stable when the catalog's presentation order changes.
+const reportTrails = Object.entries(SUPPORTED_TRAILS).sort(([left], [right]) => left.localeCompare(right));
 
 const OUTPUT_PATH = join(
   process.cwd(),
@@ -397,7 +399,7 @@ function resolvedInput(trailId, template) {
 }
 
 function runMatrix() {
-  return Object.entries(SUPPORTED_TRAILS).flatMap(([trailId, trail]) => {
+  return reportTrails.flatMap(([trailId, trail]) => {
     const base = DEMO_CONTEXTS[trailId];
     return templates.map((template) => {
       const userInput = resolvedInput(trailId, template);
@@ -552,7 +554,7 @@ function renderReport(runs) {
   lines.push("## Raw App Outputs By Trail");
   lines.push("");
 
-  for (const [trailId, trail] of Object.entries(SUPPORTED_TRAILS)) {
+  for (const [trailId, trail] of reportTrails) {
     lines.push(`## ${trail.name}`);
     lines.push("");
     lines.push(`Official profile in app: ${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}, ${trail.difficulty.value}.`);

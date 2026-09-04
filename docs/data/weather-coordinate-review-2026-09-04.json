@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-09-04",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "queryBounds": [-110.87, 43.62, -110.37, 44.05],
+  "outputWkid": 4326,
+  "returnedFeatures": 452,
+  "exceededTransferLimit": false,
+  "sourceOriginator": "National Park Service",
+  "purpose": "Independent trail-area weather coordinate review, not route-distance reconciliation, a trailhead survey, or navigation guidance. Captured line pairs are the nearest consecutive vertices on the reviewed named trail or its access walkway.",
+  "trails": [
+    {
+      "id": "jenny-lake-loop",
+      "coordinates": { "lat": 43.7514, "lng": -110.7222 },
+      "sourceFeatureId": "5111",
+      "featureName": "S Jenny Lake Parking Walkways",
+      "line": [[-110.72215388847938, 43.75145692236344], [-110.72202593245031, 43.75122794512249]],
+      "distanceToLineMeters": 5.81,
+      "review": "South Jenny Lake access area; retained historical weather point. This walkway is not the full loop geometry."
+    },
+    {
+      "id": "taggart-lake",
+      "coordinates": { "lat": 43.69617884, "lng": -110.7445076 },
+      "sourceFeatureId": "7883",
+      "featureName": "Taggart Lake Loop Trail",
+      "line": [[-110.740570437867, 43.699682430800785], [-110.74057862601082, 43.69968721469256]],
+      "distanceToLineMeters": 502.52,
+      "review": "Within the Taggart trail-area extent, between its mapped approaches. This verifies the weather area, not equivalence of the NPS out-and-back and the full USGS loop."
+    },
+    {
+      "id": "string-lake-loop",
+      "coordinates": { "lat": 43.79032645, "lng": -110.73139983 },
+      "sourceFeatureId": "5096",
+      "featureName": "String Lake Trail",
+      "line": [[-110.73087435776182, 43.78974639559269], [-110.73085666184905, 43.789757491075996]],
+      "distanceToLineMeters": 76.92,
+      "review": "String Lake trail area near the east-side trail; not a surveyed trailhead."
+    },
+    {
+      "id": "colter-bay-lakeshore-trail",
+      "coordinates": { "lat": 43.90068945, "lng": -110.65001068 },
+      "sourceFeatureId": "4929",
+      "featureName": "Lakeshore Trail",
+      "line": [[-110.64990778276432, 43.900784750141426], [-110.64988228318663, 43.900767650466456]],
+      "distanceToLineMeters": 13.39,
+      "review": "Colter Bay Lakeshore trail area; selected feature is in the retained route comparison."
+    },
+    {
+      "id": "two-ocean-lake-loop",
+      "coordinates": { "lat": 43.9096367, "lng": -110.52399853 },
+      "sourceFeatureId": "7285",
+      "featureName": "Two Ocean Lake Trail",
+      "line": [[-110.52562238313294, 43.90709865030209], [-110.52564308391037, 43.90710825029158]],
+      "distanceToLineMeters": 310.84,
+      "review": "Approximate lake-loop extent center, not the trailhead. Weather uses the provider's default land-cell selection."
+    },
+    {
+      "id": "lunch-tree-hill",
+      "coordinates": { "lat": 43.8792214, "lng": -110.57800853 },
+      "sourceFeatureId": "4797",
+      "featureName": "Lunchtree Hill Loop Trail",
+      "line": [[-110.57824298136114, 43.87920515002381], [-110.57820628248685, 43.87913735005896]],
+      "distanceToLineMeters": 18.18,
+      "review": "Inside the reviewed Lunch Tree Hill loop extent beside the mapped trail."
+    },
+    {
+      "id": "christian-pond-loop",
+      "coordinates": { "lat": 43.88064255, "lng": -110.56550468 },
+      "sourceFeatureId": "5079",
+      "featureName": "Christian Pond Loop",
+      "line": [[-110.56979280167296, 43.8800304600823], [-110.5697965233932, 43.88004411972252]],
+      "distanceToLineMeters": 350.75,
+      "review": "Inside the reviewed loop extent, east of its western leg; an area forecast point rather than a trailhead."
+    }
+  ]
+}

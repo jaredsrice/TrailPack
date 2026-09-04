@@ -130,7 +130,10 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
             <p><strong>Source records:</strong></p>
             <ul className="source-record-list">
               {trail.sourceRecords.map((record) => (
-                <li key={`${record.source}-${record.role}-${record.sourceUrl}`}>
+                // Geometry and weather-coordinate evidence can share a URL.
+                // Keep each immutable evidence record distinct, including its
+                // review date, selected features, and purpose note.
+                <li key={JSON.stringify(record)}>
                   <a
                     href={record.sourceUrl}
                     className="source-link"

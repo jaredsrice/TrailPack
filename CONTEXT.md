@@ -16,7 +16,7 @@ end-to-end flow, from selection to packing output.
 _Avoid_: hike, route, saved trail
 
 **Curated profile**:
-One of the original manually validated CSE 499A trail profiles.
+One of the original manually validated trail profiles.
 _Avoid_: hard-coded trail, default trail
 
 **Verified public-source import**:
@@ -29,6 +29,18 @@ _Avoid_: live result, scraped trail, automatic import
 The normalized description of one supported trail, including display stats,
 provenance, and confidence notes.
 _Avoid_: trail object, raw trail data, record
+
+**Trail onboarding draft**:
+A proposed trail's planning facts, source evidence, photograph, and review notes
+collected for catalog admission. A complete draft is not yet a supported trail.
+_Avoid_: approved trail, automatic import, live lookup
+
+**Approved trail definition**:
+The reviewed identity, geometry comparison, coordinate provenance, photograph,
+and source-check metadata for one catalog trail. Combined with its managed NPS
+facts, it produces the same profile and supporting records for both original
+and newly admitted trails. A definition alone is not live condition evidence.
+_Avoid_: second official snapshot, runtime lookup, independent photo registry
 
 **Managed NPS snapshot**:
 The versioned file containing refreshable official NPS values and optional
@@ -45,8 +57,9 @@ _Avoid_: custom trail, open search mode
 ## Trip Context
 
 **Demo scenario**:
-A saved weather-and-alert context used to make the prototype deterministic for a
-supported trail.
+A saved example or explicitly unknown weather-and-alert context used as a
+deterministic fallback for a supported trail. A new admission does not imply
+that a saved forecast or a current alert check exists.
 _Avoid_: mock response, random sample
 
 **Live alert context**:
