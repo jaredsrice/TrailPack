@@ -61,6 +61,8 @@ corrections within that milestone.
 - Separate source-evidence entries retain unique display identities even when
   their geometry and weather-coordinate reviews link to the same USGS layer.
   The hosted development-mode browser gate caught and now guards this case.
+- Coordinate-source labels use an exact NPS hostname or genuine subdomain,
+  consistent with the intake validator; lookalike domains remain rejected.
 - A valid unknown-weather response now survives client validation, failed
   requests, and date changes without becoming a fictitious saved example.
   Standard packing rules remain available, and the page hides an empty forecast
@@ -73,7 +75,7 @@ corrections within that milestone.
 
 ### Verification
 
-- All 521 unit tests across 40 files and 32 Firefox/axe flows passed, including
+- All 527 unit tests across 40 files and 32 Firefox/axe flows passed, including
   both new trails at desktop and 390-pixel widths, failed forecasts, date changes,
   guest generation, and photo/credit checks. The four new guest flows reported
   no console errors/warnings, automated accessibility violations, or overflow.

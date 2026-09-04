@@ -47,6 +47,8 @@ export const TRAIL_SOURCE_FIELDS: NpsIntegrityFieldName[] = [
 
 export function compileTrail(draft: TrailDraft, park: Pick<SupportedPark, "name" | "state">, profileKind: TrailProfile["profileKind"] = "public-source-import"): PreparedTrail {
   const { trail, official, comparison } = draft;
+  const coordinateHostname = new URL(trail.coordinateSourceUrl).hostname;
+  const coordinatesFromNps = coordinateHostname === "nps.gov" || coordinateHostname.endsWith(".nps.gov");
   const sourced = <T>(value: T) => ({
     value, source: "NPS" as const, sourceUrl: official.sourceUrl, label: "official" as const,
   });
@@ -106,7 +108,7 @@ export function compileTrail(draft: TrailDraft, park: Pick<SupportedPark, "name"
         retrievedAt: comparison.checkedAt,
         ...(comparison.sourceRecordIds.length ? { sourceRecordIds: [...comparison.sourceRecordIds] } : {}),
         note: comparison.note + (comparison.recordIdNote ? " " + comparison.recordIdNote : "") },
-      { source: new URL(trail.coordinateSourceUrl).hostname.endsWith("nps.gov") ? "NPS" : "USGS",
+      { source: coordinatesFromNps ? "NPS" : "USGS",
         role: "geometry-comparison", sourceUrl: trail.coordinateSourceUrl,
         retrievedAt: trail.coordinateCheckedAt,
         note: trail.coordinateNote },

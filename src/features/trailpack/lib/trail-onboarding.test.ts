@@ -88,6 +88,20 @@ describe("trail onboarding interface", () => {
     if (result.ok) expect(result.prepared.integrityPolicy.checkedFields).toContain("routeType");
   });
 
+  it.each([
+    ["https://nps.gov/trail", "NPS"],
+    ["https://www.nps.gov/trail", "NPS"],
+    ["https://www.usgs.gov/trail", "USGS"],
+    ["https://carto.nationalmap.gov/trail", "USGS"],
+  ])("labels coordinate evidence from the validated host %s", (sourceUrl, source) => {
+    const draft = newDraft();
+    draft.trail.coordinateSourceUrl = sourceUrl;
+    const result = checkTrailDraft(draft, options);
+    expect(result.ok, JSON.stringify(result.issues)).toBe(true);
+    if (!result.ok) return;
+    expect(result.prepared.profile.sourceRecords.at(-1)).toMatchObject({ source, sourceUrl });
+  });
+
   it("retains a sourced accessibility block when one is available", () => {
     const draft = newDraft();
     draft.official.accessibility = "The trail has a narrow dirt surface and exposed roots.";
@@ -172,6 +186,8 @@ describe("trail onboarding interface", () => {
     ["trail.coordinates.lat", "43.9"],
     ["trail.coordinates.lat", Number.NaN],
     ["trail.coordinateSourceUrl", "https://nps.gov.attacker.test/trail"],
+    ["trail.coordinateSourceUrl", "https://attacker-nps.gov/trail"],
+    ["trail.coordinateSourceUrl", "https://notnps.gov/trail"],
     ["trail.coordinateNote", ""],
     ["official.sourceUrl", "http://www.nps.gov/trail"],
     ["official.sourceUrl", "https://name:password@www.nps.gov/trail"],

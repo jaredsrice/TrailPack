@@ -342,7 +342,7 @@ no critical or high-severity issue. The sanitized review and risk decisions are
 in the [sanitized security review](docs/superpowers/validation/2026-08-28-b04-cybersecurity-review.md).
 
 The seven-trail update, local weather-timeout follow-up, compact NPS presentation,
-and independent weather-coordinate review pass 521 unit tests across 40 files,
+and independent weather-coordinate review pass 527 unit tests across 40 files,
 32 Firefox/axe flows, lint, type checking, and the production build. The
 5,000-case system stress run passed with no invariant failures. Each weather
 point was checked against NPS-origin USGS geometry in its intended trail area;
