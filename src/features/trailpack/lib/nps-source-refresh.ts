@@ -180,7 +180,7 @@ function validateProposedSnapshot(
     blockers.push(`${profile.name}: duration is outside the automatic format bounds.`);
   }
 
-  if (!/^(easy|moderate|moderate-strenuous|strenuous)$/i.test(proposed.difficulty)) {
+  if (!/^(easy|moderate|moderate-strenuous|moderately strenuous|strenuous)$/i.test(proposed.difficulty)) {
     blockers.push(`${profile.name}: difficulty is outside the supported values.`);
   }
 

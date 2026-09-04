@@ -174,7 +174,7 @@ function parseDuration(value: string): string | undefined {
 
 function parseDifficulty(value: string): string | undefined {
   const match = value.match(
-    /\b(easy|moderate(?:\s*[-–—]\s*strenuous)?|strenuous)\b/i,
+    /\b(easy|moderately\s+strenuous|moderate(?:\s*[-–—]\s*strenuous)?|strenuous)\b/i,
   );
   if (!match) {
     return undefined;
@@ -296,7 +296,7 @@ function parseNpsPage(
     parseDifficulty(context) ??
     parseDifficulty(
       lines
-        .filter((line) => /\b(?:easy|moderate|strenuous)\s+hike\b/i.test(line))
+        .filter((line) => /\b(?:easy|moderately\s+strenuous|moderate(?:\s*[-–—]\s*strenuous)?|strenuous)\s+hike\b/i.test(line))
         .join(" "),
     );
 

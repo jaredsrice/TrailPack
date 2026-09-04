@@ -2,7 +2,7 @@
 
 Use **one draft, one checker, and a reviewed pull request**. The tools collect
 the repeated data in one place and prepare matching entries; they never change
-the live catalog or publish a trail automatically. All nine current-source trails,
+the live catalog or publish a trail automatically. All eleven current-source trails,
 including the original five, now use this same structure.
 
 Approved metadata lives in one JSON file per trail under
@@ -240,7 +240,10 @@ separates preserved historical evidence from new source reviews.
 Lake Creek–Woodland and Phelps Lake Loop used the same workflow for their
 approved expansion. Their [admission record](data/preserve-admission-2026-09-04.md)
 demonstrates shared-photo reuse and an independently justified clipped access
-leg. Follow the [coverage checklist](data/grand-teton-coverage.md) for subsequent
+leg. Heron Pond–Swan Lake and Hermitage Point add a park-wide USGS capture,
+an official NPS connector, and a shared trailhead-area weather point in the
+[Colter Bay admission record](data/colter-bay-admission-2026-09-04.md). Follow
+the [coverage checklist](data/grand-teton-coverage.md) for subsequent
 Grand Teton admissions; a complete template alone is not a route-safety review.
 There is no national trail search, new park, admin interface, or change to
 packing-rule thresholds, authentication, AI limits, or provider time budgets.

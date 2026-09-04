@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "hermitage-point",
+    "name": "Hermitage Point",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.90107552, "lng": -110.64206064 },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-04",
+    "coordinateNote": "Official NPS Colter Bay Trailhead marker, 43.8-71.6 m from the two reviewed USGS route endpoints in the Colter Bay access area. This single trailhead-area forecast cannot represent every exposure along the 9.5-mile loop."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/hermitagepoint.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/7a01bab5-a9e2-4e89-936b-92e61ee6224d.json",
+        "checkedAt": "2026-09-04",
+        "note": "Official NPS route-map configuration distinguishes the full Hermitage Point loop from the shorter Heron Pond-Swan Lake route."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-04",
+    "sourceRecordIds": ["4784", "4777", "4786", "4785", "7280", "4832", "4868", "7284", "4918"],
+    "distanceMiles": 9.692,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Nine connected NPS-origin USGS segments total about 9.692 miles for the full Hermitage Point loop, 2.0% above the NPS 9.5-mile value. The shorter pond connector is excluded, as is short unmeasured access inside the Colter Bay parking area.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-hermitage-point.jpg",
+    "locationName": "Hermitage Point",
+    "alt": "Yellow wildflowers stand in sharp focus beside Jackson Lake with the Teton Range beyond.",
+    "credit": "NPS Photo / A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/hermitagepoint.htm",
+    "permissionNote": "The official activity page credits A. Falgoust for NPS and displays no third-party restriction. Retain the credit and source link; no endorsement is implied. The distant mountains are intentionally soft while the foreground flowers remain sharp.",
+    "focalPoint": { "desktop": "58% 50%", "mobile": "58% 48%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Hermitage Point", "Hermitage Point Trail"],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

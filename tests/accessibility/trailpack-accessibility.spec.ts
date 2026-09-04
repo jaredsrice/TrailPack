@@ -13,7 +13,10 @@ import { TRAIL_CATALOG } from "../../src/features/trailpack/data/trail-catalog";
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
 
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
-  for (const id of ["lunch-tree-hill", "christian-pond-loop", "lake-creek-woodland-loop", "phelps-lake-loop"]) {
+  for (const id of [
+    "lunch-tree-hill", "christian-pond-loop", "lake-creek-woodland-loop", "phelps-lake-loop",
+    "heron-pond-swan-lake-loop", "hermitage-point",
+  ]) {
     test(`new trail ${id} works as a guest with unknown live conditions at ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
       const errors: string[] = [];

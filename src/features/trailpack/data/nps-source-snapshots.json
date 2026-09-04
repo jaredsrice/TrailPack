@@ -89,6 +89,26 @@
       "difficulty": "Moderate",
       "routeType": "loop",
       "accessibility": "The Phelps Lake Loop Trail is a moderate, 6.4 mi (10.3 km) RT loop hike with 1,060 ft (323 m) of elevation gain with an average slope of 7%. The trail features mild elevation gain, several bridge crossings, and other trail obstacles, such as exposed roots and rocks."
+    },
+    "heron-pond-swan-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/heronpond-swanlake.htm",
+      "checkedAt": "2026-09-04",
+      "distanceMiles": 3.1,
+      "elevationGainFeet": 320,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "loop",
+      "accessibility": "The Heron Pond-Swan Lake Loop is an easy, 3.1 mi (5 km) loop hike with 320 ft (100 m) of elevation gain and an average slope of 5%. While the trail is relatively level, trail obstacles, such as exposed roots and rocks, exist."
+    },
+    "hermitage-point": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hermitagepoint.htm",
+      "checkedAt": "2026-09-04",
+      "distanceMiles": 9.5,
+      "elevationGainFeet": 930,
+      "estimatedDuration": "4-7 Hours",
+      "difficulty": "Moderately Strenuous",
+      "routeType": "loop",
+      "accessibility": "The Hermitage Point Trail is a moderately strenuous, 9.5 mi (15.3 km) loop hike with 930 ft (280 m) of elevation gain and an average slope of 4%. While relatively flat, the trail is long and contains obstacles, such as branches, roots, and exposed rock."
     }
   }
 }

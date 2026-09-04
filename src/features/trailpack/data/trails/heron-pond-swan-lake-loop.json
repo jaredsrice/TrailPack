@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "heron-pond-swan-lake-loop",
+    "name": "Heron Pond - Swan Lake Loop Trail",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.90107552, "lng": -110.64206064 },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-04",
+    "coordinateNote": "Official NPS Colter Bay Trailhead marker, 43.8-71.6 m from the two reviewed USGS route endpoints in the Colter Bay access area. Used for an area forecast, not navigation or a claim of identical conditions across the loop."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/heronpond-swanlake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/22f176be-16fa-4c78-9ea0-4a8b77b3f6dc.json",
+        "checkedAt": "2026-09-04",
+        "note": "Official NPS route-map configuration identifies the Heron Pond-Swan Lake itinerary and its Colter Bay trailhead layer."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Heron-Pond-and-Swan-Lake.json",
+        "checkedAt": "2026-09-04",
+        "note": "Official NPS connector geometry completes the pond-to-lake route where the current USGS layer has no matching segment."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-04",
+    "sourceRecordIds": ["4784", "4777", "4786", "4785", "4868", "7284", "4918"],
+    "distanceMiles": 3.043,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Seven NPS-origin USGS segments plus the official NPS pond-to-lake connector total about 3.043 miles, 1.8% below the NPS 3.1-mile value. The comparison excludes short unmeasured access inside the Colter Bay parking area.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-heron-pond.jpg",
+    "locationName": "Heron Pond",
+    "alt": "The Teton Range reflects in Heron Pond beyond lily pads and pine trees.",
+    "credit": "NPS Photo / C. Adams",
+    "sourceUrl": "https://www.nps.gov/thingstodo/heronpond-swanlake.htm",
+    "permissionNote": "The official activity page credits C. Adams for NPS and displays no third-party restriction. Retain the credit and source link; no endorsement is implied.",
+    "focalPoint": { "desktop": "58% 50%", "mobile": "62% 50%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Heron Pond - Swan Lake Loop Trail", "Heron Pond-Swan Lake Loop"],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}
