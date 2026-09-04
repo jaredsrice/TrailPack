@@ -44,6 +44,8 @@ describe("one approved trail record drives the catalog", () => {
       expect(entry.profile.coordinates).toEqual(definition.trail.coordinates);
       expect(entry.profile.coordinates!.lat).toBeGreaterThan(43);
       expect(entry.profile.coordinates!.lng).toBeLessThan(-110);
+      const sourceKeys = entry.profile.sourceRecords.map((record) => JSON.stringify(record));
+      expect(new Set(sourceKeys).size).toBe(sourceKeys.length);
       expect(getContextParkPhoto({ selectedParkId: "grand-teton", selectedTrailId: id })).toEqual(entry.photo);
       expect(entry.photo).toMatchObject({ src: definition.photo.src, credit: definition.photo.credit, focalPoint: definition.photo.focalPoint });
       expect(entry.integrityPolicy).toEqual(result.prepared.integrityPolicy);

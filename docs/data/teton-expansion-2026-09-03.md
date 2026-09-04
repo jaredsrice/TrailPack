@@ -232,6 +232,15 @@ sized local-image variants instead of eagerly downloading the originals.
 
 ## Verification and release boundary
 
+The first hosted PR gate caught duplicate React keys in source records: the
+geometry comparison and coordinate review share a provider, role, and URL but
+are distinct evidence. Production builds omit that development warning, which
+explains the initially green local production-server run. Keys now use the
+complete immutable evidence record, keeping both notes visible and stable.
+The existing four new-trail browser cases require clean error/warning logs;
+catalog tests also require unique complete source records. The follow-up gate
+runs against development mode without weakening that assertion.
+
 - 521 unit tests across 40 files (rerun 2026-09-04), including independently
   captured weather-coordinate checks, definition consistency, offline
   preparation/no-overwrite behavior, actual source fixtures, duration units,

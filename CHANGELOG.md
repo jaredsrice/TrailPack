@@ -58,6 +58,9 @@ corrections within that milestone.
   provider grid resolution and mountain-weather limitations remain explicit.
 - NPS duration checking and guarded refresh now support minutes as well as
   hours, preserving positive, ordered, bounded duration checks.
+- Separate source-evidence entries retain unique display identities even when
+  their geometry and weather-coordinate reviews link to the same USGS layer.
+  The hosted development-mode browser gate caught and now guards this case.
 - A valid unknown-weather response now survives client validation, failed
   requests, and date changes without becoming a fictitious saved example.
   Standard packing rules remain available, and the page hides an empty forecast

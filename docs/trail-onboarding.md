@@ -195,6 +195,10 @@ Follow the package's registration checklist after source review:
    ```
 
    Unlike the draft checker, `check:nps-integrity` reads the official pages.
+   Run the browser suite against a fresh development server as well when local
+   testing has reused a production server. CI starts development mode, which
+   surfaces React warnings that production builds omit; never silence those
+   warnings to make the check pass.
    Investigate failures rather than updating expectations blindly. Commit any
    legitimate regenerated scenario report with the reviewed change; CI checks
    that generated evidence is current.
