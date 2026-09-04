@@ -1,9 +1,9 @@
 # Colter Bay loops: reviewed admission
 
 Checked: 2026-09-04 UTC. Status: source, geometry, coordinate, original-photo,
-full local validation, and rendered local review are complete. Hosted Preview
-review and owner approval are still required before release. Production
-continues to contain the nine trails released through PRs #50 and #51.
+full local validation, and hosted desktop/mobile Preview QA are complete. Owner
+approval is still required before release. Production continues to contain the
+nine trails released through PRs #50 and #51.
 
 ## Official route scope
 
@@ -98,9 +98,8 @@ TrailPack notices continue to come from NPS.
   frame so the depth of field does not read as an accidentally blurry image.
 
 Both photographs came from their corresponding official NPS activity pages,
-retain visible credit/source links, and are served locally. Local rendered crops
-passed at 1280 × 900 and 390 × 844; the hosted Preview still requires the
-same acceptance check before release.
+retain visible credit/source links, and are served locally. Local and hosted
+Preview crops passed at 1280 × 900 and 390 × 844.
 
 ## Current verification
 
@@ -119,6 +118,9 @@ same acceptance check before release.
   matching credits, no visible broken images, no horizontal overflow, clean
   error/warning logs, and a complete signed-out rule-based list plus standard
   review. The observed live context returned weather and three park notices.
+- The same acceptance pass succeeded on the hosted Vercel Preview for PR #52;
+  all six required hosted checks are green and the pull request is clean and
+  mergeable. This records technical readiness, not owner approval to merge.
 - No authentication, second account, AI provider call, saved-result write, API
   limit change, packing-rule change, or alert-behavior change is part of this
   admission.

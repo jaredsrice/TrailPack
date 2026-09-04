@@ -42,9 +42,10 @@ corrections within that milestone.
   focused route, catalog, and source tests plus type checking pass.
 - Lint, all 553 unit tests, the 5,000-case system stress run, all 11 live NPS
   comparisons, the optimized build, and all 40 Firefox/axe flows pass.
-- Both trails passed local desktop/mobile crop, overflow, visible-image, console,
-  live-context, and signed-out generation checks. Hosted Preview approval and
-  Production deployment remain pending.
+- Both trails passed local and hosted Preview desktop/mobile crop, overflow,
+  visible-image, console, live-context, and signed-out generation checks. All
+  six required hosted checks are green; owner approval and Production deployment
+  remain pending.
 
 ## Preserve loop expansion - 2026-09-04
 

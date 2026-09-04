@@ -384,8 +384,9 @@ The two Colter Bay additions pass the 11-record catalog check, 553 unit tests,
 the 5,000-case system stress run, all 11 live NPS comparisons, lint, type
 checking, the optimized build, and 40 Firefox/axe flows. Local 1280 px and
 390 px checks also confirm sharp centered photos, clean logs, no horizontal
-overflow, and signed-out generation. Hosted Preview approval remains pending;
-see the [Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md).
+overflow, and signed-out generation. The hosted Preview passed the same checks
+and all required PR gates; owner approval remains pending. See the
+[Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md).
 
 ## Current Limitations
 
