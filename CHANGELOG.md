@@ -10,9 +10,11 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+## Preserve loop expansion - 2026-09-04
+
 ### Added
 
-- Lake Creek–Woodland Trail Loop and Phelps Lake Loop in the local review
+- Lake Creek–Woodland Trail Loop and Phelps Lake Loop in the reviewed
   catalog, using NPS facts, connected USGS comparisons within 2% of official
   distance, the official Preserve trailhead weather point, and retained terrain
   guidance. Computed elevation gains and missing live conditions stay unknown.
@@ -25,7 +27,8 @@ corrections within that milestone.
 
 These two additions are separate from the approved seven-trail release in
 [PR #50](https://github.com/jaredsrice/TrailPack/pull/50), deployed as `1894f52`
-on 2026-09-04. They remain local review candidates until separately approved.
+on 2026-09-04. The owner separately approved this expansion for the protected
+release workflow; deployment status is tracked by its pull request.
 
 ### Verification
 
@@ -37,7 +40,7 @@ on 2026-09-04. They remain local review candidates until separately approved.
   clean error/warning logs and no horizontal overflow or broken visible images.
 - README, onboarding guidance, photo credits, coverage inventory, and the
   [dated admission record](docs/data/preserve-admission-2026-09-04.md) distinguish
-  the released seven-trail catalog from these two local review candidates.
+  the original seven-trail catalog from these two reviewed additions.
 
 ## Catalog expansion and live-context refinements - 2026-09-04
 

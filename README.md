@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Shared trail definitions released in PR #50; two Preserve loops in local review |
-| Supported catalog | Nine verified Grand Teton day hikes in current source; seven in Production until the Preserve additions are approved |
+| Active track | Reviewed Preserve-loop expansion approved for release; further Grand Teton coverage tracked |
+| Supported catalog | Nine verified Grand Teton day hikes in this revision; deployment evidence is recorded below |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -70,8 +70,8 @@ and condition inputs to produce a limited fallback list.
 ## Supported Trail Catalog
 
 The current source contains nine Grand Teton day hikes using the same reviewed
-definition format. Seven are released; Lake Creek–Woodland and Phelps Lake Loop
-are local review candidates, not yet available in Production.
+definition format. Lake Creek–Woodland and Phelps Lake Loop extend the seven-trail
+catalog through the same NPS/USGS source-review process.
 
 | Trail | Profile evidence | NPS accessibility details |
 |---|---|---|
@@ -82,10 +82,10 @@ are local review candidates, not yet available in Production.
 | Two Ocean Lake Loop | Official NPS facts with three reconciled USGS trail segments | Not found on the tracked NPS page |
 | Lunch Tree Hill | Official NPS facts with five connected USGS segments | Available |
 | Christian Pond Loop | Official NPS facts with five connected USGS segments, including a repeated access spur | Available |
-| Lake Creek–Woodland Trail Loop (local review) | Official NPS facts; eight connected USGS segments with clipped, repeated access | Available |
-| Phelps Lake Loop (local review) | Official NPS facts; thirteen connected USGS segments with clipped, repeated access | Available |
+| Lake Creek–Woodland Trail Loop | Official NPS facts; eight connected USGS segments with clipped, repeated access | Available |
+| Phelps Lake Loop | Official NPS facts; thirteen connected USGS segments with clipped, repeated access | Available |
 
-All nine appear in the local application as a `Verified NPS + USGS profile`. Internal
+All nine appear in the application as a `Verified NPS + USGS profile`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
 
@@ -370,7 +370,7 @@ That seven-trail update was approved and merged through
 All hosted validation, CodeQL, and Vercel gates passed. Production deployment
 succeeded on 2026-09-04 at 04:24:50 UTC; the public homepage returned HTTPS `200`
 with title `TrailPack`, and the new trail was present in Production search.
-The next two Preserve loops remain a separate local review; their validation
+The two Preserve loops were separately reviewed and approved for release; their validation
 passed 540 unit tests, 36 Firefox/axe flows, all nine catalog/photo and live NPS
 checks, lint, type checking, and the optimized build. The four new-route flows
 passed again after final crop tuning. Results and evidence are recorded in the
@@ -378,7 +378,7 @@ passed again after final crop tuning. Results and evidence are recorded in the
 
 ## Current Limitations
 
-- The local catalog contains nine Grand Teton day hikes (seven released), not the entire park trail
+- The catalog contains nine Grand Teton day hikes, not the entire park trail
   network or a nationwide database. Further trails require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
   facts.
@@ -444,7 +444,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Original profiles migrated and seven-trail catalog released in PR #50; two Preserve loops in local review; full NPS inventory tracked |
+| Repeatable trail onboarding and Teton expansion | Original profiles migrated in PR #50; two Preserve loops reviewed and approved; full NPS inventory tracked |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

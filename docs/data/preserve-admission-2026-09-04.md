@@ -1,7 +1,9 @@
 # Preserve loops: reviewed admission
 
-Checked: 2026-09-04 UTC. Status: local review candidates, not a Production
-release. These additions follow the seven-trail release in PR #50.
+Checked: 2026-09-04 UTC. Status: source and visual review completed; owner
+approved release on 2026-09-04. These additions follow the seven-trail release
+in PR #50. Hosted release status belongs to the pull request and deployment
+checks, not this dated evidence record.
 
 ## Official route scope
 
@@ -102,6 +104,6 @@ point, a clear credited photo, and guest desktop/mobile checks.
   49.7 kB / 152 kB for the released seven-trail build. Geometry evidence and
   test fixtures are not runtime imports. No dependencies, API budgets, packing
   rules, authentication, or AI limits changed.
-- No interactive login, second account, live AI request, saved-result write,
-  or hosted configuration change was needed. The new branch is not published
-  or merged; owner review is still required.
+- No interactive login, second account, live AI provider call, saved-result
+  write, or hosted configuration change was needed. Owner approval is recorded;
+  passing local checks does not replace the protected hosted release gates.

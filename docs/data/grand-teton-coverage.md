@@ -27,8 +27,9 @@ review; a completed data template alone does not make them supported.
 
 ## Current coverage
 
-Seven entries are released through PR #50. The next two Preserve loops are
-local review candidates, not a Production update until separately approved.
+Seven entries were released through PR #50. Two Preserve loops are now reviewed
+and owner-approved, bringing this revision to nine profiles. Their Production
+rollout is verified through the protected release checks.
 
 | Area | NPS hiking page | Status / admission note |
 |---|---|---|
@@ -60,8 +61,8 @@ local review candidates, not a Production update until separately approved.
 | Taggart Lake | [Taggart–Beaver Creek loop](https://www.nps.gov/thingstodo/taggartloop.htm) | Pending; distinct from the supported out-and-back. |
 | Taggart Lake | [Taggart–Bradley loop](https://www.nps.gov/thingstodo/taggartbradley.htm) | Pending. |
 | Moose | [Murie Ranch Hike](https://www.nps.gov/thingstodo/murieranchhike.htm) | Pending. |
-| Preserve | [Lake Creek–Woodland loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) | Next review candidate; 3.0 mi official / 2.960 mi comparison. |
-| Preserve | [Phelps Lake Loop](https://www.nps.gov/thingstodo/phelpslake.htm) | Next review candidate; 6.4 mi official / 6.441 mi comparison. |
+| Preserve | [Lake Creek–Woodland loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) | Reviewed and approved; 3.0 mi official / 2.960 mi comparison. |
+| Preserve | [Phelps Lake Loop](https://www.nps.gov/thingstodo/phelpslake.htm) | Reviewed and approved; 6.4 mi official / 6.441 mi comparison. |
 | Preserve | [Aspen Ridge–Boulder Ridge](https://www.nps.gov/thingstodo/aspen-boulderridge.htm) | Pending; separate extended approach. |
 | Death Canyon | [Phelps Lake Overlook](https://www.nps.gov/thingstodo/phelpsoverlook.htm) | Pending; distinct start from Preserve routes. |
 | Death Canyon | [Phelps Lake](https://www.nps.gov/thingstodo/phelps.htm) | Pending; out-and-back, not the Preserve loop. |

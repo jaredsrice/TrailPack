@@ -237,8 +237,8 @@ The checker prepares data; catalog admission still requires review. The current
 source uses the original five profiles plus Lunch Tree Hill and Christian
 Pond Loop released in PR #50. Their [admission record](data/teton-expansion-2026-09-03.md)
 separates preserved historical evidence from new source reviews.
-Lake Creek–Woodland and Phelps Lake Loop use the same workflow in the next
-local review. Their [admission record](data/preserve-admission-2026-09-04.md)
+Lake Creek–Woodland and Phelps Lake Loop used the same workflow for their
+approved expansion. Their [admission record](data/preserve-admission-2026-09-04.md)
 demonstrates shared-photo reuse and an independently justified clipped access
 leg. Follow the [coverage checklist](data/grand-teton-coverage.md) for subsequent
 Grand Teton admissions; a complete template alone is not a route-safety review.
