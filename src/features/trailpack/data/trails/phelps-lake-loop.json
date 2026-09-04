@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "phelps-lake-loop",
+    "name": "Phelps Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.62646052,
+      "lng": -110.77570036
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-04",
+    "coordinateNote": "Official NPS Laurance S. Rockefeller Preserve Trailhead marker, approximately 5.3 m from the reviewed USGS access trail. This is the Preserve loop, not the Death Canyon out-and-back. The trailhead-area forecast cannot describe every elevation or exposure around the lake."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/phelpslake.htm",
+    "additionalSources": []
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-04",
+    "sourceRecordIds": [
+      "4775",
+      "7277",
+      "4791",
+      "4819",
+      "4818",
+      "7281",
+      "4842",
+      "7311",
+      "4810",
+      "4820",
+      "4761",
+      "4855",
+      "4794"
+    ],
+    "distanceMiles": 6.441,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "USGS geometry is about 6.441 miles for the complete lake loop from the official NPS Preserve trailhead marker. It excludes the Death Canyon approach and optional Aspen/Boulder Ridge extensions.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-phelps-lake-shore.jpg",
+    "locationName": "Phelps Lake south shore",
+    "alt": "A log bench overlooks Phelps Lake and snow-streaked mountains framed by pine trees.",
+    "credit": "NPS Photo / C. Adams",
+    "sourceUrl": "https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm",
+    "permissionNote": "The official activity page credits C. Adams for NPS and displays no third-party restriction. Retain credit and source; no endorsement implied. The same verified south-shore scene serves both Preserve routes without duplicating the large asset.",
+    "focalPoint": {
+      "desktop": "55% 5%",
+      "mobile": "55% 42%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Phelps Lake Loop",
+      "Phelps Lake Loop Trail"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

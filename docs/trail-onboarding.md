@@ -2,7 +2,7 @@
 
 Use **one draft, one checker, and a reviewed pull request**. The tools collect
 the repeated data in one place and prepare matching entries; they never change
-the live catalog or publish a trail automatically. All seven current trails,
+the live catalog or publish a trail automatically. All nine current-source trails,
 including the original five, now use this same structure.
 
 Approved metadata lives in one JSON file per trail under
@@ -234,8 +234,13 @@ means a command, file, or output-directory problem. Use `--help` for syntax.
 ## Scope
 
 The checker prepares data; catalog admission still requires review. The current
-source migrates the original five profiles and adds Lunch Tree Hill and Christian
-Pond Loop through this workflow. Their [admission record](data/teton-expansion-2026-09-03.md)
+source uses the original five profiles plus Lunch Tree Hill and Christian
+Pond Loop released in PR #50. Their [admission record](data/teton-expansion-2026-09-03.md)
 separates preserved historical evidence from new source reviews.
+Lake Creek–Woodland and Phelps Lake Loop use the same workflow in the next
+local review. Their [admission record](data/preserve-admission-2026-09-04.md)
+demonstrates shared-photo reuse and an independently justified clipped access
+leg. Follow the [coverage checklist](data/grand-teton-coverage.md) for subsequent
+Grand Teton admissions; a complete template alone is not a route-safety review.
 There is no national trail search, new park, admin interface, or change to
 packing-rule thresholds, authentication, AI limits, or provider time budgets.

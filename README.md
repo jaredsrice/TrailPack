@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Shared trail definitions, original-profile migration, and two verified Teton additions; awaiting release |
-| Supported catalog | Seven verified Grand Teton day hikes in current source; five in Production until this change is released |
+| Active track | Shared trail definitions released in PR #50; two Preserve loops in local review |
+| Supported catalog | Nine verified Grand Teton day hikes in current source; seven in Production until the Preserve additions are approved |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -69,8 +69,9 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
-The catalog contains seven Grand Teton day hikes. Lunch Tree Hill and Christian
-Pond Loop use the same reviewed definition format as the original five trails.
+The current source contains nine Grand Teton day hikes using the same reviewed
+definition format. Seven are released; Lake Creek–Woodland and Phelps Lake Loop
+are local review candidates, not yet available in Production.
 
 | Trail | Profile evidence | NPS accessibility details |
 |---|---|---|
@@ -79,10 +80,12 @@ Pond Loop use the same reviewed definition format as the original five trails.
 | String Lake Loop | Official NPS facts with a labeled USGS bridge estimate | Available |
 | Colter Bay Lakeshore Trail | Official NPS facts with 15 reconciled USGS trail segments | Not found on the tracked NPS page |
 | Two Ocean Lake Loop | Official NPS facts with three reconciled USGS trail segments | Not found on the tracked NPS page |
-| Lunch Tree Hill (new) | Official NPS facts with five connected USGS segments | Available |
-| Christian Pond Loop (new) | Official NPS facts with five connected USGS segments, including a repeated access spur | Available |
+| Lunch Tree Hill | Official NPS facts with five connected USGS segments | Available |
+| Christian Pond Loop | Official NPS facts with five connected USGS segments, including a repeated access spur | Available |
+| Lake Creek–Woodland Trail Loop (local review) | Official NPS facts; eight connected USGS segments with clipped, repeated access | Available |
+| Phelps Lake Loop (local review) | Official NPS facts; thirteen connected USGS segments with clipped, repeated access | Available |
 
-All seven appear in the application as a `Verified NPS + USGS profile`. Internal
+All nine appear in the local application as a `Verified NPS + USGS profile`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
 
@@ -92,6 +95,11 @@ comparisons lack retained feature IDs; that historical evidence gap is explicit
 and cannot be used to bypass exact-ID requirements for new admissions. The
 [migration and admission record](docs/data/teton-expansion-2026-09-03.md)
 documents both the preserved evidence and the new route checks.
+The [Preserve admission record](docs/data/preserve-admission-2026-09-04.md)
+records exact starts, clipped access geometry, weather points, and photo reuse.
+The [park-coverage checklist](docs/data/grand-teton-coverage.md) tracks all 39
+in-park NPS Hiking pages, their route variants, and two adjacent Parkway listings;
+this catalog does not yet cover the whole park.
 
 Accessibility text is displayed only when the official trail page publishes a
 matching trail-specific block. TrailPack presents it as sourced terrain
@@ -152,9 +160,10 @@ sourced NPS photographs. Each image has desktop and mobile focal-point tuning;
 the carousel also provides previous/next controls, pause/resume, and a selector
 for every park. Reduced-motion preferences stop automatic rotation while
 leaving manual navigation available. Selecting Grand Teton or a supported trail
-locks the visual to the most specific verified scene available. The seven
+locks the visual to the most specific verified scene available. The eight
 selected-trail photographs are 2,000 to 5,472 pixels wide and have their own
-responsive focal points. Manual entry retains general park imagery instead of
+responsive focal points. The two Preserve loops share one verified Phelps Lake
+south-shore photograph instead of downloading duplicate assets. Manual entry retains general park imagery instead of
 claiming an unsupported location match.
 
 The carousel initially loads only the visible photograph. The
@@ -177,7 +186,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and search for `Jenny Lake`,
-`Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, or `Christian Pond`.
+`Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, `Christian Pond`,
+`Lake Creek`, or `Phelps Lake`.
 
 ### Optional Environment Variables
 
@@ -256,7 +266,7 @@ Run the guarded refresh used by automation:
 npm run refresh:nps-sources
 ```
 
-The refresh requests only registered official NPS URLs (seven in current source). It requires two
+The refresh requests only registered official NPS URLs (nine in current source). It requires two
 matching reads, validates identity and bounded values, and can update only
 `src/features/trailpack/data/nps-source-snapshots.json`. Missing fields,
 inconsistent responses, implausible values, removed pages, or parser failures
@@ -355,10 +365,20 @@ park notices plus live weather and daylight. The key remains Git-ignored and
 absent from browser assets. These live feed checks are separate from the
 trail-page integrity checks, which verify catalog facts.
 See the [current verification record](docs/data/teton-expansion-2026-09-03.md).
+That seven-trail update was approved and merged through
+[PR #50](https://github.com/jaredsrice/TrailPack/pull/50) as `1894f52`.
+All hosted validation, CodeQL, and Vercel gates passed. Production deployment
+succeeded on 2026-09-04 at 04:24:50 UTC; the public homepage returned HTTPS `200`
+with title `TrailPack`, and the new trail was present in Production search.
+The next two Preserve loops remain a separate local review; their validation
+passed 540 unit tests, 36 Firefox/axe flows, all nine catalog/photo and live NPS
+checks, lint, type checking, and the optimized build. The four new-route flows
+passed again after final crop tuning. Results and evidence are recorded in the
+[Preserve admission record](docs/data/preserve-admission-2026-09-04.md).
 
 ## Current Limitations
 
-- The catalog contains seven Grand Teton day hikes, not the entire park trail
+- The local catalog contains nine Grand Teton day hikes (seven released), not the entire park trail
   network or a nationwide database. Further trails require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
   facts.
@@ -424,7 +444,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | All five existing trails migrated; Lunch Tree Hill and Christian Pond Loop added to current source, pending release |
+| Repeatable trail onboarding and Teton expansion | Original profiles migrated and seven-trail catalog released in PR #50; two Preserve loops in local review; full NPS inventory tracked |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and
