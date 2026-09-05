@@ -1,0 +1,348 @@
+{
+  "checkedAt": "2026-09-05",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "parkWideCapture": {
+    "queryBounds": [
+      -111,
+      43.45,
+      -110.25,
+      44.2
+    ],
+    "countQueryReturned": 1144,
+    "returnedFeatures": 1144,
+    "exceededTransferLimit": false,
+    "outputWkid": 4326,
+    "sha256": "a0685333267de76fa45da803f15766807759fd1c728e0038171531e257cbcdbe",
+    "originatorCounts": {
+      "National Park Service": 663,
+      "U.S. Forest Service": 476,
+      "U.S. Fish and Wildlife Service": 4,
+      "Continental Divide Trail Coalition": 1
+    }
+  },
+  "officialTrailhead": {
+    "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "name": "Leigh Lake Trailhead",
+    "coordinates": [
+      -110.73169201612473,
+      43.78922384132509
+    ],
+    "nearestApproachVertex": 8
+  },
+  "routeMapUrl": "https://www.nps.gov/grte/planyourvisit/upload/grte_backcountry_map_2012.jpg",
+  "npsConnectors": {
+    "leigh-approach": {
+      "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Leigh-Lake.json",
+      "featureIndex": 0,
+      "vertices": [
+        [
+          -110.73119178414343,
+          43.7881763149878
+        ],
+        [
+          -110.73134668171406,
+          43.788224722339564
+        ],
+        [
+          -110.73148548603058,
+          43.78833025023056
+        ],
+        [
+          -110.73174968361855,
+          43.78842658057388
+        ],
+        [
+          -110.73164306581019,
+          43.78863182661673
+        ],
+        [
+          -110.73158875107765,
+          43.78880802784603
+        ],
+        [
+          -110.73163032531738,
+          43.78902101764953
+        ],
+        [
+          -110.73169939219952,
+          43.789146874903935
+        ],
+        [
+          -110.73170207440853,
+          43.7892538533618
+        ],
+        [
+          -110.73164910078049,
+          43.78933856467451
+        ],
+        [
+          -110.73147006332874,
+          43.7894348933928
+        ],
+        [
+          -110.73125682771206,
+          43.78952638132821
+        ],
+        [
+          -110.7311374694109,
+          43.78962997067334
+        ],
+        [
+          -110.73101811110972,
+          43.789661434691226
+        ],
+        [
+          -110.73091886937617,
+          43.78973694826655
+        ],
+        [
+          -110.73056951165199,
+          43.78989910850656
+        ],
+        [
+          -110.73043137788773,
+          43.78992960426373
+        ],
+        [
+          -110.73031134903431,
+          43.78992089119184
+        ],
+        [
+          -110.7301826030016,
+          43.78994122169094
+        ],
+        [
+          -110.73008604347706,
+          43.79005545960492
+        ],
+        [
+          -110.72994790971279,
+          43.790187123370536
+        ],
+        [
+          -110.7297956943512,
+          43.790444641367806
+        ],
+        [
+          -110.72963409125805,
+          43.790617448875416
+        ],
+        [
+          -110.72932831943034,
+          43.790823171447315
+        ],
+        [
+          -110.72891861200333,
+          43.79093789172694
+        ],
+        [
+          -110.72843849658966,
+          43.79116249113045
+        ],
+        [
+          -110.72805091738701,
+          43.7912380028093
+        ],
+        [
+          -110.72784706950186,
+          43.79129318436042
+        ],
+        [
+          -110.7276626676321,
+          43.79133190822552
+        ],
+        [
+          -110.72747625410557,
+          43.79138708968995
+        ],
+        [
+          -110.72735287249087,
+          43.79150326102745
+        ],
+        [
+          -110.72719328105448,
+          43.79163927801482
+        ],
+        [
+          -110.72706587612629,
+          43.79176319357726
+        ],
+        [
+          -110.72695456445217,
+          43.7918575822122
+        ],
+        [
+          -110.72677753865719,
+          43.791931640882915
+        ],
+        [
+          -110.72661928832531,
+          43.79197907710747
+        ],
+        [
+          -110.7264006882906,
+          43.79198875796498
+        ],
+        [
+          -110.7262223213911,
+          43.79200521541919
+        ],
+        [
+          -110.72605468332767,
+          43.79200763563265
+        ],
+        [
+          -110.72593063116074,
+          43.79203958244126
+        ],
+        [
+          -110.72576902806759,
+          43.79213155043133
+        ],
+        [
+          -110.7256919145584,
+          43.79228063508299
+        ],
+        [
+          -110.72564866393805,
+          43.79243141350014
+        ]
+      ],
+      "lengthMiles": 0.48909227502395647
+    }
+  },
+  "segments": {
+    "4831": {
+      "objectId": 2143464,
+      "sourceRecordId": "4831",
+      "name": "String Lake Loop Trail",
+      "sourceOriginator": "National Park Service",
+      "lengthMiles": 0.031991740000000005,
+      "start": [
+        -110.72856588331436,
+        43.79717285059518
+      ],
+      "end": [
+        -110.72827618292345,
+        43.79680165013623
+      ]
+    },
+    "4833": {
+      "objectId": 2143466,
+      "sourceRecordId": "4833",
+      "name": "String Lake Loop Trail",
+      "sourceOriginator": "National Park Service",
+      "lengthMiles": 0.36202546,
+      "start": [
+        -110.72827618292345,
+        43.79680165013623
+      ],
+      "end": [
+        -110.72560828264933,
+        43.79240034992808
+      ]
+    },
+    "4835": {
+      "objectId": 2143468,
+      "sourceRecordId": "4835",
+      "name": "Trapper Lake Trail",
+      "sourceOriginator": "National Park Service",
+      "lengthMiles": 0.94499564,
+      "start": [
+        -110.72732878279389,
+        43.827903049434326
+      ],
+      "end": [
+        -110.73338418239369,
+        43.83401904934986
+      ]
+    },
+    "4860": {
+      "objectId": 2143493,
+      "sourceRecordId": "4860",
+      "name": "Leigh Lake Trail",
+      "sourceOriginator": "National Park Service",
+      "lengthMiles": 2.83841783,
+      "start": [
+        -110.72856588331436,
+        43.79717285059518
+      ],
+      "end": [
+        -110.72732878279389,
+        43.827903049434326
+      ]
+    },
+    "7330": {
+      "objectId": 2144461,
+      "sourceRecordId": "7330",
+      "name": "Bearpaw Lake Trail",
+      "sourceOriginator": "National Park Service",
+      "lengthMiles": 0.32976112,
+      "start": [
+        -110.72658338322901,
+        43.831719250241235
+      ],
+      "end": [
+        -110.72732878279389,
+        43.827903049434326
+      ]
+    }
+  },
+  "trails": {
+    "leigh-lake": {
+      "officialMiles": 1.8,
+      "comparisonMiles": 1.766218950047913,
+      "outAndBack": true,
+      "steps": [
+        {
+          "source": "NPS",
+          "sourceRecordId": "leigh-approach",
+          "reverse": false
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4833",
+          "reverse": true
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4831",
+          "reverse": true
+        }
+      ]
+    },
+    "bearpaw-trapper-lakes": {
+      "officialMiles": 9.2,
+      "comparisonMiles": 9.333045890047913,
+      "outAndBack": true,
+      "steps": [
+        {
+          "source": "NPS",
+          "sourceRecordId": "leigh-approach",
+          "reverse": false
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4833",
+          "reverse": true
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4831",
+          "reverse": true
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4860",
+          "reverse": false
+        },
+        {
+          "source": "USGS",
+          "sourceRecordId": "4835",
+          "reverse": false
+        }
+      ]
+    }
+  },
+  "excludedBranch": "7330"
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "leigh-lake",
+    "name": "Leigh Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.78922384,
+      "lng": -110.73169202
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Leigh Lake Trailhead marker, 3.4 m from the shared NPS approach. This is a trailhead-area forecast, not the southern parking-access start or a guarantee of conditions along the entire hike."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/leighlake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/4478e597-caae-44cd-9195-b78f5f076909.json",
+        "checkedAt": "2026-09-05",
+        "note": "NPS route configuration identifies the shared Leigh Lake approach and the intended short southern-shore turnaround, not an eastern-shore extension."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4833",
+      "4831"
+    ],
+    "distanceMiles": 1.766,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "The full official NPS approach plus two connected NPS-origin USGS segments, retraced on return, total 1.766 miles, 1.9% below NPS. The southern access leg is retained; extra shore and camping spurs are excluded.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-leigh-lake.jpg",
+    "locationName": "Leigh Lake",
+    "alt": "Clear waves roll onto the shore of Leigh Lake below forested slopes and snow-streaked Teton peaks.",
+    "credit": "NPS Photo / A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/leighlake.htm",
+    "permissionNote": "The corresponding official activity page credits NPS Photo/A. Falgoust and displays no third-party restriction. Retain the credit and source link; no endorsement is implied. The original 6016 x 3384 JPEG was visually reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "55% 5%",
+      "mobile": "65% 45%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Leigh Lake",
+      "Leigh Lake Trail"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

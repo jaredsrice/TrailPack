@@ -2,7 +2,7 @@
 
 Use **one draft, one checker, and a reviewed pull request**. The tools collect
 the repeated data in one place and prepare matching entries; they never change
-the live catalog or publish a trail automatically. All eleven current-source trails,
+the live catalog or publish a trail automatically. All thirteen current-source trails,
 including the original five, now use this same structure.
 
 Approved metadata lives in one JSON file per trail under
@@ -88,12 +88,17 @@ exists. A gain conflict requires an explanation; if the conflict is between
 official pages, record the other page in `official.additionalSources`.
 Keep NPS values authoritative—never average official and computed statistics.
 
-An optional public AllTrails cross-check belongs in the admission notes, not
-the runtime definition. Match the start/access point and route type first;
-record the page URL, access date, available page age, distance, gain, duration,
-and difficulty. Mark unmatched variants and unresolved differences explicitly.
-Do not substitute a loop for an out-and-back route or copy AllTrails conditions
-into live alerts. See the [seven-trail example](data/teton-expansion-2026-09-03.md#alltrails-cross-check).
+A documented public AllTrails recognition check is required for each new trail
+admission, but it belongs in the admission notes rather than the runtime
+definition. A reasonable counterpart must share the named destination,
+corridor, and access area; a different turnaround or route variant is acceptable
+only when the difference is recorded explicitly. Record the page URL, access
+date, available page age, distance, gain, duration, and difficulty. If no
+recognizable counterpart exists, keep the trail out of the catalog until the
+owner explicitly reviews the exception. Do not substitute a loop for an
+out-and-back route, replace NPS/USGS values with AllTrails values, or copy
+AllTrails conditions into live alerts. See the
+[seven-trail example](data/teton-expansion-2026-09-03.md#alltrails-cross-check).
 
 Optional `comparison.elevationSourceUrl` and `comparison.elevationRangeFeet`
 preserve separate elevation evidence when it actually exists. The original
@@ -242,7 +247,10 @@ approved expansion. Their [admission record](data/preserve-admission-2026-09-04.
 demonstrates shared-photo reuse and an independently justified clipped access
 leg. Heron Pond–Swan Lake and Hermitage Point add a park-wide USGS capture,
 an official NPS connector, and a shared trailhead-area weather point in the
-[Colter Bay admission record](data/colter-bay-admission-2026-09-04.md). Follow
+[Colter Bay admission record](data/colter-bay-admission-2026-09-04.md).
+The [Leigh–Trapper admission record](data/leigh-trapper-admission-2026-09-05.md)
+demonstrates a shared approach retraced on return, explicit excluded branches,
+and a weather marker that is on the approach rather than its southern endpoint. Follow
 the [coverage checklist](data/grand-teton-coverage.md) for subsequent
 Grand Teton admissions; a complete template alone is not a route-safety review.
 There is no national trail search, new park, admin interface, or change to
