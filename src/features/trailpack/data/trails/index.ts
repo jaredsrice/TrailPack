@@ -11,6 +11,8 @@ import heronPondSwanLake from "./heron-pond-swan-lake-loop.json";
 import hermitagePoint from "./hermitage-point.json";
 import leighLake from "./leigh-lake.json";
 import bearpawTrapper from "./bearpaw-trapper-lakes.json";
+import taggartBeaverCreek from "./taggart-beaver-creek-loop.json";
+import taggartBradleyLake from "./taggart-bradley-lake-loop.json";
 import type { TrailDefinition } from "../../lib/trail-definition";
 
 /** One registration per approved trail. The offline catalog check validates JSON. */
@@ -18,4 +20,5 @@ export const TRAIL_DEFINITIONS = [
   jennyLake, taggartLake, stringLake, colterBay, twoOcean, lunchTreeHill, christianPond,
   lakeCreekWoodland, phelpsLake, heronPondSwanLake, hermitagePoint,
   leighLake, bearpawTrapper,
+  taggartBeaverCreek, taggartBradleyLake,
 ] as unknown as readonly TrailDefinition[];

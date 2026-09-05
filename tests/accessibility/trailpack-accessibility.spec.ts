@@ -18,6 +18,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     "lunch-tree-hill", "christian-pond-loop", "lake-creek-woodland-loop", "phelps-lake-loop",
     "heron-pond-swan-lake-loop", "hermitage-point",
     "leigh-lake", "bearpaw-trapper-lakes",
+    "taggart-beaver-creek-loop", "taggart-bradley-lake-loop",
   ]) {
     test(`new trail ${id} works as a guest with unknown live conditions at ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
@@ -586,7 +587,10 @@ test("supported park browser opens the complete park trail list", async ({
   await mockAlerts(page);
   await page.goto("/");
   const parkButton = page.getByRole("button", {
-    name: /Grand Teton National Park Wyoming 13 trails/i,
+    name: new RegExp(
+      `Grand Teton National Park Wyoming ${Object.keys(TRAIL_CATALOG).length} trails`,
+      "i",
+    ),
   });
   await expect(parkButton).toBeVisible();
   await parkButton.click();
