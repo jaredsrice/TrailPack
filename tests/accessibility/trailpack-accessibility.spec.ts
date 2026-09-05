@@ -9,6 +9,7 @@ import {
 import type { LiveAiOutcome } from "../../src/features/trailpack/lib/ai-contract";
 import type { AlertContext } from "../../src/features/trailpack/types";
 import { TRAIL_CATALOG } from "../../src/features/trailpack/data/trail-catalog";
+import { TRAIL_POPULARITY_STORAGE_KEY } from "../../src/features/trailpack/lib/trail-popularity";
 
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
 
@@ -16,6 +17,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   for (const id of [
     "lunch-tree-hill", "christian-pond-loop", "lake-creek-woodland-loop", "phelps-lake-loop",
     "heron-pond-swan-lake-loop", "hermitage-point",
+    "leigh-lake", "bearpaw-trapper-lakes",
   ]) {
     test(`new trail ${id} works as a guest with unknown live conditions at ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
@@ -92,7 +94,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
         status: 401, contentType: "application/json", body: signedOutReviewBody("Jenny Lake Loop"),
       }));
       await page.goto("/");
-      await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+      await selectTrail(page, "Jenny Lake Loop");
       await page.getByRole("button", { name: "Generate packing list" }).click();
       await expect(page.getByText("Review active alerts before leaving", { exact: true })).toHaveCount(1);
       const guidance = page.locator(".packing-item > summary").filter({ hasText: "Review active alerts before leaving" });
@@ -142,7 +144,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
         alerts: state.active ? [{ ...exampleAlert, title: state.title, severity: state.severity }] : [],
       };
       await page.goto("/");
-      await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+      await selectTrail(page, "Jenny Lake Loop");
 
       const alertCard = page.locator('.context-card[data-context="alert"]');
       await expect(alertCard).toHaveAttribute("data-tone", state.tone);
@@ -230,7 +232,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     }));
 
     await page.goto("/");
-    await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+    await selectTrail(page, "Jenny Lake Loop");
     const alertCard = page.locator('.context-card[data-context="alert"]');
     await expect(alertCard.getByRole("heading", { name: "3 park notices" })).toBeVisible();
     const noticeToggle = alertCard.locator(".alert-notice-details > summary");
@@ -288,6 +290,17 @@ async function mockWeather(page: Page) {
       body: JSON.stringify(JENNY_SCENARIO.weather),
     });
   });
+}
+
+async function selectTrail(page: Page, trailName: string) {
+  await page
+    .getByRole("searchbox", { name: /Search a park or trail/i })
+    .fill(trailName);
+  await page
+    .locator(".suggestion-button")
+    .filter({ hasText: trailName })
+    .first()
+    .click();
 }
 
 async function mockAlerts(page: Page) {
@@ -537,7 +550,54 @@ test("featured photo auto-rotation and controls stay synchronized", async ({
   await expectCurrentPhoto(page, PARK_PHOTO_ROTATION[2]);
 });
 
-test("park selection returns to search and opens the selected trail", async ({
+test("popular trails learn from local selections without requiring an account", async ({
+  page,
+}) => {
+  await page.addInitScript((storageKey) => {
+    const initializedKey = `${storageKey}:test-initialized`;
+    if (!window.sessionStorage.getItem(initializedKey)) {
+      window.localStorage.removeItem(storageKey);
+      window.sessionStorage.setItem(initializedKey, "true");
+    }
+  }, TRAIL_POPULARITY_STORAGE_KEY);
+  await mockWeather(page);
+  await mockAlerts(page);
+  await page.goto("/");
+
+  await expect(page.locator(".quick-start-button")).toHaveCount(3);
+  await expect(page.getByText("A rotating sample until you choose a trail.")).toBeVisible();
+
+  const search = page.getByRole("searchbox", { name: /Search a park or trail/i });
+  for (let count = 0; count < 2; count += 1) {
+    await search.fill("Jenny Lake Loop");
+    await page.locator(".suggestion-button").filter({ hasText: "Jenny Lake Loop" }).click();
+    await search.fill("");
+  }
+
+  await page.reload();
+  await expect(page.getByText("Based on trail selections on this device.")).toBeVisible();
+  await expect(page.locator(".quick-start-button").first()).toContainText("Jenny Lake Loop");
+});
+
+test("supported park browser opens the complete park trail list", async ({
+  page,
+}) => {
+  await mockWeather(page);
+  await mockAlerts(page);
+  await page.goto("/");
+  const parkButton = page.getByRole("button", {
+    name: /Grand Teton National Park Wyoming 13 trails/i,
+  });
+  await expect(parkButton).toBeVisible();
+  await parkButton.click();
+
+  await expect(page.getByRole("heading", { level: 1, name: "Grand Teton National Park" })).toBeVisible();
+  await expect(page.locator(".park-trail-button")).toHaveCount(Object.keys(TRAIL_CATALOG).length);
+  await expect(page.getByRole("button", { name: /Bearpaw and Trapper Lakes/i })).toBeVisible();
+  await expectNoAccessibilityViolations(page);
+});
+
+test("park search returns to search and opens the selected trail", async ({
   page,
 }) => {
   await mockWeather(page);
@@ -594,7 +654,7 @@ test("populated trail plan has no automated accessibility violations", async ({
   await mockWeather(page);
   await mockAlerts(page);
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
 
   await expect(page.locator("#trail-profile-heading")).toContainText(
     "Jenny Lake Loop",
@@ -681,7 +741,7 @@ test("one generated packing list requests one guarded review", async ({
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
 
   await expect(
     page.getByRole("heading", { name: "1 park notice", exact: true }),
@@ -810,7 +870,7 @@ for (const scenario of [
     });
 
     await page.goto("/");
-    await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+    await selectTrail(page, "Jenny Lake Loop");
     await page.getByRole("button", { name: "Generate packing list" }).click();
 
     await expect(page.getByText(scenario.badge, { exact: true })).toBeVisible();
@@ -835,7 +895,7 @@ test("renders a generic AI failure without exposing the route body", async ({
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
 
   await expect(page.getByText("Standard review ready", { exact: true })).toBeVisible();
@@ -880,7 +940,7 @@ test("a stalled AI browser request times out while the rule-based list remains",
   await mockAlerts(page);
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
   await expect(page.getByText("Checking plan", { exact: true })).toBeVisible();
 
@@ -928,7 +988,7 @@ test("a stalled alert request falls back and cannot leave Generate disabled", as
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Taggart Lake/i }).click();
+  await selectTrail(page, "Taggart Lake");
   await expect(
     page.getByRole("button", { name: "Loading current conditions..." }),
   ).toBeDisabled();
@@ -1001,7 +1061,7 @@ test("a background NPS retry offers an explicit list update without mutating the
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   const generateButton = page.getByRole("button", {
     name: "Generate packing list",
   });
@@ -1076,7 +1136,7 @@ test("a stalled weather request falls back and cannot leave Generate disabled", 
   await mockAlerts(page);
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   await expect(
     page.getByRole("button", { name: "Loading current conditions..." }),
   ).toBeDisabled();
@@ -1142,7 +1202,7 @@ test("a weather response arriving after the old browser deadline is still accept
   await page.clock.install();
   await mockAlerts(page);
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
 
   await page.clock.fastForward(20_000);
   await expect(page.getByRole("button", { name: "Loading current conditions..." })).toBeDisabled();
@@ -1202,7 +1262,7 @@ test("an older weather response cannot replace the newest selected date", async 
   await mockAlerts(page);
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   await page.getByLabel(/When do you plan to hike/i).fill("2026-09-01");
   await expect(page.getByText("Newest selected-date forecast.")).toBeVisible();
 
@@ -1239,7 +1299,7 @@ test("switching trails aborts stale review state without unlocking duplicates", 
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /Jenny Lake Loop/i }).click();
+  await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
   await expect.poll(() => reviewRequests).toBe(1);
 

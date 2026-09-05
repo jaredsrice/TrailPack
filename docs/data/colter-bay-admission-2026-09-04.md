@@ -1,9 +1,9 @@
 # Colter Bay loops: reviewed admission
 
 Checked: 2026-09-04 UTC. Status: source, geometry, coordinate, original-photo,
-full local validation, and hosted desktop/mobile Preview QA are complete. Owner
-approval is still required before release. Production continues to contain the
-nine trails released through PRs #50 and #51.
+full local validation, and hosted desktop/mobile Preview QA are complete. The
+owner approved release; PR #52 merged as `3623414` on 2026-09-05 UTC.
+Production verification passed and the deployed catalog now contains eleven trails.
 
 ## Official route scope
 
@@ -120,7 +120,8 @@ Preview crops passed at 1280 × 900 and 390 × 844.
   review. The observed live context returned weather and three park notices.
 - The same acceptance pass succeeded on the hosted Vercel Preview for PR #52;
   all six required hosted checks are green and the pull request is clean and
-  mergeable. This records technical readiness, not owner approval to merge.
+  mergeable. Subsequent owner approval and PR #52 merge released the additions;
+  Production search, photographs, and signed-out generation were verified.
 - No authentication, second account, AI provider call, saved-result write, API
   limit change, packing-rule change, or alert-behavior change is part of this
   admission.

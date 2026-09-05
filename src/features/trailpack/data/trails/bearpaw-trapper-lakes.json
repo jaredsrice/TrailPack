@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "bearpaw-trapper-lakes",
+    "name": "Bearpaw and Trapper Lakes",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.78922384,
+      "lng": -110.73169202
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Leigh Lake Trailhead marker, 3.4 m from the shared NPS approach. This is a trailhead-area forecast, not the southern parking-access start or a guarantee of conditions along the entire hike."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/bearpaw-trapper.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/fd08bf57-30bb-423c-845a-c0db4a91672c.json",
+        "checkedAt": "2026-09-05",
+        "note": "NPS route configuration identifies the shared Leigh Lake approach and the intended out-and-back to Trapper Lake, not an added Bearpaw camping-access spur."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4833",
+      "4831",
+      "4860",
+      "4835"
+    ],
+    "distanceMiles": 9.333,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "The full official NPS approach plus four connected NPS-origin USGS segments, retraced on return, total 9.333 miles, 1.4% above NPS. The route continues past the Bearpaw area to Trapper Lake; the separate Bearpaw access spur is excluded.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-bearpaw-trapper-lakes.jpg",
+    "locationName": "Bearpaw and Trapper Lakes",
+    "alt": "A blue lake lies beneath green forested slopes with a snow-streaked mountain beyond.",
+    "credit": "NPS Photo / A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/bearpaw-trapper.htm",
+    "permissionNote": "The corresponding official activity page credits NPS Photo/A. Falgoust and displays no third-party restriction. Retain the credit and source link; no endorsement is implied. The original 6016 x 3384 JPEG was visually reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 12%",
+      "mobile": "48% 45%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Bearpaw and Trapper Lakes",
+      "Bearpaw and Trapper Lakes Trail"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

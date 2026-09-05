@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Two reviewed Colter Bay additions passed local validation; hosted Preview approval is next |
-| Supported catalog | Eleven reviewed Grand Teton day hikes in the current source; nine are deployed in Production |
+| Active track | Leigh Lake and Bearpaw–Trapper Lakes passed local validation; hosted Preview/release is a separate approval step |
+| Supported catalog | Thirteen reviewed Grand Teton day hikes in the current source; eleven are deployed in Production |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -32,6 +32,8 @@ distinct generated lists per account per hour.
 ## What TrailPack Does
 
 1. Search for a supported park or trail.
+   The home screen also offers device-local popular trails and a supported-park
+   browser for hikers who do not yet know a trail name.
 2. Review verified trail facts, source labels, available NPS accessibility or
    terrain guidance, and current NPS alerts when the live service is available.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
@@ -69,8 +71,8 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
-The current source contains eleven Grand Teton day hikes using the same reviewed
-definition format. Heron Pond–Swan Lake and Hermitage Point extend the nine-trail
+The current source contains thirteen Grand Teton day hikes using the same reviewed
+definition format. Leigh Lake and Bearpaw–Trapper Lakes extend the eleven-trail
 Production catalog through the same NPS/USGS source-review process.
 
 | Trail | Profile evidence | NPS accessibility details |
@@ -86,10 +88,17 @@ Production catalog through the same NPS/USGS source-review process.
 | Phelps Lake Loop | Official NPS facts; thirteen connected USGS segments with clipped, repeated access | Available |
 | Heron Pond–Swan Lake Loop Trail | Official NPS facts; seven connected USGS segments plus one official NPS connector | Available |
 | Hermitage Point | Official NPS facts; nine connected USGS segments for the full loop | Available |
+| Leigh Lake | Official NPS facts; shared NPS approach plus two USGS segments, retraced on return | Available |
+| Bearpaw and Trapper Lakes | Official NPS facts; shared NPS approach plus four USGS segments to Trapper Lake, retraced on return | Available |
 
-All eleven appear in the application as a `Verified NPS + USGS profile`. Internal
+All thirteen appear in the application as a `Verified NPS + USGS profile`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
+
+New admissions also document a recognizable public AllTrails counterpart so a
+route is discoverable under the names hikers commonly encounter. That check is
+comparison-only: NPS facts and reviewed USGS geometry remain authoritative, and
+variant differences are recorded rather than averaged or silently substituted.
 
 Every trail uses the same approved definition and compiler. The original five
 retain their official facts and review history. The original three USGS
@@ -102,6 +111,9 @@ records exact starts, clipped access geometry, weather points, and photo reuse.
 The [Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md)
 records the park-wide geometry capture, exact route variants, shared weather
 point, official connector, photographs, and comparison-only AllTrails values.
+The [Leigh–Trapper admission record](docs/data/leigh-trapper-admission-2026-09-05.md)
+distinguishes the short Leigh turnaround from the Trapper itinerary, excludes
+the extra Bearpaw access spur, and records the trailhead-area forecast location.
 The [park-coverage checklist](docs/data/grand-teton-coverage.md) tracks all 39
 in-park NPS Hiking pages, their route variants, and two adjacent Parkway listings;
 this catalog does not yet cover the whole park.
@@ -192,7 +204,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and search for `Jenny Lake`,
 `Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, `Christian Pond`,
-`Lake Creek`, `Phelps Lake`, `Heron Pond`, or `Hermitage Point`.
+`Lake Creek`, `Phelps Lake`, `Heron Pond`, `Hermitage Point`, `Leigh Lake`, or `Trapper`.
 
 ### Optional Environment Variables
 
@@ -271,7 +283,7 @@ Run the guarded refresh used by automation:
 npm run refresh:nps-sources
 ```
 
-The refresh requests only registered official NPS URLs (eleven in current
+The refresh requests only registered official NPS URLs (thirteen in current
 source). It requires two matching reads, validates identity and bounded values, and can update only
 `src/features/trailpack/data/nps-source-snapshots.json`. Missing fields,
 inconsistent responses, implausible values, removed pages, or parser failures
@@ -385,13 +397,23 @@ the 5,000-case system stress run, all 11 live NPS comparisons, lint, type
 checking, the optimized build, and 40 Firefox/axe flows. Local 1280 px and
 390 px checks also confirm sharp centered photos, clean logs, no horizontal
 overflow, and signed-out generation. The hosted Preview passed the same checks
-and all required PR gates; owner approval remains pending. See the
+and all required PR gates. The owner approved release, and
+[PR #52](https://github.com/jaredsrice/TrailPack/pull/52) merged as `3623414`.
+Production verification confirmed both new trails and guest generation. See the
 [Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md).
+
+Leigh Lake and Bearpaw–Trapper Lakes pass the 13-record catalog/photo check,
+572 unit tests, 13 live NPS comparisons, and the 5,000-case stress run with zero
+invariant failures. All 46 fresh-development Firefox/axe flows pass; the four
+new-trail cases pass again after desktop crop tuning. Local guest generation,
+standard review, photo/source alignment, clean logs, and desktop/mobile layout
+are verified. Hosted Preview and release remain pending; see the
+[Leigh–Trapper admission record](docs/data/leigh-trapper-admission-2026-09-05.md).
 
 ## Current Limitations
 
-- The current source contains eleven Grand Teton day hikes, while Production
-  contains nine until the Colter Bay Preview is approved and merged. This is
+- The current source contains thirteen Grand Teton day hikes, while Production
+  contains eleven until the Leigh–Trapper Preview is approved and merged. This is
   not the entire park trail network or a nationwide database; further trails
   require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
@@ -458,7 +480,8 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Original profiles migrated in PR #50; two Preserve loops deployed; two Colter Bay loops in validation; full NPS inventory tracked |
+| Repeatable trail onboarding and Teton expansion | Eleven profiles deployed through PR #52; Leigh and Bearpaw–Trapper locally validated; full NPS inventory tracked |
+| Interactive supported-park map | Future discovery upgrade; the current release uses a scalable park-to-trail list first |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

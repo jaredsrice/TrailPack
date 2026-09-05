@@ -10,6 +10,39 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+### Added
+
+- A supported-park browser that opens the complete reviewed trail list for each
+  park, providing a discovery path when the user does not know a trail name.
+- Device-local trail popularity. The home shortcuts rank trails by selections
+  on that device and use a randomized catalog sample before any history exists.
+  Only trail IDs and click counts are stored; this does not require an account.
+- Leigh Lake and Bearpaw and Trapper Lakes as separate reviewed day hikes,
+  retaining NPS distances, gains, duration, and terrain guidance.
+- Sharp, locally served NPS photographs with separate desktop/mobile framing,
+  verified Leigh Lake trailhead-area weather coordinates, and explicit unknown
+  conditions when live feeds cannot be retrieved.
+- Reproducible route evidence and tests that distinguish the short Leigh
+  turnaround from the Trapper route and exclude an extra Bearpaw access spur.
+- A repeatable admission rule requiring a documented recognizable AllTrails
+  counterpart, or explicit owner review when none exists, without replacing
+  authoritative NPS facts or reviewed USGS geometry.
+
+These additions are local only; hosted Preview, owner acceptance, and release
+are still required. The shared template adds no new API, authentication, or
+packing-rule behavior.
+
+The park list is the first version of browse-based discovery. A visual,
+interactive supported-park map is recorded in the roadmap as a future upgrade.
+
+### Verification
+
+- All 13 catalog/photo records and live NPS comparisons pass, along with 572
+  unit tests, 46 Firefox/axe flows, and 5,000 stress cases without invariant
+  failures. Four new-trail flows pass again after final desktop photo framing.
+- Local desktop/mobile checks confirm matching photographs and source credits,
+  guest generation, standard reviews, clean logs, and no horizontal overflow.
+
 ## Colter Bay trail expansion - 2026-09-04
 
 ### Added
@@ -44,8 +77,8 @@ corrections within that milestone.
   comparisons, the optimized build, and all 40 Firefox/axe flows pass.
 - Both trails passed local and hosted Preview desktop/mobile crop, overflow,
   visible-image, console, live-context, and signed-out generation checks. All
-  six required hosted checks are green; owner approval and Production deployment
-  remain pending.
+  six required hosted checks passed. The owner approved release; PR #52 merged
+  as `3623414` on 2026-09-05 UTC and Production verification passed.
 
 ## Preserve loop expansion - 2026-09-04
 

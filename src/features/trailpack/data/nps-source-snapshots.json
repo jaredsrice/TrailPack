@@ -1,7 +1,27 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-04",
+  "updatedAt": "2026-09-05",
   "trails": {
+    "leigh-lake": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/leighlake.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 1.8,
+      "elevationGainFeet": 110,
+      "estimatedDuration": "1-2 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "The Leigh Lake Trail is an easy, 1.8 mi (2.9 km) RT out and back hike with 110 ft (30 m) of elevation gain and an average slope of 5%. 5-6 stairs will take you to the relatively flat Leigh Lake Trail. Roots, branches, and rocks are found along the trail."
+    },
+    "bearpaw-trapper-lakes": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/bearpaw-trapper.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 9.2,
+      "elevationGainFeet": 460,
+      "estimatedDuration": "4-6 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "The Bearpaw and Trapper Lakes Trail is a moderate, 9.2 mi (14.8 km) RT out and back trail with 460 ft (140 m) of elevation gain and an average slope of 4%. While the trail is long, there is little elevation change. Once past the intial 5-6 stairs at the Leigh Lake Trailhead, the trail has numerous small ups and downs and feature obstacbles, such as exposed roots and rocks."
+    },
     "jenny-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
       "checkedAt": "2026-08-04",

@@ -8,7 +8,7 @@ import {
   getTrailById,
   getTrailsForPark,
   SUPPORTED_PARKS,
-  SUPPORTED_TRAILS,
+  TRAIL_CATALOG,
 } from "@/features/trailpack/data/supported-trails";
 import {
   buildAiContractInput,
@@ -32,6 +32,16 @@ import {
   type FlowMode,
 } from "@/features/trailpack/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
+import {
+  EMPTY_TRAIL_POPULARITY,
+  getPopularTrailIds,
+  hasTrailPopularity,
+  incrementTrailPopularity,
+  parseTrailPopularity,
+  shuffleTrailIds,
+  TRAIL_POPULARITY_STORAGE_KEY,
+  type TrailPopularity,
+} from "@/features/trailpack/lib/trail-popularity";
 import type {
   AlertContext,
   PackingRecommendation,
@@ -56,6 +66,7 @@ const QUICK_START_TRAIL_IDS = [
   "taggart-lake",
   "string-lake-loop",
 ] as const;
+const ALL_TRAIL_IDS = Object.keys(TRAIL_CATALOG);
 
 const AI_REVIEW_CLIENT_TIMEOUT_MS = 30_000;
 const ALERT_REQUEST_TIMEOUT_MS = 6_000;
@@ -210,11 +221,28 @@ export function TrailPackShell() {
   const [alertState, setAlertState] = useState<AlertUiState>({
     status: "idle",
   });
+  const [trailPopularity, setTrailPopularity] = useState<TrailPopularity>(
+    EMPTY_TRAIL_POPULARITY,
+  );
+  const [fallbackTrailIds, setFallbackTrailIds] = useState<string[]>([
+    ...QUICK_START_TRAIL_IDS,
+    ...ALL_TRAIL_IDS.filter(
+      (trailId) =>
+        !QUICK_START_TRAIL_IDS.includes(
+          trailId as (typeof QUICK_START_TRAIL_IDS)[number],
+        ),
+    ),
+  ]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const activeAiGenerationRef = useRef<string | null>(null);
   const aiReviewAbortControllerRef = useRef<AbortController | null>(null);
 
   const suggestions = useMemo(() => getSearchSuggestions(query), [query]);
+  const popularTrailIds = getPopularTrailIds(
+    trailPopularity,
+    fallbackTrailIds,
+  );
+  const popularityHasClicks = hasTrailPopularity(trailPopularity);
   const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
   const selectedPark = SUPPORTED_PARKS.find((park) => park.id === selectedParkId);
   const selectedScenario = getDemoScenario(selectedTrail?.id);
@@ -244,6 +272,24 @@ export function TrailPackShell() {
     weatherRequestKey &&
       (!hasCurrentWeatherState || weatherState.status === "loading"),
   );
+
+  useEffect(() => {
+    let storedPopularity: string | null = null;
+    try {
+      storedPopularity = window.localStorage.getItem(
+        TRAIL_POPULARITY_STORAGE_KEY,
+      );
+    } catch {
+      // Storage access can be denied; randomized discovery still works.
+    }
+    setTrailPopularity(
+      parseTrailPopularity(
+        storedPopularity,
+        ALL_TRAIL_IDS,
+      ),
+    );
+    setFallbackTrailIds(shuffleTrailIds(ALL_TRAIL_IDS));
+  }, []);
 
   useEffect(() => {
     if (!weatherRequestKey || !selectedTrail || !savedWeather) {
@@ -621,13 +667,7 @@ export function TrailPackShell() {
     }
 
     if (suggestion.type === "park" && suggestion.parkId) {
-      const next = buildParkSelectionState(suggestion.parkId, suggestion.title);
-      setMode(next.mode);
-      setSelectedParkId(next.selectedParkId);
-      setSelectedTrail(next.selectedTrail);
-      setQuery(next.query);
-      setUserInput(next.userInput);
-      resetGeneratedOutput();
+      handleParkSelect(suggestion.parkId, suggestion.title);
       return;
     }
 
@@ -640,6 +680,7 @@ export function TrailPackShell() {
         return;
       }
 
+      recordTrailSelection(trail.id);
       const next = buildTrailSelectionState(trail, suggestion.parkId ?? null);
       setMode(next.mode);
       setSelectedParkId(next.selectedParkId);
@@ -656,7 +697,33 @@ export function TrailPackShell() {
       return;
     }
 
+    recordTrailSelection(trail.id);
     const next = buildTrailSelectionState(trail, selectedParkId);
+    setMode(next.mode);
+    setSelectedParkId(next.selectedParkId);
+    setSelectedTrail(next.selectedTrail);
+    setQuery(next.query);
+    setUserInput(next.userInput);
+    resetGeneratedOutput();
+  }
+
+  function recordTrailSelection(trailId: string) {
+    setTrailPopularity((current) => {
+      const next = incrementTrailPopularity(current, trailId);
+      try {
+        window.localStorage.setItem(
+          TRAIL_POPULARITY_STORAGE_KEY,
+          JSON.stringify(next),
+        );
+      } catch {
+        // Private browsing and storage policies must not block trail selection.
+      }
+      return next;
+    });
+  }
+
+  function handleParkSelect(parkId: string, parkName: string) {
+    const next = buildParkSelectionState(parkId, parkName);
     setMode(next.mode);
     setSelectedParkId(next.selectedParkId);
     setSelectedTrail(next.selectedTrail);
@@ -764,10 +831,17 @@ export function TrailPackShell() {
                 </div>
               ) : mode === "search" ? (
                 <div className="quick-starts">
-                  <p className="search-label">Popular trails</p>
+                  <div className="discovery-heading">
+                    <p className="search-label">Popular trails</p>
+                    <p className="discovery-note">
+                      {popularityHasClicks
+                        ? "Based on trail selections on this device."
+                        : "A rotating sample until you choose a trail."}
+                    </p>
+                  </div>
                   <div className="quick-start-list">
-                    {QUICK_START_TRAIL_IDS.map((trailId) => {
-                      const trail = SUPPORTED_TRAILS[trailId];
+                    {popularTrailIds.map((trailId) => {
+                      const trail = TRAIL_CATALOG[trailId];
                       return (
                         <button
                           key={trail.id}
@@ -785,6 +859,41 @@ export function TrailPackShell() {
                         </button>
                       );
                     })}
+                  </div>
+
+                  <div className="supported-park-browser">
+                    <div className="discovery-heading">
+                      <p className="search-label">Browse supported parks</p>
+                      <p className="discovery-note">
+                        Pick a park to see every supported trail there.
+                      </p>
+                    </div>
+                    <div className="supported-park-list">
+                      {SUPPORTED_PARKS.map((park) => {
+                        const trailCount =
+                          park.trailIds.length + park.publicTrailIds.length;
+                        return (
+                          <button
+                            key={park.id}
+                            type="button"
+                            className="supported-park-button"
+                            onClick={() => handleParkSelect(park.id, park.name)}
+                          >
+                            <span>
+                              <strong>{park.name}</strong>
+                              <small>{park.state}</small>
+                            </span>
+                            <span className="supported-park-count">
+                              {trailCount} {trailCount === 1 ? "trail" : "trails"}
+                            </span>
+                            <TrailPackIcon
+                              name="chevron"
+                              className="supported-park-chevron"
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               ) : null}
