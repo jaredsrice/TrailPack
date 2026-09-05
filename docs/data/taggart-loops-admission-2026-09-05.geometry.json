@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-09-05",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "queryBounds": [-110.8, 43.65, -110.7, 43.75],
+  "outputWkid": 4326,
+  "note": "Selected NPS-origin USGS records covering the official activity-map corridors. Small source-layer gaps at the trailhead and junctions mean these totals are comparison evidence, not connected navigation geometry.",
+  "officialTrailhead": {
+    "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "name": "Taggart Lake Trailhead",
+    "coordinates": [-110.73294997215271, 43.6931081459193]
+  },
+  "segments": {
+    "4908": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.18067197 },
+    "4939": { "name": "Valley Trail", "alternateName": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.01501872 },
+    "4955": { "name": "Valley Trail", "alternateName": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.10762304 },
+    "7251": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.21774476 },
+    "7253": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.00651022 },
+    "7883": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.76778243 },
+    "7887": { "name": "Valley Trail", "sourceOriginator": "National Park Service", "lengthMiles": 1.43044447 },
+    "7888": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 1.2396704 },
+    "7889": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.09016123 },
+    "7890": { "name": "Valley Trail", "alternateName": "Taggart Lake Loop", "sourceOriginator": "National Park Service", "lengthMiles": 0.68000316 },
+    "7891": { "name": "Bradley Lake Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.96142712 },
+    "7892": { "name": "Taggart Lake Loop Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.4551411 }
+  },
+  "trails": {
+    "taggart-beaver-creek-loop": {
+      "officialMiles": 3.8,
+      "comparisonMiles": 3.76032703,
+      "sourceRecordIds": ["4908", "7251", "7253", "7883", "7892", "4955", "4939", "7890", "7888", "7889"]
+    },
+    "taggart-bradley-lake-loop": {
+      "officialMiles": 5.6,
+      "comparisonMiles": 5.69705752,
+      "sourceRecordIds": ["4908", "7251", "7253", "7883", "7891", "7887", "4955", "4939", "7890", "7888", "7889"]
+    }
+  }
+}

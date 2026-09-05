@@ -12,6 +12,13 @@ corrections within that milestone.
 
 ### Added
 
+- Taggart Lake - Beaver Creek Loop and Taggart Lake - Bradley Lake Loop as
+  separate reviewed profiles without changing the existing Taggart out-and-back.
+- Exact NPS-origin USGS corridor membership for both variants, the official NPS
+  Taggart trailhead weather point, and focused checks that prevent the Bradley
+  and direct Taggart connector records from being mixed.
+- Two sharp 2400 × 1350 NPS photographs with separate trail identity, credits,
+  alt text, and desktop/mobile focal points.
 - A supported-park browser that opens the complete reviewed trail list for each
   park, providing a discovery path when the user does not know a trail name.
 - Device-local trail popularity. The home shortcuts rank trails by selections
@@ -28,9 +35,10 @@ corrections within that milestone.
   counterpart, or explicit owner review when none exists, without replacing
   authoritative NPS facts or reviewed USGS geometry.
 
-These additions are local only; hosted Preview, owner acceptance, and release
-are still required. The shared template adds no new API, authentication, or
-packing-rule behavior.
+The supported-park browser and Leigh/Trapper additions were released through
+PR #53. The two Taggart loop additions are local only; full regression, hosted
+Preview, owner acceptance, and release are still required. The shared template
+adds no new API, authentication, or packing-rule behavior.
 
 The park list is the first version of browse-based discovery. A visual,
 interactive supported-park map is recorded in the roadmap as a future upgrade.
@@ -42,6 +50,11 @@ interactive supported-park map is recorded in the roadmap as a future upgrade.
   failures. Four new-trail flows pass again after final desktop photo framing.
 - Local desktop/mobile checks confirm matching photographs and source credits,
   guest generation, standard reviews, clean logs, and no horizontal overflow.
+- The two Taggart definitions pass the 15-record catalog/photo and live NPS
+  gates, 585 unit tests, 19 focused route/source tests, type checking, lint,
+  the 5,000-case stress run, and the optimized production build. All 50
+  Firefox/axe flows pass, including both routes in the reusable desktop and
+  390 px mobile guest matrix.
 
 ## Colter Bay trail expansion - 2026-09-04
 

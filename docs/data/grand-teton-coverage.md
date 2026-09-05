@@ -28,10 +28,10 @@ review; a completed data template alone does not make them supported.
 ## Current coverage
 
 Seven entries were released through PR #50, two Preserve loops through PR #51,
-and two Colter Bay loops through PR #52, bringing Production to eleven profiles.
-Leigh Lake and Bearpaw–Trapper Lakes are reviewed in the current local branch,
-bringing the source catalog to thirteen. Their hosted Preview and protected
-release checks remain a separate approval step.
+two Colter Bay loops through PR #52, and Leigh Lake plus Bearpaw–Trapper through
+PR #53, bringing Production to thirteen profiles. Two Taggart loop variants are
+reviewed in the current local branch, bringing the source catalog to fifteen.
+Their hosted Preview and protected release checks remain a separate approval step.
 
 | Area | NPS hiking page | Status / admission note |
 |---|---|---|
@@ -46,8 +46,8 @@ release checks remain a separate approval step.
 | Two Ocean Lake | [Two Ocean–Emma Matilda loop](https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm) | Pending; full combined route. |
 | Signal Mountain | [Signal Mountain Trail](https://www.nps.gov/thingstodo/signalmountain.htm) | Pending. |
 | String Lake | [String Lake](https://www.nps.gov/thingstodo/stringlake.htm) | Supported as String Lake Loop. |
-| String Lake | [Leigh Lake](https://www.nps.gov/thingstodo/leighlake.htm) | Reviewed locally; short out-and-back, 1.8 mi official / 1.766 mi comparison. Preview/release pending. |
-| String Lake | [Bearpaw and Trapper Lakes](https://www.nps.gov/thingstodo/bearpaw-trapper.htm) | Reviewed locally; 9.2 mi official / 9.333 mi comparison to Trapper Lake without extra Bearpaw access spur. Preview/release pending. |
+| String Lake | [Leigh Lake](https://www.nps.gov/thingstodo/leighlake.htm) | Released in PR #53; short out-and-back, 1.8 mi official / 1.766 mi comparison. |
+| String Lake | [Bearpaw and Trapper Lakes](https://www.nps.gov/thingstodo/bearpaw-trapper.htm) | Released in PR #53; 9.2 mi official / 9.333 mi comparison to Trapper Lake without extra Bearpaw access spur. |
 | String Lake | [Holly Lake](https://www.nps.gov/thingstodo/hollylake.htm) | Pending alpine/day-hike safety review. |
 | String Lake | [Paintbrush–Cascade loop](https://www.nps.gov/thingstodo/paintbrushcascade.htm) | Pending alpine/day-hike safety review. |
 | Jenny Lake | [Jenny Lake Loop](https://www.nps.gov/thingstodo/jennylakeloop.htm) | Supported; computed gain conflict retained. |
@@ -60,8 +60,8 @@ release checks remain a separate approval step.
 | Lupine Meadows | [Surprise and Amphitheater Lakes](https://www.nps.gov/thingstodo/amphitheaterlake.htm) | Pending alpine/day-hike safety review. |
 | Lupine Meadows | [Garnet Canyon](https://www.nps.gov/thingstodo/garnetcanyon.htm) | Pending; hiking endpoint must not imply climbing support. |
 | Taggart Lake | [Taggart Lake](https://www.nps.gov/thingstodo/taggartlake.htm) | Supported out-and-back. |
-| Taggart Lake | [Taggart–Beaver Creek loop](https://www.nps.gov/thingstodo/taggartloop.htm) | Pending; distinct from the supported out-and-back. |
-| Taggart Lake | [Taggart–Bradley loop](https://www.nps.gov/thingstodo/taggartbradley.htm) | Pending. |
+| Taggart Lake | [Taggart–Beaver Creek loop](https://www.nps.gov/thingstodo/taggartloop.htm) | Reviewed locally; distinct 3.8 mi loop / 3.760 mi USGS corridor. Preview/release pending. |
+| Taggart Lake | [Taggart–Bradley loop](https://www.nps.gov/thingstodo/taggartbradley.htm) | Reviewed locally; 5.6 mi loop / 5.697 mi USGS corridor. Preview/release pending. |
 | Moose | [Murie Ranch Hike](https://www.nps.gov/thingstodo/murieranchhike.htm) | Pending. |
 | Preserve | [Lake Creek–Woodland loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) | Reviewed and approved; 3.0 mi official / 2.960 mi comparison. |
 | Preserve | [Phelps Lake Loop](https://www.nps.gov/thingstodo/phelpslake.htm) | Reviewed and approved; 6.4 mi official / 6.441 mi comparison. |

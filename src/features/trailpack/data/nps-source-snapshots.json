@@ -2,6 +2,26 @@
   "schemaVersion": 1,
   "updatedAt": "2026-09-05",
   "trails": {
+    "taggart-beaver-creek-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 3.8,
+      "elevationGainFeet": 620,
+      "estimatedDuration": "2-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "loop",
+      "accessibility": "The Taggart Lake - Beaver Creek Loop is an easy, 3.8 mi (6.1 km) loop trail with 620 ft (190 m) of elevation gain and an average slope of 6%. The trail gains and loses elevation and includes obstacles such as rocks, exposed roots, and stairs."
+    },
+    "taggart-bradley-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/taggartbradley.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 5.6,
+      "elevationGainFeet": 860,
+      "estimatedDuration": "2-3 Hours",
+      "difficulty": "Moderate",
+      "routeType": "loop",
+      "accessibility": "The Taggart Lake - Bradley Lake Loop is a 5.6 mile (9 km) roundtrip hike with 890 ft (262 m) of elevation gain and an average slope of 7%. To visit both lakes, the trail gains and loses elevation several times. The trail is ocassionally narrow and passes through dense underbrush. Large rocks can be found on the trail."
+    },
     "leigh-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/leighlake.htm",
       "checkedAt": "2026-09-05",
