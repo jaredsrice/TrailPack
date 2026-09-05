@@ -5,6 +5,7 @@ Original image set last verified: 2026-08-31
 
 Lunch Tree Hill and Christian Pond additions reviewed: 2026-09-03 (UTC)
 Preserve shoreline addition reviewed: 2026-09-04 (UTC)
+Colter Bay trail additions reviewed: 2026-09-04 (UTC)
 
 TrailPack uses a curated local copy of official National Park Service
 photographs for the homepage rotation and selected Grand Teton trail context.
@@ -47,6 +48,8 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 | `public/park-images/grand-teton-lunch-tree-hill.jpg` | `lunch-tree-hill` (Teton Range and Jackson Lake view) | 5,184 x 2,916 | `50% 48%` / `50% 54%` | NPS Photo | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) |
 | `public/park-images/grand-teton-christian-pond.jpg` | `christian-pond-loop` | 5,472 x 3,078 | `50% 62%` / `51% 58%` | NPS Photo / J. Bonney | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) |
 | `public/park-images/grand-teton-phelps-lake-shore.jpg` | `lake-creek-woodland-loop` and `phelps-lake-loop` (both reach this south shore) | 5,472 x 3,078 | `55% 5%` / `55% 42%` | NPS Photo / C. Adams | [Lake Creek–Woodland Trail Loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) |
+| `public/park-images/grand-teton-heron-pond.jpg` | `heron-pond-swan-lake-loop` | 7,952 x 4,473 | `58% 50%` / `62% 50%` | NPS Photo / C. Adams | [Heron Pond–Swan Lake](https://www.nps.gov/thingstodo/heronpond-swanlake.htm) |
+| `public/park-images/grand-teton-hermitage-point.jpg` | `hermitage-point` | 6,000 x 3,375 | `58% 50%` / `58% 48%` | NPS Photo / A. Falgoust | [Hermitage Point](https://www.nps.gov/thingstodo/hermitagepoint.htm) |
 
 Selected-trail paths, credits, and focal points are maintained in each
 [approved trail definition](../../src/features/trailpack/data/trails/), not in
@@ -56,6 +59,8 @@ reviewed for this admission; viewport checks verify the actual displayed crops.
 The Preserve routes share one image of their common shore, not duplicate image
 files. The smaller Phelps-page image (2,048 x 1,152) was not shipped or enlarged
 because its height falls below the current admission minimum.
+The Hermitage Point image intentionally focuses on the sharp foreground
+wildflowers; the distant mountains are naturally soft in the official original.
 
 ## Display rules
 
@@ -79,6 +84,6 @@ because its height falls below the current admission minimum.
 - The rotation originals are at least 2,560 pixels wide (3,200 pixels for the
   Yellowstone panorama), are served at image quality `90`, and use explicit
   desktop/mobile focal points so the subject remains intentional when cropped.
-- Selected-trail originals range from 2,000 to 5,472 pixels wide and use
+- Selected-trail originals range from 2,000 to 7,952 pixels wide and use
   trail-specific desktop/mobile focal points. The Jenny Lake trail image remains
   separate from the generic Grand Teton rotation image.

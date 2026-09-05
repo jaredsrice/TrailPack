@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Reviewed Preserve-loop expansion approved for release; further Grand Teton coverage tracked |
-| Supported catalog | Nine verified Grand Teton day hikes in this revision; deployment evidence is recorded below |
+| Active track | Two reviewed Colter Bay additions passed local validation; hosted Preview approval is next |
+| Supported catalog | Eleven reviewed Grand Teton day hikes in the current source; nine are deployed in Production |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -69,9 +69,9 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
-The current source contains nine Grand Teton day hikes using the same reviewed
-definition format. Lake Creek–Woodland and Phelps Lake Loop extend the seven-trail
-catalog through the same NPS/USGS source-review process.
+The current source contains eleven Grand Teton day hikes using the same reviewed
+definition format. Heron Pond–Swan Lake and Hermitage Point extend the nine-trail
+Production catalog through the same NPS/USGS source-review process.
 
 | Trail | Profile evidence | NPS accessibility details |
 |---|---|---|
@@ -84,8 +84,10 @@ catalog through the same NPS/USGS source-review process.
 | Christian Pond Loop | Official NPS facts with five connected USGS segments, including a repeated access spur | Available |
 | Lake Creek–Woodland Trail Loop | Official NPS facts; eight connected USGS segments with clipped, repeated access | Available |
 | Phelps Lake Loop | Official NPS facts; thirteen connected USGS segments with clipped, repeated access | Available |
+| Heron Pond–Swan Lake Loop Trail | Official NPS facts; seven connected USGS segments plus one official NPS connector | Available |
+| Hermitage Point | Official NPS facts; nine connected USGS segments for the full loop | Available |
 
-All nine appear in the application as a `Verified NPS + USGS profile`. Internal
+All eleven appear in the application as a `Verified NPS + USGS profile`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
 
@@ -97,6 +99,9 @@ and cannot be used to bypass exact-ID requirements for new admissions. The
 documents both the preserved evidence and the new route checks.
 The [Preserve admission record](docs/data/preserve-admission-2026-09-04.md)
 records exact starts, clipped access geometry, weather points, and photo reuse.
+The [Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md)
+records the park-wide geometry capture, exact route variants, shared weather
+point, official connector, photographs, and comparison-only AllTrails values.
 The [park-coverage checklist](docs/data/grand-teton-coverage.md) tracks all 39
 in-park NPS Hiking pages, their route variants, and two adjacent Parkway listings;
 this catalog does not yet cover the whole park.
@@ -160,8 +165,8 @@ sourced NPS photographs. Each image has desktop and mobile focal-point tuning;
 the carousel also provides previous/next controls, pause/resume, and a selector
 for every park. Reduced-motion preferences stop automatic rotation while
 leaving manual navigation available. Selecting Grand Teton or a supported trail
-locks the visual to the most specific verified scene available. The eight
-selected-trail photographs are 2,000 to 5,472 pixels wide and have their own
+locks the visual to the most specific verified scene available. The ten
+selected-trail photographs are 2,000 to 7,952 pixels wide and have their own
 responsive focal points. The two Preserve loops share one verified Phelps Lake
 south-shore photograph instead of downloading duplicate assets. Manual entry retains general park imagery instead of
 claiming an unsupported location match.
@@ -187,7 +192,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and search for `Jenny Lake`,
 `Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, `Christian Pond`,
-`Lake Creek`, or `Phelps Lake`.
+`Lake Creek`, `Phelps Lake`, `Heron Pond`, or `Hermitage Point`.
 
 ### Optional Environment Variables
 
@@ -266,8 +271,8 @@ Run the guarded refresh used by automation:
 npm run refresh:nps-sources
 ```
 
-The refresh requests only registered official NPS URLs (nine in current source). It requires two
-matching reads, validates identity and bounded values, and can update only
+The refresh requests only registered official NPS URLs (eleven in current
+source). It requires two matching reads, validates identity and bounded values, and can update only
 `src/features/trailpack/data/nps-source-snapshots.json`. Missing fields,
 inconsistent responses, implausible values, removed pages, or parser failures
 block the entire write.
@@ -375,11 +380,20 @@ passed 540 unit tests, 36 Firefox/axe flows, all nine catalog/photo and live NPS
 checks, lint, type checking, and the optimized build. The four new-route flows
 passed again after final crop tuning. Results and evidence are recorded in the
 [Preserve admission record](docs/data/preserve-admission-2026-09-04.md).
+The two Colter Bay additions pass the 11-record catalog check, 553 unit tests,
+the 5,000-case system stress run, all 11 live NPS comparisons, lint, type
+checking, the optimized build, and 40 Firefox/axe flows. Local 1280 px and
+390 px checks also confirm sharp centered photos, clean logs, no horizontal
+overflow, and signed-out generation. The hosted Preview passed the same checks
+and all required PR gates; owner approval remains pending. See the
+[Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md).
 
 ## Current Limitations
 
-- The catalog contains nine Grand Teton day hikes, not the entire park trail
-  network or a nationwide database. Further trails require reviewed admission.
+- The current source contains eleven Grand Teton day hikes, while Production
+  contains nine until the Colter Bay Preview is approved and merged. This is
+  not the entire park trail network or a nationwide database; further trails
+  require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
@@ -444,7 +458,7 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Original profiles migrated in PR #50; two Preserve loops reviewed and approved; full NPS inventory tracked |
+| Repeatable trail onboarding and Teton expansion | Original profiles migrated in PR #50; two Preserve loops deployed; two Colter Bay loops in validation; full NPS inventory tracked |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and

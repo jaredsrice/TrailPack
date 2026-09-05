@@ -7,10 +7,12 @@ import lunchTreeHill from "./lunch-tree-hill.json";
 import christianPond from "./christian-pond-loop.json";
 import lakeCreekWoodland from "./lake-creek-woodland-loop.json";
 import phelpsLake from "./phelps-lake-loop.json";
+import heronPondSwanLake from "./heron-pond-swan-lake-loop.json";
+import hermitagePoint from "./hermitage-point.json";
 import type { TrailDefinition } from "../../lib/trail-definition";
 
 /** One registration per approved trail. The offline catalog check validates JSON. */
 export const TRAIL_DEFINITIONS = [
   jennyLake, taggartLake, stringLake, colterBay, twoOcean, lunchTreeHill, christianPond,
-  lakeCreekWoodland, phelpsLake,
+  lakeCreekWoodland, phelpsLake, heronPondSwanLake, hermitagePoint,
 ] as unknown as readonly TrailDefinition[];

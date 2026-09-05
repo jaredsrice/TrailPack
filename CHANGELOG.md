@@ -10,6 +10,43 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+## Colter Bay trail expansion - 2026-09-04
+
+### Added
+
+- Heron Pond–Swan Lake Loop and Hermitage Point as separate reviewed profiles,
+  with official NPS facts, exact route variants, the official Colter Bay weather
+  point, and unknown-by-default live conditions.
+- Two high-resolution, locally served NPS photographs with trail-specific
+  desktop/mobile focal points and visible source credit.
+- A reproducible park-wide USGS capture manifest and compact selected-route
+  evidence. The full 1,144-record review download stays outside the application
+  and repository; route tests retain exact IDs, lengths, order, and source.
+- Focused regressions for route connectivity, the NPS-only Heron connector,
+  trailhead proximity, official source parsing, fallback honesty, catalog
+  consistency, and guest desktop/mobile behavior.
+
+### Changed
+
+- NPS source checking now preserves the agency's `Moderately Strenuous` wording
+  instead of reducing it to `Strenuous`.
+- The Grand Teton geometry base now covers the full review envelope rather than
+  treating the earlier bounded capture as whole-park evidence. Individual
+  trails still require NPS route review before admission.
+- Current AllTrails distance/gain/duration comparisons are recorded for review
+  only. NPS values remain authoritative and unchanged.
+
+### Verification
+
+- The offline catalog/template/photo check passes all 11 shared records; all 44
+  focused route, catalog, and source tests plus type checking pass.
+- Lint, all 553 unit tests, the 5,000-case system stress run, all 11 live NPS
+  comparisons, the optimized build, and all 40 Firefox/axe flows pass.
+- Both trails passed local and hosted Preview desktop/mobile crop, overflow,
+  visible-image, console, live-context, and signed-out generation checks. All
+  six required hosted checks are green; owner approval and Production deployment
+  remain pending.
+
 ## Preserve loop expansion - 2026-09-04
 
 ### Added

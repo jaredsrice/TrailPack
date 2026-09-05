@@ -27,15 +27,17 @@ review; a completed data template alone does not make them supported.
 
 ## Current coverage
 
-Seven entries were released through PR #50. Two Preserve loops are now reviewed
-and owner-approved, bringing this revision to nine profiles. Their Production
-rollout is verified through the protected release checks.
+Seven entries were released through PR #50 and two Preserve loops through PR
+#51, bringing Production to nine profiles. Heron Pond–Swan Lake and Hermitage
+Point are reviewed and pass full local validation in the current branch,
+bringing the local catalog to eleven; they remain unreleased until Preview
+approval and the protected release checks.
 
 | Area | NPS hiking page | Status / admission note |
 |---|---|---|
 | Colter Bay | [Lakeshore Trail](https://www.nps.gov/thingstodo/colterlakeshore.htm) | Supported as Colter Bay Lakeshore Trail; primary profile source remains the reviewed NPS places page. |
-| Colter Bay | [Heron Pond–Swan Lake](https://www.nps.gov/thingstodo/heronpond-swanlake.htm) | Pending geometry and source review. |
-| Colter Bay | [Hermitage Point](https://www.nps.gov/thingstodo/hermitagepoint.htm) | Pending; distinguish full point loop from pond loops. |
+| Colter Bay | [Heron Pond–Swan Lake](https://www.nps.gov/thingstodo/heronpond-swanlake.htm) | Reviewed in current branch; 3.1 mi official / 3.043 mi comparison using seven USGS segments and one official NPS connector. |
+| Colter Bay | [Hermitage Point](https://www.nps.gov/thingstodo/hermitagepoint.htm) | Reviewed in current branch as the full point loop; 9.5 mi official / 9.692 mi comparison. |
 | Jackson Lake Lodge | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) | Supported. |
 | Jackson Lake Lodge | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) | Supported. |
 | Jackson Lake Lodge | [Grand View Point](https://www.nps.gov/thingstodo/grandview.htm) | Pending; multiple starting points. |

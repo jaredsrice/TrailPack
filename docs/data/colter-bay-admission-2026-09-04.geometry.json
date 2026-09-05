@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-09-04",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "parkWideCapture": {
+    "queryBounds": [-111, 43.45, -110.25, 44.2],
+    "countQueryReturned": 1144,
+    "returnedFeatures": 1144,
+    "exceededTransferLimit": false,
+    "outputWkid": 4326,
+    "sha256": "a0685333267de76fa45da803f15766807759fd1c728e0038171531e257cbcdbe",
+    "originatorCounts": {
+      "National Park Service": 663,
+      "U.S. Forest Service": 476,
+      "U.S. Fish and Wildlife Service": 4,
+      "Continental Divide Trail Coalition": 1
+    }
+  },
+  "officialTrailhead": {
+    "name": "Colter Bay Trailhead",
+    "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinates": [-110.64206063747406, 43.90107552417375]
+  },
+  "parkingAccess": {
+    "westEndpoint": [-110.64267488316817, 43.900608349715384],
+    "westMarkerOffsetMeters": 71.55791230548343,
+    "eastEndpoint": [-110.64151368220436, 43.9010882501077],
+    "eastMarkerOffsetMeters": 43.84505175932658,
+    "endpointSeparationMeters": 107.2533528940467,
+    "countedInComparison": false
+  },
+  "npsConnectors": {
+    "heron-pond-swan-lake": {
+      "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Heron-Pond-and-Swan-Lake.json",
+      "lengthMiles": 0.3662807624372509,
+      "startOffsetMeters": 6.024063035441608,
+      "endOffsetMeters": 4.7787496809056815,
+      "vertices": [
+        [-110.63804134726524, 43.88795221956627],
+        [-110.63769601285456, 43.88766902564386],
+        [-110.6373131275177, 43.88735465948248],
+        [-110.63705999404192, 43.88714733638667],
+        [-110.63680853694677, 43.88685882262595],
+        [-110.63656277954578, 43.8865763484193],
+        [-110.63635155558586, 43.886334468243575],
+        [-110.63622415065765, 43.88618730989389],
+        [-110.63580740243195, 43.88586834473525],
+        [-110.63532326370476, 43.88574631594637],
+        [-110.63518311828375, 43.88571103628955],
+        [-110.63488606363535, 43.88530072751309],
+        [-110.63480224460363, 43.885184980297694],
+        [-110.6343499571085, 43.88502380373796],
+        [-110.63408944755793, 43.88493149552686],
+        [-110.63353523612021, 43.88493995309141],
+        [-110.63316475600004, 43.884718122857905],
+        [-110.63287809491158, 43.884546312599575]
+      ]
+    }
+  },
+  "segments": {
+    "4784": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.3975453, "start": [-110.64404058291146, 43.89611165048517], "end": [-110.64267488316817, 43.900608349715384] },
+    "4777": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.14159348, "start": [-110.64404058291146, 43.89611165048517], "end": [-110.64310758367422, 43.89437955040824] },
+    "4786": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.10535705, "start": [-110.64310758367422, 43.89437955040824], "end": [-110.64315758300462, 43.89286124977813] },
+    "4785": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.44254989, "start": [-110.64315758300462, 43.89286124977813], "end": [-110.63798538363596, 43.8879160496682] },
+    "4868": { "name": null, "sourceOriginator": "National Park Service", "lengthMiles": 0.30238052, "start": [-110.63289158293709, 43.88450445026212], "end": [-110.63239648365479, 43.8884764506895] },
+    "7284": { "name": "Swan Lake Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.8590559, "start": [-110.63239648365479, 43.8884764506895], "end": [-110.64234388363036, 43.895762950079366] },
+    "4918": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.42850954, "start": [-110.64234388363036, 43.895762950079366], "end": [-110.64151368220436, 43.9010882501077] },
+    "7280": { "name": "Hermitage Point Trail", "sourceOriginator": "National Park Service", "lengthMiles": 6.44716669, "start": [-110.62343038263433, 43.8829736497488], "end": [-110.63798538363596, 43.8879160496682] },
+    "4832": { "name": "Swan Lake Cutoff Trail", "sourceOriginator": "National Park Service", "lengthMiles": 0.56756433, "start": [-110.62343038263433, 43.8829736497488], "end": [-110.63289158293709, 43.88450445026212] }
+  },
+  "trails": {
+    "heron-pond-swan-lake-loop": {
+      "officialMiles": 3.1,
+      "comparisonMiles": 3.043272442437251,
+      "steps": [
+        { "source": "USGS", "sourceRecordId": "4784", "reverse": true },
+        { "source": "USGS", "sourceRecordId": "4777", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4786", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4785", "reverse": false },
+        { "source": "NPS", "sourceRecordId": "heron-pond-swan-lake", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4868", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "7284", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4918", "reverse": false }
+      ]
+    },
+    "hermitage-point": {
+      "officialMiles": 9.5,
+      "comparisonMiles": 9.6917227,
+      "steps": [
+        { "source": "USGS", "sourceRecordId": "4784", "reverse": true },
+        { "source": "USGS", "sourceRecordId": "4777", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4786", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4785", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "7280", "reverse": true },
+        { "source": "USGS", "sourceRecordId": "4832", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4868", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "7284", "reverse": false },
+        { "source": "USGS", "sourceRecordId": "4918", "reverse": false }
+      ]
+    }
+  }
+}
