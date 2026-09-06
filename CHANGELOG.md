@@ -30,6 +30,8 @@ corrections within that milestone.
   bold-heading formats and preserve its `Very Strenuous` classification.
 - Murie Ranch's separately published difficulty and gain can be checked without
   substituting another route's values.
+- AllTrails evidence checks compare the parsed hostname exactly, preventing
+  lookalike domains from passing the route-admission test.
 
 ### Earlier additions awaiting the consolidated release
 

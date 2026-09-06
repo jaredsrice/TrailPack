@@ -77,7 +77,10 @@ describe("Grand Teton bulk route admission", () => {
       expect(miles).toBeCloseTo(trail.comparisonMiles, 8);
       expect(Math.abs(miles / TRAIL_CATALOG[trail.id].distanceMiles.value - 1)).toBeLessThan(0.06);
       expect(trail.weather.offsetMeters).toBeLessThan(35);
-      expect(trail.recognition.url).toMatch(/^https:\/\/www.alltrails.com\/trail\//);
+      const recognitionUrl = new URL(trail.recognition.url);
+      expect(recognitionUrl.protocol).toBe("https:");
+      expect(recognitionUrl.hostname).toBe("www.alltrails.com");
+      expect(recognitionUrl.pathname.startsWith("/trail/")).toBe(true);
       expect(trail.recognition.note.length).toBeGreaterThan(30);
       for (const leg of trail.legs) {
         expect(leg.fraction).toBeGreaterThan(0);
