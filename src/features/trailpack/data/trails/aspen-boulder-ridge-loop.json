@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "aspen-boulder-ridge-loop",
+    "name": "Aspen Ridge - Boulder Ridge Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.62646051823404,
+      "lng": -110.77570036053658
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Laurance S. Rockefeller Preserve Trailhead marker; 5.3 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/b3d563ed-c525-45b2-9585-11184b0cfb89.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4794",
+      "4775",
+      "4850",
+      "7288",
+      "7322",
+      "4819",
+      "4821",
+      "4816",
+      "4820",
+      "7324",
+      "7332",
+      "7256",
+      "7335"
+    ],
+    "distanceMiles": 6.24,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 6.240 mi (0.6% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-aspen-boulder-ridge-loop.jpg",
+    "locationName": "Aspen Ridge - Boulder Ridge Loop",
+    "alt": "A rocky, mountain canyon sits across a calm lake.",
+    "credit": "NPS Photo/C. Adams",
+    "sourceUrl": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 45%",
+      "mobile": "50% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Aspen Ridge - Boulder Ridge Loop",
+      "Aspen Ridge - Boulder Ridge"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "signal-mountain",
+    "name": "Signal Mountain Trail",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.841012822303156,
+      "lng": -110.61205476522446
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Signal Mountain Trailhead marker; 5.2 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/signalmountain.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/3b7f2871-3968-47e4-a838-1a409178ef3c.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "7300",
+      "4754",
+      "4828",
+      "7299"
+    ],
+    "distanceMiles": 6.398,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 6.398 mi (-4.5% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-signal-mountain.jpg",
+    "locationName": "Signal Mountain Trail",
+    "alt": "A mountain range and a lake as viewed from a high vantage point.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/signalmountain.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 25%",
+      "mobile": "65% 30%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Signal Mountain Trail"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

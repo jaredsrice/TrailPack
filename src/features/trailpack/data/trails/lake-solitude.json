@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "lake-solitude",
+    "name": "Lake Solitude via South Jenny Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.751573014308974,
+      "lng": -110.7254246994853
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/26a77753-acbd-46eb-95fc-585dbb756eb7.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5161",
+      "5154",
+      "5160",
+      "5101",
+      "5112",
+      "5108",
+      "5105",
+      "5109",
+      "5089",
+      "5086",
+      "5093",
+      "5084",
+      "5080",
+      "7353",
+      "4792"
+    ],
+    "distanceMiles": 18.822,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 18.822 mi (2.9% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-lake-solitude.jpg",
+    "locationName": "Lake Solitude via South Jenny Lake",
+    "alt": "A small lake surrounded by mountains reflects the mountainous scenery on its calm surface.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "55% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Lake Solitude via South Jenny Lake",
+      "Lake Solitude",
+      "Lake Solitude Via South Jenny Lake Loop Trail"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Lake Solitude Via South Jenny Lake Loop Trail"
+  },
+  "profileKind": "public-source-import"
+}

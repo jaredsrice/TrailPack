@@ -149,6 +149,246 @@
       "difficulty": "Moderately Strenuous",
       "routeType": "loop",
       "accessibility": "The Hermitage Point Trail is a moderately strenuous, 9.5 mi (15.3 km) loop hike with 930 ft (280 m) of elevation gain and an average slope of 4%. While relatively flat, the trail is long and contains obstacles, such as branches, roots, and exposed rock."
+    },
+    "grand-view-point": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 2.6,
+      "elevationGainFeet": 740,
+      "estimatedDuration": "1-4 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Grand View Point is an easy, 2.6 mi (4.2 km) RT out and back hike with 740 ft (230 m) of elevation gain and an average slope of 9%. The trail includes steep switchbacks, narrow sections passing through dense underbrush, and exposed rocks and roots."
+    },
+    "emma-matilda-lake-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/emmamatilda.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 10.7,
+      "elevationGainFeet": 1430,
+      "estimatedDuration": "5-7 Hours",
+      "difficulty": "Moderately Strenuous",
+      "routeType": "loop",
+      "accessibility": "The Emma Matilda Lake Trail is a moderately strenuous, 10.7 mi (17.2 km) loop hike with 1,430 ft (500 m) of elevation gain and an average slope of 5%. Marshy and wet trail surfaces exist due to the proximity to the lake."
+    },
+    "two-ocean-emma-matilda-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 13.2,
+      "elevationGainFeet": 1960,
+      "estimatedDuration": "7-9 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "loop",
+      "accessibility": "The Two Ocean Lake-Emma Matilda Lake Loop is a moderately strenuous, 13.2 mi (21.2 km) loop hike with 1,960 ft (600 m) of elevation gain and an average slope of 5%. The trail has various obstacles and a narrow path through dense underbrush."
+    },
+    "signal-mountain": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/signalmountain.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 6.7,
+      "elevationGainFeet": 980,
+      "estimatedDuration": "3-5 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "The Signal Mountain Trail is a moderate, 6.7 mi (10.8 km) RT out and back hike with 980 ft (300 m) of elevation gain and an average slope of 8%. The trail is narrow and winding with exposed rocks and roots throughout."
+    },
+    "holly-lake": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hollylake.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 12.8,
+      "elevationGainFeet": 2840,
+      "estimatedDuration": "7-9 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Holly Lake is a strenuous, 12.8 mi (20.5 km) RT out and back hike with 2,840 ft (870 m) of elevation gain and an average slope of 11%. The trail includes significant elevation gain and obstacles such as exposed roots and rocks, bridge crossings, and steep, narrow sections."
+    },
+    "paintbrush-cascade-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 19.9,
+      "elevationGainFeet": 4480,
+      "estimatedDuration": "11-14 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "loop",
+      "accessibility": "The Paintbrush Canyon - Cascade Canyon Loop is a very strenuous 19.9 mi (32 km) loop hike with 4,480 ft (1,365 m) elevation gain and an average slope of 9%. Trail obstacles include bridge crossings, steps, exposed roots and rocks, and steep switchbacks. Trail crosses a skree field that holds snow late in the year."
+    },
+    "moose-ponds": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 2,
+      "elevationGainFeet": 180,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Moose Ponds is an easy, 2 mi (3.2 km) RT out and back hike with 180 ft (50 m) of elevation gain with an average slope of 8%. The dirt trail is relatively flat for the first quarter-mile but features obstacles, such as exposed roots and rock. A short but steep hill is required to view Moose Ponds."
+    },
+    "hidden-falls": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 4.9,
+      "elevationGainFeet": 620,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "Hidden Falls is a moderate, 4.9 mi (7.9 km) RT out and back hike with 620 ft (190 m) of elevation gain with an average slope of 9%. The trail is dirt with sections of rock steps and exposed obstacles, such as roots and rocks."
+    },
+    "inspiration-point": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 5.7,
+      "elevationGainFeet": 870,
+      "estimatedDuration": "2-4 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "Inspiration Point is a moderate, 5.7 mi (9.2 km) RT out and back hike with 870 ft (270 m) of elevation gain with an average slope of 10%. The trail is dirt with several sections of rock stairs and exposed roots. The trail crosses exposed rock and features several steep switchbacks."
+    },
+    "cascade-canyon-forks": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 13.3,
+      "elevationGainFeet": 1720,
+      "estimatedDuration": "5-9 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Cascade Canyon is a strenuous, 13.3 mi (21.4 km) RT out and back hike with 1,720 ft (520 m) of elevation gain with an average slope of 9%. The hike to the first bridge with a view of Cascade Creek and its cascading waterfalls is fairly level with a set of stone steps gaining 65 ft over 0.2 mi (0.3 km). The trail to Inspiration Point features multiple sets of stone steps and a bridge crossing from the edge of Jenny Lake to Inspiration Point. No stair rail or handholds are available in the exposed last set of steps to Inspiration Point. Beyond Inspiration Point the trail gradually climbs over 500 ft crossing small streams and rock slides with numerous ups and downs. The trail surface is crushed rock and dirt."
+    },
+    "lake-solitude": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 18.3,
+      "elevationGainFeet": 2910,
+      "estimatedDuration": "9-13 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Lake Solitude is a very strenuous, 18.3 mi (29.5 km) RT out and back hike with 2,910 ft (890 m) of elevation gain with an average slope of 8%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
+    "hurricane-pass": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 23.9,
+      "elevationGainFeet": 4370,
+      "estimatedDuration": "12-16 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Hurricane Pass is a very strenuous, 23.9 mi (38.5 km) RT out and back hike with 4,370 ft (1,330 m) of elevation gain with an average slope of 9%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
+    "surprise-amphitheater-lakes": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 9.8,
+      "elevationGainFeet": 3070,
+      "estimatedDuration": "5-7 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Surprise and Amphitheater Lakes is a strenuous, 9.8 mi (15.8 km) RT out and back hike with 3,070 ft (940 m) of elevation gain with an average slope of 13%. The trail includes steep switchbacks, narrow sections, and exposed roots and rock."
+    },
+    "garnet-canyon": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/garnetcanyon.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 8.2,
+      "elevationGainFeet": 2430,
+      "estimatedDuration": "4-6 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Garnet Canyon is a strenuous, 8.2 mi (13.2 km) RT out and back hike with 2,430 ft (740m) of elevation gain and an average slope of 13%. The trail crosses multiple boulder fields that require boulder hopping and wayfinding skills. Steep switchbacks and narrow hiking surfaces exist."
+    },
+    "murie-ranch": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/murieranchhike.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 1.1,
+      "elevationGainFeet": 50,
+      "estimatedDuration": "30-60 Minutes",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "The Murie Ranch Hike is a 1.1 mile (1.8 km) roundtrip hike with 50 ft (15 m) of elevation gain and an average slope of 3%. The trail is flat but narrow. Park at the Craig Thomas Discovery and Visitor Center to access the trail."
+    },
+    "aspen-boulder-ridge-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 6.2,
+      "elevationGainFeet": 1140,
+      "estimatedDuration": "3-5 Hours",
+      "difficulty": "Moderate",
+      "routeType": "loop",
+      "accessibility": "The Aspen Ridge-Boulder Ridge Loop is a moderate, 6.2 mi (10 km) RT loop hike with 1,140 ft (350 m) of elevation gain with an average slope of 8%. The trail passes through a boulder field that can require boulder hopping and small climbs up and down. A seating bench is located at Phelps Lake."
+    },
+    "phelps-lake-overlook": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/phelpsoverlook.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 2,
+      "elevationGainFeet": 470,
+      "estimatedDuration": "1-2 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "The Phelps Lake Overlook is an easy, 2 mi (3.2 km) RT out and back hike with 470 ft (140 m) of elevation gain and an average slope of 11%. The trail gains elevation approaching the overlook, and includes obstacles such as exposed roots and rock."
+    },
+    "phelps-lake-death-canyon": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 3.7,
+      "elevationGainFeet": 1080,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "The Phelps Lake Trail is a moderate, 3.7 mi (6 km) RT out and back trail with 1,080 ft (330 m) of elevation gain and an average slope of 13%. To visit the lake, the trail gains and loses elevation several times. The trail features obstacles, such as exposed roots and rocks."
+    },
+    "death-canyon-junction": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/deathcanyon.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 7.7,
+      "elevationGainFeet": 2400,
+      "estimatedDuration": "4-6 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "The Death Canyon to Static Peak Divide Junction Trail is a strenuous, 7.7 mi (12.4 km) RT out and back trail with 2,400 ft (730 m) of elevation gain and an average slope of 15%. The trail has numerous rocks and small boulders in the pathway."
+    },
+    "static-peak-divide": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/staticpeak.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 16,
+      "elevationGainFeet": 5590,
+      "estimatedDuration": "9-11 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Static Peak Divide is a very strenuous, 16 mi (25.7 km) RT out and back hike with 5,590 ft (1,700 m) of elevation gain and an average slope of 15%. The trail is often narrow and steep, with exposed roots and sections crossing rock faces."
+    },
+    "valley-trail-phelps-overlook": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 13.2,
+      "elevationGainFeet": 2360,
+      "estimatedDuration": "7-9 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "The Valley Trail is a strenuous, 13.2 mi (21.3 km) RT hike with 2,360 ft (720 m) of elevation gain and an average slope of 17%. The trail features trail obstacles, such as exposed roots and rocks."
+    },
+    "granite-canyon": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 13.4,
+      "elevationGainFeet": 2190,
+      "estimatedDuration": "7-11 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Granite Canyon is a strenuous, 13.4 mi (21.6 km) RT hike with 2,190 ft (670 m) of elevation gain and an average slope of 8%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "marion-lake": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 18.8,
+      "elevationGainFeet": 3510,
+      "estimatedDuration": "9-13 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Marion Lake is a very strenuous, 18.8 mi (30.3 km) RT out and back hike with 3,510 ft (1,070 m) of elevation gain and an average slope of 8%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "open-canyon": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
+      "checkedAt": "2026-09-05",
+      "distanceMiles": 14.8,
+      "elevationGainFeet": 3820,
+      "estimatedDuration": "7-14 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Open Canyon is a very strenuous, 14.8 mi (23.8 km) RT hike with 3,820 ft (1,160 m) of elevation gain 13%. The trail is often narrow, steep, and includes steps and switchbacks."
     }
   }
 }

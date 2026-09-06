@@ -88,6 +88,23 @@ exists. A gain conflict requires an explanation; if the conflict is between
 official pages, record the other page in `official.additionalSources`.
 Keep NPS values authoritative—never average official and computed statistics.
 
+Optional `trail.planningNote` (10–700 characters) displays a short **Before you
+go** note for material access or day-hike scope limitations. Keep dated
+restrictions explicit and retain their official source in
+`official.additionalSources`. A listed profile is not evidence that its approach
+is currently open. Do not change the saved start to an alternate trailhead while
+keeping the old distance.
+
+For an NPS page with multiple starts, set `sourceCheck.metricSectionHeading` to
+the exact selected heading in its Duration description. The source checker
+accepts NPS `strong` and `b` headings and fails closed when the requested section
+is missing or ambiguous. If NPS spells its matching accessibility heading
+differently, use `sourceCheck.accessibilitySectionHeading` with that exact text;
+it requires a metric heading. Do not use another variant's accessibility facts.
+The page's overall duration range may cover multiple approaches; retain that
+limitation in the admission record rather than inventing a precise route time.
+See the [consolidated admission example](data/grand-teton-bulk-2026-09-05.md).
+
 A documented public AllTrails recognition check is required for each new trail
 admission, but it belongs in the admission notes rather than the runtime
 definition. A reasonable counterpart must share the named destination,

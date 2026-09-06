@@ -60,6 +60,7 @@ export function compileTrail(draft: TrailDraft, park: Pick<SupportedPark, "name"
   const profile: TrailProfile = {
     id: trail.id,
     name: trail.name,
+    ...(trail.planningNote ? { planningNote: trail.planningNote } : {}),
     park: park.name,
     state: park.state,
     profileKind,
@@ -131,6 +132,8 @@ export function compileTrail(draft: TrailDraft, park: Pick<SupportedPark, "name"
     },
     integrityPolicy: {
       aliases: [...draft.sourceCheck.aliases],
+      ...(draft.sourceCheck.metricSectionHeading ? { metricSectionHeading: draft.sourceCheck.metricSectionHeading } : {}),
+      ...(draft.sourceCheck.accessibilitySectionHeading ? { accessibilitySectionHeading: draft.sourceCheck.accessibilitySectionHeading } : {}),
       checkedFields: TRAIL_SOURCE_FIELDS.filter((field) => field !== "routeType" || draft.sourceCheck.skipRouteTypeReason === null),
     },
     demo: {

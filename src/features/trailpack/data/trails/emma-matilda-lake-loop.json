@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "emma-matilda-lake-loop",
+    "name": "Emma Matilda Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.901088086291956,
+      "lng": -110.50185821950436
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Two Ocean Trailhead marker; 28.2 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/emmamatilda.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/4d9f25d9-3cb9-4809-8ce5-fea2be48cd26.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4882",
+      "7250",
+      "4834",
+      "4865",
+      "4913",
+      "4911",
+      "4914",
+      "4912",
+      "7258",
+      "7307"
+    ],
+    "distanceMiles": 10.604,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 10.604 mi (-0.9% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-emma-matilda-lake-loop.jpg",
+    "locationName": "Emma Matilda Lake Loop",
+    "alt": "Wildflowers with a lake in the background.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/emmamatilda.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 70%",
+      "mobile": "30% 65%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Emma Matilda Lake Loop",
+      "Emma Matilda Lake"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

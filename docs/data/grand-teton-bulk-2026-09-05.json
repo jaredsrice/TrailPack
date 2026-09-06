@@ -1,0 +1,2574 @@
+{
+  "checkedAt": "2026-09-05",
+  "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "sourceCaptureDate": "2026-09-04",
+  "coordinateSystem": "WGS84; local planar projection for short offset and clipping checks, not navigation",
+  "trails": [
+    {
+      "id": "grand-view-point",
+      "npsUrl": "https://www.nps.gov/thingstodo/grandview.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Grand View Point from the Grand View Point Trailhead",
+      "legs": [
+        {
+          "id": "4760",
+          "times": 2,
+          "miles": 0.38137362,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.19068681
+        },
+        {
+          "id": "7308",
+          "start": null,
+          "end": [
+            -110.55570859462023,
+            43.90760795108044
+          ],
+          "times": 2,
+          "miles": 1.3851418985567276,
+          "startDistance": 0,
+          "endDistance": 0.7317666524063406,
+          "fraction": 0.3875540190219804,
+          "sourceLengthMiles": 1.78703075
+        }
+      ],
+      "officialConnectors": [
+        {
+          "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-View-Point-Trail-full.json",
+          "coordinates": [
+            [
+              -110.56863248348236,
+              43.89423360752344
+            ],
+            [
+              -110.56666374206543,
+              43.894838588333826
+            ],
+            [
+              -110.56554794311523,
+              43.89524834820301
+            ],
+            [
+              -110.56458234786987,
+              43.895804998602685
+            ],
+            [
+              -110.56325197219849,
+              43.896485342024775
+            ],
+            [
+              -110.56225419044495,
+              43.89718887079744
+            ],
+            [
+              -110.56148171424866,
+              43.898023817235725
+            ],
+            [
+              -110.5611483185368,
+              43.89820632228785
+            ]
+          ],
+          "joinSourceRecordId": "4760",
+          "joinOffsetMeters": 0.48416934888375707,
+          "miles": 0.4724143164801035,
+          "traversals": 2
+        }
+      ],
+      "comparisonMiles": 2.7113441515169345,
+      "weather": {
+        "marker": "Grand View Point Trailhead",
+        "coordinates": [
+          -110.56866735219955,
+          43.89422974181161
+        ],
+        "offsetMeters": 2.836207370919338
+      },
+      "recognition": {
+        "id": "grand-view-point",
+        "url": "https://www.alltrails.com/trail/us/wyoming/grand-view-point-via-grand-view-point-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 3,
+        "elevationGainFeet": 728,
+        "duration": "1.5–2 hr",
+        "difficulty": "Moderate",
+        "note": "Same Grand View Point trailhead and destination."
+      },
+      "photoFile": "grand-view-point.jpg"
+    },
+    {
+      "id": "emma-matilda-lake-loop",
+      "npsUrl": "https://www.nps.gov/thingstodo/emmamatilda.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4882",
+          "times": 2,
+          "miles": 0.013343260000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.00667163
+        },
+        {
+          "id": "7250",
+          "times": 2,
+          "miles": 1.4181061000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.7090530500000001
+        },
+        {
+          "id": "4834",
+          "times": 2,
+          "miles": 0.06646438,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.03323219
+        },
+        {
+          "id": "4865",
+          "times": 2,
+          "miles": 0.5397442000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.26987210000000006
+        },
+        {
+          "id": "4913",
+          "times": 1,
+          "miles": 2.4324787199999998,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 2.4324787199999998
+        },
+        {
+          "id": "4911",
+          "times": 1,
+          "miles": 0.93340456,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.93340456
+        },
+        {
+          "id": "4914",
+          "times": 1,
+          "miles": 0.32793626000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.32793626000000003
+        },
+        {
+          "id": "4912",
+          "times": 1,
+          "miles": 0.13985737,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.13985737
+        },
+        {
+          "id": "7258",
+          "times": 1,
+          "miles": 3.0950225700000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.0950225700000003
+        },
+        {
+          "id": "7307",
+          "times": 1,
+          "miles": 1.63725849,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.63725849
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 10.60361591,
+      "weather": {
+        "marker": "Two Ocean Trailhead",
+        "coordinates": [
+          -110.50185821950436,
+          43.901088086291956
+        ],
+        "offsetMeters": 28.237347885032307
+      },
+      "recognition": {
+        "id": "emma-matilda-lake-loop",
+        "url": "https://www.alltrails.com/trail/us/wyoming/emma-matilda-lake-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 11.5,
+        "elevationGainFeet": 1072,
+        "duration": "4.5–5 hr",
+        "difficulty": "Moderate",
+        "note": "Same named lake loop; NPS Two Ocean access and USGS selected legs control the admitted itinerary."
+      },
+      "photoFile": "emma-matilda-lake-loop.jpg"
+    },
+    {
+      "id": "two-ocean-emma-matilda-loop",
+      "npsUrl": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "7248",
+          "times": 1,
+          "miles": 3.3900308599999995,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.39003086
+        },
+        {
+          "id": "7308",
+          "times": 1,
+          "miles": 1.78703075,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.78703075
+        },
+        {
+          "id": "4895",
+          "times": 1,
+          "miles": 0.7240211100000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.7240211100000001
+        },
+        {
+          "id": "4896",
+          "times": 1,
+          "miles": 0.12696496000000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.12696496000000002
+        },
+        {
+          "id": "4911",
+          "times": 1,
+          "miles": 0.93340456,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.93340456
+        },
+        {
+          "id": "4914",
+          "times": 1,
+          "miles": 0.32793626000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.32793626000000003
+        },
+        {
+          "id": "4912",
+          "times": 1,
+          "miles": 0.13985737,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.13985737
+        },
+        {
+          "id": "7258",
+          "times": 1,
+          "miles": 3.0950225700000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.0950225700000003
+        },
+        {
+          "id": "7307",
+          "times": 1,
+          "miles": 1.63725849,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.63725849
+        },
+        {
+          "id": "4865",
+          "times": 1,
+          "miles": 0.26987210000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.26987210000000006
+        },
+        {
+          "id": "4834",
+          "times": 1,
+          "miles": 0.03323219,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.03323219
+        },
+        {
+          "id": "7250",
+          "times": 1,
+          "miles": 0.7090530500000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.7090530500000001
+        },
+        {
+          "id": "4882",
+          "times": 1,
+          "miles": 0.0066716300000000004,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.00667163
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 13.180355899999999,
+      "weather": {
+        "marker": "Two Ocean Trailhead",
+        "coordinates": [
+          -110.50185821950436,
+          43.901088086291956
+        ],
+        "offsetMeters": 28.237347885032307
+      },
+      "recognition": {
+        "id": "two-ocean-emma-matilda-loop",
+        "url": "https://www.alltrails.com/trail/us/wyoming/two-ocean-lake-grand-view-point-and-emma-matilda-lake-loop",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 13.4,
+        "elevationGainFeet": 1459,
+        "duration": "5.5–6 hr",
+        "difficulty": "Hard",
+        "note": "Same Two Ocean north shore, Grand View ridge, and Emma Matilda south-shore loop."
+      },
+      "photoFile": "two-ocean-emma-matilda-loop.jpg"
+    },
+    {
+      "id": "signal-mountain",
+      "npsUrl": "https://www.nps.gov/thingstodo/signalmountain.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "7300",
+          "times": 2,
+          "miles": 0.12216372000000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.06108186000000001
+        },
+        {
+          "id": "4754",
+          "times": 2,
+          "miles": 0.9460324400000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.47301622000000004
+        },
+        {
+          "id": "4828",
+          "times": 2,
+          "miles": 2.40783216,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.20391608
+        },
+        {
+          "id": "7299",
+          "times": 2,
+          "miles": 2.9218424200000004,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.4609212100000002
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 6.39787074,
+      "weather": {
+        "marker": "Signal Mountain Trailhead",
+        "coordinates": [
+          -110.61205476522446,
+          43.841012822303156
+        ],
+        "offsetMeters": 5.244237907515993
+      },
+      "recognition": {
+        "id": "signal-mountain",
+        "url": "https://www.alltrails.com/trail/us/wyoming/signal-mountain-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 7.6,
+        "elevationGainFeet": 1200,
+        "duration": "3.5–4 hr",
+        "difficulty": "Moderate",
+        "note": "AllTrails uses both split-ridge branches as a loop; TrailPack preserves the shorter NPS out-and-back branch, not the AllTrails loop."
+      },
+      "photoFile": "signal-mountain.jpg"
+    },
+    {
+      "id": "holly-lake",
+      "npsUrl": "https://www.nps.gov/thingstodo/hollylake.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "5096",
+          "start": [
+            -110.73169201612473,
+            43.78922384132509
+          ],
+          "end": null,
+          "times": 2,
+          "miles": 0.8053947301572199,
+          "startDistance": 0.7193885349589042,
+          "endDistance": 0,
+          "fraction": 0.4059173941092079,
+          "sourceLengthMiles": 0.99206728
+        },
+        {
+          "id": "4833",
+          "times": 2,
+          "miles": 0.72405092,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.36202546
+        },
+        {
+          "id": "4831",
+          "times": 2,
+          "miles": 0.06398348000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.031991740000000005
+        },
+        {
+          "id": "4809",
+          "times": 2,
+          "miles": 0.057823580000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.028911790000000003
+        },
+        {
+          "id": "4826",
+          "times": 2,
+          "miles": 1.38282716,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.69141358
+        },
+        {
+          "id": "7296",
+          "start": null,
+          "end": [
+            -110.79114028381117,
+            43.78851625038685
+          ],
+          "times": 2,
+          "miles": 8.486271533296296,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 0.8099287665815103,
+          "sourceLengthMiles": 5.2388999400000005
+        },
+        {
+          "id": "7275",
+          "start": null,
+          "end": [
+            -110.79752161016236,
+            43.79166683030564
+          ],
+          "times": 2,
+          "miles": 0.9994547433109193,
+          "startDistance": 0,
+          "endDistance": 0.009199859231764106,
+          "fraction": 0.5926759812415573,
+          "sourceLengthMiles": 0.84317129
+        },
+        {
+          "id": "5153",
+          "start": null,
+          "end": [
+            -110.79688847064972,
+            43.792445692656386
+          ],
+          "times": 2,
+          "miles": 0.1367463644387914,
+          "startDistance": 0,
+          "endDistance": 1.290750557570677,
+          "fraction": 0.5983710242222278,
+          "sourceLengthMiles": 0.11426553
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 12.656552511203227,
+      "weather": {
+        "marker": "Leigh Lake Trailhead",
+        "coordinates": [
+          -110.73169201612473,
+          43.78922384132509
+        ],
+        "offsetMeters": 0.7193885349589042
+      },
+      "recognition": {
+        "id": "holly-lake",
+        "url": "https://www.alltrails.com/trail/us/wyoming/holly-lake-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 13,
+        "elevationGainFeet": 2775,
+        "duration": "7–7.5 hr",
+        "difficulty": "Hard",
+        "note": "Same String/Leigh access and Paintbrush Canyon destination."
+      },
+      "photoFile": "holly-lake.jpg"
+    },
+    {
+      "id": "paintbrush-cascade-loop",
+      "npsUrl": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "5096",
+          "start": [
+            -110.73169201612473,
+            43.78922384132509
+          ],
+          "end": null,
+          "times": 1,
+          "miles": 0.4026973650786099,
+          "startDistance": 0.7193885349589042,
+          "endDistance": 0,
+          "fraction": 0.4059173941092079,
+          "sourceLengthMiles": 0.99206728
+        },
+        {
+          "id": "4833",
+          "times": 1,
+          "miles": 0.36202546,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.36202546
+        },
+        {
+          "id": "4831",
+          "times": 1,
+          "miles": 0.031991740000000005,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.031991740000000005
+        },
+        {
+          "id": "4809",
+          "times": 1,
+          "miles": 0.028911790000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.028911790000000003
+        },
+        {
+          "id": "4826",
+          "times": 1,
+          "miles": 0.69141358,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.69141358
+        },
+        {
+          "id": "7296",
+          "start": null,
+          "end": [
+            -110.79114028381117,
+            43.78851625038685
+          ],
+          "times": 1,
+          "miles": 4.243135766648148,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 0.8099287665815103,
+          "sourceLengthMiles": 5.2388999400000005
+        },
+        {
+          "id": "7275",
+          "times": 1,
+          "miles": 0.84317129,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.84317129
+        },
+        {
+          "id": "4768",
+          "times": 1,
+          "miles": 1.3525553700000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.3525553700000001
+        },
+        {
+          "id": "7353",
+          "times": 1,
+          "miles": 4.86884564,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 4.86884564
+        },
+        {
+          "id": "4792",
+          "times": 2,
+          "miles": 0.20723402000000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.10361701000000001
+        },
+        {
+          "id": "5080",
+          "times": 1,
+          "miles": 3.5218942699999993,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.5218942699999998
+        },
+        {
+          "id": "5085",
+          "times": 1,
+          "miles": 0.67342019,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.67342019
+        },
+        {
+          "id": "5081",
+          "times": 1,
+          "miles": 1.55386869,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.55386869
+        },
+        {
+          "id": "5096",
+          "start": null,
+          "end": [
+            -110.73169201612473,
+            43.78922384132509
+          ],
+          "times": 1,
+          "miles": 0.58936991492139,
+          "startDistance": 0,
+          "endDistance": 0.7193885349589042,
+          "fraction": 0.5940826058907921,
+          "sourceLengthMiles": 0.99206728
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 19.370535086648154,
+      "weather": {
+        "marker": "Leigh Lake Trailhead",
+        "coordinates": [
+          -110.73169201612473,
+          43.78922384132509
+        ],
+        "offsetMeters": 0.7193885349589042
+      },
+      "recognition": {
+        "id": "paintbrush-cascade-loop",
+        "url": "https://www.alltrails.com/trail/us/wyoming/paintbrush-canyon-cascade-canyon-loop",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 19.3,
+        "elevationGainFeet": 4133,
+        "duration": null,
+        "difficulty": "Strenuous",
+        "note": "Same named canyon circuit. Optional Jenny Lake viewpoints and lake spurs differ; NPS itinerary and selected geometry remain authoritative."
+      },
+      "photoFile": "paintbrush-cascade-loop.jpg"
+    },
+    {
+      "id": "moose-ponds",
+      "npsUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Moose Ponds",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 1.94032776,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "moose-ponds",
+        "url": "https://www.alltrails.com/trail/us/wyoming/moose-ponds-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 3.2,
+        "elevationGainFeet": 150,
+        "duration": "1–1.5 hr",
+        "difficulty": "Easy",
+        "note": "AllTrails extends around the ponds as a loop; TrailPack selects the NPS 2-mile out-and-back approach from Jenny Lake."
+      },
+      "photoFile": "moose-ponds.jpg"
+    },
+    {
+      "id": "hidden-falls",
+      "npsUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Hidden Falls Via South Jenny Lake Loop Trail",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        },
+        {
+          "id": "5109",
+          "times": 2,
+          "miles": 2.3253930400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.1626965200000001
+        },
+        {
+          "id": "5089",
+          "times": 2,
+          "miles": 0.44077146000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.22038573000000003
+        },
+        {
+          "id": "5086",
+          "times": 2,
+          "miles": 0.05851486000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02925743
+        },
+        {
+          "id": "5093",
+          "times": 2,
+          "miles": 0.0897006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.0448503
+        },
+        {
+          "id": "5083",
+          "times": 2,
+          "miles": 0.06295996000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.031479980000000005
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 4.917667679999999,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "hidden-falls",
+        "url": "https://www.alltrails.com/trail/us/wyoming/hidden-falls-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 5.1,
+        "elevationGainFeet": 606,
+        "duration": "2–2.5 hr",
+        "difficulty": "Moderate",
+        "note": "Same South Jenny Lake walking approach and falls; AllTrails labels its local circuit a loop, while NPS explicitly calls the selected itinerary out-and-back."
+      },
+      "photoFile": "hidden-falls.jpg"
+    },
+    {
+      "id": "inspiration-point",
+      "npsUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Inspiration Point Via South Jenny Lake Loop Trail",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        },
+        {
+          "id": "5109",
+          "times": 2,
+          "miles": 2.3253930400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.1626965200000001
+        },
+        {
+          "id": "5089",
+          "times": 2,
+          "miles": 0.44077146000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.22038573000000003
+        },
+        {
+          "id": "5086",
+          "times": 2,
+          "miles": 0.05851486000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02925743
+        },
+        {
+          "id": "5093",
+          "times": 2,
+          "miles": 0.0897006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.0448503
+        },
+        {
+          "id": "5084",
+          "start": null,
+          "end": [
+            -110.74843537062407,
+            43.76714033791799
+          ],
+          "times": 2,
+          "miles": 0.7321940896093406,
+          "startDistance": 0,
+          "endDistance": 1.2499477357974236,
+          "fraction": 0.5268674941800824,
+          "sourceLengthMiles": 0.6948560100000001
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 5.586901809609341,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "inspiration-point",
+        "url": "https://www.alltrails.com/trail/us/wyoming/inspiration-point-via-jenny-lake-boat-shuttle",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 1.8,
+        "elevationGainFeet": 426,
+        "duration": "1–1.5 hr",
+        "difficulty": "Moderate",
+        "note": "Same viewpoint and west-shore ascent, but AllTrails uses the shuttle. TrailPack adds the NPS South Jenny Lake walking approach in both directions; no boat is required."
+      },
+      "photoFile": "inspiration-point.jpg"
+    },
+    {
+      "id": "cascade-canyon-forks",
+      "npsUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Forks of Cascade Canyon Via South Jenny Lake Loop Trail",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        },
+        {
+          "id": "5109",
+          "times": 2,
+          "miles": 2.3253930400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.1626965200000001
+        },
+        {
+          "id": "5089",
+          "times": 2,
+          "miles": 0.44077146000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.22038573000000003
+        },
+        {
+          "id": "5086",
+          "times": 2,
+          "miles": 0.05851486000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02925743
+        },
+        {
+          "id": "5093",
+          "times": 2,
+          "miles": 0.0897006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.0448503
+        },
+        {
+          "id": "5084",
+          "times": 2,
+          "miles": 1.3897120200000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.6948560100000001
+        },
+        {
+          "id": "5080",
+          "times": 2,
+          "miles": 7.043788539999999,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.5218942699999998
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 13.28820828,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "cascade-canyon-forks",
+        "url": "https://www.alltrails.com/trail/us/wyoming/cascade-canyon-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 9.3,
+        "elevationGainFeet": 1115,
+        "duration": "4–4.5 hr",
+        "difficulty": "Moderate",
+        "note": "Same canyon and fork turnaround, but AllTrails starts at the west-shore boat dock. TrailPack includes the NPS South Jenny Lake walking approach both ways."
+      },
+      "photoFile": "cascade-canyon-forks.jpg"
+    },
+    {
+      "id": "lake-solitude",
+      "npsUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Lake Solitude Via South Jenny Lake Loop Trail",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        },
+        {
+          "id": "5109",
+          "times": 2,
+          "miles": 2.3253930400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.1626965200000001
+        },
+        {
+          "id": "5089",
+          "times": 2,
+          "miles": 0.44077146000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.22038573000000003
+        },
+        {
+          "id": "5086",
+          "times": 2,
+          "miles": 0.05851486000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02925743
+        },
+        {
+          "id": "5093",
+          "times": 2,
+          "miles": 0.0897006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.0448503
+        },
+        {
+          "id": "5084",
+          "times": 2,
+          "miles": 1.3897120200000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.6948560100000001
+        },
+        {
+          "id": "5080",
+          "times": 2,
+          "miles": 7.043788539999999,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.5218942699999998
+        },
+        {
+          "id": "7353",
+          "start": null,
+          "end": [
+            -110.8421893836544,
+            43.79401404960577
+          ],
+          "times": 2,
+          "miles": 5.326602649078142,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 0.5470087822581023,
+          "sourceLengthMiles": 4.86884564
+        },
+        {
+          "id": "4792",
+          "times": 2,
+          "miles": 0.20723402000000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.10361701000000001
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 18.82204494907814,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "lake-solitude",
+        "url": "https://www.alltrails.com/trail/us/wyoming/lake-solitude-via-jenny-lake-trailhead",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 18.4,
+        "elevationGainFeet": 2769,
+        "duration": "8.5–9 hr",
+        "difficulty": "Hard",
+        "note": "Same South Jenny Lake walking approach, Cascade Canyon and Lake Solitude turnaround."
+      },
+      "photoFile": "lake-solitude.jpg"
+    },
+    {
+      "id": "hurricane-pass",
+      "npsUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Hurricane Pass Via South Jenny Lake Loop Trail",
+      "legs": [
+        {
+          "id": "5161",
+          "times": 2,
+          "miles": 0.02996612,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01498306
+        },
+        {
+          "id": "5154",
+          "times": 2,
+          "miles": 0.053159239999999996,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02657962
+        },
+        {
+          "id": "5160",
+          "times": 2,
+          "miles": 0.04218044,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02109022
+        },
+        {
+          "id": "5101",
+          "times": 2,
+          "miles": 0.88490776,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44245388
+        },
+        {
+          "id": "5112",
+          "times": 2,
+          "miles": 0.32392350000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.16196175000000002
+        },
+        {
+          "id": "5108",
+          "times": 2,
+          "miles": 0.30504326,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15252163
+        },
+        {
+          "id": "5105",
+          "times": 2,
+          "miles": 0.30114744,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.15057372
+        },
+        {
+          "id": "5109",
+          "times": 2,
+          "miles": 2.3253930400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.1626965200000001
+        },
+        {
+          "id": "5089",
+          "times": 2,
+          "miles": 0.44077146000000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.22038573000000003
+        },
+        {
+          "id": "5086",
+          "times": 2,
+          "miles": 0.05851486000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02925743
+        },
+        {
+          "id": "5093",
+          "times": 2,
+          "miles": 0.0897006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.0448503
+        },
+        {
+          "id": "5084",
+          "times": 2,
+          "miles": 1.3897120200000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.6948560100000001
+        },
+        {
+          "id": "5080",
+          "times": 2,
+          "miles": 7.043788539999999,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.5218942699999998
+        },
+        {
+          "id": "4930",
+          "times": 2,
+          "miles": 7.90694032,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 3.95347016
+        },
+        {
+          "id": "4919",
+          "times": 2,
+          "miles": 3.17422518,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.58711259
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 24.36937378,
+      "weather": {
+        "marker": "Jenny Lake Trailhead",
+        "coordinates": [
+          -110.7254246994853,
+          43.751573014308974
+        ],
+        "offsetMeters": 8.446994583320867
+      },
+      "recognition": {
+        "id": "hurricane-pass",
+        "url": "https://www.alltrails.com/trail/us/wyoming/south-fork-cascade-canyon-to-hurricane-pass",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 18.6,
+        "elevationGainFeet": 3694,
+        "duration": "9.5–10.5 hr",
+        "difficulty": "Hard",
+        "note": "Same south fork and pass, but AllTrails starts at the west-shore boat dock; TrailPack includes the South Jenny Lake shore approach both ways."
+      },
+      "photoFile": "hurricane-pass.jpg"
+    },
+    {
+      "id": "surprise-amphitheater-lakes",
+      "npsUrl": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4848",
+          "times": 2,
+          "miles": 3.44334922,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.72167461
+        },
+        {
+          "id": "4916",
+          "times": 2,
+          "miles": 2.5946616199999997,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.2973308099999998
+        },
+        {
+          "id": "4931",
+          "times": 2,
+          "miles": 3.8380965200000006,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.91904826
+        },
+        {
+          "id": "7326",
+          "times": 2,
+          "miles": 0.0369115,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01845575
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 9.913018860000001,
+      "weather": {
+        "marker": "Lupine Meadows Trailhead",
+        "coordinates": [
+          -110.74153304100037,
+          43.73452657399341
+        ],
+        "offsetMeters": 4.575243506026359
+      },
+      "recognition": {
+        "id": "surprise-amphitheater-lakes",
+        "url": "https://www.alltrails.com/trail/us/wyoming/surprise-and-amphitheater-lakes-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 10.3,
+        "elevationGainFeet": 3008,
+        "duration": null,
+        "difficulty": "Hard",
+        "note": "Same Lupine Meadows access and both lakes; excludes Delta Lake and summit extensions."
+      },
+      "photoFile": "surprise-amphitheater-lakes.jpg"
+    },
+    {
+      "id": "garnet-canyon",
+      "npsUrl": "https://www.nps.gov/thingstodo/garnetcanyon.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4848",
+          "times": 2,
+          "miles": 3.44334922,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.72167461
+        },
+        {
+          "id": "4916",
+          "times": 2,
+          "miles": 2.5946616199999997,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.2973308099999998
+        },
+        {
+          "id": "4923",
+          "times": 2,
+          "miles": 2.20056082,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.10028041
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 8.23857166,
+      "weather": {
+        "marker": "Lupine Meadows Trailhead",
+        "coordinates": [
+          -110.74153304100037,
+          43.73452657399341
+        ],
+        "offsetMeters": 4.575243506026359
+      },
+      "recognition": {
+        "id": "garnet-canyon",
+        "url": "https://www.alltrails.com/trail/us/wyoming/garnet-canyon-trail-to-cleft-falls",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 8.4,
+        "elevationGainFeet": 2240,
+        "duration": null,
+        "difficulty": "Hard",
+        "note": "Same Lupine Meadows and Garnet Canyon hiking corridor. Cleft Falls is the recognizable endpoint area, not a summit or climbing itinerary."
+      },
+      "photoFile": "garnet-canyon.jpg"
+    },
+    {
+      "id": "murie-ranch",
+      "npsUrl": "https://www.nps.gov/thingstodo/murieranchhike.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4764",
+          "times": 2,
+          "miles": 1.1548881,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.57744405
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 1.1548881,
+      "weather": {
+        "marker": "Murie Ranch Trailhead",
+        "coordinates": [
+          -110.71834936738014,
+          43.65299458956646
+        ],
+        "offsetMeters": 2.0325884352514985
+      },
+      "recognition": {
+        "id": "murie-ranch",
+        "url": "https://www.alltrails.com/trail/us/wyoming/murie-ranch-via-craig-thomas-discovery-and-visitor-center",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 1.1,
+        "elevationGainFeet": 9,
+        "duration": "0.5–1 hr",
+        "difficulty": "Easy",
+        "note": "Same visitor-center access and historic ranch. NPS accessibility section supplies 50 ft gain; AllTrails gain is not substituted."
+      },
+      "photoFile": "murie-moose-area.jpg"
+    },
+    {
+      "id": "aspen-boulder-ridge-loop",
+      "npsUrl": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4794",
+          "start": [
+            -110.77570036053658,
+            43.62646051823404
+          ],
+          "end": null,
+          "times": 2,
+          "miles": 0.25853601528194786,
+          "startDistance": 5.27038283253201,
+          "endDistance": 0,
+          "fraction": 0.483222416277067,
+          "sourceLengthMiles": 0.26751244
+        },
+        {
+          "id": "4775",
+          "times": 2,
+          "miles": 1.1729543999999998,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.5864772
+        },
+        {
+          "id": "4850",
+          "times": 1,
+          "miles": 0.14331346,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.14331346
+        },
+        {
+          "id": "7288",
+          "times": 1,
+          "miles": 0.73775051,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.73775051
+        },
+        {
+          "id": "7322",
+          "times": 1,
+          "miles": 1.7047542699999998,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.7047542699999998
+        },
+        {
+          "id": "4819",
+          "times": 1,
+          "miles": 0.01084092,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.01084092
+        },
+        {
+          "id": "4821",
+          "times": 1,
+          "miles": 0.08582072,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.08582072
+        },
+        {
+          "id": "4816",
+          "times": 1,
+          "miles": 0.26563794,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.26563794
+        },
+        {
+          "id": "4820",
+          "times": 1,
+          "miles": 0.11931515999999999,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.11931516
+        },
+        {
+          "id": "7324",
+          "times": 1,
+          "miles": 0.53190082,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.53190082
+        },
+        {
+          "id": "7332",
+          "times": 1,
+          "miles": 0.18790911000000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.18790911000000002
+        },
+        {
+          "id": "7256",
+          "times": 1,
+          "miles": 0.62594505,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.62594505
+        },
+        {
+          "id": "7335",
+          "times": 1,
+          "miles": 0.39505851000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.39505851000000003
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 6.239736885281948,
+      "weather": {
+        "marker": "Laurance S. Rockefeller Preserve Trailhead",
+        "coordinates": [
+          -110.77570036053658,
+          43.62646051823404
+        ],
+        "offsetMeters": 5.27038283253201
+      },
+      "recognition": {
+        "id": "aspen-boulder-ridge-loop",
+        "url": "https://www.alltrails.com/trail/us/wyoming/aspen-ridge-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 6.4,
+        "elevationGainFeet": 787,
+        "duration": "2.5–3 hr",
+        "difficulty": "Moderate",
+        "note": "Same Preserve access, Aspen/Boulder ridges and Phelps Lake shore circuit."
+      },
+      "photoFile": "aspen-boulder-ridge-loop.jpg"
+    },
+    {
+      "id": "phelps-lake-overlook",
+      "npsUrl": "https://www.nps.gov/thingstodo/phelpsoverlook.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4901",
+          "times": 2,
+          "miles": 0.15944906,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.07972453
+        },
+        {
+          "id": "4845",
+          "start": [
+            -110.79926893115044,
+            43.65704171759116
+          ],
+          "end": null,
+          "times": 2,
+          "miles": 1.8244744606373515,
+          "startDistance": 2.540306639667452,
+          "endDistance": 0,
+          "fraction": 0.574522550792567,
+          "sourceLengthMiles": 1.5878179700000001
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 1.9839235206373516,
+      "weather": {
+        "marker": "Death Canyon Trailhead",
+        "coordinates": [
+          -110.78139804303645,
+          43.65602705030001
+        ],
+        "offsetMeters": 2.0305094731553814
+      },
+      "recognition": {
+        "id": "phelps-lake-overlook",
+        "url": "https://www.alltrails.com/trail/us/wyoming/phelps-lake-overlook",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 2,
+        "elevationGainFeet": 416,
+        "duration": "1–1.5 hr",
+        "difficulty": "Moderate",
+        "note": "Despite its Valley Trail title, this short AllTrails page describes Death Canyon access, not the 13.2-mile Teton Village route."
+      },
+      "photoFile": "phelps-lake-death-canyon.jpg"
+    },
+    {
+      "id": "phelps-lake-death-canyon",
+      "npsUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4901",
+          "times": 2,
+          "miles": 0.15944906,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.07972453
+        },
+        {
+          "id": "4845",
+          "times": 2,
+          "miles": 3.1756359400000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.5878179700000001
+        },
+        {
+          "id": "4839",
+          "times": 2,
+          "miles": 0.3486813,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.17434065
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 3.6837663000000003,
+      "weather": {
+        "marker": "Death Canyon Trailhead",
+        "coordinates": [
+          -110.78139804303645,
+          43.65602705030001
+        ],
+        "offsetMeters": 2.0305094731553814
+      },
+      "recognition": {
+        "id": "phelps-lake-death-canyon",
+        "url": "https://www.alltrails.com/trail/us/wyoming/death-canyon-and-phelps-lake-loop",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 7.9,
+        "elevationGainFeet": 1289,
+        "duration": "3.5–4 hr",
+        "difficulty": "Moderate",
+        "note": "Same Death Canyon access and Phelps Lake destination. AllTrails continues around the lake; TrailPack turns around at the lake and does not import that loop distance."
+      },
+      "photoFile": "phelps-lake-death-canyon.jpg"
+    },
+    {
+      "id": "death-canyon-junction",
+      "npsUrl": "https://www.nps.gov/thingstodo/deathcanyon.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4901",
+          "times": 2,
+          "miles": 0.15944906,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.07972453
+        },
+        {
+          "id": "4845",
+          "times": 2,
+          "miles": 3.1756359400000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.5878179700000001
+        },
+        {
+          "id": "4902",
+          "start": null,
+          "end": [
+            -110.83105947822332,
+            43.66417883409183
+          ],
+          "times": 2,
+          "miles": 4.3607121222385175,
+          "startDistance": 0,
+          "endDistance": 0.053060626960542416,
+          "fraction": 0.27997462795259026,
+          "sourceLengthMiles": 7.78769161
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 7.695797122238518,
+      "weather": {
+        "marker": "Death Canyon Trailhead",
+        "coordinates": [
+          -110.78139804303645,
+          43.65602705030001
+        ],
+        "offsetMeters": 2.0305094731553814
+      },
+      "recognition": {
+        "id": "death-canyon-junction",
+        "url": "https://www.alltrails.com/trail/us/wyoming/death-canyon-to-patrol-cabin",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 8.6,
+        "elevationGainFeet": 2073,
+        "duration": "5–5.5 hr",
+        "difficulty": "Moderate",
+        "note": "Same Death Canyon corridor; NPS turnaround is the Static Peak Divide junction beside the patrol-cabin area, not the divide."
+      },
+      "photoFile": "death-canyon-junction.jpg"
+    },
+    {
+      "id": "static-peak-divide",
+      "npsUrl": "https://www.nps.gov/thingstodo/staticpeak.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4901",
+          "times": 2,
+          "miles": 0.15944906,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.07972453
+        },
+        {
+          "id": "4845",
+          "times": 2,
+          "miles": 3.1756359400000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.5878179700000001
+        },
+        {
+          "id": "4902",
+          "start": null,
+          "end": [
+            -110.83105947822332,
+            43.66417883409183
+          ],
+          "times": 2,
+          "miles": 4.3607121222385175,
+          "startDistance": 0,
+          "endDistance": 0.053060626960542416,
+          "fraction": 0.27997462795259026,
+          "sourceLengthMiles": 7.78769161
+        },
+        {
+          "id": "4906",
+          "start": [
+            -110.81846684217453,
+            43.67958119879062
+          ],
+          "end": null,
+          "times": 2,
+          "miles": 8.36935638353538,
+          "startDistance": 0.17952008738500394,
+          "endDistance": 0,
+          "fraction": 0.7921164731935757,
+          "sourceLengthMiles": 5.282907669999999
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 16.065153505773896,
+      "weather": {
+        "marker": "Death Canyon Trailhead",
+        "coordinates": [
+          -110.78139804303645,
+          43.65602705030001
+        ],
+        "offsetMeters": 2.0305094731553814
+      },
+      "recognition": {
+        "id": "static-peak-divide",
+        "url": "https://www.alltrails.com/trail/us/wyoming/static-peak-grand-teton-park",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 16.4,
+        "elevationGainFeet": 5446,
+        "duration": "10.5–11.5 hr",
+        "difficulty": "Hard",
+        "note": "Same Death Canyon ascent to Static Peak area. AllTrails summit wording is broader; TrailPack stops at the NPS divide, never the summit."
+      },
+      "photoFile": "static-peak-divide.jpg"
+    },
+    {
+      "id": "valley-trail-phelps-overlook",
+      "npsUrl": "https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": null,
+      "legs": [
+        {
+          "id": "4964",
+          "times": 2,
+          "miles": 1.8603091600000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.9301545800000001
+        },
+        {
+          "id": "4843",
+          "times": 2,
+          "miles": 1.30881264,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.65440632
+        },
+        {
+          "id": "4844",
+          "times": 2,
+          "miles": 1.6170023,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.80850115
+        },
+        {
+          "id": "4836",
+          "times": 2,
+          "miles": 0.21081548,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.10540774000000001
+        },
+        {
+          "id": "7340",
+          "times": 2,
+          "miles": 1.7486915,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.87434575
+        },
+        {
+          "id": "7341",
+          "times": 2,
+          "miles": 2.1435180000000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.0717590000000001
+        },
+        {
+          "id": "4838",
+          "times": 2,
+          "miles": 0.8813716000000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.44068580000000007
+        },
+        {
+          "id": "4837",
+          "times": 2,
+          "miles": 0.8411798400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.42058992000000006
+        },
+        {
+          "id": "4842",
+          "times": 2,
+          "miles": 0.8690331,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.43451655
+        },
+        {
+          "id": "4839",
+          "times": 2,
+          "miles": 0.3486813,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.17434065
+        },
+        {
+          "id": "4845",
+          "start": null,
+          "end": [
+            -110.79925954341888,
+            43.65704268786005
+          ],
+          "times": 2,
+          "miles": 1.3520668582724111,
+          "startDistance": 0,
+          "endDistance": 2.7715266446748843,
+          "fraction": 0.42576255081443976,
+          "sourceLengthMiles": 1.5878179700000001
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 13.181481778272413,
+      "weather": {
+        "marker": "Valley Trail Access",
+        "coordinates": [
+          -110.82210592925547,
+          43.59939635338373
+        ],
+        "offsetMeters": 0.5245998790057962
+      },
+      "recognition": {
+        "id": "valley-trail-phelps-overlook",
+        "url": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-to-phelps-lake",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 13.4,
+        "elevationGainFeet": 1709,
+        "duration": "6–6.5 hr",
+        "difficulty": "Hard",
+        "note": "Related southern Valley Trail/Phelps Lake corridor, not an exact itinerary: AllTrails uses Granite Canyon access and a lake loop. The separately verified Teton Village to Granite Canyon Crossing page covers the chosen Teton Village approach. NPS alone defines the longer overlook out-and-back."
+      },
+      "photoFile": "phelps-lake-death-canyon.jpg"
+    },
+    {
+      "id": "granite-canyon",
+      "npsUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Granite Canyon Trailhead",
+      "legs": [
+        {
+          "id": "4897",
+          "times": 2,
+          "miles": 0.08015384,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.04007692
+        },
+        {
+          "id": "7279",
+          "times": 2,
+          "miles": 0.05785072,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02892536
+        },
+        {
+          "id": "4765",
+          "times": 2,
+          "miles": 0.9998381600000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.49991908
+        },
+        {
+          "id": "4763",
+          "times": 2,
+          "miles": 0.27303538,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.13651769
+        },
+        {
+          "id": "7271",
+          "times": 2,
+          "miles": 1.70775822,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.85387911
+        },
+        {
+          "id": "4836",
+          "times": 2,
+          "miles": 0.21081548,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.10540774000000001
+        },
+        {
+          "id": "7347",
+          "times": 2,
+          "miles": 9.98513462,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 4.99256731
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 13.314586420000001,
+      "weather": {
+        "marker": "Granite Canyon Trailhead",
+        "coordinates": [
+          -110.79309850931168,
+          43.60740142149473
+        ],
+        "offsetMeters": 2.8577600345626415
+      },
+      "recognition": {
+        "id": "granite-canyon",
+        "url": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-trail",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 13.1,
+        "elevationGainFeet": 1942,
+        "duration": "6–6.5 hr",
+        "difficulty": "Hard",
+        "note": "Same Granite Canyon trailhead and out-and-back canyon route; tram alternative excluded."
+      },
+      "photoFile": "granite-canyon.jpg"
+    },
+    {
+      "id": "marion-lake",
+      "npsUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Granite Canyon Trailhead",
+      "legs": [
+        {
+          "id": "4897",
+          "times": 2,
+          "miles": 0.08015384,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.04007692
+        },
+        {
+          "id": "7279",
+          "times": 2,
+          "miles": 0.05785072,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.02892536
+        },
+        {
+          "id": "4765",
+          "times": 2,
+          "miles": 0.9998381600000001,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.49991908
+        },
+        {
+          "id": "4763",
+          "times": 2,
+          "miles": 0.27303538,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.13651769
+        },
+        {
+          "id": "7271",
+          "times": 2,
+          "miles": 1.70775822,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.85387911
+        },
+        {
+          "id": "4836",
+          "times": 2,
+          "miles": 0.21081548,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.10540774000000001
+        },
+        {
+          "id": "7347",
+          "times": 2,
+          "miles": 9.98513462,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 4.99256731
+        },
+        {
+          "id": "7276",
+          "times": 2,
+          "miles": 4.0596260399999995,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 2.0298130199999997
+        },
+        {
+          "id": "7273",
+          "start": null,
+          "end": [
+            -110.92887260019779,
+            43.622975135599454
+          ],
+          "times": 2,
+          "miles": 1.389690545878543,
+          "startDistance": 0,
+          "endDistance": 1.0390086494189479,
+          "fraction": 0.5865669992124506,
+          "sourceLengthMiles": 1.1845965999999999
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 18.763903005878547,
+      "weather": {
+        "marker": "Granite Canyon Trailhead",
+        "coordinates": [
+          -110.79309850931168,
+          43.60740142149473
+        ],
+        "offsetMeters": 2.8577600345626415
+      },
+      "recognition": {
+        "id": "marion-lake",
+        "url": "https://www.alltrails.com/trail/us/wyoming/teton-crest-trail-granite-canyon-to-marion-lake",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 3 months ago",
+        "distanceMiles": 21.5,
+        "elevationGainFeet": 3753,
+        "duration": "10.5–11.5 hr",
+        "difficulty": "Hard",
+        "note": "Same Granite Canyon access and Marion Lake. AllTrails explicitly allows a lake turnaround but maps farther toward Spearhead Peak; TrailPack stops at the lake."
+      },
+      "photoFile": "marion-lake.jpg"
+    },
+    {
+      "id": "open-canyon",
+      "npsUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
+      "checkedAt": "2026-09-05",
+      "metricSectionHeading": "Death Canyon Trailhead",
+      "legs": [
+        {
+          "id": "4901",
+          "times": 2,
+          "miles": 0.15944906,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.07972453
+        },
+        {
+          "id": "4845",
+          "times": 2,
+          "miles": 3.1756359400000003,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 1.5878179700000001
+        },
+        {
+          "id": "4839",
+          "times": 2,
+          "miles": 0.3486813,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.17434065
+        },
+        {
+          "id": "4842",
+          "times": 2,
+          "miles": 0.8690331,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.43451655
+        },
+        {
+          "id": "4837",
+          "times": 2,
+          "miles": 0.8411798400000002,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 0.42058992000000006
+        },
+        {
+          "id": "4854",
+          "times": 2,
+          "miles": 9.44268986,
+          "startDistance": 0,
+          "endDistance": 0,
+          "fraction": 1,
+          "sourceLengthMiles": 4.72134493
+        }
+      ],
+      "officialConnectors": [],
+      "comparisonMiles": 14.836669100000002,
+      "weather": {
+        "marker": "Death Canyon Trailhead",
+        "coordinates": [
+          -110.78139804303645,
+          43.65602705030001
+        ],
+        "offsetMeters": 2.0305094731553814
+      },
+      "recognition": {
+        "id": "open-canyon",
+        "url": "https://www.alltrails.com/trail/us/wyoming/mount-hunt-ridge-via-open-canyon-and-phelps-lake",
+        "checkedAt": "2026-09-05",
+        "pageAge": "Crawled 4 months ago",
+        "distanceMiles": 16.1,
+        "elevationGainFeet": 3562,
+        "duration": "8.5–9.5 hr",
+        "difficulty": "Hard",
+        "note": "Same Phelps Lake/Open Canyon and Mount Hunt area; AllTrails ridge extension/access differs. TrailPack uses the NPS Death Canyon approach and stops at Mount Hunt Divide."
+      },
+      "photoFile": "phelps-lake-death-canyon.jpg"
+    }
+  ]
+}

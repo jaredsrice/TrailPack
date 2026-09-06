@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "surprise-amphitheater-lakes",
+    "name": "Surprise and Amphitheater Lakes",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.73452657399341,
+      "lng": -110.74153304100037
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Lupine Meadows Trailhead marker; 4.6 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/dffc2b20-4643-457f-8719-26e2f91d1f82.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4848",
+      "4916",
+      "4931",
+      "7326"
+    ],
+    "distanceMiles": 9.913,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 9.913 mi (1.2% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-surprise-amphitheater-lakes.jpg",
+    "locationName": "Surprise and Amphitheater Lakes",
+    "alt": "An alpine lake sits beneath rocky mountain peaks.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "55% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Surprise and Amphitheater Lakes"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

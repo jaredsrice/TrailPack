@@ -41,7 +41,7 @@ describe("getSearchSuggestions", () => {
   });
 
   it("returns manual entry when a trail is not in the verified catalog", () => {
-    expect(getSearchSuggestions("Cascade Canyon")).toEqual([
+    expect(getSearchSuggestions("Unlisted Example Canyon")).toEqual([
       expect.objectContaining({ type: "manual", id: "manual-entry" }),
     ]);
   });

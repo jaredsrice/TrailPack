@@ -19,6 +19,7 @@ export interface TrailDraft {
     coordinateSourceUrl: string;
     coordinateCheckedAt: string;
     coordinateNote: string;
+    planningNote?: string;
   };
   official: {
     sourceUrl: string;
@@ -58,6 +59,9 @@ export interface TrailDraft {
   sourceCheck: {
     aliases: string[];
     skipRouteTypeReason: string | null;
+    /** Exact NPS heading separating access variants on one activity page. */
+    metricSectionHeading?: string;
+    accessibilitySectionHeading?: string;
   };
 }
 
@@ -77,7 +81,7 @@ export interface PreparedTrail {
   profile: TrailProfile;
   snapshot: NpsSourceSnapshot;
   photo: ParkPhoto;
-  integrityPolicy: { aliases: string[]; checkedFields: NpsIntegrityFieldName[] };
+  integrityPolicy: { aliases: string[]; checkedFields: NpsIntegrityFieldName[]; metricSectionHeading?: string; accessibilitySectionHeading?: string };
   demo: DemoScenario;
 }
 
@@ -203,7 +207,8 @@ export function checkTrailDraft(input: unknown, options: TrailDraftOptions): Tra
 
   const root = object(input, "", ["schemaVersion", "trail", "official", "comparison", "photo", "sourceCheck"]);
   if (root.schemaVersion !== 1) add("schemaVersion", "Use schemaVersion 1 from the current template.");
-  const trail = object(root.trail, "trail", ["id", "name", "parkId", "coordinates", "coordinateSourceUrl", "coordinateCheckedAt", "coordinateNote"]);
+  const trail = object(root.trail, "trail", ["id", "name", "parkId", "coordinates", "coordinateSourceUrl", "coordinateCheckedAt", "coordinateNote", "planningNote"]);
+  if (trail.planningNote !== undefined) text(trail.planningNote, "trail.planningNote", 10, 700);
   if (text(trail.id, "trail.id", 1, 80) && !isTrailDraftId(trail.id)) {
     add("trail.id", "Use a lowercase hyphenated ID, for example example-lake-loop. No spaces or path separators.");
   }
@@ -324,7 +329,12 @@ export function checkTrailDraft(input: unknown, options: TrailDraftOptions): Tra
     }
   }
 
-  const sourceCheck = object(root.sourceCheck, "sourceCheck", ["aliases", "skipRouteTypeReason"]);
+  const sourceCheck = object(root.sourceCheck, "sourceCheck", ["aliases", "skipRouteTypeReason", "metricSectionHeading", "accessibilitySectionHeading"]);
+  if (sourceCheck.metricSectionHeading !== undefined) text(sourceCheck.metricSectionHeading, "sourceCheck.metricSectionHeading", 3);
+  if (sourceCheck.accessibilitySectionHeading !== undefined) {
+    text(sourceCheck.accessibilitySectionHeading, "sourceCheck.accessibilitySectionHeading", 3);
+    if (!sourceCheck.metricSectionHeading) add("sourceCheck.accessibilitySectionHeading", "An accessibility heading requires an explicit metricSectionHeading.");
+  }
   const aliases = strings(sourceCheck.aliases, "sourceCheck.aliases", 10);
   if (typeof trail.name === "string" && !aliases.some((alias) => normalizedName(alias) === normalizedName(trail.name as string))) {
     add("sourceCheck.aliases", "Include the trail's display name, plus official page aliases used by the source checker.");

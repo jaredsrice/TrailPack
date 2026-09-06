@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "cascade-canyon-forks",
+    "name": "Forks of Cascade Canyon via South Jenny Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.751573014308974,
+      "lng": -110.7254246994853
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/703d00ff-d42e-4948-8e56-c6d1a12537c9.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5161",
+      "5154",
+      "5160",
+      "5101",
+      "5112",
+      "5108",
+      "5105",
+      "5109",
+      "5089",
+      "5086",
+      "5093",
+      "5084",
+      "5080"
+    ],
+    "distanceMiles": 13.288,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 13.288 mi (-0.1% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-cascade-canyon-forks.jpg",
+    "locationName": "Forks of Cascade Canyon via South Jenny Lake",
+    "alt": "A creek runs along a rocky trail in the middle of a mountain canyon.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 55%",
+      "mobile": "62% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Forks of Cascade Canyon via South Jenny Lake",
+      "Forks of Cascade Canyon",
+      "Forks of Cascade Canyon Via South Jenny Lake Loop Trail"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Forks of Cascade Canyon Via South Jenny Lake Loop Trail"
+  },
+  "profileKind": "public-source-import"
+}

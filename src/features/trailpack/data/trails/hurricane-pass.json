@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "hurricane-pass",
+    "name": "Hurricane Pass via South Jenny Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.751573014308974,
+      "lng": -110.7254246994853
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/80aee4b8-f9f6-4237-8a9c-525627fabe21.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5161",
+      "5154",
+      "5160",
+      "5101",
+      "5112",
+      "5108",
+      "5105",
+      "5109",
+      "5089",
+      "5086",
+      "5093",
+      "5084",
+      "5080",
+      "4930",
+      "4919"
+    ],
+    "distanceMiles": 24.369,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 24.369 mi (2.0% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-hurricane-pass.jpg",
+    "locationName": "Hurricane Pass via South Jenny Lake",
+    "alt": "3 mountain peaks stand tall above a glacially carved valley, a glacial lake, and a small glacier.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 40%",
+      "mobile": "43% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Hurricane Pass via South Jenny Lake",
+      "Hurricane Pass",
+      "Hurricane Pass Via South Jenny Lake Loop Trail"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Hurricane Pass Via South Jenny Lake Loop Trail"
+  },
+  "profileKind": "public-source-import"
+}

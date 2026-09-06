@@ -14,12 +14,10 @@ import { TRAIL_POPULARITY_STORAGE_KEY } from "../../src/features/trailpack/lib/t
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
 
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
-  for (const id of [
-    "lunch-tree-hill", "christian-pond-loop", "lake-creek-woodland-loop", "phelps-lake-loop",
-    "heron-pond-swan-lake-loop", "hermitage-point",
-    "leigh-lake", "bearpaw-trapper-lakes",
-    "taggart-beaver-creek-loop", "taggart-bradley-lake-loop",
-  ]) {
+  // Every shared-template admission without an inherited demo fixture gets
+  // the same guest/failure/crop checks, including future catalog additions.
+  for (const id of Object.keys(TRAIL_CATALOG).filter((id) =>
+    !["jenny-lake-loop", "taggart-lake", "string-lake-loop", "colter-bay-lakeshore-trail", "two-ocean-lake-loop"].includes(id))) {
     test(`new trail ${id} works as a guest with unknown live conditions at ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
       const errors: string[] = [];
@@ -47,14 +45,21 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await page.goto("/");
       await expect(page).toHaveTitle(/TrailPack/);
       await page.getByRole("searchbox", { name: /Search a park or trail/i }).fill(trail.name);
-      await page.locator(".suggestion-button").filter({ hasText: trail.name }).click();
+      await page.locator(".suggestion-button").filter({ has: page.getByText(trail.name, { exact: true }) }).click();
       await expect(page.locator("#trail-profile-heading")).toContainText(trail.name);
-      await expect(page.locator(".trail-accessibility-note")).toContainText(trail.accessibility!.value);
+      if (trail.accessibility) {
+        await expect(page.getByRole("complementary", { name: "Accessibility and terrain" })).toContainText(trail.accessibility.value);
+      }
+      if (trail.planningNote) {
+        await expect(page.getByRole("complementary", { name: "Route planning information" })).toContainText(trail.planningNote);
+      }
       await expectCurrentPhoto(page, getContextParkPhoto({ selectedParkId: "grand-teton", selectedTrailId: id })!);
       await expect(page.getByRole("heading", { name: "Weather unavailable", exact: true })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Live NPS alerts unavailable", exact: true })).toBeVisible();
       await expect(page.getByRole("button", { name: "Generate packing list", exact: true })).toBeEnabled();
-      await page.getByLabel(/When do you plan to hike/i).fill("2026-09-05");
+      const nextDay = new Date();
+      nextDay.setDate(nextDay.getDate() + 1);
+      await page.getByLabel(/When do you plan to hike/i).fill(nextDay.toISOString().slice(0, 10));
       await expect.poll(() => weatherRequests).toBe(2);
       await expect(page.getByRole("button", { name: "Generate packing list", exact: true })).toBeEnabled();
       await expect(page.getByRole("heading", { name: "Weather unavailable", exact: true })).toBeVisible();

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "two-ocean-emma-matilda-loop",
+    "name": "Two Ocean Lake - Emma Matilda Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.901088086291956,
+      "lng": -110.50185821950436
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Two Ocean Trailhead marker; 28.2 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/a3493bb4-40a3-4fce-ac72-6bfa2a83e060.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "7248",
+      "7308",
+      "4895",
+      "4896",
+      "4911",
+      "4914",
+      "4912",
+      "7258",
+      "7307",
+      "4865",
+      "4834",
+      "7250",
+      "4882"
+    ],
+    "distanceMiles": 13.18,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 13.180 mi (-0.1% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-two-ocean-emma-matilda-loop.jpg",
+    "locationName": "Two Ocean Lake - Emma Matilda Lake Loop",
+    "alt": "A hiker walks down a trail towards a mountain range.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 45%",
+      "mobile": "56% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Two Ocean Lake - Emma Matilda Lake Loop"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

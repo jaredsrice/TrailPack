@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "granite-canyon",
+    "name": "Granite Canyon from Granite Canyon Trailhead",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.60740142149473,
+      "lng": -110.79309850931168
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Granite Canyon Trailhead marker; 2.9 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/ec3b8476-3c23-4e31-991e-cd60eb6e6b2d.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4897",
+      "7279",
+      "4765",
+      "4763",
+      "7271",
+      "4836",
+      "7347"
+    ],
+    "distanceMiles": 13.315,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 13.315 mi (-0.6% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-granite-canyon.jpg",
+    "locationName": "Granite Canyon from Granite Canyon Trailhead",
+    "alt": "A rock pinnacle towers above at the top of a slope covered in boulders and green vegetation.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 55%",
+      "mobile": "48% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Granite Canyon from Granite Canyon Trailhead",
+      "Granite Canyon",
+      "Granite Canyon Trailhead"
+    ],
+    "skipRouteTypeReason": "Selected duration line says RT but does not spell out the route type. The matching access description and reviewed retraced geometry establish out-and-back; other access variants must not supply the type.",
+    "metricSectionHeading": "Granite Canyon Trailhead"
+  },
+  "profileKind": "public-source-import"
+}
