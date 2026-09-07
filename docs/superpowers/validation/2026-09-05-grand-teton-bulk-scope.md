@@ -26,3 +26,13 @@ walkthrough is required for this catalog change.
 
 See the [admission record](../../data/grand-teton-bulk-2026-09-05.md) and
 [coverage boundary](../../data/grand-teton-coverage.md) for source-specific detail.
+
+## Follow-up planning
+
+The owner subsequently requested a deferred product roadmap, ordered as complete
+access-route choices, repository/documentation cleanup, then interactive park
+and trail discovery. The [roadmap](../../roadmap.md) records that scope without
+implementing it. It does not reopen the completed academic closeout or replace
+the existing day-hike and guarded-review boundaries. In particular, grouping
+destinations with several access routes is future work, not a capability claimed
+for the current 39-itinerary catalog.

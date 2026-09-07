@@ -10,6 +10,16 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+### Planning
+
+- Added a [prioritized improvement roadmap](docs/roadmap.md): selectable access
+  routes first, repository and documentation cleanup second, and an interactive
+  park/trail discovery map third. It includes acceptance checks and a reusable
+  implementation brief. These features are planned, not implemented.
+- Clarified the distinction between a destination and the complete access route
+  used for packing guidance. Future documentation cleanup will target a general
+  university audience without assuming a coding background.
+
 ### Added
 
 - A consolidated 24-route Grand Teton expansion, bringing the local catalog to

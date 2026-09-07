@@ -7,7 +7,7 @@ silently change the packing decisions or their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
 [View the changelog](CHANGELOG.md) ·
-[View the product roadmap](#roadmap)
+[View the product roadmap](docs/roadmap.md)
 
 ## Project Status
 
@@ -499,6 +499,17 @@ current local conditions, emergency preparation, or personal judgment.
 
 ## Roadmap
 
+The [prioritized improvement plan](docs/roadmap.md) is the shared to-do list:
+
+1. Add verified access-route choices under each named trail, with packing
+   guidance based on the complete selected hike and clear route comparisons.
+2. Simplify the repository and documentation for readers without a coding
+   background, while preserving required files and source evidence.
+3. Add an interactive park/trail discovery map with an accessible list option.
+
+These changes are planned, not implemented. The plan includes dependencies,
+acceptance checks, documentation updates, and a reusable implementation brief.
+
 | Product milestone | Status |
 |---|---|
 | Core guest planning and packing workflow | Complete and production-verified |
@@ -511,8 +522,10 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Thirteen profiles deployed through PR #53; two Taggart loops locally admitted; full NPS inventory tracked |
-| Interactive supported-park map | Future discovery upgrade; the current release uses a scalable park-to-trail list first |
+| Repeatable trail onboarding and Teton expansion | Thirteen profiles deployed through PR #53; the consolidated 39-itinerary catalog is in PR #55 awaiting release approval |
+| Selectable access routes | Planned priority 1; current entries each describe one selected itinerary |
+| Repository and documentation cleanup | Planned priority 2; clearer reading paths and careful file organization |
+| Interactive supported-park map | Planned priority 3; the current app uses a park-to-trail list |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and
@@ -520,6 +533,7 @@ Detailed implementation plans and validation evidence are maintained under
 
 ## Repository Guide
 
+- [`docs/roadmap.md`](docs/roadmap.md) — prioritized to-do list and future-work brief
 - [`src/app/`](src/app/) — Next.js pages and server routes
 - [`src/features/trailpack/components/`](src/features/trailpack/components/) —
   planner UI
