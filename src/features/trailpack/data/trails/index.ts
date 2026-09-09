@@ -6,10 +6,15 @@ import hollyLake from "./holly-lake.json";
 import paintbrushCascadeLoop from "./paintbrush-cascade-loop.json";
 import moosePonds from "./moose-ponds.json";
 import hiddenFalls from "./hidden-falls.json";
+import hiddenFallsShuttle from "./hidden-falls-shuttle.json";
 import inspirationPoint from "./inspiration-point.json";
+import inspirationPointShuttle from "./inspiration-point-shuttle.json";
 import cascadeCanyonForks from "./cascade-canyon-forks.json";
+import cascadeCanyonForksShuttle from "./cascade-canyon-forks-shuttle.json";
 import lakeSolitude from "./lake-solitude.json";
+import lakeSolitudeShuttle from "./lake-solitude-shuttle.json";
 import hurricanePass from "./hurricane-pass.json";
+import hurricanePassShuttle from "./hurricane-pass-shuttle.json";
 import surpriseAmphitheaterLakes from "./surprise-amphitheater-lakes.json";
 import garnetCanyon from "./garnet-canyon.json";
 import murieRanch from "./murie-ranch.json";
@@ -42,6 +47,7 @@ import type { TrailDefinition } from "../../lib/trail-definition";
 /** One registration per approved trail. The offline catalog check validates JSON. */
 export const TRAIL_DEFINITIONS = [
   jennyLake, taggartLake, stringLake, colterBay, twoOcean, lunchTreeHill, christianPond,
+  inspirationPointShuttle,
   lakeCreekWoodland, phelpsLake, heronPondSwanLake, hermitagePoint,
   leighLake, bearpawTrapper,
   taggartBeaverCreek, taggartBradleyLake,
@@ -53,10 +59,14 @@ export const TRAIL_DEFINITIONS = [
   paintbrushCascadeLoop,
   moosePonds,
   hiddenFalls,
+  hiddenFallsShuttle,
   inspirationPoint,
   cascadeCanyonForks,
+  cascadeCanyonForksShuttle,
   lakeSolitude,
+  lakeSolitudeShuttle,
   hurricanePass,
+  hurricanePassShuttle,
   surpriseAmphitheaterLakes,
   garnetCanyon,
   murieRanch,

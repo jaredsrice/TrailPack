@@ -5,11 +5,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
 import {
-  getTrailById,
-  getTrailsForPark,
   SUPPORTED_PARKS,
-  TRAIL_CATALOG,
 } from "@/features/trailpack/data/supported-trails";
+import { describeTrailGroup, getTrailGroup, resolveGroupRoute, TRAIL_GROUPS } from "../lib/trail-groups";
 import {
   buildAiContractInput,
   buildGuardedAiReview,
@@ -28,7 +26,6 @@ import {
   buildClearedSearchState,
   buildManualSelectionState,
   buildParkSelectionState,
-  buildTrailSelectionState,
   type FlowMode,
 } from "@/features/trailpack/lib/trailpack-flow";
 import { getSearchSuggestions, type SearchSuggestion } from "@/features/trailpack/lib/search";
@@ -53,9 +50,10 @@ import { ContextStatusPanel } from "./ContextStatusPanel";
 import { MissingDetailPrompts } from "./MissingDetailPrompts";
 import { ParkPhotoShowcase } from "./ParkPhotoShowcase";
 import { PackingListOutput } from "./PackingListOutput";
-import { VERIFIED_TRAIL_PROFILE_LABEL } from "./SourceBadge";
+import { VERIFIED_TRAIL_PROFILE_LABEL, MIXED_GROUP_LABEL } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
+import { AccessRouteChooser } from "./AccessRouteChooser";
 
 const SavedResultActions = dynamic(() =>
   import("./SavedResultActions").then((module) => module.SavedResultActions),
@@ -66,7 +64,7 @@ const QUICK_START_TRAIL_IDS = [
   "taggart-lake",
   "string-lake-loop",
 ] as const;
-const ALL_TRAIL_IDS = Object.keys(TRAIL_CATALOG);
+const ALL_TRAIL_IDS = Object.keys(TRAIL_GROUPS);
 
 const AI_REVIEW_CLIENT_TIMEOUT_MS = 30_000;
 const ALERT_REQUEST_TIMEOUT_MS = 6_000;
@@ -210,6 +208,8 @@ export function TrailPackShell() {
   const [mode, setMode] = useState<FlowMode>("search");
   const [selectedParkId, setSelectedParkId] = useState<string | null>(null);
   const [selectedTrail, setSelectedTrail] = useState<TrailProfile | null>(null);
+  const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const [routeChangeNotice, setRouteChangeNotice] = useState(false);
   const [userInput, setUserInput] = useState<UserHikeInput>({});
   const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlan | null>(null);
   const [liveAiState, setLiveAiState] = useState<LiveAiUiState>({
@@ -243,8 +243,9 @@ export function TrailPackShell() {
     fallbackTrailIds,
   );
   const popularityHasClicks = hasTrailPopularity(trailPopularity);
-  const parkTrails = selectedParkId ? getTrailsForPark(selectedParkId) : [];
   const selectedPark = SUPPORTED_PARKS.find((park) => park.id === selectedParkId);
+  const parkTrails = Object.values(TRAIL_GROUPS).filter((group) => group.park === selectedPark?.name);
+  const selectedGroup = selectedGroupId ? getTrailGroup(selectedGroupId) : null;
   const selectedScenario = getDemoScenario(selectedTrail?.id);
   const savedWeather = useMemo(
     () =>
@@ -643,6 +644,7 @@ export function TrailPackShell() {
       recommendation: planRecommendation,
       aiInput: nextAiInput,
     });
+    setRouteChangeNotice(false);
     void requestAiReview(nextAiInput, generationId);
   }
 
@@ -656,6 +658,7 @@ export function TrailPackShell() {
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
     if (suggestion.type === "manual") {
+      setSelectedGroupId(null);
       const next = buildManualSelectionState(query);
       setMode(next.mode);
       setSelectedParkId(next.selectedParkId);
@@ -675,35 +678,36 @@ export function TrailPackShell() {
       (suggestion.type === "trail" || suggestion.type === "public-trail") &&
       suggestion.trailId
     ) {
-      const trail = getTrailById(suggestion.trailId);
-      if (!trail) {
-        return;
-      }
-
-      recordTrailSelection(trail.id);
-      const next = buildTrailSelectionState(trail, suggestion.parkId ?? null);
-      setMode(next.mode);
-      setSelectedParkId(next.selectedParkId);
-      setSelectedTrail(next.selectedTrail);
-      setQuery(next.query);
-      setUserInput(next.userInput);
-      resetGeneratedOutput();
+      handleTrailSelect(suggestion.trailId, suggestion.parkId);
     }
   }
 
-  function handleTrailSelect(trailId: string) {
-    const trail = getTrailById(trailId);
-    if (!trail) {
-      return;
-    }
+  function handleTrailSelect(groupId: string, parkId?: string) {
+    const group = getTrailGroup(groupId);
+    if (!group) return;
+    recordTrailSelection(group.id);
+    setMode("trail");
+    setSelectedParkId(parkId ?? SUPPORTED_PARKS.find((park) => park.name === group.park)?.id ?? null);
+    setSelectedGroupId(group.id);
+    setSelectedTrail(resolveGroupRoute(group));
+    setQuery(group.name);
+    setUserInput({});
+    setRouteChangeNotice(false);
+    resetGeneratedOutput();
+  }
 
-    recordTrailSelection(trail.id);
-    const next = buildTrailSelectionState(trail, selectedParkId);
-    setMode(next.mode);
-    setSelectedParkId(next.selectedParkId);
-    setSelectedTrail(next.selectedTrail);
-    setQuery(next.query);
-    setUserInput(next.userInput);
+  function handleAccessRouteChange(routeId: string) {
+    if (!selectedGroup || routeId === selectedTrail?.id) return;
+    const route = resolveGroupRoute(selectedGroup, routeId);
+    if (!route) return;
+    setRouteChangeNotice(
+      Boolean(generatedPlan) ||
+      activeAiGenerationRef.current !== null ||
+      routeChangeNotice,
+    );
+    setSelectedTrail(route);
+    // Preserve hiker-entered date/time, but discard output for the old route.
+    // The context effects cancel old fetches; selecting never triggers AI.
     resetGeneratedOutput();
   }
 
@@ -723,6 +727,7 @@ export function TrailPackShell() {
   }
 
   function handleParkSelect(parkId: string, parkName: string) {
+    setSelectedGroupId(null);
     const next = buildParkSelectionState(parkId, parkName);
     setMode(next.mode);
     setSelectedParkId(next.selectedParkId);
@@ -733,6 +738,7 @@ export function TrailPackShell() {
   }
 
   function handleChangeSearch() {
+    setSelectedGroupId(null);
     const next = buildClearedSearchState();
     setMode(next.mode);
     setSelectedParkId(next.selectedParkId);
@@ -793,6 +799,7 @@ export function TrailPackShell() {
                   onChange={(event) => {
                     setQuery(event.target.value);
                     if (!event.target.value) {
+                      setSelectedGroupId(null);
                       const next = buildClearedSearchState();
                       setMode(next.mode);
                       setSelectedParkId(next.selectedParkId);
@@ -819,7 +826,7 @@ export function TrailPackShell() {
                         }`}
                       >
                         <span className="suggestion-type">
-                          {suggestionBadge(suggestion.type)}
+                          {suggestion.includesEstimates ? MIXED_GROUP_LABEL : suggestionBadge(suggestion.type)}
                         </span>
                         <span className="suggestion-title">{suggestion.title}</span>
                         <span className="suggestion-subtitle">
@@ -841,7 +848,7 @@ export function TrailPackShell() {
                   </div>
                   <div className="quick-start-list">
                     {popularTrailIds.map((trailId) => {
-                      const trail = TRAIL_CATALOG[trailId];
+                      const trail = TRAIL_GROUPS[trailId];
                       return (
                         <button
                           key={trail.id}
@@ -852,8 +859,7 @@ export function TrailPackShell() {
                           <span>
                             <strong>{trail.name}</strong>
                             <small>
-                              {trail.distanceMiles.value} mi ·{" "}
-                              {trail.elevationGainFeet.value} ft
+                              {describeTrailGroup(trail)}
                             </small>
                           </span>
                         </button>
@@ -871,7 +877,7 @@ export function TrailPackShell() {
                     <div className="supported-park-list">
                       {SUPPORTED_PARKS.map((park) => {
                         const trailCount =
-                          park.trailIds.length + park.publicTrailIds.length;
+                          Object.values(TRAIL_GROUPS).filter((group) => group.park === park.name).length;
                         return (
                           <button
                             key={park.id}
@@ -932,13 +938,11 @@ export function TrailPackShell() {
                   <span className="park-trail-copy">
                     <span className="park-trail-name">{trail.name}</span>
                     <span className="park-trail-source">
-                      {VERIFIED_TRAIL_PROFILE_LABEL}
+                      {trail.routes.some((route) => route.distanceMiles.label === "inferred") ? MIXED_GROUP_LABEL : VERIFIED_TRAIL_PROFILE_LABEL}
                     </span>
                   </span>
                   <span className="park-trail-stats">
-                    {trail.distanceMiles.value} mi ·{" "}
-                    {trail.elevationGainFeet.value.toLocaleString()} ft gain ·{" "}
-                    {trail.difficulty.value}
+                    {describeTrailGroup(trail)}
                   </span>
                   <TrailPackIcon
                     name="chevron"
@@ -964,7 +968,13 @@ export function TrailPackShell() {
           </section>
         ) : null}
 
+        {selectedGroup && selectedGroup.routes.length > 1 ? (
+          <AccessRouteChooser group={selectedGroup} selectedRouteId={selectedTrail?.id ?? null} onChange={handleAccessRouteChange} />
+        ) : null}
         {selectedTrail ? <TrailProfileSummary trail={selectedTrail} /> : null}
+        {selectedTrail && routeChangeNotice ? (
+          <p className="route-change-notice" role="status">Access route changed. The previous packing list and review were cleared. Generate a new list for this itinerary.</p>
+        ) : null}
 
         {selectedTrail && selectedScenario && weather && alerts ? (
           <ContextStatusPanel

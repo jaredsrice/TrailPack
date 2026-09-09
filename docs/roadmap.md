@@ -1,15 +1,18 @@
 # TrailPack improvement roadmap
 
-Status: planned, not implemented. Approved planning order: route options first,
+Status: Priority 1 is implemented locally and awaiting Preview/release review.
+Approved planning order: route options first,
 repository and documentation cleanup second, interactive discovery map third.
 This document is the shared to-do list and starting brief for future work.
 
 ## What is available now
 
-The current branch contains 39 reviewed Grand Teton itineraries. Each catalog
-entry describes one selected hike, not every way to reach its destination.
-For example, Inspiration Point currently includes the South Jenny Lake walking
-approach and return; it does not offer a separate shuttle choice.
+The implementation branch contains 39 discovery entries and 46 route
+profiles: 44 NPS-backed profiles and two mapped mixed-route estimates. Hidden
+Falls, Inspiration Point, Forks of Cascade Canyon, Lake Solitude and Hurricane
+Pass group their South Jenny Lake walking return with the NPS round-trip shuttle
+variant. Inspiration Point also offers shuttle out/walk back and walk out/shuttle
+back. Other entries describe one selected hike. This is not a production release.
 
 Some entries have a **Before you go** note. That section appears only when a
 note exists. Complete AllTrails comparisons are saved in the
@@ -17,7 +20,8 @@ note exists. Complete AllTrails comparisons are saved in the
 not consistently explained in the app. Park discovery currently uses a list.
 
 The catalog changes are in [PR #55](https://github.com/jaredsrice/TrailPack/pull/55).
-Adding this plan does not implement the features below or authorize a merge.
+The access-route implementation is separate from that PR. Neither this plan nor
+the local implementation authorizes a merge.
 Use the PR's current checks to determine readiness; do not assume an older
 passing result applies to a newer commit.
 
@@ -36,39 +40,92 @@ source/test report and Preview per approved batch.
 
 ## Priority 1: Complete-hike access options
 
+### Priority 1 implementation checkpoint
+
+- Implemented locally: shared access-route metadata and grouping; five Jenny Lake
+  destinations with an explicit choice; complete-distance labels;
+  separate weather coordinates, packing/review identities and saved facts;
+  route changes clear stale output without generating again.
+- Added source evidence for the shuttle approach and corrected the old walking
+  profile's map link. The unavailable NPS CARTO line layer and approximately
+  49 m dock-to-land-geometry gap are explicit comparison limitations.
+- Implemented both mixed directions with separate IDs and boat reminders.
+  Hiking mileage is approximately 3.7 mi from retained USGS segments; ascent is
+  unverified rather than averaged or set to zero. These are labeled estimates,
+  not extra official NPS snapshots. The optional Hidden Falls spur is excluded.
+- Four additional NPS-published shuttle variants use their exact access subsection,
+  west-dock weather reference, official values, separate NPS map and retained
+  USGS corridor comparison. Related AllTrails listings are identified as comparable
+  or related without replacing NPS authority.
+- The in-app **How was this calculated?** disclosure explains mixed-route facts,
+  method, exclusions, limitations and sources. Public comparisons distinguish a
+  comparable route from a related route with a different itinerary.
+- Grand View Point from Jackson Lake Lodge, Marion Lake from Rendezvous Mountain
+  and Moose Ponds Loop remain deferred because the retained archive does not
+  establish complete geometry for those official variants. They are recorded in
+  the [evidence manifest](data/jenny-lake-shuttle-routes-2026-09-09.json), not invented.
+- Still pending: consolidated hosted Preview and owner approval before merge. See
+  [the design decision](adr/0002-complete-access-route-identity.md).
+- Checkpoint checks: 749 unit tests, 46 catalog/photo checks, 44 live NPS source
+  comparisons, 5,000 stress cases and 116 Firefox/axe flows pass. No account or
+  second-user checks were required. New route code remains local and unmerged.
+
 ### Intended experience
 
 A user finds **Inspiration Point**, then sees a compact **Access route** control
 under the name. Selecting an option reveals one short description of the full
-trip and the applicable measurements. The packing list names the chosen option.
+trip and the applicable measurements. Show **Loop**, **Out-and-back**, or
+**One-way (point-to-point)** beside the selected option, with a clearly labelled
+total hiking distance. The packing-list summary repeats the option, route type,
+and distance so the chosen itinerary remains clear after generation.
 
-Proposed initial options, subject to official-source verification:
+Implemented Inspiration Point options (local, awaiting release):
 
 - **South shore walk:** walk from South Jenny Lake to the viewpoint and return
   on foot.
 - **Shuttle boat:** take the boat both ways and hike from the west dock to the
   viewpoint and back. Boat distance is not hiking distance; boat logistics are
   separate from walking time.
+- **Shuttle out, walk back:** boat to the west dock, hike to the viewpoint,
+  then walk south along the lakeshore to Jenny Lake Trailhead.
+- **Walk out, shuttle back:** walk the south lakeshore to the viewpoint, then
+  descend to the west dock for the return boat. Check the last crossing first.
 
-The north-shore approach is a later candidate, not an automatic addition. A
-one-way boat plus walking return is also a distinct candidate, not a synonym
-for the round-trip shuttle option. Neither should be selectable until its full
-itinerary and planning data have been verified.
+The north-shore approach remains a later candidate, not an automatic addition.
+The mixed options have reviewed land-route geometry, but no verified mixed
+ascent or identical standalone AllTrails page is claimed. Their familiar
+destination and related shuttle counterpart are documented in the
+[route evidence](data/inspiration-point-access-routes.md). Broader catalog work
+must keep those limitations visible rather than equating tests with field surveying.
 
 ### To do
 
-- [ ] **Inventory variants across the supported catalog.** Record each named
+- [x] **Inventory variants across the supported catalog.** Record each named
   trail/destination, existing itinerary, proposed approach, turnaround, return
   path, transport assumption, official source, and evidence gaps. Distinguish
   access choices from clockwise/counterclockwise travel around a loop.
-- [ ] **Define the grouping rules.** Use the [shared glossary](../CONTEXT.md): a
+- [x] **Define the grouping rules.** Use the [shared glossary](../CONTEXT.md): a
   supported trail is the named planning entry, a destination is a place reached,
   and an access route is the complete chosen hike. Not every loop has a single
   destination. Do not group routes merely because their names are similar.
-- [ ] **Design one reusable route definition.** Give the group and each verified
+- [x] **Design one reusable route definition.** Give the group and each verified
   option stable identifiers. Store start, destination or turnaround, return,
   route shape, hiking distance, gain, sourced duration/difficulty, weather
   reference, source evidence, and relevant transport/access notes per option.
+- [x] **Make route type and distance meaning explicit.** A loop follows a circuit
+  back to its start; an out-and-back returns along the same approach; a one-way
+  hike finishes at a different endpoint and needs a separate onward/return plan.
+  Store the verified route type and whether each source distance is one-way or
+  already the complete hike. Do not double a published round-trip distance or
+  mistake a one-way distance for an out-and-back total. Leave unclear or mixed
+  route descriptions explicit rather than forcing an unsupported classification.
+- [x] **Use the complete hike in list creation.** Feed the selected route type,
+  total walking distance, appropriate gain, and expected time into packing rules,
+  including food, water, effort, and daylight guidance. Show start and finish for
+  one-way options and prompt for transport/return arrangements where relevant.
+  Boat/car travel is not walking distance, but known travel/wait time can affect
+  the trip schedule and daylight; keep those assumptions separate and visible.
+  A route-type label alone must not replace the actual itinerary measurements.
 - [ ] **Preserve the existing source boundary.** Keep official NPS facts separate
   from reviewed route metadata and USGS comparisons. The scheduled source
   refresh must not gain permission to create routes, rewrite geometry, or edit
@@ -124,6 +181,11 @@ itinerary and planning data have been verified.
 
 - [ ] Walking and shuttle options use their own full-trip values and preserve
   the correct start, turnaround, return, and source labels.
+- [ ] Loop, out-and-back, and one-way fixtures display consistent route types
+  in selection and packing output. Tests distinguish one-way source distances
+  from published totals, prevent double-counting returns, and keep transport
+  separate from hiking. Missing return arrangements or uncertain route types
+  stay visible instead of silently assuming a round trip.
 - [ ] Missing, duplicate, or changed official variant headings fail source
   checks rather than quietly selecting another approach. Unsupported options
   cannot generate a supposedly verified plan.

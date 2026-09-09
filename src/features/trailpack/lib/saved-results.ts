@@ -109,7 +109,7 @@ function buildTrailSummary(
     state: trail.state,
     routeType: trail.routeType,
     distanceMiles: trail.distanceMiles.value,
-    elevationGainFeet: trail.elevationGainFeet.value,
+    elevationGainFeet: trail.elevationGainFeet.value ?? "Unverified",
     sourceLabels: uniqueSourceLabels([
       trail.distanceMiles.label,
       trail.elevationGainFeet.label,

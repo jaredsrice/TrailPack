@@ -340,6 +340,7 @@ function buildPrompt(input: AiContractInput): string {
       state: boundedText(input.trail.state, 120),
       distanceMiles: input.trail.distanceMiles,
       elevationGainFeet: input.trail.elevationGainFeet,
+      ...(input.trail.distanceIsEstimate ? { distanceIsEstimate: true } : {}),
       routeType: input.trail.routeType,
       estimatedDuration: boundedText(input.trail.estimatedDuration, 120),
       difficulty: boundedText(input.trail.difficulty, 120),

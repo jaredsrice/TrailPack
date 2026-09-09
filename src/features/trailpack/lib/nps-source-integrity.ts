@@ -1,4 +1,4 @@
-import { TRAIL_CATALOG_ENTRIES } from "../data/trail-catalog";
+import { NPS_CATALOG_ENTRIES } from "../data/trail-catalog";
 import type { RouteType, TrailProfile } from "@/features/trailpack/types";
 
 export type NpsIntegrityFieldName =
@@ -97,7 +97,7 @@ const ALL_FIELDS: NpsIntegrityFieldName[] = [
 ];
 
 const POLICIES: Record<string, IntegrityPolicy> = Object.fromEntries(
-  Object.entries(TRAIL_CATALOG_ENTRIES).map(([id, entry]) => [id, entry.integrityPolicy]),
+  Object.entries(NPS_CATALOG_ENTRIES).map(([id, entry]) => [id, entry.integrityPolicy]),
 );
 
 function decodeHtmlEntities(value: string): string {
@@ -369,7 +369,7 @@ function expectedValue(
     case "distanceMiles":
       return profile.distanceMiles.value;
     case "elevationGainFeet":
-      return profile.elevationGainFeet.value;
+      return profile.elevationGainFeet.value ?? undefined;
     case "estimatedDuration":
       return profile.estimatedDuration.value;
     case "difficulty":

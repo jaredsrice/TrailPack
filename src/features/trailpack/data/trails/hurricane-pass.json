@@ -11,13 +11,29 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment.",
+    "accessRoute": {
+      "groupId": "hurricane-pass",
+      "groupName": "Hurricane Pass",
+      "label": "Walk via South Jenny Lake",
+      "start": "Jenny Lake Trailhead (south shore)",
+      "returnPlan": "Walk back to the same trailhead; no boat needed.",
+      "distanceScope": "Full walking trip, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/south-fork-cascade-canyon-to-hurricane-pass",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related public Hurricane Pass route; its access and distance differ, so use it for recognition rather than as the same South Jenny Lake itinerary."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
     "additionalSources": [
       {
-        "sourceUrl": "https://www.nps.gov/maps/builder/configs/80aee4b8-f9f6-4237-8a9c-525627fabe21.json",
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/e9c98d42-c6fc-476d-8fc7-65f6ab9ee682.json",
         "checkedAt": "2026-09-05",
         "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
       }

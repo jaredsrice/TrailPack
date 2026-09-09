@@ -15,13 +15,38 @@ corrections within that milestone.
 - Added a [prioritized improvement roadmap](docs/roadmap.md): selectable access
   routes first, repository and documentation cleanup second, and an interactive
   park/trail discovery map third. It includes acceptance checks and a reusable
-  implementation brief. These features are planned, not implemented.
+  implementation brief. Access-route work has begun locally; cleanup and the
+  map remain planned.
 - Clarified the distinction between a destination and the complete access route
   used for packing guidance. Future documentation cleanup will target a general
   university audience without assuming a coding background.
 
 ### Added
 
+- NPS-backed round-trip shuttle choices for Hidden Falls, Forks of Cascade
+  Canyon, Lake Solitude and Hurricane Pass, grouped with their existing South
+  Jenny Lake walking options. Each choice keeps separate official facts, NPS map,
+  west-dock weather reference and reproducible USGS corridor comparison.
+- Collapsed **How was this calculated?** details for mixed Inspiration Point
+  itineraries, covering the NPS parent facts, mapped-distance method, exclusions,
+  unknowns and source links. AllTrails links now say whether a public route is
+  comparable or only related to the selected itinerary.
+- A dated Jenny Lake shuttle evidence manifest. Grand View Point from Jackson
+  Lake Lodge, Marion Lake from Rendezvous Mountain and Moose Ponds Loop remain
+  explicitly deferred until complete route geometry can be retained.
+- An unreleased Inspiration Point access chooser: south-shore walking,
+  round-trip shuttle, shuttle out/walk back, or walk out/shuttle back.
+  Search and park browsing show one destination; the chosen
+  full hike supplies its own measurements, weather location and packing list.
+- Mixed routes show approximately 3.7 miles of mapped hiking, not a fabricated
+  NPS total. Elevation gain stays unverified, including in review requests and
+  saved lists. Boat crossings, dock/parking connectors and the optional Hidden
+  Falls spur are excluded. Only the return-boat option depends on the last
+  crossing; the outbound-boat option includes a walking return.
+- Clear loop, out-and-back and one-way distance labels. Out-and-back totals
+  already include the return. The shuttle option includes a return-boat reminder
+  in its packing list; changing approaches clears the old list and review
+  without spending another AI request.
 - A consolidated 24-route Grand Teton expansion, bringing the local catalog to
   39 selected itineraries with NPS facts, USGS corridor comparisons, verified
   weather reference points, and documented public AllTrails counterparts.
@@ -35,6 +60,12 @@ corrections within that milestone.
 
 ### Fixed
 
+- Corrected the Inspiration Point walking profile's supporting NPS map link,
+  which previously pointed to the shuttle map. Its walking measurements and
+  existing saved-list identity are unchanged.
+- Estimated mixed routes no longer inherit the verified-profile label in
+  search, the park list, selected facts or profile-based packing explanations.
+  Their parent NPS sources remain checked separately from calculated mileage.
 - NPS source checks now select explicitly named access variants rather than
   combining a shorter boat route with a longer walking route. They handle NPS's
   bold-heading formats and preserve its `Very Strenuous` classification.
@@ -78,6 +109,12 @@ interactive supported-park map is recorded in the roadmap as a future upgrade.
 
 ### Verification
 
+- Access-route checkpoint: 749 unit tests, all 46 offline catalog/photo checks,
+  all 44 live NPS comparisons and 5,000 offline stress cases pass. All 116
+  Firefox/axe flows pass at desktop and 390 px mobile widths, including explicit
+  route choice, preserved trip details, guest generation and stale-review
+  rejection. Type checking, lint and the production build pass. No authentication
+  or paid AI call was used for these checks; hosted release remains pending.
 - Consolidated expansion: all 39 offline catalog/photo checks and all 39 live
   NPS source comparisons pass; 715 unit tests and 5,000 stress cases pass with
   zero invariant failures. Lint, type checking, and the production build pass.

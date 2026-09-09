@@ -1,6 +1,8 @@
 import type { SourceLabel } from "@/features/trailpack/types";
 
 export const VERIFIED_TRAIL_PROFILE_LABEL = "Verified NPS + USGS profile";
+export const MIXED_ROUTE_PROFILE_LABEL = "Calculated route";
+export const MIXED_GROUP_LABEL = "NPS profiles + calculated routes";
 
 const LABEL_STYLES: Record<SourceLabel, string> = {
   "supported-profile": "bg-emerald-50 text-emerald-800 border-emerald-200",
@@ -28,12 +30,12 @@ const LABEL_TEXT: Record<SourceLabel, string> = {
   "future-work": "Future work",
 };
 
-export function SourceBadge({ label }: { label: SourceLabel }) {
+export function SourceBadge({ label, text }: { label: SourceLabel; text?: string }) {
   return (
     <span
       className={`source-badge inline-flex rounded-full border px-2 py-0.5 text-xs font-medium ${LABEL_STYLES[label]}`}
     >
-      {LABEL_TEXT[label]}
+      {text ?? LABEL_TEXT[label]}
     </span>
   );
 }

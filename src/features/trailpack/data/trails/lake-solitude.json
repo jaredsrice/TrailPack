@@ -11,13 +11,29 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment.",
+    "accessRoute": {
+      "groupId": "lake-solitude",
+      "groupName": "Lake Solitude",
+      "label": "Walk via South Jenny Lake",
+      "start": "Jenny Lake Trailhead (south shore)",
+      "returnPlan": "Walk back to the same trailhead; no boat needed.",
+      "distanceScope": "Full walking trip, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/lake-solitude-via-lake-solitude-and-cascade-canyon-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related public Lake Solitude route; its published distance and access may differ, so confirm the itinerary before comparing it with this South Jenny Lake walk."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
     "additionalSources": [
       {
-        "sourceUrl": "https://www.nps.gov/maps/builder/configs/26a77753-acbd-46eb-95fc-585dbb756eb7.json",
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/62bbfd77-812c-47b0-8e04-ef2e5dc38e53.json",
         "checkedAt": "2026-09-05",
         "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
       }

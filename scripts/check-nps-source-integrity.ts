@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { TRAIL_CATALOG } from "../src/features/trailpack/data/supported-trails";
+import { NPS_CATALOG_ENTRIES, MIXED_ACCESS_DEFINITIONS } from "../src/features/trailpack/data/trail-catalog";
 import {
   NPS_SOURCE_SNAPSHOTS,
   type NpsSourceSnapshotDocument,
@@ -187,7 +187,8 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   const outputDir = path.resolve(outputDirectory(args));
   const shouldApply = applyRefresh(args);
-  const profiles = Object.values(TRAIL_CATALOG);
+  const profiles = Object.values(NPS_CATALOG_ENTRIES).map((entry) => entry.profile);
+  console.log(`${MIXED_ACCESS_DEFINITIONS.reduce((count, definition) => count + definition.options.length, 0)} derived mixed itineraries use separately tested geometry; their NPS parent profiles are checked below. No official mixed-route snapshots are fabricated.`);
   const snapshots = await fetchAllPages(profiles);
   const checkedInstant = new Date();
   const checkedAt = checkedInstant.toISOString();

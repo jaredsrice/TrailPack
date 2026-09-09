@@ -1,7 +1,57 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-05",
+  "updatedAt": "2026-09-09",
   "trails": {
+    "inspiration-point-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+      "checkedAt": "2026-09-07",
+      "distanceMiles": 1.8,
+      "elevationGainFeet": 550,
+      "estimatedDuration": "2-4 hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Inspiration Point is an easy, 1.8 mi (2.9 km) RT out and back hike with 550 ft (170 m) of elevation gain with an average slope of 16%. The trail is dirt with several sections of rock stairs and exposed roots. The trail crosses exposed rock and features several steep switchbacks."
+    },
+    "hidden-falls-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 1,
+      "elevationGainFeet": 300,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Hidden Falls is an easy, 1 mi (1.6 km) RT out and back hike with 300 ft (90 m) of elevation gain with an average slope of 16%. The trail is dirt with sections of rock steps and exposed obstacles, such as roots and rocks."
+    },
+    "cascade-canyon-forks-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 9.4,
+      "elevationGainFeet": 1480,
+      "estimatedDuration": "5-9 Hours",
+      "difficulty": "Moderately Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Cascade Canyon is a moderately strenuous, 9.4 mi (15.1 km) RT out and back hike with 1,480 ft (450 m) of elevation gain with an average slope of 9%."
+    },
+    "lake-solitude-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 14.4,
+      "elevationGainFeet": 2670,
+      "estimatedDuration": "9-13 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Lake Solitude is a strenuous, 14.4 mi (23.2 km) RT out and back hike with 2,670 ft (810 m) of elevation gain with an average slope of 9%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
+    "hurricane-pass-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 20,
+      "elevationGainFeet": 4120,
+      "estimatedDuration": "12-16 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Hurricane Pass is a very strenuous, 20 mi (32.2 km) RT out and back hike with 4,120 ft (1,260 m) of elevation gain with an average slope of 9%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
     "taggart-beaver-creek-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
       "checkedAt": "2026-09-05",

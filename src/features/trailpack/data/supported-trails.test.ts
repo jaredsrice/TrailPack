@@ -26,8 +26,8 @@ describe("supported trail inventory", () => {
       "taggart-lake",
       "string-lake-loop",
     ]);
-    expect(Object.keys(TRAIL_CATALOG)).toEqual(TRAIL_DEFINITIONS.map((definition) => definition.trail.id));
-    expect(getTrailsForPark("grand-teton")).toHaveLength(TRAIL_DEFINITIONS.length);
+    expect(Object.keys(TRAIL_CATALOG)).toEqual([...TRAIL_DEFINITIONS.map((definition) => definition.trail.id), "inspiration-point-boat-out", "inspiration-point-boat-back"]);
+    expect(getTrailsForPark("grand-teton")).toHaveLength(TRAIL_DEFINITIONS.length + 2);
   });
 });
 

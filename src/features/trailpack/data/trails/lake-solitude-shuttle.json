@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "lake-solitude-shuttle",
+    "name": "Lake Solitude via Round-trip Shuttle",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.76728173701173, "lng": -110.74407946318388 },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Jenny-Lake-Shuttle.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS West Shore Boat Dock marker. Area forecast reference for the walking start after the crossing; not navigation or uniform conditions on the higher route.",
+    "planningNote": "NPS publishes this as the shorter shuttle-boat hike. Long, steep mountain hike: check current conditions with a backcountry ranger. Allow extra time for boat travel and queues; the dock-area forecast does not represent the higher route.",
+    "accessRoute": {
+      "groupId": "lake-solitude",
+      "groupName": "Lake Solitude",
+      "label": "Round-trip shuttle + hike",
+      "start": "East Shore Boat Dock for the crossing; hike from West Shore Boat Dock",
+      "returnPlan": "Hike back to the west dock, then take the return boat to the east dock.",
+      "distanceScope": "West-dock hiking out and back. Boat crossings and parking-to-dock access are not included.",
+      "transport": "round-trip-shuttle",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/lake-solitude-via-lake-solitude-and-cascade-canyon-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related public Lake Solitude route with different published mileage. Confirm its access before comparing it with this NPS shuttle itinerary."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+    "additionalSources": [{
+      "sourceUrl": "https://www.nps.gov/maps/builder/configs/26a77753-acbd-46eb-95fc-585dbb756eb7.json",
+      "checkedAt": "2026-09-09",
+      "note": "Official NPS activity-map configuration for the Lake Solitude shuttle-boat itinerary."
+    }]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": ["5082", "5117", "5116", "5086", "5093", "5084", "5080", "7353", "4792"],
+    "distanceMiles": 15.02387428907814,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Connected NPS-origin USGS trail segments from the west-dock corridor to Lake Solitude and back total 15.024 mi versus NPS 14.4 mi. Boat travel and dock connectors are excluded. This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-lake-solitude.jpg",
+    "locationName": "Lake Solitude via Round-trip Shuttle",
+    "alt": "A small lake surrounded by mountains reflects the mountainous scenery on its calm surface.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied.",
+    "focalPoint": { "desktop": "50% 50%", "mobile": "55% 50%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Lake Solitude via Round-trip Shuttle", "Lake Solitude Via Shuttle Boat"],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Lake Solitude Via Shuttle Boat"
+  },
+  "profileKind": "public-source-import"
+}

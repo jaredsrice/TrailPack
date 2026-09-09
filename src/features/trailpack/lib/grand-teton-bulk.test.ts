@@ -37,7 +37,7 @@ describe("Grand Teton bulk route admission", () => {
   it("registers the complete reviewed batch without duplicate identities", () => {
     expect(evidence.trails).toHaveLength(24);
     expect(new Set(evidence.trails.map((trail) => trail.id)).size).toBe(24);
-    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(39);
+    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(46);
     const coveredUrls = new Set(Object.values(TRAIL_CATALOG).map((trail) => trail.npsSourceUrl));
     // These two longstanding profiles use NPS Places as their primary source.
     coveredUrls.add("https://www.nps.gov/thingstodo/colterlakeshore.htm");

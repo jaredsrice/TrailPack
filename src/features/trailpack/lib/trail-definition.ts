@@ -60,6 +60,7 @@ export function compileTrail(draft: TrailDraft, park: Pick<SupportedPark, "name"
   const profile: TrailProfile = {
     id: trail.id,
     name: trail.name,
+    ...(trail.accessRoute ? { accessRoute: { ...trail.accessRoute } } : {}),
     ...(trail.planningNote ? { planningNote: trail.planningNote } : {}),
     park: park.name,
     state: park.state,

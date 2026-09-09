@@ -11,13 +11,29 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance."
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance.",
+    "accessRoute": {
+      "groupId": "cascade-canyon-forks",
+      "groupName": "Forks of Cascade Canyon",
+      "label": "Walk via South Jenny Lake",
+      "start": "Jenny Lake Trailhead (south shore)",
+      "returnPlan": "Walk back to the same trailhead; no boat needed.",
+      "distanceScope": "Full walking trip, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/cascade-canyon-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related public Cascade Canyon route; verify its access approach before comparing it with this full South Jenny Lake walking itinerary."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
     "additionalSources": [
       {
-        "sourceUrl": "https://www.nps.gov/maps/builder/configs/703d00ff-d42e-4948-8e56-c6d1a12537c9.json",
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/e3bb0ff3-99c8-4b01-9cb1-1369477aa7f3.json",
         "checkedAt": "2026-09-05",
         "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
       }

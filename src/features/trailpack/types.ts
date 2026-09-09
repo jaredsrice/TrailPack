@@ -25,6 +25,7 @@ export type ConfidenceStatus =
   | "official_nps_with_strong_usgs_bridge"
   | "official_nps_with_moderate_usgs_bridge"
   | "official_nps_with_gain_conflict"
+  | "derived_route_estimate"
   | "need_to_fill";
 
 export type RouteType = "loop" | "out-and-back" | "point-to-point" | "unknown";
@@ -73,7 +74,39 @@ export interface TrailSourceRecord {
   note?: string;
 }
 
+export interface PublicRouteComparison {
+  source: "AllTrails";
+  sourceUrl: string;
+  checkedAt: string;
+  relationship: "counterpart" | "related";
+  summary: string;
+}
+
+/** A complete access itinerary, grouped under a familiar destination name. */
+export interface TrailAccessRoute {
+  groupId: string;
+  groupName: string;
+  label: string;
+  start: string;
+  returnPlan: string;
+  distanceScope: string;
+  transport: "none" | "round-trip-shuttle" | "shuttle-out-walk-back" | "walk-out-shuttle-back";
+  comparison?: PublicRouteComparison;
+}
+
+export interface RouteCalculation {
+  officialFacts: string;
+  method: string;
+  exclusions: string;
+  limitations: string;
+  officialSourceUrl: string;
+  transportSourceUrl: string;
+  geometrySourceUrl: string;
+}
+
 export interface TrailProfile {
+  accessRoute?: TrailAccessRoute;
+  routeCalculation?: RouteCalculation;
   /** Reviewed route/access guidance, separate from live weather and alerts. */
   planningNote?: string;
   id: string;
@@ -88,7 +121,7 @@ export interface TrailProfile {
     lng: number;
   };
   distanceMiles: SourcedValue<number>;
-  elevationGainFeet: SourcedValue<number>;
+  elevationGainFeet: SourcedValue<number | null>;
   estimatedDuration: SourcedValue<string>;
   difficulty: SourcedValue<string>;
   routeType: RouteType;

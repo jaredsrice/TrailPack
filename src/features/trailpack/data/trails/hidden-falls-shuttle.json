@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "hidden-falls-shuttle",
+    "name": "Hidden Falls via Round-trip Shuttle",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.76728173701173, "lng": -110.74407946318388 },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Jenny-Lake-Shuttle.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS West Shore Boat Dock marker. Area forecast reference for the walking start after the crossing; not navigation or uniform conditions along the route.",
+    "planningNote": "NPS publishes this as the shorter shuttle-boat hike. Allow extra time for boat travel, queues and parking-to-dock access.",
+    "accessRoute": {
+      "groupId": "hidden-falls",
+      "groupName": "Hidden Falls",
+      "label": "Round-trip shuttle + hike",
+      "start": "East Shore Boat Dock for the crossing; hike from West Shore Boat Dock",
+      "returnPlan": "Hike back to the west dock, then take the return boat to the east dock.",
+      "distanceScope": "West-dock hiking out and back. Boat crossings and parking-to-dock access are not included.",
+      "transport": "round-trip-shuttle",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/hidden-falls-trail--2",
+        "checkedAt": "2026-09-09",
+        "relationship": "counterpart",
+        "summary": "Comparable public west-dock route to Hidden Falls. NPS remains authoritative for distance, gain and difficulty when public metrics differ."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+    "additionalSources": [{
+      "sourceUrl": "https://www.nps.gov/maps/builder/configs/e26625d6-4771-4d02-bc52-fb9dde7508ff.json",
+      "checkedAt": "2026-09-09",
+      "note": "Official NPS activity-map configuration for the Hidden Falls shuttle-boat itinerary."
+    }]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": ["5082", "5117", "5116", "5086", "5093", "5083"],
+    "distanceMiles": 1.11949702,
+    "distanceMatch": "moderate_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Connected NPS-origin USGS trail segments from the west-dock corridor to Hidden Falls and back total 1.119 mi versus NPS 1.0 mi. Boat travel and dock connectors are excluded. This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-hidden-falls.jpg",
+    "locationName": "Hidden Falls via Round-trip Shuttle",
+    "alt": "Water cascades down a 100 ft waterfall tucked into a forest of conifer trees.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied.",
+    "focalPoint": { "desktop": "50% 50%", "mobile": "47% 50%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Hidden Falls via Round-trip Shuttle", "Hidden Falls Via Shuttle Boat"],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Hidden Falls Via Shuttle Boat"
+  },
+  "profileKind": "public-source-import"
+}

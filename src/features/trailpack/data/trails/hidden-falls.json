@@ -11,13 +11,29 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance."
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance.",
+    "accessRoute": {
+      "groupId": "hidden-falls",
+      "groupName": "Hidden Falls",
+      "label": "Walk via South Jenny Lake",
+      "start": "Jenny Lake Trailhead (south shore)",
+      "returnPlan": "Walk back to the same trailhead; no boat needed.",
+      "distanceScope": "Full walking trip, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/hidden-falls-trail--2",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related public route to Hidden Falls; confirm the selected start and boat use before comparing its mileage with this full South Jenny Lake walking itinerary."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
     "additionalSources": [
       {
-        "sourceUrl": "https://www.nps.gov/maps/builder/configs/e26625d6-4771-4d02-bc52-fb9dde7508ff.json",
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/d3d44f50-0184-4cc5-a00f-ec41b9d954de.json",
         "checkedAt": "2026-09-05",
         "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
       }

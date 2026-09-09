@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "groupId": "inspiration-point",
+  "walkingRouteId": "inspiration-point",
+  "shuttleRouteId": "inspiration-point-shuttle",
+  "checkedAt": "2026-09-07",
+  "reviewedParents": {
+    "walkingDistanceMiles": 5.7,
+    "walkingGainFeet": 870,
+    "shuttleDistanceMiles": 1.8,
+    "shuttleGainFeet": 550
+  },
+  "distanceMiles": 3.7,
+  "mappedDistanceMiles": 3.6878164796093404,
+  "sourceRecordIds": ["5161", "5154", "5160", "5101", "5112", "5108", "5105", "5109", "5089", "5086", "5093", "5084", "5116", "5117", "5082"],
+  "distanceNote": "About 3.7 mi of mapped hiking: one South Jenny Lake leg and one west-dock leg, meeting at Inspiration Point. The optional Hidden Falls spur, boat crossing and parking/dock connectors are excluded. The west-dock land endpoint is about 49 m short of the NPS dock marker. This is a USGS corridor estimate, not a published NPS mixed-route total or a navigation track.",
+  "transportSource": {
+    "sourceUrl": "https://www.nps.gov/places/jenny-lake-west-shore-boat-dock.htm",
+    "checkedAt": "2026-09-09",
+    "note": "NPS documents round-trip and one-way shuttle options in either direction, including walking one leg around the south shore."
+  },
+  "comparison": {
+    "source": "AllTrails",
+    "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/inspiration-point-via-jenny-lake-boat-shuttle",
+    "checkedAt": "2026-09-09",
+    "relationship": "related",
+    "summary": "AllTrails shows the recognizable west-dock approach and Inspiration Point destination, while this option adds one south-shore walking leg and uses the boat only once."
+  },
+  "options": [
+    {
+      "id": "inspiration-point-boat-out",
+      "name": "Inspiration Point — Shuttle Out, Walk Back",
+      "label": "Shuttle out, walk back",
+      "transport": "shuttle-out-walk-back",
+      "start": "East Shore Boat Dock for the crossing; hike from West Shore Boat Dock",
+      "returnPlan": "From Inspiration Point, walk back via the south lakeshore to Jenny Lake Trailhead. No return boat is needed."
+    },
+    {
+      "id": "inspiration-point-boat-back",
+      "name": "Inspiration Point — Walk Out, Shuttle Back",
+      "label": "Walk out, shuttle back",
+      "transport": "walk-out-shuttle-back",
+      "start": "Jenny Lake Trailhead (south shore); walk via the south lakeshore to Inspiration Point",
+      "returnPlan": "Descend to West Shore Boat Dock and take the boat to East Shore Boat Dock before the last return crossing."
+    }
+  ]
+}

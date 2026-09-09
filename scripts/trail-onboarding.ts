@@ -10,6 +10,7 @@ import { TRAIL_DEFINITIONS } from "../src/features/trailpack/data/trails";
 import { NPS_SOURCE_SNAPSHOTS } from "../src/features/trailpack/data/nps-source-snapshots";
 import { defineTrail } from "../src/features/trailpack/lib/trail-definition";
 import { inspectTrailPhoto } from "../src/features/trailpack/lib/trail-photo";
+import { TRAIL_CATALOG_ENTRIES } from "../src/features/trailpack/data/trail-catalog";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const HELP = [
@@ -182,7 +183,14 @@ async function checkCatalog(json: boolean): Promise<number> {
     }
     trails.push({ id: definition.trail.id, ok: !issues.length, issues, warnings: result.warnings, photo });
   }
-  const orphanSnapshots = Object.keys(NPS_SOURCE_SNAPSHOTS.trails).filter((id) => !Object.hasOwn(TRAIL_CATALOG, id));
+  for (const [id, entry] of Object.entries(TRAIL_CATALOG_ENTRIES).filter(([, entry]) => !entry.snapshot)) {
+    const issues: TrailDraftIssue[] = [];
+    let photo: string | undefined;
+    try { photo = await checkPhoto(entry.photo.src); }
+    catch (error) { issues.push({ field: "photo.src", message: errorMessage(error) }); }
+    trails.push({ id, ok: !issues.length, issues, warnings: ["Derived mixed itinerary; parent evidence validated during catalog compilation. No official mixed-route snapshot."], photo });
+  }
+  const orphanSnapshots = Object.keys(NPS_SOURCE_SNAPSHOTS.trails).filter((id) => !Object.hasOwn(TRAIL_CATALOG, id) || !TRAIL_CATALOG_ENTRIES[id].snapshot);
   const ok = trails.every((trail) => trail.ok) && orphanSnapshots.length === 0;
   const scope = "Offline catalog/template consistency and local JPEG checks; source truth and visual acceptance still require review.";
   if (json) console.log(JSON.stringify({ ok, trails, orphanSnapshots, scope }, null, 2));
