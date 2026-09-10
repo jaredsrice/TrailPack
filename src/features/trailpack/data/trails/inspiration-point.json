@@ -11,15 +11,31 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance."
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance.",
+    "accessRoute": {
+      "groupId": "inspiration-point",
+      "groupName": "Inspiration Point",
+      "label": "Walk via South Jenny Lake",
+      "start": "Jenny Lake Trailhead (south shore)",
+      "returnPlan": "Walk back to the same trailhead; no boat needed.",
+      "distanceScope": "Full walking trip, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/inspiration-point-via-jenny-lake-boat-shuttle",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "The public route uses the Jenny Lake boat while this option walks from the south shore and returns on foot."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
     "additionalSources": [
       {
-        "sourceUrl": "https://www.nps.gov/maps/builder/configs/1662f767-6f02-4272-a697-a410e034ad69.json",
-        "checkedAt": "2026-09-05",
-        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/3323a528-c16d-4531-a73f-547e739e5ed5.json",
+        "checkedAt": "2026-09-07",
+        "note": "Official NPS map titled Inspiration Point Via South Jenny Lake Loop Trail. The activity page identifies this approach as an out-and-back; the lake-loop trail name does not make this itinerary a full loop."
       }
     ]
   },

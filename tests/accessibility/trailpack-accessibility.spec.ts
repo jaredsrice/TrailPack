@@ -9,9 +9,131 @@ import {
 import type { LiveAiOutcome } from "../../src/features/trailpack/lib/ai-contract";
 import type { AlertContext } from "../../src/features/trailpack/types";
 import { TRAIL_CATALOG } from "../../src/features/trailpack/data/trail-catalog";
+import { TRAIL_GROUPS } from "../../src/features/trailpack/lib/trail-groups";
 import { TRAIL_POPULARITY_STORAGE_KEY } from "../../src/features/trailpack/lib/trail-popularity";
 
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
+
+for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+  test(`mixed routes keep direction, estimates and guest generation at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await mockWeather(page);
+    await mockAlerts(page);
+    const requests: Array<{ trail: { id: string; elevationGainFeet: number | null; distanceIsEstimate: boolean } }> = [];
+    await page.route("**/api/trailpack/ai-review", (route) => {
+      const body = route.request().postDataJSON();
+      requests.push(body.input);
+      return route.fulfill({ status: 401, contentType: "application/json", body: signedOutReviewBody(body.input.trail.name) });
+    });
+    await page.goto("/");
+    await page.getByRole("button", { name: /Grand Teton National Park Wyoming 39 trails/ }).click();
+    await page.locator(".park-trail-button").filter({ hasText: "Inspiration Point" }).click();
+    const chooser = page.getByLabel("Access route", { exact: true });
+    await expect(chooser.locator("option")).toHaveCount(5);
+    for (const [id, itemName, reminder] of [
+      ["inspiration-point-boat-out", "Outbound boat plan", "no return boat is needed"],
+      ["inspiration-point-boat-back", "Return boat plan", "last west-dock departure"],
+    ]) {
+      await chooser.selectOption(id);
+      await expect(page.locator("#packing-list-heading")).toHaveCount(0);
+      await expect(page.locator(".route-distance-summary")).toHaveText("~3.7 mi hiking · Mixed walk + boat · complete itinerary");
+      await expect(page.locator(".route-transport-warning")).toContainText(reminder);
+      await expect(page.locator("#trail-profile").getByText("Calculated route", { exact: true })).toBeVisible();
+      const calculation = page.getByText("How was this calculated?", { exact: true });
+      const calculationDetails = page.locator(".route-evidence-details").filter({ hasText: "How was this calculated?" });
+      await expect(calculation).toBeVisible();
+      await expect(calculationDetails).not.toHaveAttribute("open", "");
+      await calculation.click();
+      await expect(calculationDetails).toHaveAttribute("open", "");
+      await expect(page.getByText("Calculated distance:", { exact: true })).toBeVisible();
+      const relatedRoute = page.getByText("Related route—not the same itinerary:", { exact: true });
+      const comparisonDetails = page.locator(".route-evidence-details").filter({ hasText: "Comparing with AllTrails?" });
+      await expect(comparisonDetails).not.toHaveAttribute("open", "");
+      await page.getByText("Comparing with AllTrails?", { exact: true }).click();
+      await expect(comparisonDetails).toHaveAttribute("open", "");
+      await expect(relatedRoute).toBeVisible();
+      await expect(page.locator("#trail-profile").getByText("Verified NPS + USGS profile", { exact: true })).toHaveCount(0);
+      const gain = page.locator(".profile-stat").filter({ hasText: "Elevation gain" });
+      await expect(gain).toContainText("Unverified");
+      await expect(gain).not.toContainText("Official (NPS)");
+      const distance = page.locator(".profile-stat").filter({ hasText: "Distance" });
+      await expect(distance).toContainText("Mapped hiking estimate");
+      await expect(distance).not.toContainText("Official (NPS)");
+      await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
+      await page.getByRole("button", { name: "Generate packing list" }).click();
+      await expect(page.getByText(itemName, { exact: true })).toBeVisible();
+      await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
+      await expectNoAccessibilityViolations(page);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+    }
+    expect(requests.map((request) => request.trail)).toEqual([
+      expect.objectContaining({ id: "inspiration-point-boat-out", elevationGainFeet: null, distanceIsEstimate: true }),
+      expect.objectContaining({ id: "inspiration-point-boat-back", elevationGainFeet: null, distanceIsEstimate: true }),
+    ]);
+  });
+}
+
+for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+  test(`access routes require a choice and clear stale output at ${viewport.width}px`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    const requests: Array<{ trail: { id: string; distanceMiles: number; elevationGainFeet: number } }> = [];
+    await mockWeather(page);
+    await mockAlerts(page);
+    await page.route("**/api/trailpack/ai-review", async (route) => {
+      const body = route.request().postDataJSON();
+      requests.push(body.input);
+      if (requests.length === 1) await new Promise((resolve) => setTimeout(resolve, 1200));
+      try {
+        await route.fulfill({ status: 401, contentType: "application/json", body: signedOutReviewBody(body.input.trail.name) });
+      } catch { /* Switching routes may abort the older request. */ }
+    });
+    await page.goto("/");
+    await page.getByRole("button", { name: /Grand Teton National Park Wyoming 39 trails/ }).click();
+    await expect(page.locator(".park-trail-button").filter({ hasText: "Inspiration Point" })).toHaveCount(1);
+    await page.locator(".park-trail-button").filter({ hasText: "Inspiration Point" }).click();
+    const chooser = page.getByLabel("Access route", { exact: true });
+    await expect(chooser).toHaveValue("");
+    await expect(page.locator("#trail-profile-heading")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Generate packing list" })).toHaveCount(0);
+    expect(requests).toHaveLength(0);
+    await expectNoAccessibilityViolations(page);
+
+    await chooser.focus();
+    await chooser.press("w");
+    await chooser.press("Tab");
+    await expect(chooser).toHaveValue("inspiration-point");
+    await expect(page.locator(".route-distance-summary")).toHaveText("5.7 mi · Out-and-back · return included");
+    await page.getByLabel(/When do you plan to hike/i).fill("2026-09-08");
+    await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
+    expect(requests).toHaveLength(0);
+    await page.getByRole("button", { name: "Generate packing list" }).click();
+    await expect.poll(() => requests.length).toBe(1);
+    await chooser.selectOption("inspiration-point-shuttle");
+    await expect(page.locator("#packing-list-heading")).toHaveCount(0);
+    await expect(page.getByRole("status").filter({ hasText: "Access route changed" })).toBeVisible();
+    await expect(page.getByLabel(/When do you plan to hike/i)).toHaveValue("2026-09-08");
+    await expect(page.locator(".route-distance-summary")).toHaveText("1.8 mi · Out-and-back · return included");
+    await expect(page.locator(".route-transport-warning")).toContainText("Boat required both ways");
+    expect(requests).toHaveLength(1);
+    await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
+    await page.getByRole("button", { name: "Generate packing list" }).click();
+    await expect(page.locator("#packing-list-heading")).toContainText("Inspiration Point via Round-trip Shuttle");
+    await expect(page.getByText("Return boat plan", { exact: true })).toBeVisible();
+    await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
+    await page.waitForTimeout(1300);
+    expect(requests.map((input) => input.trail)).toEqual([
+      expect.objectContaining({ id: "inspiration-point", distanceMiles: 5.7, elevationGainFeet: 870 }),
+      expect.objectContaining({ id: "inspiration-point-shuttle", distanceMiles: 1.8, elevationGainFeet: 550 }),
+    ]);
+    await expect(page.locator("#packing-list-heading")).toContainText("Round-trip Shuttle");
+    await expect(page.getByRole("button", { name: "Packing list is current" })).toBeDisabled();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+    await expectNoAccessibilityViolations(page);
+    expect(errors).toEqual([]);
+  });
+}
 
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
   // Every shared-template admission without an inherited demo fixture gets
@@ -45,7 +167,8 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await page.goto("/");
       await expect(page).toHaveTitle(/TrailPack/);
       await page.getByRole("searchbox", { name: /Search a park or trail/i }).fill(trail.name);
-      await page.locator(".suggestion-button").filter({ has: page.getByText(trail.name, { exact: true }) }).click();
+      await page.locator(".suggestion-button").filter({ has: page.getByText(trail.accessRoute?.groupName ?? trail.name, { exact: true }) }).click();
+      if (trail.accessRoute) await page.getByLabel("Access route", { exact: true }).selectOption(id);
       await expect(page.locator("#trail-profile-heading")).toContainText(trail.name);
       if (trail.accessibility) {
         await expect(page.getByRole("complementary", { name: "Accessibility and terrain" })).toContainText(trail.accessibility.value);
@@ -593,7 +716,7 @@ test("supported park browser opens the complete park trail list", async ({
   await page.goto("/");
   const parkButton = page.getByRole("button", {
     name: new RegExp(
-      `Grand Teton National Park Wyoming ${Object.keys(TRAIL_CATALOG).length} trails`,
+      `Grand Teton National Park Wyoming ${Object.keys(TRAIL_GROUPS).length} trails`,
       "i",
     ),
   });
@@ -601,7 +724,7 @@ test("supported park browser opens the complete park trail list", async ({
   await parkButton.click();
 
   await expect(page.getByRole("heading", { level: 1, name: "Grand Teton National Park" })).toBeVisible();
-  await expect(page.locator(".park-trail-button")).toHaveCount(Object.keys(TRAIL_CATALOG).length);
+  await expect(page.locator(".park-trail-button")).toHaveCount(Object.keys(TRAIL_GROUPS).length);
   await expect(page.getByRole("button", { name: /Bearpaw and Trapper Lakes/i })).toBeVisible();
   await expectNoAccessibilityViolations(page);
 });
@@ -632,7 +755,10 @@ test("park search returns to search and opens the selected trail", async ({
     page.getByRole("button", { name: /Two Ocean Lake Loop/i }),
   ).toBeVisible();
   await expect(page.locator(".park-trail-source")).toHaveText(
-    Array(Object.keys(TRAIL_CATALOG).length).fill("Verified NPS + USGS profile"),
+    Object.values(TRAIL_GROUPS).map((group) =>
+      group.routes.some((route) => route.distanceMiles.label === "inferred")
+        ? "NPS profiles + calculated routes"
+        : "Verified NPS + USGS profile"),
   );
   await expectNoAccessibilityViolations(page);
 

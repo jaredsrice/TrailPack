@@ -10,7 +10,23 @@
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "accessRoute": {
+      "groupId": "moose-ponds",
+      "groupName": "Moose Ponds",
+      "label": "Short out-and-back",
+      "start": "Jenny Lake Trailhead",
+      "returnPlan": "Return along the same approach.",
+      "distanceScope": "Full out-and-back, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/moose-ponds-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "The public route follows the longer pond loop; this option is the NPS out-and-back."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",

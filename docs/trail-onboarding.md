@@ -2,8 +2,8 @@
 
 Use **one draft, one checker, and a reviewed pull request**. The tools collect
 the repeated data in one place and prepare matching entries; they never change
-the live catalog or publish a trail automatically. All thirteen current-source trails,
-including the original five, now use this same structure.
+the live catalog or publish a trail automatically. All current-source route
+profiles, including the original five, use this same structure.
 
 Approved metadata lives in one JSON file per trail under
 [`data/trails/`](../src/features/trailpack/data/trails/). Refreshable official
@@ -68,6 +68,46 @@ The catalog check is read-only and also identifies orphaned NPS snapshots.
 Tests additionally require every JSON definition to be registered exactly once.
 
 ## What to fill in
+
+### Adding another way to reach an existing destination
+
+Use a **new definition and ID for the complete itinerary**, not a second distance
+inside an old profile. Keep the existing ID and facts unchanged for saved lists.
+The [walking example](../src/features/trailpack/data/trails/inspiration-point.json)
+and [shuttle example](../src/features/trailpack/data/trails/inspiration-point-shuttle.json)
+show optional `trail.accessRoute` fields: shared `groupId`/`groupName`, a short
+approach `label`, `start`, `returnPlan`, `distanceScope` and `transport`.
+
+Use the original route ID as the group ID on both entries. Matching groups must
+have the same name and park, distinct approach labels, and retain that original
+route. NPS-published definitions support `none` and `round-trip-shuttle` transport
+plans. Do not relabel a mixed boat/walking trip to fit this official-facts template.
+Every NPS-published option needs its own source section, comparison, coordinates and
+managed NPS snapshot. `metricSectionHeading` selects the exact NPS access section
+when one activity page describes several ways to hike.
+
+NPS round-trip miles are already the full out-and-back. Do not double them, halve
+them, or infer a loop from a trail's name. State what the total excludes, such
+as parking-to-dock access. A source's page-wide duration is not a guaranteed time
+for one option. See [the route-identity decision](adr/0002-complete-access-route-identity.md).
+
+For a mixed itinerary without published NPS totals, use the separate
+[mixed example](../src/features/trailpack/data/access-itineraries/inspiration-point-mixed.json).
+It references admitted walking/shuttle parents, records the reviewed parent
+facts and mapped land-only total, and defines both directional options. It
+inherits the corresponding walking-start weather point and reviewed photograph.
+It does **not** create an official snapshot. Keep source segment IDs and original
+geometry; add a test that reconstructs distance and joins the correct endpoints.
+Do not derive ascent from 2D geometry or average the parents' gains.
+
+The mixed compiler checks those references and blocks changed parent facts until
+review. `trail:check -- --catalog` covers the derived entries and their photos;
+the live NPS checker covers their parents, not invented mixed-route values.
+Run the mixed-route tests as well. Unknown gain stays unverified in the UI,
+review request and saved list. The direction must be `shuttle-out-walk-back` or
+`walk-out-shuttle-back`, with the correct boat-service/last-return reminder.
+
+### Shared fields
 
 | Section | What belongs here |
 |---|---|

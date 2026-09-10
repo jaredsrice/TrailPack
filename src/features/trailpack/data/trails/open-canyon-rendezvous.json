@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "open-canyon-rendezvous",
+    "name": "Open Canyon from Rendezvous Mountain",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.59684592841692,
+      "lng": -110.87165907025337
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Rendezvous Mountain Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
+    "planningNote": "Very strenuous one-way high-elevation hike. Confirm tram or resort-trail access, operating schedule, snow conditions and a complete transport plan before leaving.",
+    "accessRoute": {
+      "groupId": "open-canyon",
+      "groupName": "Open Canyon",
+      "label": "Rendezvous Mountain to Teton Village",
+      "start": "Rendezvous Mountain Trailhead",
+      "returnPlan": "Finish at Teton Village. Arrange access to the summit before starting; the published route is one-way.",
+      "distanceScope": "One-way summit-to-village hike; summit access is separate.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-open-canyon-loop",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related Granite and Open Canyon loop. This option follows the NPS summit-to-village point-to-point itinerary."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/e7b9b8d6-8739-4607-b2c4-a5bf3f01149e.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+        "checkedAt": "2026-09-05",
+        "note": "NPS reports the old trailhead closed to all traffic and says relocation will lengthen hikes. Saved route statistics must be re-reviewed for the new start; alternative access has different distances."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": [
+      "7298",
+      "7282",
+      "7276",
+      "7309",
+      "4854",
+      "4838",
+      "7341",
+      "7340",
+      "7286",
+      "4836",
+      "4844",
+      "4843"
+    ],
+    "distanceMiles": 19.216839718,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS summit, Mount Hunt, Open Canyon and Valley Trail corridor, including a clipped Granite Canyon junction, totals 19.217 mi (-0.9% versus NPS). Corridor evidence only, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-phelps-lake-death-canyon.jpg",
+    "locationName": "Open Canyon from Rendezvous Mountain",
+    "alt": "A lake sits at the base of a mountain canyon with a near perfect reflection on its calm surface.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling. Shared lake-area photo, not a claim that it shows the overlook or upper canyon.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Open Canyon from Rendezvous Mountain",
+      "Rendezvous Mountain Trailhead"
+    ],
+    "skipRouteTypeReason": "The selected NPS metric explicitly states one-way point-to-point; route-type parsing is reviewed manually for this variant.",
+    "metricSectionHeading": "Rendezvous Mountain Trailhead"
+  },
+  "profileKind": "public-source-import"
+}

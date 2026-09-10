@@ -20,6 +20,11 @@ snapshot. A small pure compiler combines the two and derives the runtime
 profile, park membership, photograph, source policy, and unknown-data fallback.
 Both original and newly admitted trails use this path.
 
+The [complete access-route decision](0002-complete-access-route-identity.md)
+extends this for reviewed mixed itineraries without published NPS totals. Those
+definitions reference admitted parents and produce labeled estimates, not new
+official snapshots; the original NPS publisher boundary remains intact.
+
 The offline checker owns detailed schema and local-photo validation; the runtime
 compiler does not import that validator. Catalog tests require exact registration,
 matching source URLs, no orphan snapshots, and complete downstream records.

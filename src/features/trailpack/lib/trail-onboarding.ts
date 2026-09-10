@@ -3,7 +3,7 @@ import type { DemoScenario } from "../data/demo-contexts";
 import type { NpsSourceSnapshot } from "../data/nps-source-snapshots";
 import type { ParkPhoto } from "../data/park-images";
 import type { SupportedPark } from "../data/supported-trails";
-import type { SourceConfidence, TrailProfile } from "../types";
+import type { SourceConfidence, TrailProfile, TrailAccessRoute } from "../types";
 import type { NpsIntegrityFieldName } from "./nps-source-integrity";
 
 type DistanceMatch = "ok" | "strong_bridge" | "moderate_bridge";
@@ -20,6 +20,7 @@ export interface TrailDraft {
     coordinateCheckedAt: string;
     coordinateNote: string;
     planningNote?: string;
+    accessRoute?: TrailAccessRoute;
   };
   official: {
     sourceUrl: string;
@@ -207,7 +208,25 @@ export function checkTrailDraft(input: unknown, options: TrailDraftOptions): Tra
 
   const root = object(input, "", ["schemaVersion", "trail", "official", "comparison", "photo", "sourceCheck"]);
   if (root.schemaVersion !== 1) add("schemaVersion", "Use schemaVersion 1 from the current template.");
-  const trail = object(root.trail, "trail", ["id", "name", "parkId", "coordinates", "coordinateSourceUrl", "coordinateCheckedAt", "coordinateNote", "planningNote"]);
+  const trail = object(root.trail, "trail", ["id", "name", "parkId", "coordinates", "coordinateSourceUrl", "coordinateCheckedAt", "coordinateNote", "planningNote", "accessRoute"]);
+  if (trail.accessRoute !== undefined) {
+    const access = object(trail.accessRoute, "trail.accessRoute", ["groupId", "groupName", "label", "start", "returnPlan", "distanceScope", "transport", "comparison"]);
+    if (text(access.groupId, "trail.accessRoute.groupId", 1, 80) && !isTrailDraftId(access.groupId)) {
+      add("trail.accessRoute.groupId", "Use a stable lowercase hyphenated group ID.");
+    }
+    for (const field of ["groupName", "label", "start", "returnPlan", "distanceScope"]) {
+      text(access[field], "trail.accessRoute." + field, 3, 300);
+    }
+    choice(access.transport, "trail.accessRoute.transport", ["none", "round-trip-shuttle"]);
+    if (access.comparison !== undefined) {
+      const comparison = object(access.comparison, "trail.accessRoute.comparison", ["source", "sourceUrl", "checkedAt", "relationship", "summary"]);
+      choice(comparison.source, "trail.accessRoute.comparison.source", ["AllTrails"]);
+      url(comparison.sourceUrl, "trail.accessRoute.comparison.sourceUrl", ["alltrails.com"]);
+      date(comparison.checkedAt, "trail.accessRoute.comparison.checkedAt");
+      choice(comparison.relationship, "trail.accessRoute.comparison.relationship", ["counterpart", "related"]);
+      text(comparison.summary, "trail.accessRoute.comparison.summary", 20, 700);
+    }
+  }
   if (trail.planningNote !== undefined) text(trail.planningNote, "trail.planningNote", 10, 700);
   if (text(trail.id, "trail.id", 1, 80) && !isTrailDraftId(trail.id)) {
     add("trail.id", "Use a lowercase hyphenated ID, for example example-lake-loop. No spaces or path separators.");

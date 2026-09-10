@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "cascade-canyon-forks-shuttle",
+    "name": "Forks of Cascade Canyon via Round-trip Shuttle",
+    "parkId": "grand-teton",
+    "coordinates": { "lat": 43.76728173701173, "lng": -110.74407946318388 },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Jenny-Lake-Shuttle.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS West Shore Boat Dock marker. Area forecast reference for the walking start after the crossing; not navigation or uniform conditions along the route.",
+    "planningNote": "NPS publishes this as the shorter shuttle-boat hike. Allow extra time for boat travel, queues and parking-to-dock access.",
+    "accessRoute": {
+      "groupId": "cascade-canyon-forks",
+      "groupName": "Forks of Cascade Canyon",
+      "label": "Round-trip shuttle + hike",
+      "start": "East Shore Boat Dock for the crossing; hike from West Shore Boat Dock",
+      "returnPlan": "Hike back to the west dock, then take the return boat to the east dock.",
+      "distanceScope": "West-dock hiking out and back. Boat crossings and parking-to-dock access are not included.",
+      "transport": "round-trip-shuttle",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/cascade-canyon-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "counterpart",
+        "summary": "Comparable public Cascade Canyon route using Jenny Lake boat access. Confirm its endpoint and metrics; NPS facts remain authoritative here."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+    "additionalSources": [{
+      "sourceUrl": "https://www.nps.gov/maps/builder/configs/703d00ff-d42e-4948-8e56-c6d1a12537c9.json",
+      "checkedAt": "2026-09-09",
+      "note": "Official NPS activity-map configuration for the Cascade Canyon shuttle-boat itinerary."
+    }]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": ["5082", "5117", "5116", "5086", "5093", "5084", "5080"],
+    "distanceMiles": 9.49003762,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Connected NPS-origin USGS trail segments from the west-dock corridor to the Forks and back total 9.490 mi versus NPS 9.4 mi. Boat travel and dock connectors are excluded. This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-cascade-canyon-forks.jpg",
+    "locationName": "Forks of Cascade Canyon via Round-trip Shuttle",
+    "alt": "A creek runs along a rocky trail in the middle of a mountain canyon.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied.",
+    "focalPoint": { "desktop": "50% 55%", "mobile": "62% 55%" }
+  },
+  "sourceCheck": {
+    "aliases": ["Forks of Cascade Canyon via Round-trip Shuttle", "Forks of Cascade Canyon Via Shuttle Boat"],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Forks of Cascade Canyon Via Shuttle Boat"
+  },
+  "profileKind": "public-source-import"
+}

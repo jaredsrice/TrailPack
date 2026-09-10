@@ -25,6 +25,12 @@ The complete selected hike, including its start, destination or turnaround,
 return path, and any transport assumptions such as a round-trip shuttle boat.
 _Avoid_: viewpoint alone, trailhead alone, travel direction
 
+**Mixed access route**:
+A complete itinerary combining one walking approach and one boat crossing.
+The walking distance excludes boat travel; direction determines whether the
+boat is needed before the hike or for its return.
+_Avoid_: half-distance hike, round-trip shuttle, walking loop
+
 **Curated profile**:
 One of the original manually validated trail profiles.
 _Avoid_: hard-coded trail, default trail
@@ -36,8 +42,9 @@ profile retains source records, retrieval status, confidence, and missing fields
 _Avoid_: live result, scraped trail, automatic import
 
 **Trail profile**:
-The normalized description of one supported trail, including display stats,
-provenance, and confidence notes.
+The normalized description of one complete access route, including its display
+stats, provenance, and confidence notes. A supported trail can have several
+profiles when hikers must choose between different complete itineraries.
 _Avoid_: trail object, raw trail data, record
 
 **Trail onboarding draft**:
@@ -47,9 +54,9 @@ _Avoid_: approved trail, automatic import, live lookup
 
 **Approved trail definition**:
 The reviewed identity, geometry comparison, coordinate provenance, photograph,
-and source-check metadata for one catalog trail. Combined with its managed NPS
-facts, it produces the same profile and supporting records for both original
-and newly admitted trails. A definition alone is not live condition evidence.
+and source-check metadata for one complete access route. Published routes use
+managed NPS facts; mixed routes can instead carry explicitly derived estimates.
+A definition alone is not live condition evidence.
 _Avoid_: second official snapshot, runtime lookup, independent photo registry
 
 **Managed NPS snapshot**:
@@ -99,6 +106,12 @@ _Avoid_: ground truth, final value
 A derived trail fact from a secondary source such as USGS, shown separately from
 official values when it is useful for comparison or gap-filling.
 _Avoid_: replacement value, exact match
+
+**Derived itinerary estimate**:
+A planning value assembled from reviewed route evidence when NPS does not
+publish that complete itinerary's total. An unverified gain stays unknown,
+not zero or an average of other routes' gains.
+_Avoid_: official mixed-route value, measured ascent
 
 **Source confidence**:
 The explanation of how comfortable TrailPack is showing the current trail facts,

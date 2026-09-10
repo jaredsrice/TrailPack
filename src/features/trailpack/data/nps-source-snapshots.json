@@ -1,7 +1,57 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-05",
+  "updatedAt": "2026-09-09",
   "trails": {
+    "inspiration-point-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+      "checkedAt": "2026-09-07",
+      "distanceMiles": 1.8,
+      "elevationGainFeet": 550,
+      "estimatedDuration": "2-4 hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Inspiration Point is an easy, 1.8 mi (2.9 km) RT out and back hike with 550 ft (170 m) of elevation gain with an average slope of 16%. The trail is dirt with several sections of rock stairs and exposed roots. The trail crosses exposed rock and features several steep switchbacks."
+    },
+    "hidden-falls-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 1,
+      "elevationGainFeet": 300,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "out-and-back",
+      "accessibility": "Hidden Falls is an easy, 1 mi (1.6 km) RT out and back hike with 300 ft (90 m) of elevation gain with an average slope of 16%. The trail is dirt with sections of rock steps and exposed obstacles, such as roots and rocks."
+    },
+    "cascade-canyon-forks-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 9.4,
+      "elevationGainFeet": 1480,
+      "estimatedDuration": "5-9 Hours",
+      "difficulty": "Moderately Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Cascade Canyon is a moderately strenuous, 9.4 mi (15.1 km) RT out and back hike with 1,480 ft (450 m) of elevation gain with an average slope of 9%."
+    },
+    "lake-solitude-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 14.4,
+      "elevationGainFeet": 2670,
+      "estimatedDuration": "9-13 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Lake Solitude is a strenuous, 14.4 mi (23.2 km) RT out and back hike with 2,670 ft (810 m) of elevation gain with an average slope of 9%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
+    "hurricane-pass-shuttle": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 20,
+      "elevationGainFeet": 4120,
+      "estimatedDuration": "12-16 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Hurricane Pass is a very strenuous, 20 mi (32.2 km) RT out and back hike with 4,120 ft (1,260 m) of elevation gain with an average slope of 9%. The trail crosses several bridges. Trail obstacles include steps, exposed roots and rocks, narrow sections, and steep switchbacks."
+    },
     "taggart-beaver-creek-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
       "checkedAt": "2026-09-05",
@@ -389,6 +439,66 @@
       "difficulty": "Very Strenuous",
       "routeType": "out-and-back",
       "accessibility": "Open Canyon is a very strenuous, 14.8 mi (23.8 km) RT hike with 3,820 ft (1,160 m) of elevation gain 13%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "grand-view-point-jackson-lodge": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 5.8,
+      "elevationGainFeet": 950,
+      "estimatedDuration": "1-4 Hours",
+      "difficulty": "Moderate",
+      "routeType": "out-and-back",
+      "accessibility": "Grand View Point is a moderate, 5.8 mi (9.3 km) RT out and back hike with 950 ft (290 m) of elevation gain and an average slope of 13%. The trail includes steep switchbacks, narrow sections passing through dense underbrush, and exposed rocks and roots."
+    },
+    "moose-ponds-loop": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 3.4,
+      "elevationGainFeet": 170,
+      "estimatedDuration": "1-3 Hours",
+      "difficulty": "Easy",
+      "routeType": "loop",
+      "accessibility": "Moose Ponds Loop is an easy, 3.4 mi (5.5 km) RT lollipop loop with 170 ft (50 m) of elevation gain with an average slope of 8%. The dirt trail is relatively flat for the first quarter-mile but features obstacles, such as exposed roots and rock. A short but steep hill is required to view Moose Ponds."
+    },
+    "granite-canyon-valley-trail": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 15,
+      "elevationGainFeet": 3250,
+      "estimatedDuration": "7-11 Hours",
+      "difficulty": "Strenuous",
+      "routeType": "out-and-back",
+      "accessibility": "Granite Canyon is a strenuous, 15.0 mi (24.1 km) RT hike with 3,250 ft (990 m) of elevation gain and an average slope of 11%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "granite-canyon-rendezvous": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 12.9,
+      "elevationGainFeet": 1480,
+      "estimatedDuration": "7-11 Hours",
+      "difficulty": "Moderately Strenuous",
+      "routeType": "point-to-point",
+      "accessibility": "Granite Canyon is a moderately strenuous, 12.9 mi (20.8 km) one-way point-to-point hike with 1,480 ft (450 m) of elevation gain and 5,520 ft (1,680 m) of elevation loss and an average slope of 13%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "marion-lake-rendezvous": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 14.7,
+      "elevationGainFeet": 3990,
+      "estimatedDuration": "9-13 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "loop",
+      "accessibility": "Marion Lake is a very strenuous, 14.7 mi (23.7 km) RT loop hike with 3,990 ft (1,220 m) of elevation gain and an average slope of 11%. The trail is often narrow, steep, and includes steps and switchbacks."
+    },
+    "open-canyon-rendezvous": {
+      "sourceUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
+      "checkedAt": "2026-09-09",
+      "distanceMiles": 19.4,
+      "elevationGainFeet": 3440,
+      "estimatedDuration": "7-14 Hours",
+      "difficulty": "Very Strenuous",
+      "routeType": "point-to-point",
+      "accessibility": "Open Canyon is a very strenuous, 19.4 mi (31.2 km) one-way point-to-point hike with 3,440 ft (1,050 m) of elevation gain and an average slope of 10%. The trail is often narrow, steep, and includes steps and switchbacks."
     }
   }
 }

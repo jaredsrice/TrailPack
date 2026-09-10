@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "inspiration-point-shuttle",
+    "name": "Inspiration Point via Round-trip Shuttle",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.76728173701173,
+      "lng": -110.74407946318388
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Jenny-Lake-Shuttle.json",
+    "coordinateCheckedAt": "2026-09-07",
+    "coordinateNote": "Official NPS West Shore Boat Dock marker, approximately 49 m from the USGS land-trail endpoint. Area forecast reference for the walking start after the crossing; not navigation or uniform conditions at the viewpoint.",
+    "planningNote": "NPS gives a page-wide 2–4 hour range, not a shuttle-specific time guarantee. Allow extra time for boat travel, queues and parking-to-dock access.",
+    "accessRoute": {
+      "groupId": "inspiration-point",
+      "groupName": "Inspiration Point",
+      "label": "Round-trip shuttle + hike",
+      "start": "East Shore Boat Dock for the crossing; hike from West Shore Boat Dock",
+      "returnPlan": "Hike back to the west dock, then take the return boat to the east dock.",
+      "distanceScope": "West-dock hiking out and back. Boat crossings and parking-to-dock access are not included.",
+      "transport": "round-trip-shuttle",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/inspiration-point-via-jenny-lake-boat-shuttle",
+        "checkedAt": "2026-09-09",
+        "relationship": "counterpart",
+        "summary": "Comparable public route using the Jenny Lake shuttle and the west-dock hike to Inspiration Point. NPS values remain authoritative when public metrics differ."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/1662f767-6f02-4272-a697-a410e034ad69.json",
+        "checkedAt": "2026-09-07",
+        "note": "Official NPS shuttle map, distinct from the South Jenny Lake walking approach. Its old CARTO line service is unavailable; the USGS comparison follows the connected west-dock/Hidden Falls corridor, not a claimed exact reconstruction of that unavailable layer."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-07",
+    "sourceRecordIds": [
+      "5082",
+      "5117",
+      "5116",
+      "5086",
+      "5093",
+      "5083",
+      "5084"
+    ],
+    "distanceMiles": 1.852,
+    "distanceMatch": "moderate_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Connected USGS west-dock land junction to Hidden Falls spur and Inspiration Point, returning on the same corridor: approximately 1.852 mi versus NPS 1.8 mi. The mapped land trail stops about 49 m short of the NPS dock marker; that dock connector and boat travel are not measured. This is a corridor comparison, not a navigation track or an exact recreation of the unavailable NPS CARTO layer.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-inspiration-point.jpg",
+    "locationName": "Inspiration Point",
+    "alt": "Hikers walk up a rocky trail with a cliff on the right.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "40% 60%",
+      "mobile": "30% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Inspiration Point via Round-trip Shuttle",
+      "Inspiration Point Via Shuttle Boat"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Inspiration Point Via Shuttle Boat"
+  },
+  "profileKind": "public-source-import"
+}

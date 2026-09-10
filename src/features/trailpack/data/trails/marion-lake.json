@@ -11,7 +11,23 @@
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
     "coordinateNote": "Official NPS Granite Canyon Trailhead marker; 2.9 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment.",
+    "accessRoute": {
+      "groupId": "marion-lake",
+      "groupName": "Marion Lake",
+      "label": "Granite Canyon Trailhead",
+      "start": "Granite Canyon Trailhead",
+      "returnPlan": "Return along the same approach.",
+      "distanceScope": "Full out-and-back, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/teton-crest-trail-granite-canyon-to-marion-lake",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Same Granite Canyon access and lake, but the public map continues beyond the NPS lake turnaround."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",

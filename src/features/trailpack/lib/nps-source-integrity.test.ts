@@ -149,8 +149,8 @@ describe("checkNpsSourceIntegrity", () => {
     expect(report.results[0].status).toBe("unchanged");
   });
 
-  it("has an explicit policy for every supported catalog profile", () => {
-    const profiles = Object.values(TRAIL_CATALOG);
+  it("has an explicit policy for every NPS-backed catalog profile", () => {
+    const profiles = Object.values(TRAIL_CATALOG).filter((profile) => profile.distanceMiles.label === "official");
     const snapshots = profiles.map((profile) =>
       snapshot(profile.id, fixture("missing-fields.html"), profile.npsSourceUrl),
     );

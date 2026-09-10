@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Consolidated Grand Teton expansion passes local source/build and desktop/mobile checks; hosted Preview and owner release approval remain pending |
-| Supported catalog | 39 reviewed Grand Teton itineraries in the current source; the expansion is not yet released |
+| Active track | Priority 1 route coverage is implemented: five Jenny Lake destinations have walking/shuttle choices, Inspiration Point has both mixed directions, and six additional NPS access variants are grouped under their destinations. Merge approval remains pending |
+| Supported catalog | 39 discovery entries and 52 route profiles (50 NPS-backed, 2 calculated estimates) in the current source; the expansion and access choices are not yet released |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -36,6 +36,13 @@ distinct generated lists per account per hour.
    browser for hikers who do not yet know a trail name.
 2. Review verified trail facts, source labels, available NPS accessibility or
    terrain guidance, and current NPS alerts when the live service is available.
+   Hidden Falls, Inspiration Point, Forks of Cascade Canyon, Lake Solitude and
+   Hurricane Pass first ask you to choose the south-shore walk or round-trip
+   boat. Inspiration Point also offers shuttle out/walk back and walk out/shuttle
+   back. Mixed options show
+   estimated hiking mileage and unverified gain, with direction-specific boat
+   reminders. Boat travel and parking/dock access are excluded. Changing approach clears
+   the previous list and review until you generate again.
 3. Load a date-aware Open-Meteo forecast with daylight and planned-start
    markers, with clearly labeled saved fallbacks when available, or explicit
    unknown weather when no saved example exists.
@@ -71,7 +78,8 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
-The current source contains 39 Grand Teton itineraries using the same reviewed
+The current source contains 52 Grand Teton route profiles, grouped into 39
+discovery entries, using the same reviewed
 definition format. The two Taggart loops and 24-route consolidated expansion
 await release approval; local admission does not mean deployed or currently open.
 
@@ -93,16 +101,24 @@ await release approval; local admission does not mean deployed or currently open
 | Leigh Lake | Official NPS facts; shared NPS approach plus two USGS segments, retraced on return | Available |
 | Bearpaw and Trapper Lakes | Official NPS facts; shared NPS approach plus four USGS segments to Trapper Lake, retraced on return | Available |
 
-The remaining 24 profiles cover Grand View Point, Emma Matilda and the combined
+The consolidated profiles cover Grand View Point, Emma Matilda and the combined
 Two Ocean loop, Signal Mountain, Holly Lake, Paintbrush–Cascade, Moose Ponds,
 Hidden Falls, Inspiration Point, Cascade Canyon, Lake Solitude, Hurricane Pass,
 Surprise–Amphitheater, Garnet Canyon, Murie Ranch, Aspen–Boulder Ridge, the Death
 Canyon approaches, Valley Trail, Granite Canyon, Marion Lake, and Open Canyon.
+Six additional profiles cover the NPS-published Jackson Lake Lodge, Moose Ponds
+Loop, Valley Trail, and Rendezvous Mountain variants. Their access, complete
+distance meaning, return plans, and seasonal transport limits remain separate.
 The [full coverage list](docs/data/grand-teton-coverage.md) identifies each
 selected start and itinerary; the [bulk admission record](docs/data/grand-teton-bulk-2026-09-05.md)
 contains source comparisons and limitations.
+The [complete day-hike audit](docs/data/grand-teton-day-hike-audit-2026-09-09.md)
+records every additional admission, evidence hold, technical exclusion, and
+owner-review decision. Delta Lake remains an evidence hold because NPS does not
+publish the complete authoritative route profile required by this catalog.
 
-All profiles appear in the application as a `Verified NPS + USGS profile`. Internal
+NPS-published profiles appear as a `Verified NPS + USGS profile`; the two mixed
+Inspiration Point profiles appear as `Calculated route`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
 
@@ -443,10 +459,10 @@ Trailhead marker. Hosted Preview and owner acceptance remain pending; see the
 
 ## Current Limitations
 
-- The current source contains fifteen Grand Teton day hikes, while Production
-  contains thirteen until the two Taggart loop profiles are approved and merged. This is
-  not the entire park trail network or a nationwide database; further trails
-  require reviewed admission.
+- The current review branch contains 39 Grand Teton discovery entries and 52
+  route profiles, while Production remains on the last merged catalog. The audit
+  covers the approved NPS-managed Teton boundary, but it is not a nationwide
+  database and does not promote evidence-held or technical routes as verified.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
   facts.
 - Weather is a coordinate-based forecast rather than an exact high-elevation
@@ -522,8 +538,8 @@ acceptance checks, documentation updates, and a reusable implementation brief.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Thirteen profiles deployed through PR #53; the consolidated 39-itinerary catalog is in PR #55 awaiting release approval |
-| Selectable access routes | Planned priority 1; current entries each describe one selected itinerary |
+| Repeatable trail onboarding and Teton expansion | Thirteen profiles deployed through PR #53; the consolidated 39-entry catalog is in PR #55 awaiting release approval |
+| Selectable access routes | Priority 1 implemented in PR #56: 52 profiles across 39 discovery entries, complete Jenny Lake choices, six additional NPS variants, visible calculation limits, and a maintained evidence-hold register; merge approval remains pending |
 | Repository and documentation cleanup | Planned priority 2; clearer reading paths and careful file organization |
 | Interactive supported-park map | Planned priority 3; the current app uses a park-to-trail list |
 

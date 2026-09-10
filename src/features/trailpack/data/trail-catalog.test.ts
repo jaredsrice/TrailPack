@@ -25,8 +25,8 @@ describe("one approved trail record drives the catalog", () => {
     expect(new Set(ids).size).toBe(ids.length);
     expect(files.sort()).toEqual([...ids].sort());
     expect(Object.keys(NPS_SOURCE_SNAPSHOTS.trails).sort()).toEqual([...ids].sort());
-    expect(Object.keys(DEMO_CONTEXTS).sort()).toEqual([...ids].sort());
-    expect(getTrailsForPark("grand-teton").map((trail) => trail.id)).toEqual(ids);
+    expect(Object.keys(DEMO_CONTEXTS).sort()).toEqual(Object.keys(TRAIL_CATALOG).sort());
+    expect(getTrailsForPark("grand-teton").map((trail) => trail.id)).toEqual(Object.keys(TRAIL_CATALOG));
   });
 
   it.each(TRAIL_DEFINITIONS.map((definition) => [definition.trail.id, definition] as const))(
@@ -49,7 +49,7 @@ describe("one approved trail record drives the catalog", () => {
       expect(getContextParkPhoto({ selectedParkId: "grand-teton", selectedTrailId: id })).toEqual(entry.photo);
       expect(entry.photo).toMatchObject({ src: definition.photo.src, credit: definition.photo.credit, focalPoint: definition.photo.focalPoint });
       expect(entry.integrityPolicy).toEqual(result.prepared.integrityPolicy);
-      expect(getSearchSuggestions(definition.trail.name).some((suggestion) => suggestion.trailId === id)).toBe(true);
+      expect(getSearchSuggestions(definition.trail.name).some((suggestion) => suggestion.trailId === (definition.trail.accessRoute?.groupId ?? id))).toBe(true);
       const scenario = getDemoScenario(id)!;
       const packing = generatePackingRecommendation(entry.profile, scenario.weather, scenario.alerts, {});
       expect(packing.trailId).toBe(id);

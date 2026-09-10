@@ -1,8 +1,8 @@
 import {
   getSupportedParkForTrail,
   SUPPORTED_PARKS,
-  TRAIL_CATALOG,
 } from "@/features/trailpack/data/supported-trails";
+import { TRAIL_GROUPS } from "./trail-groups";
 
 export type SuggestionType = "park" | "trail" | "public-trail" | "manual";
 
@@ -13,6 +13,7 @@ export interface SearchSuggestion {
   subtitle: string;
   parkId?: string;
   trailId?: string;
+  includesEstimates?: boolean;
 }
 
 const MANUAL_SUGGESTION: SearchSuggestion = {
@@ -43,18 +44,22 @@ export function getSearchSuggestions(query: string): SearchSuggestion[] {
     }
   }
 
-  for (const trail of Object.values(TRAIL_CATALOG)) {
-    const searchableTrail = `${trail.name} ${trail.park} ${trail.state}`.toLowerCase();
+  for (const group of Object.values(TRAIL_GROUPS)) {
+    const trail = group.routes[0];
+    const searchableTrail = `${group.name} ${group.park} ${group.state} ${group.routes.map((route) => `${route.name} ${route.accessRoute?.label ?? ""}`).join(" ")}`.toLowerCase();
     if (searchableTrail.includes(normalized)) {
       const isPublicImport = trail.profileKind === "public-source-import";
       suggestions.push({
-        id: `trail-${trail.id}`,
+        id: `trail-${group.id}`,
         type: isPublicImport ? "public-trail" : "trail",
-        title: trail.name,
-        subtitle: isPublicImport
+        title: group.name,
+        subtitle: group.routes.length > 1
+          ? `${group.routes.length} access options · ${group.park}`
+          : isPublicImport
           ? `Verified NPS + USGS import · ${trail.park}`
           : `Supported trail · ${trail.park}`,
-        trailId: trail.id,
+        trailId: group.id,
+        ...(group.routes.some((route) => route.distanceMiles.label === "inferred") ? { includesEstimates: true } : {}),
         parkId: getSupportedParkForTrail(trail.id)?.id,
       });
     }

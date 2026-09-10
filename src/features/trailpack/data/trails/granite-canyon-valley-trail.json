@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "granite-canyon-valley-trail",
+    "name": "Granite Canyon from Valley Trail Access",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.59939635338373,
+      "lng": -110.82210592925547
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Valley Trail Access at Teton Village marker; area forecast reference only, not navigation or uniform conditions along the route.",
+    "accessRoute": {
+      "groupId": "granite-canyon",
+      "groupName": "Granite Canyon",
+      "label": "Valley Trail out-and-back",
+      "start": "Valley Trail Access at Teton Village",
+      "returnPlan": "Return to the same Valley Trail access point.",
+      "distanceScope": "Full out-and-back, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-from-teton-village",
+        "checkedAt": "2026-09-09",
+        "relationship": "related",
+        "summary": "Related Teton Village approach that maps a shorter partial route. The NPS 15-mile Valley Trail itinerary controls this option."
+      }
+    },
+    "planningNote": "This approach begins at Teton Village and uses resort-area trails before the NPS Valley Trail. Confirm current resort access and trail conditions."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/ec3b8476-3c23-4e31-991e-cd60eb6e6b2d.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": [
+      "4964",
+      "4843",
+      "4844",
+      "4836",
+      "7347"
+    ],
+    "distanceMiles": 14.9820742,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS Valley and Granite Canyon segments, retraced on return, total 14.982 mi (-0.1% versus NPS). Corridor evidence only, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-granite-canyon.jpg",
+    "locationName": "Granite Canyon from Valley Trail Access",
+    "alt": "A rock pinnacle towers above at the top of a slope covered in boulders and green vegetation.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 55%",
+      "mobile": "48% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Granite Canyon from Valley Trail Access",
+      "Valley Trail Access"
+    ],
+    "skipRouteTypeReason": "The selected NPS metric says RT; the matching route description explicitly establishes an out-and-back.",
+    "metricSectionHeading": "Valley Trail Access"
+  },
+  "profileKind": "public-source-import"
+}

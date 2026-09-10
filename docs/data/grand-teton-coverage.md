@@ -1,6 +1,6 @@
 # Grand Teton day-hike coverage
 
-Inventory checked: 2026-09-04 UTC. This is an admission checklist, not live
+Inventory checked: 2026-09-09 UTC. This is an admission checklist, not live
 trail-condition information or a claim that every listed route is supported.
 
 ## Boundary and source
@@ -8,11 +8,13 @@ trail-condition information or a claim that every listed route is supported.
 The [NPS hiking page](https://www.nps.gov/grte/planyourvisit/hike.htm) currently
 features 16 suggested hikes. The park-filtered official NPS Things To Do API
 returned all 53 records in one bounded page (`parkCode=grte`, `limit=100`);
-41 are tagged Hiking. The API tags both adjacent Parkway listings as `grte` too;
-the two exclusions below are geographically reviewed, not inferred from that tag.
+41 are tagged Hiking. The API tags both adjacent Parkway listings as `grte` too.
+The September 9 product decision includes them in the audit boundary while
+keeping them on an evidence hold until complete USGS corridors can be retained.
 The [dated public inventory](grand-teton-inventory-2026-09-04.json)
-retains their IDs, titles, URLs, and park names without any credential. Two are in the adjoining John D. Rockefeller, Jr.
-Memorial Parkway, leaving 39 named Grand Teton hiking pages in this inventory.
+retains their IDs, titles, URLs, and park names without any credential. Two are
+in the adjoining John D. Rockefeller, Jr. Memorial Parkway, alongside 39 named
+Grand Teton hiking pages in this inventory.
 The API was used for discovery only. Admission checks the individual official
 page, exact route/access variant, USGS geometry, weather point, and photo.
 
@@ -29,11 +31,13 @@ review; a completed data template alone does not make them supported.
 
 ## Current coverage
 
-The current source contains 39 selected itineraries: the prior 15 profiles plus
-the 24-route consolidated batch. All captured in-park NPS Hiking pages have a
-corresponding selected profile. Local source and desktop/mobile validation are
-complete; hosted Preview, owner approval, and release remain pending. This is
-not a claim that every approach is open. See the [bulk admission record](grand-teton-bulk-2026-09-05.md).
+The current source contains 39 discovery entries and 52 route profiles: 50
+NPS-backed profiles plus two calculated mixed Inspiration Point itineraries.
+All captured in-park NPS Hiking pages have a corresponding selected profile;
+six additional NPS-published access variants are now distinct choices. This is
+not a claim that every approach is open. See the
+[bulk admission record](grand-teton-bulk-2026-09-05.md) and the
+[complete route audit](grand-teton-day-hike-audit-2026-09-09.md).
 
 | Area | NPS hiking page | Status / admission note |
 |---|---|---|
@@ -42,7 +46,7 @@ not a claim that every approach is open. See the [bulk admission record](grand-t
 | Colter Bay | [Hermitage Point](https://www.nps.gov/thingstodo/hermitagepoint.htm) | Released in PR #52 as the full point loop; 9.5 mi official / 9.692 mi comparison. |
 | Jackson Lake Lodge | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) | Supported. |
 | Jackson Lake Lodge | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) | Supported. |
-| Jackson Lake Lodge | [Grand View Point](https://www.nps.gov/thingstodo/grandview.htm) | Locally admitted: Grand View Point from Grand View Point Trailhead; 2.6 mi NPS / 2.711 mi comparison. Preview/release pending. |
+| Jackson Lake Lodge | [Grand View Point](https://www.nps.gov/thingstodo/grandview.htm) | Two choices: Grand View Point Trailhead (2.6 mi NPS / 2.711 mi comparison) and Jackson Lake Lodge (5.8 mi / 5.679 mi). |
 | Two Ocean Lake | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) | Supported; primary source remains the reviewed places page and its differing gain is disclosed. |
 | Two Ocean Lake | [Emma Matilda Lake](https://www.nps.gov/thingstodo/emmamatilda.htm) | Locally admitted: Emma Matilda Lake Loop; 10.7 mi NPS / 10.604 mi comparison. Preview/release pending. |
 | Two Ocean Lake | [Two Ocean–Emma Matilda loop](https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm) | Locally admitted: Two Ocean Lake - Emma Matilda Lake Loop; 13.2 mi NPS / 13.180 mi comparison. Preview/release pending. |
@@ -53,7 +57,7 @@ not a claim that every approach is open. See the [bulk admission record](grand-t
 | String Lake | [Holly Lake](https://www.nps.gov/thingstodo/hollylake.htm) | Locally admitted: Holly Lake; 12.8 mi NPS / 12.657 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
 | String Lake | [Paintbrush–Cascade loop](https://www.nps.gov/thingstodo/paintbrushcascade.htm) | Locally admitted: Paintbrush Canyon - Cascade Canyon Loop; 19.9 mi NPS / 19.371 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
 | Jenny Lake | [Jenny Lake Loop](https://www.nps.gov/thingstodo/jennylakeloop.htm) | Supported; computed gain conflict retained. |
-| Jenny Lake | [Moose Ponds](https://www.nps.gov/thingstodo/mooseponds.htm) | Locally admitted: Moose Ponds; 2 mi NPS / 1.940 mi comparison. Preview/release pending. |
+| Jenny Lake | [Moose Ponds](https://www.nps.gov/thingstodo/mooseponds.htm) | Two choices: short out-and-back (2.0 mi NPS / 1.940 mi comparison) and full loop (3.4 mi / 3.090 mi). |
 | Jenny Lake | [Hidden Falls](https://www.nps.gov/thingstodo/hiddenfalls.htm) | Locally admitted: Hidden Falls via South Jenny Lake; 4.9 mi NPS / 4.918 mi comparison. Preview/release pending. |
 | Jenny Lake | [Inspiration Point](https://www.nps.gov/thingstodo/inspirationpoint.htm) | Locally admitted: Inspiration Point via South Jenny Lake; 5.7 mi NPS / 5.587 mi comparison. Preview/release pending. |
 | Jenny Lake | [Forks of Cascade Canyon](https://www.nps.gov/thingstodo/cascadecanyon.htm) | Locally admitted: Forks of Cascade Canyon via South Jenny Lake; 13.3 mi NPS / 13.288 mi comparison. Preview/release pending. |
@@ -73,14 +77,16 @@ not a claim that every approach is open. See the [bulk admission record](grand-t
 | Death Canyon | [Death Canyon–Static Peak junction](https://www.nps.gov/thingstodo/deathcanyon.htm) | Locally admitted: Death Canyon to Static Peak Divide Junction; 7.7 mi NPS / 7.696 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
 | Death Canyon | [Static Peak Divide](https://www.nps.gov/thingstodo/staticpeak.htm) | Locally admitted: Static Peak Divide; 16 mi NPS / 16.065 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
 | Southern approaches | [Valley Trail–Phelps Lake Overlook](https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm) | Locally admitted: Valley Trail to Phelps Lake Overlook; 13.2 mi NPS / 13.181 mi comparison. Preview/release pending. |
-| Southern approaches | [Granite Canyon](https://www.nps.gov/thingstodo/granite-canyon.htm) | Locally admitted: Granite Canyon from Granite Canyon Trailhead; 13.4 mi NPS / 13.315 mi comparison. Preview/release pending. |
-| Southern approaches | [Marion Lake](https://www.nps.gov/thingstodo/marionlake.htm) | Locally admitted: Marion Lake from Granite Canyon Trailhead; 18.8 mi NPS / 18.764 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
-| Southern approaches | [Open Canyon](https://www.nps.gov/thingstodo/open-canyon.htm) | Locally admitted: Open Canyon from Death Canyon Trailhead; 14.8 mi NPS / 14.837 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
+| Southern approaches | [Granite Canyon](https://www.nps.gov/thingstodo/granite-canyon.htm) | Three choices: Granite Canyon Trailhead out-and-back (13.4 mi), Valley Trail out-and-back (15.0 mi), and Rendezvous Mountain to Teton Village (12.9 mi one-way). |
+| Southern approaches | [Marion Lake](https://www.nps.gov/thingstodo/marionlake.htm) | Two choices: Granite Canyon Trailhead out-and-back (18.8 mi) and Rendezvous Mountain summit loop (14.7 mi). Alpine and summit-access limitations retained. |
+| Southern approaches | [Open Canyon](https://www.nps.gov/thingstodo/open-canyon.htm) | Two choices: closed Death Canyon start (14.8 mi out-and-back) and Rendezvous Mountain to Teton Village (19.4 mi one-way). Closure and summit-access limits remain explicit. |
 
-Adjacent Parkway listings are tracked separately:
+Adjacent Parkway listings are inside the approved audit boundary and tracked as
+geometry evidence holds:
 [Polecat Creek Loop](https://www.nps.gov/thingstodo/polecatcreek.htm) and
-[Flagg Canyon](https://www.nps.gov/thingstodo/flaggcanyon.htm). Their park/provider
-mapping needs explicit review before admission into this Grand Teton-only intake.
+[Flagg Canyon](https://www.nps.gov/thingstodo/flaggcanyon.htm). NPS publishes
+complete facts, but the current USGS layer lacks Polecat's loop and includes
+only a short Flagg access segment. Neither is represented as verified yet.
 
 ## Repeatable completion check
 

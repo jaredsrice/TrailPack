@@ -24,8 +24,8 @@ describe("Preserve route admissions", () => {
     expect(inventory.hikingListings).toHaveLength(41);
     expect(new Set(inventory.hikingListings.map((entry) => entry.id)).size).toBe(41);
     for (const entry of inventory.hikingListings) expect(checklist).toContain(entry.url);
-    expect(checklist).toContain("39 named Grand Teton hiking pages");
-    expect(checklist).toContain("Adjacent Parkway listings are tracked separately");
+    expect(checklist).toContain("Grand Teton hiking pages in this inventory");
+    expect(checklist).toContain("Adjacent Parkway listings are inside the approved audit boundary");
   });
 
   it.each(IDS)("matches all six managed NPS fields for %s", (id) => {

@@ -1,0 +1,125 @@
+{
+  "checkedAt": "2026-09-09",
+  "geometrySources": [
+    "docs/data/inspiration-point-shuttle-2026-09-07.json",
+    "docs/data/grand-teton-bulk-2026-09-05.geometry.json.gz"
+  ],
+  "usgsSourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+  "transportSourceUrl": "https://www.nps.gov/places/jenny-lake-west-shore-boat-dock.htm",
+  "weather": {
+    "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Jenny-Lake-Shuttle.json",
+    "marker": "West Shore Boat Dock",
+    "coordinates": [-110.74407946318388, 43.76728173701173]
+  },
+  "routes": [
+    {
+      "id": "hidden-falls-shuttle",
+      "npsUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+      "npsMapUrl": "https://www.nps.gov/maps/builder/configs/e26625d6-4771-4d02-bc52-fb9dde7508ff.json",
+      "officialDistanceMiles": 1,
+      "comparisonMiles": 1.11949702,
+      "distanceMatch": "moderate_bridge",
+      "legs": [
+        { "id": "5082", "times": 2, "fraction": 1 },
+        { "id": "5117", "times": 2, "fraction": 1 },
+        { "id": "5116", "times": 2, "fraction": 1 },
+        { "id": "5086", "times": 2, "fraction": 1 },
+        { "id": "5093", "times": 2, "fraction": 1 },
+        { "id": "5083", "times": 2, "fraction": 1 }
+      ],
+      "recognition": {
+        "url": "https://www.alltrails.com/trail/us/wyoming/hidden-falls-trail--2",
+        "relationship": "counterpart",
+        "note": "Recognizable west-dock Hidden Falls route. NPS remains authoritative for the 1.0 mi distance, 300 ft gain and Easy rating."
+      }
+    },
+    {
+      "id": "cascade-canyon-forks-shuttle",
+      "npsUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
+      "npsMapUrl": "https://www.nps.gov/maps/builder/configs/703d00ff-d42e-4948-8e56-c6d1a12537c9.json",
+      "officialDistanceMiles": 9.4,
+      "comparisonMiles": 9.49003762,
+      "distanceMatch": "strong_bridge",
+      "legs": [
+        { "id": "5082", "times": 2, "fraction": 1 },
+        { "id": "5117", "times": 2, "fraction": 1 },
+        { "id": "5116", "times": 2, "fraction": 1 },
+        { "id": "5086", "times": 2, "fraction": 1 },
+        { "id": "5093", "times": 2, "fraction": 1 },
+        { "id": "5084", "times": 2, "fraction": 1 },
+        { "id": "5080", "times": 2, "fraction": 1 }
+      ],
+      "recognition": {
+        "url": "https://www.alltrails.com/trail/us/wyoming/cascade-canyon-trail",
+        "relationship": "counterpart",
+        "note": "Recognizable Cascade Canyon route using boat access. NPS remains authoritative for this route profile and its selected endpoint."
+      }
+    },
+    {
+      "id": "lake-solitude-shuttle",
+      "npsUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
+      "npsMapUrl": "https://www.nps.gov/maps/builder/configs/26a77753-acbd-46eb-95fc-585dbb756eb7.json",
+      "officialDistanceMiles": 14.4,
+      "comparisonMiles": 15.02387428907814,
+      "distanceMatch": "strong_bridge",
+      "legs": [
+        { "id": "5082", "times": 2, "fraction": 1 },
+        { "id": "5117", "times": 2, "fraction": 1 },
+        { "id": "5116", "times": 2, "fraction": 1 },
+        { "id": "5086", "times": 2, "fraction": 1 },
+        { "id": "5093", "times": 2, "fraction": 1 },
+        { "id": "5084", "times": 2, "fraction": 1 },
+        { "id": "5080", "times": 2, "fraction": 1 },
+        { "id": "7353", "times": 2, "fraction": 0.5470087822581023, "end": [-110.8421893836544, 43.79401404960577] },
+        { "id": "4792", "times": 2, "fraction": 1 }
+      ],
+      "recognition": {
+        "url": "https://www.alltrails.com/trail/us/wyoming/lake-solitude-via-lake-solitude-and-cascade-canyon-trail",
+        "relationship": "related",
+        "note": "Recognizable Lake Solitude destination, but the public listing reports different mileage. Confirm access before comparing it with the NPS shuttle itinerary."
+      }
+    },
+    {
+      "id": "hurricane-pass-shuttle",
+      "npsUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
+      "npsMapUrl": "https://www.nps.gov/maps/builder/configs/80aee4b8-f9f6-4237-8a9c-525627fabe21.json",
+      "officialDistanceMiles": 20,
+      "comparisonMiles": 20.57120312,
+      "distanceMatch": "strong_bridge",
+      "legs": [
+        { "id": "5082", "times": 2, "fraction": 1 },
+        { "id": "5117", "times": 2, "fraction": 1 },
+        { "id": "5116", "times": 2, "fraction": 1 },
+        { "id": "5086", "times": 2, "fraction": 1 },
+        { "id": "5093", "times": 2, "fraction": 1 },
+        { "id": "5084", "times": 2, "fraction": 1 },
+        { "id": "5080", "times": 2, "fraction": 1 },
+        { "id": "4930", "times": 2, "fraction": 1 },
+        { "id": "4919", "times": 2, "fraction": 1 }
+      ],
+      "recognition": {
+        "url": "https://www.alltrails.com/trail/us/wyoming/south-fork-cascade-canyon-to-hurricane-pass",
+        "relationship": "related",
+        "note": "Recognizable Hurricane Pass destination, but the public route uses different access and mileage. It is related rather than equivalent."
+      }
+    }
+  ],
+  "sharedLimitations": "Distances recompute a connected, out-and-back land corridor from retained NPS-origin USGS features. Boat travel and parking-to-dock connectors are excluded. The geometry is corridor evidence, not a navigation track; NPS facts remain authoritative.",
+  "deferredOfficialVariants": [
+    {
+      "name": "Grand View Point from Jackson Lake Lodge",
+      "reason": "The NPS page distinguishes the variant, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "grand-view-point-jackson-lodge"
+    },
+    {
+      "name": "Marion Lake from Rendezvous Mountain",
+      "reason": "The NPS page distinguishes the tram-access variant, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "marion-lake-rendezvous"
+    },
+    {
+      "name": "Moose Ponds Loop",
+      "reason": "The NPS page distinguishes the loop, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "moose-ponds-loop"
+    }
+  ]
+}

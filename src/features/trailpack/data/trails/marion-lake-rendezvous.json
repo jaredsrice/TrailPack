@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "marion-lake-rendezvous",
+    "name": "Marion Lake from Rendezvous Mountain",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.59684592841692,
+      "lng": -110.87165907025337
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Rendezvous Mountain Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
+    "planningNote": "Very strenuous high-elevation loop. Confirm tram or resort-trail access, operating schedule and snow conditions; the forecast point does not represent the entire route.",
+    "accessRoute": {
+      "groupId": "marion-lake",
+      "groupName": "Marion Lake",
+      "label": "Rendezvous Mountain loop",
+      "start": "Rendezvous Mountain Trailhead",
+      "returnPlan": "The NPS loop returns to the summit trailhead; plan a separate descent to Teton Village.",
+      "distanceScope": "Summit loop only; tram or hiking access to and from the summit is excluded.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/marion-lake-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "counterpart",
+        "summary": "Recognizable summit-access Marion Lake loop; NPS facts and selected loop remain authoritative."
+      }
+    }
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/38c6ecab-ba38-4bf8-83de-9e1b807cf471.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-09",
+    "sourceRecordIds": [
+      "7298",
+      "7301",
+      "7295",
+      "7310",
+      "7273",
+      "7276",
+      "7282"
+    ],
+    "distanceMiles": 14.670241996,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS summit access and Middle/North/South Fork loop, with the Fox Creek Pass leg clipped at Marion Lake, totals 14.670 mi (-0.2% versus NPS). Corridor evidence only, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-marion-lake.jpg",
+    "locationName": "Marion Lake from Rendezvous Mountain",
+    "alt": "An alpine lake sits at the base of a rocky cliff.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 100%",
+      "mobile": "52% 68%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Marion Lake from Rendezvous Mountain",
+      "Rendezvous Mountain Trailhead"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Rendezvous Mountain Trailhead"
+  },
+  "profileKind": "public-source-import"
+}

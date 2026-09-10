@@ -1,5 +1,7 @@
 import type { TrailProfile } from "@/features/trailpack/types";
-import { SourceBadge } from "./SourceBadge";
+import { describeRouteDistance, formatRouteMiles } from "../lib/trail-groups";
+import { transportReminder, SHUTTLE_HOURS_URL } from "../lib/mixed-access-routes";
+import { SourceBadge, MIXED_ROUTE_PROFILE_LABEL } from "./SourceBadge";
 import {
   TrailPackIcon,
   type TrailPackIconName,
@@ -10,6 +12,7 @@ function formatConfidence(status: TrailProfile["sourceConfidence"]["status"]): s
 }
 
 export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
+  const boatReminder = transportReminder(trail.accessRoute?.transport);
   return (
     <section
       id="trail-profile"
@@ -26,29 +29,32 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           <p className="section-subtitle">
             {trail.park} · {trail.state}
           </p>
+          <p className="route-distance-summary">{describeRouteDistance(trail)}</p>
         </div>
-        <SourceBadge label="supported-profile" />
+        {trail.sourceConfidence.status === "derived_route_estimate"
+          ? <SourceBadge label="inferred" text={MIXED_ROUTE_PROFILE_LABEL} />
+          : <SourceBadge label="supported-profile" />}
       </div>
 
       <div className="profile-stat-grid">
         <StatCard
           icon="distance"
           label="Distance"
-          value={`${trail.distanceMiles.value} mi`}
-          officialNote="Official (NPS)"
+          value={formatRouteMiles(trail)}
+          officialNote={trail.distanceMiles.label === "official" ? "Official (NPS)" : "Mapped hiking estimate"}
           sourceLabel={trail.distanceMiles.label}
           computed={
             trail.distanceMiles.computedValue
               ? `USGS computed estimate: ~${trail.distanceMiles.computedValue} mi`
               : undefined
           }
-          computedNote={trail.distanceMiles.computedNote}
+          computedNote={trail.accessRoute ? undefined : trail.distanceMiles.computedNote}
         />
         <StatCard
           icon="elevation"
           label="Elevation gain"
-          value={`${trail.elevationGainFeet.value.toLocaleString()} ft`}
-          officialNote="Official (NPS)"
+          value={trail.elevationGainFeet.value === null ? "Unverified" : `${trail.elevationGainFeet.value.toLocaleString()} ft`}
+          officialNote={trail.elevationGainFeet.label === "official" ? "Official (NPS)" : undefined}
           sourceLabel={trail.elevationGainFeet.label}
           computed={
             trail.elevationGainFeet.computedValue
@@ -71,6 +77,61 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
           sourceLabel={trail.difficulty.label}
         />
       </div>
+
+      {trail.accessRoute ? (
+        <div className="route-itinerary" aria-label="Selected itinerary">
+          <p><strong>Start:</strong> {trail.accessRoute.start}</p>
+          <p><strong>Return:</strong> {trail.accessRoute.returnPlan}</p>
+          <p>{trail.accessRoute.distanceScope}</p>
+          {boatReminder ? (
+            <p className="route-transport-warning">
+              {boatReminder}{" "}
+              <a href={SHUTTLE_HOURS_URL} className="source-link" target="_blank" rel="noreferrer">Check boat hours</a>
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+      {trail.routeCalculation ? (
+        <details key={`calculation-${trail.id}`} className="route-evidence-details group">
+          <summary>
+            <span>
+              <TrailPackIcon name="source" className="h-5 w-5" />
+              <strong>How was this calculated?</strong>
+            </span>
+            <TrailPackIcon name="chevron" className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="route-evidence-content">
+            <p><strong>NPS facts:</strong> {trail.routeCalculation.officialFacts}</p>
+            <p><strong>Calculated distance:</strong> {trail.routeCalculation.method}</p>
+            <p><strong>Not included:</strong> {trail.routeCalculation.exclusions}</p>
+            <p><strong>Limits and unknowns:</strong> {trail.routeCalculation.limitations}</p>
+            <ul className="route-evidence-links" aria-label="Calculation sources">
+              <li><a href={trail.routeCalculation.officialSourceUrl} className="source-link" target="_blank" rel="noreferrer">NPS route facts</a></li>
+              <li><a href={trail.routeCalculation.transportSourceUrl} className="source-link" target="_blank" rel="noreferrer">NPS boat access</a></li>
+              <li><a href={trail.routeCalculation.geometrySourceUrl} className="source-link" target="_blank" rel="noreferrer">USGS trail geometry</a></li>
+            </ul>
+          </div>
+        </details>
+      ) : null}
+
+      {trail.accessRoute?.comparison ? (
+        <details key={`comparison-${trail.id}`} className="route-evidence-details group">
+          <summary>
+            <span>
+              <TrailPackIcon name="source" className="h-5 w-5" />
+              <strong>Comparing with AllTrails?</strong>
+            </span>
+            <TrailPackIcon name="chevron" className="h-5 w-5 transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="route-evidence-content">
+            <p><strong>{trail.accessRoute.comparison.relationship === "related" ? "Related route—not the same itinerary" : "Comparable route"}:</strong> {trail.accessRoute.comparison.summary}</p>
+            <a href={trail.accessRoute.comparison.sourceUrl} className="source-link" target="_blank" rel="noreferrer">
+              View the public AllTrails route
+            </a>
+          </div>
+        </details>
+      ) : null}
 
       {trail.planningNote ? (
         <aside className="trail-accessibility-note" aria-label="Route planning information">

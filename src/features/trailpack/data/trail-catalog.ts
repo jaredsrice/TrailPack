@@ -3,6 +3,8 @@ import type { PreparedTrail } from "../lib/trail-onboarding";
 import { NPS_SOURCE_SNAPSHOTS, type NpsSourceSnapshot } from "./nps-source-snapshots";
 import { PARK_DEFINITIONS, type ParkDefinition } from "./parks";
 import { TRAIL_DEFINITIONS } from "./trails";
+import mixedInspirationPoint from "./access-itineraries/inspiration-point-mixed.json";
+import { buildAccessRouteCatalog, type MixedAccessDefinition } from "../lib/mixed-access-routes";
 
 /** No fetches or side effects: approved metadata plus managed NPS facts. */
 export function buildTrailCatalog(
@@ -29,9 +31,12 @@ export function buildTrailCatalog(
   return entries;
 }
 
-export const TRAIL_CATALOG_ENTRIES = buildTrailCatalog(
+export const NPS_CATALOG_ENTRIES = buildTrailCatalog(
   TRAIL_DEFINITIONS, NPS_SOURCE_SNAPSHOTS.trails, PARK_DEFINITIONS,
 );
+
+export const MIXED_ACCESS_DEFINITIONS = [mixedInspirationPoint] as readonly MixedAccessDefinition[];
+export const TRAIL_CATALOG_ENTRIES = buildAccessRouteCatalog(NPS_CATALOG_ENTRIES, MIXED_ACCESS_DEFINITIONS);
 
 export const TRAIL_CATALOG = Object.fromEntries(
   Object.entries(TRAIL_CATALOG_ENTRIES).map(([id, entry]) => [id, entry.profile]),

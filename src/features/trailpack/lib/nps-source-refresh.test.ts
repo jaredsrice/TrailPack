@@ -186,9 +186,9 @@ describe("planNpsSourceRefresh", () => {
     expect(plan.blockers.join(" ")).toContain("distance");
   });
 
-  it("has a managed snapshot for every supported profile", () => {
+  it("has a managed snapshot for each official profile, never a fabricated mixed-route snapshot", () => {
     expect(Object.keys(NPS_SOURCE_SNAPSHOTS.trails).sort()).toEqual(
-      Object.keys(TRAIL_CATALOG).sort(),
+      Object.values(TRAIL_CATALOG).filter((trail) => trail.distanceMiles.label === "official").map((trail) => trail.id).sort(),
     );
   });
 });

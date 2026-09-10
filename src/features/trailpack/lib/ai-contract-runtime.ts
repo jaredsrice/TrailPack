@@ -115,6 +115,7 @@ export function parseAiContractInput(value: unknown): AiContractInput | null {
       "state",
       "distanceMiles",
       "elevationGainFeet",
+      "distanceIsEstimate",
       "routeType",
       "estimatedDuration",
       "difficulty",
@@ -153,7 +154,8 @@ export function parseAiContractInput(value: unknown): AiContractInput | null {
     !isRequiredString(trail.park) ||
     !isRequiredString(trail.state) ||
     !isFiniteNumber(trail.distanceMiles, 0, 1_000) ||
-    !isFiniteNumber(trail.elevationGainFeet, 0, 100_000) ||
+    (trail.elevationGainFeet !== null && !isFiniteNumber(trail.elevationGainFeet, 0, 100_000)) ||
+    (trail.distanceIsEstimate !== undefined && typeof trail.distanceIsEstimate !== "boolean") ||
     !isRouteType(trail.routeType) ||
     !isRequiredString(trail.estimatedDuration) ||
     !isRequiredString(trail.difficulty)

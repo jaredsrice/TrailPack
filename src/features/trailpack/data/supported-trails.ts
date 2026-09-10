@@ -1,6 +1,5 @@
 import type { TrailProfile } from "@/features/trailpack/types";
 import { PARK_DEFINITIONS, type ParkDefinition } from "./parks";
-import { TRAIL_DEFINITIONS } from "./trails";
 import { TRAIL_CATALOG } from "./trail-catalog";
 
 export { TRAIL_CATALOG } from "./trail-catalog";
@@ -12,8 +11,8 @@ export interface SupportedPark extends ParkDefinition {
 
 export const SUPPORTED_PARKS: SupportedPark[] = PARK_DEFINITIONS.map((park) => ({
   ...park,
-  trailIds: TRAIL_DEFINITIONS.filter((entry) => entry.trail.parkId === park.id && entry.profileKind === "curated").map((entry) => entry.trail.id),
-  publicTrailIds: TRAIL_DEFINITIONS.filter((entry) => entry.trail.parkId === park.id && entry.profileKind === "public-source-import").map((entry) => entry.trail.id),
+  trailIds: Object.values(TRAIL_CATALOG).filter((entry) => entry.park === park.name && entry.state === park.state && entry.profileKind === "curated").map((entry) => entry.id),
+  publicTrailIds: Object.values(TRAIL_CATALOG).filter((entry) => entry.park === park.name && entry.state === park.state && entry.profileKind === "public-source-import").map((entry) => entry.id),
 }));
 
 export const JENNY_LAKE_LOOP = TRAIL_CATALOG["jenny-lake-loop"];

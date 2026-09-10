@@ -557,7 +557,7 @@ function renderReport(runs) {
   for (const [trailId, trail] of reportTrails) {
     lines.push(`## ${trail.name}`);
     lines.push("");
-    lines.push(`Official profile in app: ${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}, ${trail.difficulty.value}.`);
+    lines.push(`${trail.distanceMiles.label === "official" ? "Official" : "Estimated"} profile in app: ${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value === null ? "gain unverified" : `${trail.elevationGainFeet.value} ft gain`}, ${trail.estimatedDuration.value}, ${trail.difficulty.value}.`);
     lines.push("");
 
     for (const run of runs.filter((candidate) => candidate.trailId === trailId)) {

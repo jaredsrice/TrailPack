@@ -8,6 +8,7 @@ import type {
   TripAlert,
   WeatherContext,
 } from "@/features/trailpack/types";
+import { transportReminder, SHUTTLE_HOURS_URL } from "./mixed-access-routes";
 
 export interface UserHikeInput {
   plannedDate?: string;
@@ -792,7 +793,7 @@ function buildTripDecisionDanger({
 }
 
 function formatTrailStats(trail: TrailProfile): string {
-  return `${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value} ft gain, ${trail.estimatedDuration.value}`;
+  return `${trail.distanceMiles.label === "inferred" ? "about " : ""}${trail.distanceMiles.value} mi, ${trail.elevationGainFeet.value === null ? "gain unverified" : `${trail.elevationGainFeet.value} ft gain`}, ${trail.estimatedDuration.value}`;
 }
 
 /**
@@ -1424,13 +1425,27 @@ export function generatePackingRecommendation(
   const missingDetails: string[] = [];
 
   const distance = trail.distanceMiles.value;
+  const boatReminder = transportReminder(trail.accessRoute?.transport);
+  if (boatReminder) {
+    essential.push(item({
+      name: trail.accessRoute?.transport === "shuttle-out-walk-back" ? "Outbound boat plan" : "Return boat plan",
+      question: "How will I get back from this hike?",
+      recommendation: boatReminder,
+      why: `${trail.accessRoute!.returnPlan} ${trail.accessRoute!.distanceScope} Boat travel, queues and dock access need extra time. Recheck the itinerary and regenerate the list if your transport plan changes.`,
+      affectedBy: ["Access route"],
+      sourceLabels: ["supported-profile", "inferred"],
+      sourceUrl: trail.npsSourceUrl,
+      links: [{ label: "Check shuttle hours", url: SHUTTLE_HOURS_URL }],
+    }));
+  }
   const gain = trail.elevationGainFeet.value;
+  if (gain === null) missingDetails.push("Elevation gain is unverified for this mixed itinerary, not zero. Plan for uneven, uphill terrain and enter your expected time out.");
   const duration = trail.estimatedDuration.value;
 
   const expectedHours = parseExpectedHours(userInput.expectedDuration);
   const profileHours = parseExpectedHours(duration);
   const conditions = analyzeTrailConditions(userInput.trailConditions);
-  const shortByProfile = distance <= 3.5 && gain <= 500;
+  const shortByProfile = distance <= 3.5 && gain !== null && gain <= 500;
   const hotConditions =
     weather.conditions.includes("heat") ||
     (weather.temperatureF?.high ?? 0) >= 80 ||
@@ -1467,7 +1482,7 @@ export function generatePackingRecommendation(
   const footwearWhyParts = [
     shortByProfile
       ? `This is a shorter ${duration.toLowerCase()} hike, so the footwear requirement is lighter when conditions are dry.`
-      : `This is a ${trail.difficulty.value.toLowerCase()} ${distance} mi route with ${gain} ft gain, so support and grip matter more than they would on a short flat walk.`,
+      : `This is a ${trail.difficulty.value.toLowerCase()} ${distance} mi route ${gain === null ? "with unverified elevation gain" : `with ${gain} ft gain`}, so support and grip matter more than they would on a short flat walk.`,
   ];
 
   if (conditions.muddyOrWet) {
@@ -1532,7 +1547,7 @@ export function generatePackingRecommendation(
     }),
   );
 
-  const longByProfile = distance >= 5 || gain >= 800;
+  const longByProfile = distance >= 5 || gain === null || gain >= 800;
   const longByUserDuration = expectedHours !== null && expectedHours >= 5;
   const unusualDuration =
     expectedHours !== null &&
@@ -1558,7 +1573,7 @@ export function generatePackingRecommendation(
         buildWaterItem({
           expectedHours,
           distance,
-          gain,
+          gain: gain ?? undefined,
           duration,
           difficulty: trail.difficulty.value,
           hotConditions,
@@ -1578,7 +1593,7 @@ export function generatePackingRecommendation(
           question: "How much water should I bring?",
           recommendation:
             "Bring 2-3 liters per adult. Do not treat this as a group total.",
-          why: `Longer effort (${distance} mi, ${duration}) needs steady hydration. Use the higher end for heat, full sun, slower pacing, or if an adult is carrying backup water for kids.`,
+          why: `${gain === null ? "Unverified gain calls for a cautious starting allowance" : "Longer effort needs steady hydration"} (${distance} mi, ${duration}). Use the higher end for heat, full sun, slower pacing, or if an adult is carrying backup water for kids.`,
           sourceLabels: ["supported-profile"],
         }),
       );
@@ -1617,7 +1632,7 @@ export function generatePackingRecommendation(
       buildFoodItem({
         expectedHours,
         distance,
-        gain,
+        gain: gain ?? undefined,
         duration,
         difficulty: trail.difficulty.value,
         weatherConditions: weather.conditions,
@@ -1875,7 +1890,7 @@ export function generatePackingRecommendation(
     essential.push(buildTripSafetyDecisionItem(tripDecisionDanger));
   }
 
-  if (gain >= 1000 && !conditions.snowOrIce) {
+  if (gain !== null && gain >= 1000 && !conditions.snowOrIce) {
     optional.push(
       item({
         name: "Trekking poles",
@@ -1929,13 +1944,18 @@ export function generatePackingRecommendation(
     );
   }
 
+  const withProfileProvenance = (entry: PackingItem): PackingItem => enforceOfficialProvenance(
+    trail.sourceConfidence.status === "derived_route_estimate"
+      ? { ...entry, sourceLabels: uniqueSourceLabels(entry.sourceLabels.map((label) => label === "supported-profile" ? "inferred" : label)) }
+      : entry,
+  );
   return {
     trailId: trail.id,
     trailName: trail.name,
     generatedAt: new Date().toISOString(),
     tripAlerts: tripAlerts.map(enforceOfficialProvenanceOnAlert),
-    essential: essential.map(enforceOfficialProvenance),
-    optional: optional.map(enforceOfficialProvenance),
+    essential: essential.map(withProfileProvenance),
+    optional: optional.map(withProfileProvenance),
     missingDetails,
     confidenceNote: `${trail.sourceConfidence.summary} Display stats: ${formatTrailStats(trail)}.`,
   };

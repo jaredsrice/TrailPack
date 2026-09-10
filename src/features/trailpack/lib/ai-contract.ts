@@ -26,7 +26,8 @@ export interface AiContractInput {
     park: string;
     state: string;
     distanceMiles: number;
-    elevationGainFeet: number;
+    elevationGainFeet: number | null;
+    distanceIsEstimate?: boolean;
     routeType: string;
     estimatedDuration: string;
     difficulty: string;
@@ -132,6 +133,7 @@ export function buildAiContractInput({
       state: trail.state,
       distanceMiles: trail.distanceMiles.value,
       elevationGainFeet: trail.elevationGainFeet.value,
+      ...(trail.distanceMiles.label === "inferred" ? { distanceIsEstimate: true } : {}),
       routeType: trail.routeType,
       estimatedDuration: trail.estimatedDuration.value,
       difficulty: trail.difficulty.value,
@@ -323,8 +325,8 @@ function buildTemplateFallbackReview(input: AiContractInput): GuardedAiReview {
 
   return {
     tripSummary:
-      `${input.trail.name} is a ${input.trail.distanceMiles} mi ${input.trail.routeType} ` +
-      `with ${input.trail.elevationGainFeet} ft of gain. TrailPack checked ` +
+      `${input.trail.name} has ${input.trail.distanceIsEstimate ? "about " : ""}${input.trail.distanceMiles} mi of hiking ` +
+      `${input.trail.elevationGainFeet === null ? "with unverified elevation gain" : `with ${input.trail.elevationGainFeet} ft of gain`}. TrailPack checked ` +
       `${input.packing.essential.length} essential and ${input.packing.optional.length} optional ` +
       `items in the rule-based packing list against ${activeContext}.`,
     missingDataReview:

@@ -10,7 +10,23 @@
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
     "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Grand View Point Trailhead marker; 2.8 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+    "coordinateNote": "Official NPS Grand View Point Trailhead marker; 2.8 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "accessRoute": {
+      "groupId": "grand-view-point",
+      "groupName": "Grand View Point",
+      "label": "Grand View Point Trailhead",
+      "start": "Grand View Point Trailhead",
+      "returnPlan": "Return to the same trailhead.",
+      "distanceScope": "Full out-and-back, including the return.",
+      "transport": "none",
+      "comparison": {
+        "source": "AllTrails",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/grand-view-point-via-grand-view-point-trail",
+        "checkedAt": "2026-09-09",
+        "relationship": "counterpart",
+        "summary": "Same trailhead and destination; NPS facts remain authoritative."
+      }
+    }
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
