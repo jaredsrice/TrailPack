@@ -1,7 +1,7 @@
 # Week 14 Scope And Status
 
 Historical snapshot: this document was superseded by
-`docs/superpowers/validation/2026-07-16-cse-499a-closeout.md` and the CSE 499B
+`docs/archive/validation/2026-07-16-cse-499a-closeout.md` and the CSE 499B
 requirements and schedule linked there. Its candidate backlog is not the current
 499B plan.
 
@@ -16,7 +16,7 @@ Branch: `codex/stress-test-recommendations`
 - `Requirements Docs/Final/TrailPack_Week12_Requirements_Specification_Draft.md`
 - `TrailPack/README.md`
 - `TrailPack/CHANGELOG.md`
-- `TrailPack/docs/superpowers/validation/2026-07-10-week-13-14-stress-scenario-results.md`
+- `TrailPack/docs/evidence/hiker-scenario-stress-report.md`
 
 ## Current Position
 

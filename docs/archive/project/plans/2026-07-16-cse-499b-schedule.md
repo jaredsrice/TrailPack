@@ -2,7 +2,7 @@
 
 Created: July 16, 2026  
 Status: Complete; technical delivery and final human acceptance passed  
-Requirements source: `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`
+Requirements source: `docs/archive/project/specs/2026-07-16-cse-499b-requirements.md`
 
 ## Planning Basis
 
@@ -103,7 +103,7 @@ Implementation status (updated 2026-08-28): complete on `main`. The
 fixture-tested guarded refresh, automation-branch pull-request workflow,
 accessibility display, initial 5/5 live comparison, and first delivered refresh
 PR are recorded in
-[`../validation/2026-07-28-b02-nps-source-integrity.md`](../validation/2026-07-28-b02-nps-source-integrity.md).
+[`../validation/2026-07-28-b02-nps-source-integrity.md`](../../validation/2026-07-28-b02-nps-source-integrity.md).
 
 ### Authentication Gate
 

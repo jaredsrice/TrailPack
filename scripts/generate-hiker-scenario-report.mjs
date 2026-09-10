@@ -12,7 +12,7 @@ const reportTrails = Object.entries(SUPPORTED_TRAILS).sort(([left], [right]) => 
 
 const OUTPUT_PATH = join(
   process.cwd(),
-  "docs/superpowers/validation/2026-07-10-week-13-14-stress-scenario-results.md",
+  "docs/evidence/hiker-scenario-stress-report.md",
 );
 
 const templates = [

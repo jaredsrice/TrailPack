@@ -84,11 +84,11 @@ browser were not used.
 
 Final local screenshot evidence:
 
-- [`docs/ui/validation/2026-07-25/homepage-desktop.png`](../../ui/validation/2026-07-25/homepage-desktop.png)
-- [`docs/ui/validation/2026-07-25/selected-desktop.png`](../../ui/validation/2026-07-25/selected-desktop.png)
-- [`docs/ui/validation/2026-07-25/selected-mobile-390.png`](../../ui/validation/2026-07-25/selected-mobile-390.png)
-- [`docs/ui/validation/2026-07-25/weather-trip-desktop.png`](../../ui/validation/2026-07-25/weather-trip-desktop.png)
-- [`docs/ui/validation/2026-07-25/packing-desktop.png`](../../ui/validation/2026-07-25/packing-desktop.png)
+- [`docs/archive/ui/validation/2026-07-25/homepage-desktop.png`](../ui/validation/2026-07-25/homepage-desktop.png)
+- [`docs/archive/ui/validation/2026-07-25/selected-desktop.png`](../ui/validation/2026-07-25/selected-desktop.png)
+- [`docs/archive/ui/validation/2026-07-25/selected-mobile-390.png`](../ui/validation/2026-07-25/selected-mobile-390.png)
+- [`docs/archive/ui/validation/2026-07-25/weather-trip-desktop.png`](../ui/validation/2026-07-25/weather-trip-desktop.png)
+- [`docs/archive/ui/validation/2026-07-25/packing-desktop.png`](../ui/validation/2026-07-25/packing-desktop.png)
 
 ## Fidelity Ledger
 

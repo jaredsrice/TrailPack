@@ -158,4 +158,4 @@ needed every Teton route. The historical closeout remains a dated record.
 An interactive supported-park map is documented as future work; the reusable
 list is the current first step. No new parks, backpacking support, technical navigation, packing thresholds,
 authentication, AI limits, or provider time budgets changed. Guest planning and
-unknown-data fallback remain available. Hosted Preview and release are pending.
+unknown-data fallback remain available. The batch was released in PR #53.

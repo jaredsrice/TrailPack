@@ -3,15 +3,15 @@
 Date: 2026-07-17  
 Decision update: 2026-07-20  
 Status: Week 1 deployment gate closed; B-01 Tetons-first source selected  
-Controlling requirements: `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`  
-Controlling schedule: `docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`
+Controlling requirements: `docs/archive/project/specs/2026-07-16-cse-499b-requirements.md`
+Controlling schedule: `docs/archive/project/plans/2026-07-16-cse-499b-schedule.md`
 
 > **Supersession notice:** The deployment and repository baseline below remains
 > valid. The original bounded Nominatim provider selection does not. A later
 > 24-trail evaluation rejected Nominatim as a supported B-01 source; see
-> `docs/superpowers/validation/2026-07-17-cse-499b-nominatim-reliability.md`.
+> `docs/archive/validation/2026-07-17-cse-499b-nominatim-reliability.md`.
 > The replacement bounded NPS/USGS import is recorded in
-> `docs/superpowers/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`.
+> `docs/archive/validation/2026-07-20-cse-499b-grand-teton-public-source-import.md`.
 
 ## Re-Baseline Result
 
