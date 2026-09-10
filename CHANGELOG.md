@@ -8,7 +8,12 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-No changes yet.
+### Security
+
+- Cache successful NPS alert fetches for five minutes so repeated public alert
+  requests cannot consume the shared upstream quota one request at a time.
+- Pin every GitHub Action dependency to a reviewed immutable commit while
+  retaining the installed action versions in workflow comments.
 
 ## [0.7.1] - 2026-09-09
 

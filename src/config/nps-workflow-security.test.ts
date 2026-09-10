@@ -25,7 +25,9 @@ describe("monthly NPS workflow security boundary", () => {
     expect(publishJob).toContain("needs: verify_nps_sources");
     expect(publishJob).toContain("contents: write");
     expect(publishJob).toContain("pull-requests: write");
-    expect(publishJob).toContain("actions/download-artifact@v8");
+    expect(publishJob).toContain(
+      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+    );
     expect(publishJob).toContain(
       "validated-nps-snapshot/nps-source-snapshots.json",
     );
