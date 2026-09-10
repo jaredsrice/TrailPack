@@ -1,8 +1,8 @@
 # TrailPack product roadmap
 
-Status: Priority 1 is complete and deployed. Priority 2 is the current repository
-and documentation cleanup. The trail-selection redesign, interactive map, and
-custom route builder remain future work.
+Status: Priorities 1 and 2 are complete and deployed. The trail-selection
+redesign, interactive map, and custom route builder are the next product-design
+phase.
 
 ## Available now
 
@@ -19,7 +19,7 @@ custom route builder remain future work.
 | Priority | Work | Status |
 |---|---|---|
 | 1 | Complete-hike access routes | Complete and deployed through PRs #55 and #56 |
-| 2 | Repository and documentation cleanup | In progress |
+| 2 | Repository and documentation cleanup | Complete and deployed through PR #57 |
 | 3 | Trail discovery and route composition | Planned |
 
 ## Priority 1: Complete-hike access routes
@@ -64,8 +64,8 @@ find technical evidence without reading historical project records first.
   and generated evidence.
 - [x] Update moved paths in documents, scripts, tests, and agent instructions.
 - [x] Pass the complete local validation gate.
-- [ ] Pass the hosted pull-request validation gates.
-- [ ] Merge the cleanup pull request and verify production.
+- [x] Pass the hosted pull-request validation gates.
+- [x] Merge the cleanup pull request and verify production.
 
 ## Priority 3: Trail discovery and route composition
 
