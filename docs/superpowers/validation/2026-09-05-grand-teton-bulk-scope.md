@@ -65,3 +65,10 @@ geometry is unavailable; no route was inferred from its name or headline facts.
 Final local evidence for the combined branch: 46 offline catalog/photo checks,
 44 live NPS comparisons, 749 unit tests, 5,000 system stress cases, lint, type
 checking, production build, and all 116 Firefox/axe desktop/mobile flows pass.
+
+Follow-up status (2026-09-09): those three holds were resolved by a new retained
+USGS capture and admitted as `grand-view-point-jackson-lodge`,
+`marion-lake-rendezvous`, and `moose-ponds-loop`. The complete route audit also
+adds Granite Canyon Valley/Rendezvous and Open Canyon Rendezvous variants. The
+current branch totals are recorded in the roadmap and changelog; the paragraph
+above remains the historical checkpoint result.
