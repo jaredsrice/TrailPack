@@ -1,6 +1,6 @@
 {
   "name": "trailpack",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": true,
   "engines": {
     "node": ">=20.9.0"
@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "docs:check": "node scripts/check-markdown-links.mjs",
     "check:nps-integrity": "tsx scripts/check-nps-source-integrity.ts",
     "refresh:nps-sources": "tsx scripts/check-nps-source-integrity.ts --apply",
     "trail:new": "tsx scripts/trail-onboarding.ts new",

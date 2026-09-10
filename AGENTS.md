@@ -14,7 +14,8 @@ TrailPack is configured as a single-context repo that uses the root `CONTEXT.md`
 
 ## Project maintenance
 
-- Compare weekly code changes against the latest senior-project proposal under `../Project Proposals/` and the active plans/specs under `docs/superpowers/`.
+- Compare weekly code changes against the latest senior-project proposal under `../Project Proposals/`, the current `docs/roadmap.md`, and any active plan added under `docs/superpowers/`.
+- Treat `docs/archive/project/` as historical context. Its plans and specifications describe completed or superseded work and are not the current backlog.
 - Prefer the highest-numbered `TrailPack_Proposal_v*.docx` as the current proposal when it diverges from the older `TrailPack_Formal_Project_Proposal_Draft.md`.
 - Use those documents plus the actual merged work to assess milestone progress and current scope.
 - When completed work changes the app's user-facing behavior, supported features, milestone status, or documented scope, update `README.md` and `CHANGELOG.md` systematically.

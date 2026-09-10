@@ -35,7 +35,7 @@ stretch requirements. The updated scope makes these changes:
 The cybersecurity requirement was deferred during the July 2026 CSE 499A
 closeout and executed after the primary 499B surface and deployed environment
 became stable. The sanitized review and retest record is
-[`../validation/2026-08-28-b04-cybersecurity-review.md`](../validation/2026-08-28-b04-cybersecurity-review.md).
+[`../validation/2026-08-28-b04-cybersecurity-review.md`](../../validation/2026-08-28-b04-cybersecurity-review.md).
 
 ## Section 1: Product Definition
 
@@ -82,7 +82,7 @@ evidence must remain distinguishable.
 | MH-06 Fallback And Uncertainty Handling | Complete | Manual fallback, missing-detail prompts, unavailable-service states, saved fixtures, and AI fallback remain usable and labeled. |
 
 The CSE 499A completion record is
-`docs/superpowers/validation/2026-07-16-cse-499a-closeout.md`.
+`docs/archive/validation/2026-07-16-cse-499a-closeout.md`.
 
 ## Section 3: CSE 499B Product Requirements
 
@@ -385,7 +385,7 @@ Current closeout status (2026-08-28): complete. Implementation, production
 verification, security remediation/retest, final documentation, a real
 two-account privacy denial walkthrough, and final everyday-hiker owner
 acceptance all passed. The evidence is recorded in
-[`../validation/2026-08-28-cse-499b-closeout.md`](../validation/2026-08-28-cse-499b-closeout.md).
+[`../validation/2026-08-28-cse-499b-closeout.md`](../../validation/2026-08-28-cse-499b-closeout.md).
 
 Post-closeout product update (2026-08-29): the optional guarded AI review was
 approved for signed-in Production use after the database-backed five-per-hour
@@ -398,8 +398,8 @@ fallback retests passed. The rule-based guest workflow and the completed
 - Submitted CSE 499A requirements: `Requirements Docs/Final/w12 Requirements Spec v6.docx`
 - CSE 499A requirements source: `Requirements Docs/Final/TrailPack_Week12_Requirements_Specification_Draft.md`
 - Original project proposal: `Project Proposals/TrailPack_Proposal_v9.docx`
-- CSE 499A closeout: `docs/superpowers/validation/2026-07-16-cse-499a-closeout.md`
-- CSE 499B schedule: `docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`
+- CSE 499A closeout: `docs/archive/validation/2026-07-16-cse-499a-closeout.md`
+- CSE 499B schedule: `docs/archive/project/plans/2026-07-16-cse-499b-schedule.md`
 - NPS API documentation: https://www.nps.gov/subjects/developer/api-documentation.htm
 - NPS Ten Essentials: https://www.nps.gov/articles/10essentials.htm
 - Open-Meteo documentation: https://open-meteo.com/en/docs

@@ -391,7 +391,7 @@ git commit -m "feat: add incomplete-data fallback packing list"
 ### Task 3: Run the Week 10 scenario review, save the milestone note, and refresh repo docs
 
 **Files:**
-- Create: `docs/superpowers/validation/2026-06-20-week-10-scenario-review.md`
+- Create: `docs/archive/validation/2026-06-20-week-10-scenario-review.md`
 - Modify: `README.md`
 - Modify: `CHANGELOG.md`
 
@@ -429,7 +429,7 @@ Capture for each:
 
 - [ ] **Step 3: Write the Week 10 review note**
 
-Create `docs/superpowers/validation/2026-06-20-week-10-scenario-review.md`
+Create `docs/archive/validation/2026-06-20-week-10-scenario-review.md`
 with:
 
 ```md
@@ -469,6 +469,6 @@ Expected:
 - [ ] **Step 6: Commit**
 
 ```bash
-git add docs/superpowers/validation/2026-06-20-week-10-scenario-review.md README.md CHANGELOG.md
+git add docs/archive/validation/2026-06-20-week-10-scenario-review.md README.md CHANGELOG.md
 git commit -m "docs: record week 10 scenario review"
 ```

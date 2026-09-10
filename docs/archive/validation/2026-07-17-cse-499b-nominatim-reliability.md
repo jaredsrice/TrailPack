@@ -41,8 +41,8 @@ Before testing, the following were reviewed:
 
 - `AGENTS.md`
 - `README.md`
-- `docs/data/2026-07-17-cse-499b-public-trail-source-feasibility.md`
-- `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`
+- `docs/archive/research/2026-07-17-cse-499b-public-trail-source-feasibility.md`
+- `docs/archive/project/specs/2026-07-16-cse-499b-requirements.md`
 - the active 14-week schedule and B-01 adapter validation note
 - `src/features/trailpack/lib/public-trail-lookup.ts`
 - `src/features/trailpack/lib/public-trail-lookup.test.ts`

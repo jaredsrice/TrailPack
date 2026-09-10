@@ -9,8 +9,8 @@ Status: Complete
 - `Project Proposals/TrailPack_Proposal_v9.docx`
 - `Requirements Docs/Final/w12 Requirements Spec v6.docx`
 - `Requirements Docs/Final/TrailPack_Week12_Requirements_Specification_Draft.md`
-- `docs/superpowers/validation/2026-07-10-week-14-scope-status.md`
-- `docs/superpowers/validation/2026-07-10-week-13-14-stress-scenario-results.md`
+- `docs/archive/validation/2026-07-10-week-14-scope-status.md`
+- `docs/evidence/hiker-scenario-stress-report.md`
 
 ## Completion Decision
 
@@ -86,8 +86,8 @@ quality, traceability, and demo reliability.
 
 The controlling continuation documents are:
 
-- `docs/superpowers/specs/2026-07-16-cse-499b-requirements.md`
-- `docs/superpowers/plans/2026-07-16-cse-499b-schedule.md`
+- `docs/archive/project/specs/2026-07-16-cse-499b-requirements.md`
+- `docs/archive/project/plans/2026-07-16-cse-499b-schedule.md`
 
 ## Known Limits At Closeout
 
