@@ -1,8 +1,8 @@
 # TrailPack product roadmap
 
 Status: Priorities 1 and 2 are complete and deployed. The trail-selection
-redesign, interactive map, and custom route builder are the next product-design
-phase.
+redesign, interactive map, custom route builder, and broad code-quality audit
+are shelved until the owner resumes them. See the [project handoff](project-handoff.md).
 
 ## Available now
 
@@ -20,7 +20,7 @@ phase.
 |---|---|---|
 | 1 | Complete-hike access routes | Complete and deployed through PRs #55 and #56 |
 | 2 | Repository and documentation cleanup | Complete and deployed through PR #57 |
-| 3 | Trail discovery and route composition | Planned |
+| 3 | Trail discovery and route composition | Shelved; resume explicitly |
 
 ## Priority 1: Complete-hike access routes
 
@@ -69,8 +69,8 @@ find technical evidence without reading historical project records first.
 
 ## Priority 3: Trail discovery and route composition
 
-This is the next product-design phase after Priority 2. It has three connected
-stages and should be designed together before implementation.
+This phase is shelved during the separate local-AI migration. When resumed,
+its three connected stages should be designed together before implementation.
 
 ### Stage 1: Simplify trail selection
 
