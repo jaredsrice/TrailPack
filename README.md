@@ -140,7 +140,7 @@ app users, contributors, trail-data maintainers, and technical reviewers.
 
 ## Next steps
 
-The next product work is documented rather than implemented in this cleanup:
+The following product work is shelved until explicitly resumed:
 
 1. Make the trail-selection landing experience easier to scan as the catalog
    grows.
@@ -149,3 +149,6 @@ The next product work is documented rather than implemented in this cleanup:
    user-created distance, gain, access, and return assumptions explicit.
 
 See the [roadmap](docs/roadmap.md) for scope and acceptance requirements.
+
+For the maintained pause state and migration precautions, see the
+[project handoff](docs/project-handoff.md).

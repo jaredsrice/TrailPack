@@ -49,7 +49,7 @@ local photograph, and an explicit decision about access and return form.
 ## Product direction
 
 The [roadmap](roadmap.md) records current priorities. Route coverage is complete.
-The next product-design phase covers a less cluttered trail-selection landing
+The shelved product-design phase covers a less cluttered trail-selection landing
 experience, an accessible interactive map, and later custom route composition
 from reviewed segments.
 
@@ -66,3 +66,8 @@ from reviewed segments.
 If two documents disagree about current behavior, verify the merged code and
 update the current guide. Keep dated archive records as evidence of what was
 known when they were written.
+
+## Pausing or resuming work
+
+Use the [project handoff](project-handoff.md) for release checks, migration
+preservation requirements, and the shelved code-audit brief.

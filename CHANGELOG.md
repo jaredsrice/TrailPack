@@ -8,7 +8,26 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-### Changed
+No changes yet.
+
+## [0.7.1] - 2026-09-09
+
+### Security
+
+- Update Sharp to 0.35.4, js-yaml to 4.3.2, and Vitest and its mocker to
+  4.1.11 to resolve four dependency alerts.
+
+### Maintenance
+
+- Refresh registered NPS source check dates after guarded live verification.
+- Update CI artifact uploads to the Node.js 24 action generation already used
+  by the monthly source workflow.
+- Record the migration handoff, shelve future feature and rewrite work, and
+  reconcile superseded pull requests and completed branches.
+
+## [0.7.0] - 2026-09-09
+
+### Documentation
 
 - Reorganized the documentation around clear reading paths for hikers,
   contributors, trail-data maintainers, and technical reviewers.
@@ -18,15 +37,6 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   concepts without removing their evidence.
 - Moved the generated hiker-scenario report to a stable evidence path and
   updated automation to verify it there.
-
-### Planned
-
-- Simplify the trail-selection landing experience as the catalog grows.
-- Add an accessible interactive supported-trail map.
-- Explore custom route composition from reviewed segments with explicit
-  user-created distance, gain, access, and return assumptions.
-
-## [0.7.0] - 2026-09-09
 
 ### Added
 

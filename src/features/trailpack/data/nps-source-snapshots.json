@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-09-09",
+  "updatedAt": "2026-09-10",
   "trails": {
     "inspiration-point-shuttle": {
       "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
-      "checkedAt": "2026-09-07",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 1.8,
       "elevationGainFeet": 550,
       "estimatedDuration": "2-4 hours",
@@ -14,7 +14,7 @@
     },
     "hidden-falls-shuttle": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 1,
       "elevationGainFeet": 300,
       "estimatedDuration": "1-3 Hours",
@@ -24,7 +24,7 @@
     },
     "cascade-canyon-forks-shuttle": {
       "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 9.4,
       "elevationGainFeet": 1480,
       "estimatedDuration": "5-9 Hours",
@@ -34,7 +34,7 @@
     },
     "lake-solitude-shuttle": {
       "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 14.4,
       "elevationGainFeet": 2670,
       "estimatedDuration": "9-13 Hours",
@@ -44,7 +44,7 @@
     },
     "hurricane-pass-shuttle": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 20,
       "elevationGainFeet": 4120,
       "estimatedDuration": "12-16 Hours",
@@ -54,7 +54,7 @@
     },
     "taggart-beaver-creek-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.8,
       "elevationGainFeet": 620,
       "estimatedDuration": "2-3 Hours",
@@ -64,7 +64,7 @@
     },
     "taggart-bradley-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartbradley.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 5.6,
       "elevationGainFeet": 860,
       "estimatedDuration": "2-3 Hours",
@@ -74,7 +74,7 @@
     },
     "leigh-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/leighlake.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 1.8,
       "elevationGainFeet": 110,
       "estimatedDuration": "1-2 Hours",
@@ -84,7 +84,7 @@
     },
     "bearpaw-trapper-lakes": {
       "sourceUrl": "https://www.nps.gov/thingstodo/bearpaw-trapper.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 9.2,
       "elevationGainFeet": 460,
       "estimatedDuration": "4-6 Hours",
@@ -94,7 +94,7 @@
     },
     "jenny-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/jennylakeloop.htm",
-      "checkedAt": "2026-08-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 7.1,
       "elevationGainFeet": 1040,
       "estimatedDuration": "3-5 hours",
@@ -104,7 +104,7 @@
     },
     "string-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/stringlake.htm",
-      "checkedAt": "2026-08-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.7,
       "elevationGainFeet": 540,
       "estimatedDuration": "2-3 Hours",
@@ -114,7 +114,7 @@
     },
     "taggart-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/taggartlake.htm",
-      "checkedAt": "2026-08-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3,
       "elevationGainFeet": 360,
       "estimatedDuration": "1-2 Hours",
@@ -124,7 +124,7 @@
     },
     "colter-bay-lakeshore-trail": {
       "sourceUrl": "https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm",
-      "checkedAt": "2026-08-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 2.2,
       "elevationGainFeet": 100,
       "estimatedDuration": "1 hour",
@@ -133,7 +133,7 @@
     },
     "two-ocean-lake-loop": {
       "sourceUrl": "https://www.nps.gov/places/000/two-ocean-lake-trailhead.htm",
-      "checkedAt": "2026-08-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 6.4,
       "elevationGainFeet": 400,
       "estimatedDuration": "3 hours",
@@ -142,7 +142,7 @@
     },
     "lunch-tree-hill": {
       "sourceUrl": "https://www.nps.gov/thingstodo/lunchtreehill.htm",
-      "checkedAt": "2026-09-03",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 0.5,
       "elevationGainFeet": 110,
       "estimatedDuration": "20-45 Minutes",
@@ -152,7 +152,7 @@
     },
     "christian-pond-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/christianpond.htm",
-      "checkedAt": "2026-09-03",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.5,
       "elevationGainFeet": 490,
       "estimatedDuration": "1-3 Hours",
@@ -162,7 +162,7 @@
     },
     "lake-creek-woodland-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm",
-      "checkedAt": "2026-09-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3,
       "elevationGainFeet": 770,
       "estimatedDuration": "1-3 Hours",
@@ -172,7 +172,7 @@
     },
     "phelps-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/phelpslake.htm",
-      "checkedAt": "2026-09-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 6.4,
       "elevationGainFeet": 1060,
       "estimatedDuration": "3-5 Hours",
@@ -182,7 +182,7 @@
     },
     "heron-pond-swan-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/heronpond-swanlake.htm",
-      "checkedAt": "2026-09-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.1,
       "elevationGainFeet": 320,
       "estimatedDuration": "1-3 Hours",
@@ -192,7 +192,7 @@
     },
     "hermitage-point": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hermitagepoint.htm",
-      "checkedAt": "2026-09-04",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 9.5,
       "elevationGainFeet": 930,
       "estimatedDuration": "4-7 Hours",
@@ -202,7 +202,7 @@
     },
     "grand-view-point": {
       "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 2.6,
       "elevationGainFeet": 740,
       "estimatedDuration": "1-4 Hours",
@@ -212,7 +212,7 @@
     },
     "emma-matilda-lake-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/emmamatilda.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 10.7,
       "elevationGainFeet": 1430,
       "estimatedDuration": "5-7 Hours",
@@ -222,7 +222,7 @@
     },
     "two-ocean-emma-matilda-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 13.2,
       "elevationGainFeet": 1960,
       "estimatedDuration": "7-9 Hours",
@@ -232,7 +232,7 @@
     },
     "signal-mountain": {
       "sourceUrl": "https://www.nps.gov/thingstodo/signalmountain.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 6.7,
       "elevationGainFeet": 980,
       "estimatedDuration": "3-5 Hours",
@@ -242,7 +242,7 @@
     },
     "holly-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hollylake.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 12.8,
       "elevationGainFeet": 2840,
       "estimatedDuration": "7-9 Hours",
@@ -252,7 +252,7 @@
     },
     "paintbrush-cascade-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 19.9,
       "elevationGainFeet": 4480,
       "estimatedDuration": "11-14 Hours",
@@ -262,7 +262,7 @@
     },
     "moose-ponds": {
       "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 2,
       "elevationGainFeet": 180,
       "estimatedDuration": "1-3 Hours",
@@ -272,7 +272,7 @@
     },
     "hidden-falls": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 4.9,
       "elevationGainFeet": 620,
       "estimatedDuration": "1-3 Hours",
@@ -282,7 +282,7 @@
     },
     "inspiration-point": {
       "sourceUrl": "https://www.nps.gov/thingstodo/inspirationpoint.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 5.7,
       "elevationGainFeet": 870,
       "estimatedDuration": "2-4 Hours",
@@ -292,7 +292,7 @@
     },
     "cascade-canyon-forks": {
       "sourceUrl": "https://www.nps.gov/thingstodo/cascadecanyon.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 13.3,
       "elevationGainFeet": 1720,
       "estimatedDuration": "5-9 Hours",
@@ -302,7 +302,7 @@
     },
     "lake-solitude": {
       "sourceUrl": "https://www.nps.gov/thingstodo/lakesolitude.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 18.3,
       "elevationGainFeet": 2910,
       "estimatedDuration": "9-13 Hours",
@@ -312,7 +312,7 @@
     },
     "hurricane-pass": {
       "sourceUrl": "https://www.nps.gov/thingstodo/hurricane-pass.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 23.9,
       "elevationGainFeet": 4370,
       "estimatedDuration": "12-16 Hours",
@@ -322,7 +322,7 @@
     },
     "surprise-amphitheater-lakes": {
       "sourceUrl": "https://www.nps.gov/thingstodo/amphitheaterlake.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 9.8,
       "elevationGainFeet": 3070,
       "estimatedDuration": "5-7 Hours",
@@ -332,7 +332,7 @@
     },
     "garnet-canyon": {
       "sourceUrl": "https://www.nps.gov/thingstodo/garnetcanyon.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 8.2,
       "elevationGainFeet": 2430,
       "estimatedDuration": "4-6 Hours",
@@ -342,7 +342,7 @@
     },
     "murie-ranch": {
       "sourceUrl": "https://www.nps.gov/thingstodo/murieranchhike.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 1.1,
       "elevationGainFeet": 50,
       "estimatedDuration": "30-60 Minutes",
@@ -352,7 +352,7 @@
     },
     "aspen-boulder-ridge-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/aspen-boulderridge.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 6.2,
       "elevationGainFeet": 1140,
       "estimatedDuration": "3-5 Hours",
@@ -362,7 +362,7 @@
     },
     "phelps-lake-overlook": {
       "sourceUrl": "https://www.nps.gov/thingstodo/phelpsoverlook.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 2,
       "elevationGainFeet": 470,
       "estimatedDuration": "1-2 Hours",
@@ -372,7 +372,7 @@
     },
     "phelps-lake-death-canyon": {
       "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.7,
       "elevationGainFeet": 1080,
       "estimatedDuration": "1-3 Hours",
@@ -382,7 +382,7 @@
     },
     "death-canyon-junction": {
       "sourceUrl": "https://www.nps.gov/thingstodo/deathcanyon.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 7.7,
       "elevationGainFeet": 2400,
       "estimatedDuration": "4-6 Hours",
@@ -392,7 +392,7 @@
     },
     "static-peak-divide": {
       "sourceUrl": "https://www.nps.gov/thingstodo/staticpeak.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 16,
       "elevationGainFeet": 5590,
       "estimatedDuration": "9-11 Hours",
@@ -402,7 +402,7 @@
     },
     "valley-trail-phelps-overlook": {
       "sourceUrl": "https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 13.2,
       "elevationGainFeet": 2360,
       "estimatedDuration": "7-9 Hours",
@@ -412,7 +412,7 @@
     },
     "granite-canyon": {
       "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 13.4,
       "elevationGainFeet": 2190,
       "estimatedDuration": "7-11 Hours",
@@ -422,7 +422,7 @@
     },
     "marion-lake": {
       "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 18.8,
       "elevationGainFeet": 3510,
       "estimatedDuration": "9-13 Hours",
@@ -432,7 +432,7 @@
     },
     "open-canyon": {
       "sourceUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
-      "checkedAt": "2026-09-05",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 14.8,
       "elevationGainFeet": 3820,
       "estimatedDuration": "7-14 Hours",
@@ -442,7 +442,7 @@
     },
     "grand-view-point-jackson-lodge": {
       "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 5.8,
       "elevationGainFeet": 950,
       "estimatedDuration": "1-4 Hours",
@@ -452,7 +452,7 @@
     },
     "moose-ponds-loop": {
       "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 3.4,
       "elevationGainFeet": 170,
       "estimatedDuration": "1-3 Hours",
@@ -462,7 +462,7 @@
     },
     "granite-canyon-valley-trail": {
       "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 15,
       "elevationGainFeet": 3250,
       "estimatedDuration": "7-11 Hours",
@@ -472,7 +472,7 @@
     },
     "granite-canyon-rendezvous": {
       "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 12.9,
       "elevationGainFeet": 1480,
       "estimatedDuration": "7-11 Hours",
@@ -482,7 +482,7 @@
     },
     "marion-lake-rendezvous": {
       "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 14.7,
       "elevationGainFeet": 3990,
       "estimatedDuration": "9-13 Hours",
@@ -492,7 +492,7 @@
     },
     "open-canyon-rendezvous": {
       "sourceUrl": "https://www.nps.gov/thingstodo/open-canyon.htm",
-      "checkedAt": "2026-09-09",
+      "checkedAt": "2026-09-10",
       "distanceMiles": 19.4,
       "elevationGainFeet": 3440,
       "estimatedDuration": "7-14 Hours",

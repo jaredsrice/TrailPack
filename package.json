@@ -1,6 +1,6 @@
 {
   "name": "trailpack",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "private": true,
   "engines": {
     "node": ">=20.9.0"
@@ -43,12 +43,12 @@
     "tailwindcss": "^4.1.8",
     "tsx": "^4.23.1",
     "typescript": "^5.8.3",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.11"
   },
   "overrides": {
-    "js-yaml": "4.3.1",
+    "js-yaml": "4.3.2",
     "nanoid": "3.3.18",
     "postcss": "8.5.23",
-    "sharp": "0.35.3"
+    "sharp": "0.35.4"
   }
 }
