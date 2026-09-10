@@ -72,6 +72,19 @@ export function TrailProfileSummary({ trail }: { trail: TrailProfile }) {
         />
       </div>
 
+      {trail.planningNote ? (
+        <aside className="trail-accessibility-note" aria-label="Route planning information">
+          <TrailPackIcon name="info" className="trail-accessibility-icon" />
+          <div>
+            <h3>Before you go</h3>
+            <p>{trail.planningNote}</p>
+            <a href={trail.npsSourceUrl} className="source-link" target="_blank" rel="noreferrer">
+              Check the official route details
+            </a>
+          </div>
+        </aside>
+      ) : null}
+
       {trail.accessibility ? (
         <aside
           className="trail-accessibility-note"

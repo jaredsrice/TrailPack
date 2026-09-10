@@ -11,9 +11,19 @@ A park TrailPack currently knows how to browse and narrow into supported trails.
 _Avoid_: destination, area, region
 
 **Supported trail**:
-A trail in TrailPack's verified catalog that can run through the current
-end-to-end flow, from selection to packing output.
+A named entry in TrailPack's verified catalog that supports planning and packing
+output. Its presence does not mean every way of accessing it is supported.
 _Avoid_: hike, route, saved trail
+
+**Destination**:
+A named place a hiker intends to reach, such as Inspiration Point. A destination
+alone does not describe the journey there and back; a loop may have several.
+_Avoid_: complete hike, access route, supported park
+
+**Access route**:
+The complete selected hike, including its start, destination or turnaround,
+return path, and any transport assumptions such as a round-trip shuttle boat.
+_Avoid_: viewpoint alone, trailhead alone, travel direction
 
 **Curated profile**:
 One of the original manually validated trail profiles.

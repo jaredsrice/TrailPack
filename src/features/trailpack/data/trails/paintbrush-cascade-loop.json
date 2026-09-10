@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "paintbrush-cascade-loop",
+    "name": "Paintbrush Canyon - Cascade Canyon Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.78922384132509,
+      "lng": -110.73169201612473
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Leigh Lake Trailhead marker; 0.7 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/dc6f7e8e-32da-41cf-b061-3ee7be08e226.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5096",
+      "4833",
+      "4831",
+      "4809",
+      "4826",
+      "7296",
+      "7275",
+      "4768",
+      "7353",
+      "4792",
+      "5080",
+      "5085",
+      "5081"
+    ],
+    "distanceMiles": 19.371,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 19.371 mi (-2.7% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-paintbrush-cascade-loop.jpg",
+    "locationName": "Paintbrush Canyon - Cascade Canyon Loop",
+    "alt": "A trail meanders through a rocky, alpine meadow with jagged peaks in the background.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/paintbrushcascade.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 35%",
+      "mobile": "50% 45%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Paintbrush Canyon - Cascade Canyon Loop"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

@@ -6,6 +6,7 @@ Original image set last verified: 2026-08-31
 Lunch Tree Hill and Christian Pond additions reviewed: 2026-09-03 (UTC)
 Preserve shoreline addition reviewed: 2026-09-04 (UTC)
 Colter Bay trail additions reviewed: 2026-09-04 (UTC)
+Taggart loop additions reviewed: 2026-09-05 (UTC)
 
 TrailPack uses a curated local copy of official National Park Service
 photographs for the homepage rotation and selected Grand Teton trail context.
@@ -42,6 +43,8 @@ use the protected NPS Arrowhead symbol, and TrailPack does not use that mark.
 | --- | --- | --- | --- | --- | --- |
 | `public/park-images/grand-teton-jenny-lake-trail.jpg` | `jenny-lake-loop` | 2,000 x 1,500 | `50% 48%` / `50% 50%` | NPS Photo | [Jenny Lake](https://www.nps.gov/media/photo/view.htm?id=FBDA99C4-155D-451F-6708-0CF583236CF5) |
 | `public/park-images/grand-teton-taggart-lake.jpg` | `taggart-lake` | 2,600 x 1,462 | `50% 49%` / `50% 50%` | NPS Photo / J. Bonney | [Taggart Lake](https://www.nps.gov/thingstodo/taggartlake.htm) |
+| `public/park-images/grand-teton-taggart-beaver-creek-loop.jpg` | `taggart-beaver-creek-loop` | 2,400 x 1,350 | `50% 25%` / `50% 52%` | NPS Photo / A. Falgoust | [Taggart Lake - Beaver Creek Loop](https://www.nps.gov/thingstodo/taggartloop.htm) |
+| `public/park-images/grand-teton-taggart-bradley-lake-loop.jpg` | `taggart-bradley-lake-loop` | 2,400 x 1,350 | `50% 25%` / `50% 48%` | NPS Photo / A. Falgoust | [Taggart Lake - Bradley Lake Loop](https://www.nps.gov/thingstodo/taggartbradley.htm) |
 | `public/park-images/grand-teton-string-lake.jpg` | `string-lake-loop` (location-level String Lake photo) | 3,200 x 1,799 | `48% 48%` / `48% 50%` | NPS Photo / Helton | [String Lake Picnic Area](https://www.nps.gov/places/000/string-lake-picnic-area.htm) |
 | `public/park-images/grand-teton-colter-bay.jpg` | `colter-bay-lakeshore-trail` | 3,200 x 1,800 | `48% 45%` / `47% 50%` | NPS Photo | [Colter Bay Lakeshore Trail](https://www.nps.gov/places/000/colter-bay-lakeshore-trail.htm) |
 | `public/park-images/grand-teton-two-ocean-lake.jpg` | `two-ocean-lake-loop` | 2,600 x 1,462 | `50% 52%` / `50% 50%` | NPS Photo / J. Bonney | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) |

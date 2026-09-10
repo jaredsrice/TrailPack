@@ -74,6 +74,8 @@ export interface TrailSourceRecord {
 }
 
 export interface TrailProfile {
+  /** Reviewed route/access guidance, separate from live weather and alerts. */
+  planningNote?: string;
   id: string;
   name: string;
   park: string;

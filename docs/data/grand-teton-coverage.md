@@ -8,7 +8,9 @@ trail-condition information or a claim that every listed route is supported.
 The [NPS hiking page](https://www.nps.gov/grte/planyourvisit/hike.htm) currently
 features 16 suggested hikes. The park-filtered official NPS Things To Do API
 returned all 53 records in one bounded page (`parkCode=grte`, `limit=100`);
-41 are tagged Hiking. The [dated public inventory](grand-teton-inventory-2026-09-04.json)
+41 are tagged Hiking. The API tags both adjacent Parkway listings as `grte` too;
+the two exclusions below are geographically reviewed, not inferred from that tag.
+The [dated public inventory](grand-teton-inventory-2026-09-04.json)
 retains their IDs, titles, URLs, and park names without any credential. Two are in the adjoining John D. Rockefeller, Jr.
 Memorial Parkway, leaving 39 named Grand Teton hiking pages in this inventory.
 The API was used for discovery only. Admission checks the individual official
@@ -27,11 +29,11 @@ review; a completed data template alone does not make them supported.
 
 ## Current coverage
 
-Seven entries were released through PR #50, two Preserve loops through PR #51,
-and two Colter Bay loops through PR #52, bringing Production to eleven profiles.
-Leigh Lake and Bearpaw–Trapper Lakes are reviewed in the current local branch,
-bringing the source catalog to thirteen. Their hosted Preview and protected
-release checks remain a separate approval step.
+The current source contains 39 selected itineraries: the prior 15 profiles plus
+the 24-route consolidated batch. All captured in-park NPS Hiking pages have a
+corresponding selected profile. Local source and desktop/mobile validation are
+complete; hosted Preview, owner approval, and release remain pending. This is
+not a claim that every approach is open. See the [bulk admission record](grand-teton-bulk-2026-09-05.md).
 
 | Area | NPS hiking page | Status / admission note |
 |---|---|---|
@@ -40,40 +42,40 @@ release checks remain a separate approval step.
 | Colter Bay | [Hermitage Point](https://www.nps.gov/thingstodo/hermitagepoint.htm) | Released in PR #52 as the full point loop; 9.5 mi official / 9.692 mi comparison. |
 | Jackson Lake Lodge | [Lunch Tree Hill](https://www.nps.gov/thingstodo/lunchtreehill.htm) | Supported. |
 | Jackson Lake Lodge | [Christian Pond Loop](https://www.nps.gov/thingstodo/christianpond.htm) | Supported. |
-| Jackson Lake Lodge | [Grand View Point](https://www.nps.gov/thingstodo/grandview.htm) | Pending; multiple starting points. |
+| Jackson Lake Lodge | [Grand View Point](https://www.nps.gov/thingstodo/grandview.htm) | Locally admitted: Grand View Point from Grand View Point Trailhead; 2.6 mi NPS / 2.711 mi comparison. Preview/release pending. |
 | Two Ocean Lake | [Two Ocean Lake](https://www.nps.gov/thingstodo/twoocean.htm) | Supported; primary source remains the reviewed places page and its differing gain is disclosed. |
-| Two Ocean Lake | [Emma Matilda Lake](https://www.nps.gov/thingstodo/emmamatilda.htm) | Pending. |
-| Two Ocean Lake | [Two Ocean–Emma Matilda loop](https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm) | Pending; full combined route. |
-| Signal Mountain | [Signal Mountain Trail](https://www.nps.gov/thingstodo/signalmountain.htm) | Pending. |
+| Two Ocean Lake | [Emma Matilda Lake](https://www.nps.gov/thingstodo/emmamatilda.htm) | Locally admitted: Emma Matilda Lake Loop; 10.7 mi NPS / 10.604 mi comparison. Preview/release pending. |
+| Two Ocean Lake | [Two Ocean–Emma Matilda loop](https://www.nps.gov/thingstodo/twoocean-emmamatilda.htm) | Locally admitted: Two Ocean Lake - Emma Matilda Lake Loop; 13.2 mi NPS / 13.180 mi comparison. Preview/release pending. |
+| Signal Mountain | [Signal Mountain Trail](https://www.nps.gov/thingstodo/signalmountain.htm) | Locally admitted: Signal Mountain Trail; 6.7 mi NPS / 6.398 mi comparison. Preview/release pending. |
 | String Lake | [String Lake](https://www.nps.gov/thingstodo/stringlake.htm) | Supported as String Lake Loop. |
-| String Lake | [Leigh Lake](https://www.nps.gov/thingstodo/leighlake.htm) | Reviewed locally; short out-and-back, 1.8 mi official / 1.766 mi comparison. Preview/release pending. |
-| String Lake | [Bearpaw and Trapper Lakes](https://www.nps.gov/thingstodo/bearpaw-trapper.htm) | Reviewed locally; 9.2 mi official / 9.333 mi comparison to Trapper Lake without extra Bearpaw access spur. Preview/release pending. |
-| String Lake | [Holly Lake](https://www.nps.gov/thingstodo/hollylake.htm) | Pending alpine/day-hike safety review. |
-| String Lake | [Paintbrush–Cascade loop](https://www.nps.gov/thingstodo/paintbrushcascade.htm) | Pending alpine/day-hike safety review. |
+| String Lake | [Leigh Lake](https://www.nps.gov/thingstodo/leighlake.htm) | Released in PR #53; short out-and-back, 1.8 mi official / 1.766 mi comparison. |
+| String Lake | [Bearpaw and Trapper Lakes](https://www.nps.gov/thingstodo/bearpaw-trapper.htm) | Released in PR #53; 9.2 mi official / 9.333 mi comparison to Trapper Lake without extra Bearpaw access spur. |
+| String Lake | [Holly Lake](https://www.nps.gov/thingstodo/hollylake.htm) | Locally admitted: Holly Lake; 12.8 mi NPS / 12.657 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
+| String Lake | [Paintbrush–Cascade loop](https://www.nps.gov/thingstodo/paintbrushcascade.htm) | Locally admitted: Paintbrush Canyon - Cascade Canyon Loop; 19.9 mi NPS / 19.371 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
 | Jenny Lake | [Jenny Lake Loop](https://www.nps.gov/thingstodo/jennylakeloop.htm) | Supported; computed gain conflict retained. |
-| Jenny Lake | [Moose Ponds](https://www.nps.gov/thingstodo/mooseponds.htm) | Pending. |
-| Jenny Lake | [Hidden Falls](https://www.nps.gov/thingstodo/hiddenfalls.htm) | Pending; separate boat and walking approaches. |
-| Jenny Lake | [Inspiration Point](https://www.nps.gov/thingstodo/inspirationpoint.htm) | Pending; separate boat and walking approaches. |
-| Jenny Lake | [Forks of Cascade Canyon](https://www.nps.gov/thingstodo/cascadecanyon.htm) | Pending; separate boat and walking approaches. |
-| Jenny Lake | [Lake Solitude](https://www.nps.gov/thingstodo/lakesolitude.htm) | Pending alpine review and approach variants. |
-| Jenny Lake | [Hurricane Pass](https://www.nps.gov/thingstodo/hurricane-pass.htm) | Pending alpine review and approach variants. |
-| Lupine Meadows | [Surprise and Amphitheater Lakes](https://www.nps.gov/thingstodo/amphitheaterlake.htm) | Pending alpine/day-hike safety review. |
-| Lupine Meadows | [Garnet Canyon](https://www.nps.gov/thingstodo/garnetcanyon.htm) | Pending; hiking endpoint must not imply climbing support. |
+| Jenny Lake | [Moose Ponds](https://www.nps.gov/thingstodo/mooseponds.htm) | Locally admitted: Moose Ponds; 2 mi NPS / 1.940 mi comparison. Preview/release pending. |
+| Jenny Lake | [Hidden Falls](https://www.nps.gov/thingstodo/hiddenfalls.htm) | Locally admitted: Hidden Falls via South Jenny Lake; 4.9 mi NPS / 4.918 mi comparison. Preview/release pending. |
+| Jenny Lake | [Inspiration Point](https://www.nps.gov/thingstodo/inspirationpoint.htm) | Locally admitted: Inspiration Point via South Jenny Lake; 5.7 mi NPS / 5.587 mi comparison. Preview/release pending. |
+| Jenny Lake | [Forks of Cascade Canyon](https://www.nps.gov/thingstodo/cascadecanyon.htm) | Locally admitted: Forks of Cascade Canyon via South Jenny Lake; 13.3 mi NPS / 13.288 mi comparison. Preview/release pending. |
+| Jenny Lake | [Lake Solitude](https://www.nps.gov/thingstodo/lakesolitude.htm) | Locally admitted: Lake Solitude via South Jenny Lake; 18.3 mi NPS / 18.822 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
+| Jenny Lake | [Hurricane Pass](https://www.nps.gov/thingstodo/hurricane-pass.htm) | Locally admitted: Hurricane Pass via South Jenny Lake; 23.9 mi NPS / 24.369 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
+| Lupine Meadows | [Surprise and Amphitheater Lakes](https://www.nps.gov/thingstodo/amphitheaterlake.htm) | Locally admitted: Surprise and Amphitheater Lakes; 9.8 mi NPS / 9.913 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
+| Lupine Meadows | [Garnet Canyon](https://www.nps.gov/thingstodo/garnetcanyon.htm) | Locally admitted: Garnet Canyon; 8.2 mi NPS / 8.239 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
 | Taggart Lake | [Taggart Lake](https://www.nps.gov/thingstodo/taggartlake.htm) | Supported out-and-back. |
-| Taggart Lake | [Taggart–Beaver Creek loop](https://www.nps.gov/thingstodo/taggartloop.htm) | Pending; distinct from the supported out-and-back. |
-| Taggart Lake | [Taggart–Bradley loop](https://www.nps.gov/thingstodo/taggartbradley.htm) | Pending. |
-| Moose | [Murie Ranch Hike](https://www.nps.gov/thingstodo/murieranchhike.htm) | Pending. |
+| Taggart Lake | [Taggart–Beaver Creek loop](https://www.nps.gov/thingstodo/taggartloop.htm) | Reviewed locally; distinct 3.8 mi loop / 3.760 mi USGS corridor. Preview/release pending. |
+| Taggart Lake | [Taggart–Bradley loop](https://www.nps.gov/thingstodo/taggartbradley.htm) | Reviewed locally; 5.6 mi loop / 5.697 mi USGS corridor. Preview/release pending. |
+| Moose | [Murie Ranch Hike](https://www.nps.gov/thingstodo/murieranchhike.htm) | Locally admitted: Murie Ranch Hike; 1.1 mi NPS / 1.155 mi comparison. Preview/release pending. |
 | Preserve | [Lake Creek–Woodland loop](https://www.nps.gov/thingstodo/lakecreek-woodlandtrail.htm) | Reviewed and approved; 3.0 mi official / 2.960 mi comparison. |
 | Preserve | [Phelps Lake Loop](https://www.nps.gov/thingstodo/phelpslake.htm) | Reviewed and approved; 6.4 mi official / 6.441 mi comparison. |
-| Preserve | [Aspen Ridge–Boulder Ridge](https://www.nps.gov/thingstodo/aspen-boulderridge.htm) | Pending; separate extended approach. |
-| Death Canyon | [Phelps Lake Overlook](https://www.nps.gov/thingstodo/phelpsoverlook.htm) | Pending; distinct start from Preserve routes. |
-| Death Canyon | [Phelps Lake](https://www.nps.gov/thingstodo/phelps.htm) | Pending; out-and-back, not the Preserve loop. |
-| Death Canyon | [Death Canyon–Static Peak junction](https://www.nps.gov/thingstodo/deathcanyon.htm) | Pending; endpoint is junction, not divide. |
-| Death Canyon | [Static Peak Divide](https://www.nps.gov/thingstodo/staticpeak.htm) | Pending alpine/day-hike safety review. |
-| Southern approaches | [Valley Trail–Phelps Lake Overlook](https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm) | Pending; distinct access and longer route. |
-| Southern approaches | [Granite Canyon](https://www.nps.gov/thingstodo/granite-canyon.htm) | Pending; multiple starting points and tram dependency. |
-| Southern approaches | [Marion Lake](https://www.nps.gov/thingstodo/marionlake.htm) | Pending alpine review and approach variants. |
-| Southern approaches | [Open Canyon](https://www.nps.gov/thingstodo/open-canyon.htm) | Pending alpine review and approach variants. |
+| Preserve | [Aspen Ridge–Boulder Ridge](https://www.nps.gov/thingstodo/aspen-boulderridge.htm) | Locally admitted: Aspen Ridge - Boulder Ridge Loop; 6.2 mi NPS / 6.240 mi comparison. Preview/release pending. |
+| Death Canyon | [Phelps Lake Overlook](https://www.nps.gov/thingstodo/phelpsoverlook.htm) | Locally admitted: Phelps Lake Overlook from Death Canyon; 2 mi NPS / 1.984 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
+| Death Canyon | [Phelps Lake](https://www.nps.gov/thingstodo/phelps.htm) | Locally admitted: Phelps Lake from Death Canyon; 3.7 mi NPS / 3.684 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
+| Death Canyon | [Death Canyon–Static Peak junction](https://www.nps.gov/thingstodo/deathcanyon.htm) | Locally admitted: Death Canyon to Static Peak Divide Junction; 7.7 mi NPS / 7.696 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
+| Death Canyon | [Static Peak Divide](https://www.nps.gov/thingstodo/staticpeak.htm) | Locally admitted: Static Peak Divide; 16 mi NPS / 16.065 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
+| Southern approaches | [Valley Trail–Phelps Lake Overlook](https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm) | Locally admitted: Valley Trail to Phelps Lake Overlook; 13.2 mi NPS / 13.181 mi comparison. Preview/release pending. |
+| Southern approaches | [Granite Canyon](https://www.nps.gov/thingstodo/granite-canyon.htm) | Locally admitted: Granite Canyon from Granite Canyon Trailhead; 13.4 mi NPS / 13.315 mi comparison. Preview/release pending. |
+| Southern approaches | [Marion Lake](https://www.nps.gov/thingstodo/marionlake.htm) | Locally admitted: Marion Lake from Granite Canyon Trailhead; 18.8 mi NPS / 18.764 mi comparison. Alpine/day-hike limitations retained. Preview/release pending. |
+| Southern approaches | [Open Canyon](https://www.nps.gov/thingstodo/open-canyon.htm) | Locally admitted: Open Canyon from Death Canyon Trailhead; 14.8 mi NPS / 14.837 mi comparison. Old-start access CLOSED; dated restriction retained. Preview/release pending. |
 
 Adjacent Parkway listings are tracked separately:
 [Polecat Creek Loop](https://www.nps.gov/thingstodo/polecatcreek.htm) and

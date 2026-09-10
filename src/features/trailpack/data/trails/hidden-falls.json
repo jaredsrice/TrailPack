@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "hidden-falls",
+    "name": "Hidden Falls via South Jenny Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.751573014308974,
+      "lng": -110.7254246994853
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "This profile includes walking from South Jenny Lake and returning on foot; it does not use the shorter shuttle-boat distance."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/e26625d6-4771-4d02-bc52-fb9dde7508ff.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5161",
+      "5154",
+      "5160",
+      "5101",
+      "5112",
+      "5108",
+      "5105",
+      "5109",
+      "5089",
+      "5086",
+      "5093",
+      "5083"
+    ],
+    "distanceMiles": 4.918,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 4.918 mi (0.4% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-hidden-falls.jpg",
+    "locationName": "Hidden Falls via South Jenny Lake",
+    "alt": "Water cascades down a 100 ft waterfall tucked into a forest of conifer trees.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/hiddenfalls.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "47% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Hidden Falls via South Jenny Lake",
+      "Hidden Falls",
+      "Hidden Falls Via South Jenny Lake Loop Trail"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Hidden Falls Via South Jenny Lake Loop Trail"
+  },
+  "profileKind": "public-source-import"
+}

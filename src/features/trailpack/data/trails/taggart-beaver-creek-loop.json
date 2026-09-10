@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "taggart-beaver-creek-loop",
+    "name": "Taggart Lake - Beaver Creek Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.69310815,
+      "lng": -110.73294997
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Taggart Lake Trailhead marker. This is a trailhead-area forecast point, not navigation guidance or a guarantee of conditions along the entire loop."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/a5853f52-508c-4792-80e2-a2a2321eef80.json",
+        "checkedAt": "2026-09-05",
+        "note": "The official NPS activity-map configuration identifies the Beaver Creek loop variant and its selected route segments."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/places/000/taggart-lake-trailhead.htm",
+        "checkedAt": "2026-09-05",
+        "note": "The trailhead page currently lists 3.9 miles, 500 feet, and Moderate. TrailPack preserves the dedicated activity page's 3.8 miles, 620 feet, and Easy as the managed primary facts rather than averaging conflicting NPS summaries."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4908",
+      "7251",
+      "7253",
+      "7883",
+      "7892",
+      "4955",
+      "4939",
+      "7890",
+      "7888",
+      "7889"
+    ],
+    "distanceMiles": 3.76,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Ten NPS-origin USGS trail records covering the official Taggart-Beaver corridor total 3.760 miles, 1.0% below NPS. The source layer has small trailhead and junction gaps, so this is a route-corridor comparison rather than navigation geometry.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-taggart-beaver-creek-loop.jpg",
+    "locationName": "Taggart Lake - Beaver Creek Loop",
+    "alt": "Red and yellow wildflowers fill a meadow below the snow-streaked Teton Range.",
+    "credit": "NPS Photo / A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartloop.htm",
+    "permissionNote": "The official activity page credits NPS Photo/A. Falgoust and displays no third-party restriction. Retain the credit and source link; no endorsement is implied. The 2400 x 1350 NPS image was visually reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 25%",
+      "mobile": "50% 52%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Taggart Lake - Beaver Creek Loop",
+      "Taggart Lake-Beaver Creek Loop",
+      "Taggart Lake Loop"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

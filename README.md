@@ -7,7 +7,7 @@ silently change the packing decisions or their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
 [View the changelog](CHANGELOG.md) ·
-[View the product roadmap](#roadmap)
+[View the product roadmap](docs/roadmap.md)
 
 ## Project Status
 
@@ -17,8 +17,8 @@ silently change the packing decisions or their sources.
 | Production | [trailpack-ten.vercel.app](https://trailpack-ten.vercel.app) |
 | Deployment source | Protected `main` branch through Vercel |
 | Completed milestones | Verified trail catalog; production-guarded AI; source integrity; private saves; security remediation; final UAT |
-| Active track | Leigh Lake and Bearpaw–Trapper Lakes passed local validation; hosted Preview/release is a separate approval step |
-| Supported catalog | Thirteen reviewed Grand Teton day hikes in the current source; eleven are deployed in Production |
+| Active track | Consolidated Grand Teton expansion passes local source/build and desktop/mobile checks; hosted Preview and owner release approval remain pending |
+| Supported catalog | 39 reviewed Grand Teton itineraries in the current source; the expansion is not yet released |
 | Guest workflow | Full planner and standard plan review available without an account |
 
 Google login and private saved results are live. The guest flow, complete owner
@@ -71,14 +71,16 @@ and condition inputs to produce a limited fallback list.
 
 ## Supported Trail Catalog
 
-The current source contains thirteen Grand Teton day hikes using the same reviewed
-definition format. Leigh Lake and Bearpaw–Trapper Lakes extend the eleven-trail
-Production catalog through the same NPS/USGS source-review process.
+The current source contains 39 Grand Teton itineraries using the same reviewed
+definition format. The two Taggart loops and 24-route consolidated expansion
+await release approval; local admission does not mean deployed or currently open.
 
 | Trail | Profile evidence | NPS accessibility details |
 |---|---|---|
 | Jenny Lake Loop | Official NPS facts with reconciled USGS comparison data | Available |
 | Taggart Lake | Official NPS facts with a close USGS geometry match | Available |
+| Taggart Lake - Beaver Creek Loop | Official NPS facts with a ten-record USGS corridor comparison | Available |
+| Taggart Lake - Bradley Lake Loop | Official NPS facts with Bradley and Valley Trail corridor records | Available |
 | String Lake Loop | Official NPS facts with a labeled USGS bridge estimate | Available |
 | Colter Bay Lakeshore Trail | Official NPS facts with 15 reconciled USGS trail segments | Not found on the tracked NPS page |
 | Two Ocean Lake Loop | Official NPS facts with three reconciled USGS trail segments | Not found on the tracked NPS page |
@@ -91,7 +93,16 @@ Production catalog through the same NPS/USGS source-review process.
 | Leigh Lake | Official NPS facts; shared NPS approach plus two USGS segments, retraced on return | Available |
 | Bearpaw and Trapper Lakes | Official NPS facts; shared NPS approach plus four USGS segments to Trapper Lake, retraced on return | Available |
 
-All thirteen appear in the application as a `Verified NPS + USGS profile`. Internal
+The remaining 24 profiles cover Grand View Point, Emma Matilda and the combined
+Two Ocean loop, Signal Mountain, Holly Lake, Paintbrush–Cascade, Moose Ponds,
+Hidden Falls, Inspiration Point, Cascade Canyon, Lake Solitude, Hurricane Pass,
+Surprise–Amphitheater, Garnet Canyon, Murie Ranch, Aspen–Boulder Ridge, the Death
+Canyon approaches, Valley Trail, Granite Canyon, Marion Lake, and Open Canyon.
+The [full coverage list](docs/data/grand-teton-coverage.md) identifies each
+selected start and itinerary; the [bulk admission record](docs/data/grand-teton-bulk-2026-09-05.md)
+contains source comparisons and limitations.
+
+All profiles appear in the application as a `Verified NPS + USGS profile`. Internal
 `curated` and `public-source-import` values remain only for historical
 traceability; they do not represent different quality tiers.
 
@@ -114,9 +125,20 @@ point, official connector, photographs, and comparison-only AllTrails values.
 The [Leigh–Trapper admission record](docs/data/leigh-trapper-admission-2026-09-05.md)
 distinguishes the short Leigh turnaround from the Trapper itinerary, excludes
 the extra Bearpaw access spur, and records the trailhead-area forecast location.
-The [park-coverage checklist](docs/data/grand-teton-coverage.md) tracks all 39
-in-park NPS Hiking pages, their route variants, and two adjacent Parkway listings;
-this catalog does not yet cover the whole park.
+The [Taggart loops admission record](docs/data/taggart-loops-admission-2026-09-05.md)
+keeps the out-and-back, Beaver Creek loop, and Bradley Lake loop distinct and
+records current NPS conflicts and public-route recognition without blending facts.
+The [park-coverage checklist](docs/data/grand-teton-coverage.md) maps the current
+source to all 39 in-park NPS Hiking pages captured September 4, 2026. It does not
+claim every unofficial trail, connector, or alternate approach. The two adjacent
+Parkway listings remain outside this Grand Teton catalog.
+
+Selected Jenny Lake profiles include walking rather than shuttle-boat distances.
+Long alpine profiles explain that a trailhead-area forecast does not describe
+the entire high route. Five Death Canyon-start profiles visibly retain NPS's
+September 5 access restriction: the old road and trailhead are closed, including
+to pedestrians. Their published distances must not be reused for an alternate
+or future relocated start. Check official construction and condition updates.
 
 Accessibility text is displayed only when the official trail page publishes a
 matching trail-specific block. TrailPack presents it as sourced terrain
@@ -204,7 +226,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) and search for `Jenny Lake`,
 `Taggart`, `String Lake`, `Colter Bay`, `Two Ocean`, `Lunch Tree`, `Christian Pond`,
-`Lake Creek`, `Phelps Lake`, `Heron Pond`, `Hermitage Point`, `Leigh Lake`, or `Trapper`.
+`Lake Creek`, `Phelps Lake`, `Heron Pond`, `Hermitage Point`, `Leigh Lake`,
+`Trapper`, `Beaver Creek`, or `Bradley Lake`.
 
 ### Optional Environment Variables
 
@@ -283,7 +306,7 @@ Run the guarded refresh used by automation:
 npm run refresh:nps-sources
 ```
 
-The refresh requests only registered official NPS URLs (thirteen in current
+The refresh requests only registered official NPS URLs (fifteen in current
 source). It requires two matching reads, validates identity and bounded values, and can update only
 `src/features/trailpack/data/nps-source-snapshots.json`. Missing fields,
 inconsistent responses, implausible values, removed pages, or parser failures
@@ -402,18 +425,26 @@ and all required PR gates. The owner approved release, and
 Production verification confirmed both new trails and guest generation. See the
 [Colter Bay admission record](docs/data/colter-bay-admission-2026-09-04.md).
 
-Leigh Lake and Bearpaw–Trapper Lakes pass the 13-record catalog/photo check,
+Leigh Lake and Bearpaw–Trapper Lakes passed the 13-record catalog/photo check,
 572 unit tests, 13 live NPS comparisons, and the 5,000-case stress run with zero
 invariant failures. All 46 fresh-development Firefox/axe flows pass; the four
 new-trail cases pass again after desktop crop tuning. Local guest generation,
 standard review, photo/source alignment, clean logs, and desktop/mobile layout
-are verified. Hosted Preview and release remain pending; see the
+were verified. The owner approved the Preview, and PR #53 merged them into
+Production; see the
 [Leigh–Trapper admission record](docs/data/leigh-trapper-admission-2026-09-05.md).
+
+The Taggart Lake–Beaver Creek and Taggart Lake–Bradley Lake definitions pass the
+15-record catalog/photo gate, their 19 focused route/source checks, all 50
+Firefox/axe flows, and the full local code gate. Their official NPS photos were
+reviewed at 2400 × 1350, and the weather point is the official NPS Taggart Lake
+Trailhead marker. Hosted Preview and owner acceptance remain pending; see the
+[Taggart loops admission record](docs/data/taggart-loops-admission-2026-09-05.md).
 
 ## Current Limitations
 
-- The current source contains thirteen Grand Teton day hikes, while Production
-  contains eleven until the Leigh–Trapper Preview is approved and merged. This is
+- The current source contains fifteen Grand Teton day hikes, while Production
+  contains thirteen until the two Taggart loop profiles are approved and merged. This is
   not the entire park trail network or a nationwide database; further trails
   require reviewed admission.
 - Manual entry provides a useful fallback but cannot supply source-backed trail
@@ -468,6 +499,17 @@ current local conditions, emergency preparation, or personal judgment.
 
 ## Roadmap
 
+The [prioritized improvement plan](docs/roadmap.md) is the shared to-do list:
+
+1. Add verified access-route choices under each named trail, with packing
+   guidance based on the complete selected hike and clear route comparisons.
+2. Simplify the repository and documentation for readers without a coding
+   background, while preserving required files and source evidence.
+3. Add an interactive park/trail discovery map with an accessible list option.
+
+These changes are planned, not implemented. The plan includes dependencies,
+acceptance checks, documentation updates, and a reusable implementation brief.
+
 | Product milestone | Status |
 |---|---|
 | Core guest planning and packing workflow | Complete and production-verified |
@@ -480,8 +522,10 @@ current local conditions, emergency preparation, or personal judgment.
 | Startup performance and code efficiency | Approved, merged in pull request #47, and verified in Production |
 | Alert contrast and weather-availability clarity | Approved, merged in pull request #48, and verified in Production |
 | Specific trip-safety evidence and route uncertainty | Approved, merged in pull request #49, and verified in Production |
-| Repeatable trail onboarding and Teton expansion | Eleven profiles deployed through PR #52; Leigh and Bearpaw–Trapper locally validated; full NPS inventory tracked |
-| Interactive supported-park map | Future discovery upgrade; the current release uses a scalable park-to-trail list first |
+| Repeatable trail onboarding and Teton expansion | Thirteen profiles deployed through PR #53; the consolidated 39-itinerary catalog is in PR #55 awaiting release approval |
+| Selectable access routes | Planned priority 1; current entries each describe one selected itinerary |
+| Repository and documentation cleanup | Planned priority 2; clearer reading paths and careful file organization |
+| Interactive supported-park map | Planned priority 3; the current app uses a park-to-trail list |
 
 Detailed implementation plans and validation evidence are maintained under
 [`docs/superpowers/plans/`](docs/superpowers/plans/) and
@@ -489,6 +533,7 @@ Detailed implementation plans and validation evidence are maintained under
 
 ## Repository Guide
 
+- [`docs/roadmap.md`](docs/roadmap.md) — prioritized to-do list and future-work brief
 - [`src/app/`](src/app/) — Next.js pages and server routes
 - [`src/features/trailpack/components/`](src/features/trailpack/components/) —
   planner UI

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "holly-lake",
+    "name": "Holly Lake",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.78922384132509,
+      "lng": -110.73169201612473
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Leigh Lake Trailhead marker; 0.7 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/hollylake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/7f4d8a76-3dbe-4892-aebf-16f96577a55a.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "5096",
+      "4833",
+      "4831",
+      "4809",
+      "4826",
+      "7296",
+      "7275",
+      "5153"
+    ],
+    "distanceMiles": 12.657,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 12.657 mi (-1.1% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-holly-lake.jpg",
+    "locationName": "Holly Lake",
+    "alt": "An alpine lake sits at the base of a rocky cliff surrounded by green vegetation.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/hollylake.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 60%",
+      "mobile": "55% 60%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Holly Lake"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

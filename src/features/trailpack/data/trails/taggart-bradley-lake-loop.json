@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "taggart-bradley-lake-loop",
+    "name": "Taggart Lake - Bradley Lake Loop",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.69310815,
+      "lng": -110.73294997
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Taggart Lake Trailhead marker. This is a trailhead-area forecast point, not navigation guidance or a guarantee of conditions along the entire loop."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartbradley.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/55ed2a96-1d40-49f4-9d0d-8eb282952ebe.json",
+        "checkedAt": "2026-09-05",
+        "note": "The official NPS activity-map configuration identifies the Bradley-and-Taggart loop variant and its selected route segments."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/places/000/taggart-lake-trailhead.htm",
+        "checkedAt": "2026-09-05",
+        "note": "The trailhead page currently lists 5.9 miles and 800 feet. TrailPack preserves the dedicated activity page's 5.6 miles and 860 feet as the managed primary facts rather than averaging conflicting NPS summaries."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4908",
+      "7251",
+      "7253",
+      "7883",
+      "7891",
+      "7887",
+      "4955",
+      "4939",
+      "7890",
+      "7888",
+      "7889"
+    ],
+    "distanceMiles": 5.697,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Eleven NPS-origin USGS trail records covering the official Bradley-and-Taggart corridor total 5.697 miles, 1.7% above NPS. The Bradley and Valley Trail legs replace the direct Taggart connector used by the Beaver loop. Small source-layer gaps make this a route-corridor comparison rather than navigation geometry.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-taggart-bradley-lake-loop.jpg",
+    "locationName": "Taggart Lake - Bradley Lake Loop",
+    "alt": "Bradley Lake reflects a forested mountainside and the snow-streaked Teton peaks under a blue sky.",
+    "credit": "NPS Photo / A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/taggartbradley.htm",
+    "permissionNote": "The official activity page credits NPS Photo/A. Falgoust and displays no third-party restriction. Retain the credit and source link; no endorsement is implied. The 2400 x 1350 NPS image was visually reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 25%",
+      "mobile": "50% 48%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Taggart Lake - Bradley Lake Loop",
+      "Taggart Lake-Bradley Lake Loop",
+      "Taggart Lake and Bradley Lake Loop"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

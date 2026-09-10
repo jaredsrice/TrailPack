@@ -65,6 +65,8 @@ export interface NpsIntegrityReport {
 interface IntegrityPolicy {
   aliases: string[];
   checkedFields: NpsIntegrityFieldName[];
+  metricSectionHeading?: string;
+  accessibilitySectionHeading?: string;
 }
 
 export interface NpsObservedFields {
@@ -174,7 +176,7 @@ function parseDuration(value: string): string | undefined {
 
 function parseDifficulty(value: string): string | undefined {
   const match = value.match(
-    /\b(easy|moderately\s+strenuous|moderate(?:\s*[-–—]\s*strenuous)?|strenuous)\b/i,
+    /\b(easy|moderately\s+strenuous|moderate(?:\s*[-–—]\s*strenuous)?|very\s+strenuous|strenuous)\b/i,
   );
   if (!match) {
     return undefined;
@@ -282,6 +284,7 @@ function parseNpsPage(
   policy: IntegrityPolicy,
   html: string,
 ): NpsObservedFields {
+  if (policy.metricSectionHeading) return parseNpsRouteVariant(html, policy.metricSectionHeading, policy.accessibilitySectionHeading);
   const lines = htmlToLines(html);
   const candidate = metricCandidates(lines, profile, policy)[0];
   if (!candidate) {
@@ -292,8 +295,18 @@ function parseNpsPage(
     .slice(Math.max(0, candidate.index - 5), candidate.index + 10)
     .join(" ");
   const pageText = lines.join(" ");
+  // A page can put gain in Accessibility and difficulty in its named distance
+  // statement (Murie Ranch). Only use that fallback when its distance agrees
+  // with the observed candidate, not with the saved profile's expected value.
+  const namedDistanceDifficulty = lines
+    .filter((line) => parseDistance(line) === candidate.distanceMiles &&
+      policy.aliases.some((alias) => normalizeForMatch(line).includes(normalizeForMatch(alias))))
+    .map(parseDifficulty)
+    .filter((value): value is string => value !== undefined);
+  const distinctDifficulties = [...new Set(namedDistanceDifficulty)];
   const difficulty =
     parseDifficulty(context) ??
+    (distinctDifficulties.length === 1 ? distinctDifficulties[0] : undefined) ??
     parseDifficulty(
       lines
         .filter((line) => /\b(?:easy|moderately\s+strenuous|moderate(?:\s*[-–—]\s*strenuous)?|strenuous)\s+hike\b/i.test(line))
@@ -308,6 +321,43 @@ function parseNpsPage(
     routeType: parseRouteType(context) ?? parseAliasedRoute(lines, policy),
     accessibility: parseAccessibility(html),
     evidence: candidate.text.slice(0, 600),
+  };
+}
+
+/** Select an explicit access variant, without using the saved distance as a hint. */
+export function parseNpsRouteVariant(html: string, heading: string, accessibilityHeading = heading): NpsObservedFields {
+  // The duration description owns route metrics. Do not recover a missing
+  // variant from the location/accessibility copies elsewhere on the page.
+  const metrics = html.match(/<div\b[^>]*id=["']InfoAccordian__Item__Description--0["'][^>]*>([\s\S]*?)<\/div>/i)?.[1];
+  if (!metrics) return {};
+  const sections = [...metrics.matchAll(/<(?:strong|b)\b[^>]*>([\s\S]*?)<\/(?:strong|b)>([\s\S]*?)(?=<(?:strong|b)\b|$)/gi)];
+  const target = normalizeForMatch(heading);
+  const matching = sections.filter((match) => normalizeForMatch(htmlToLines(match[1]).join(" ")) === target);
+  const candidates = matching.map((match) => htmlToLines(match[2]).find((line) => parseDistance(line) !== undefined && parseElevationGain(line) !== undefined)).filter((line): line is string => Boolean(line));
+  if (candidates.length !== 1) return {};
+  const line = candidates[0];
+  const accessibilityHtml = html.match(/<div\b[^>]*class=["'][^"']*AccessibilityInfo__Body[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1];
+  const accessibilitySections = accessibilityHtml ? [...accessibilityHtml.matchAll(/<(?:strong|b)\b[^>]*>([\s\S]*?)<\/(?:strong|b)>([\s\S]*?)(?=<(?:strong|b)\b|$)/gi)] : [];
+  const matchingAccessibility = accessibilitySections.filter((match) => normalizeForMatch(htmlToLines(match[1]).join(" ")) === normalizeForMatch(accessibilityHeading));
+  const accessibilitySection = matchingAccessibility.length === 1 ? matchingAccessibility[0] : undefined;
+  // NPS places shared terrain notes after the last variant's metric paragraph.
+  const lastSection = accessibilitySections.at(-1);
+  const lastLines = htmlToLines(lastSection?.[2] ?? "");
+  const lastMetricIndex = lastLines.findIndex((text) => parseDistance(text) !== undefined && parseElevationGain(text) !== undefined);
+  const sharedNotes = lastSection && lastSection !== accessibilitySection
+    && lastMetricIndex >= 0
+    ? lastLines.slice(lastMetricIndex + 1).filter((text) => parseDistance(text) === undefined && parseElevationGain(text) === undefined).join(" ")
+    : "";
+  return {
+    distanceMiles: parseDistance(line),
+    elevationGainFeet: parseElevationGain(line),
+    estimatedDuration: parseDuration(htmlToLines(html).join(" ")),
+    difficulty: parseDifficulty(line),
+    routeType: parseRouteType(line),
+    accessibility: accessibilitySection
+      ? [htmlToLines(accessibilitySection[2]).join(" "), sharedNotes].filter(Boolean).join(" ")
+      : accessibilitySections.length ? undefined : parseAccessibility(html),
+    evidence: heading + ": " + line.slice(0, 500),
   };
 }
 

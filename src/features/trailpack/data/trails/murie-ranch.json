@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "murie-ranch",
+    "name": "Murie Ranch Hike",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.65299458956646,
+      "lng": -110.71834936738014
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Murie Ranch Trailhead marker; 2.0 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/murieranchhike.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/d626b23f-1d87-4991-9726-6fd63a98f9c4.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4764"
+    ],
+    "distanceMiles": 1.155,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 1.155 mi (5.0% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-murie-moose-area.jpg",
+    "locationName": "Teton Range — Moose access area",
+    "alt": "Snow-dusted Teton peaks rise above the Moose area under scattered clouds.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/tripideas/moosehikes.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 48%",
+      "mobile": "42% 48%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Murie Ranch Hike"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "marion-lake",
+    "name": "Marion Lake from Granite Canyon Trailhead",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.60740142149473,
+      "lng": -110.79309850931168
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Granite Canyon Trailhead marker; 2.9 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/38c6ecab-ba38-4bf8-83de-9e1b807cf471.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4897",
+      "7279",
+      "4765",
+      "4763",
+      "7271",
+      "4836",
+      "7347",
+      "7276",
+      "7273"
+    ],
+    "distanceMiles": 18.764,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 18.764 mi (-0.2% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-marion-lake.jpg",
+    "locationName": "Marion Lake from Granite Canyon Trailhead",
+    "alt": "An alpine lake sits at the base of a rocky cliff.",
+    "credit": "NPS Photo/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 100%",
+      "mobile": "52% 68%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Marion Lake from Granite Canyon Trailhead",
+      "Marion Lake",
+      "Granite Canyon Trailhead"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Granite Canyon Trailhead"
+  },
+  "profileKind": "public-source-import"
+}

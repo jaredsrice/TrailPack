@@ -10,8 +10,48 @@ corrections within that milestone.
 
 ## [Unreleased]
 
+### Planning
+
+- Added a [prioritized improvement roadmap](docs/roadmap.md): selectable access
+  routes first, repository and documentation cleanup second, and an interactive
+  park/trail discovery map third. It includes acceptance checks and a reusable
+  implementation brief. These features are planned, not implemented.
+- Clarified the distinction between a destination and the complete access route
+  used for packing guidance. Future documentation cleanup will target a general
+  university audience without assuming a coding background.
+
 ### Added
 
+- A consolidated 24-route Grand Teton expansion, bringing the local catalog to
+  39 selected itineraries with NPS facts, USGS corridor comparisons, verified
+  weather reference points, and documented public AllTrails counterparts.
+- Clear NPS photos with individual desktop/mobile framing and accurately
+  labelled shared area images where the route page's original was undersized.
+- Visible planning notes for walking versus boat approaches, long alpine hikes,
+  and the closed old Death Canyon road/trailhead. Listed distances do not imply
+  an approach is open or apply to a different starting point.
+- Captured route-source fixtures and compressed original geometry evidence for
+  repeatable checks without live provider access.
+
+### Fixed
+
+- NPS source checks now select explicitly named access variants rather than
+  combining a shorter boat route with a longer walking route. They handle NPS's
+  bold-heading formats and preserve its `Very Strenuous` classification.
+- Murie Ranch's separately published difficulty and gain can be checked without
+  substituting another route's values.
+- AllTrails evidence checks compare the parsed hostname exactly, preventing
+  lookalike domains from passing the route-admission test.
+
+### Earlier additions awaiting the consolidated release
+
+- Taggart Lake - Beaver Creek Loop and Taggart Lake - Bradley Lake Loop as
+  separate reviewed profiles without changing the existing Taggart out-and-back.
+- Exact NPS-origin USGS corridor membership for both variants, the official NPS
+  Taggart trailhead weather point, and focused checks that prevent the Bradley
+  and direct Taggart connector records from being mixed.
+- Two sharp 2400 × 1350 NPS photographs with separate trail identity, credits,
+  alt text, and desktop/mobile focal points.
 - A supported-park browser that opens the complete reviewed trail list for each
   park, providing a discovery path when the user does not know a trail name.
 - Device-local trail popularity. The home shortcuts rank trails by selections
@@ -28,20 +68,33 @@ corrections within that milestone.
   counterpart, or explicit owner review when none exists, without replacing
   authoritative NPS facts or reviewed USGS geometry.
 
-These additions are local only; hosted Preview, owner acceptance, and release
-are still required. The shared template adds no new API, authentication, or
-packing-rule behavior.
+The supported-park browser and Leigh/Trapper additions were released through
+PR #53. The Taggart loops and 24-route batch are not yet released; hosted Preview,
+owner approval, and release remain. The shared template
+adds no new API, authentication, or packing-rule behavior.
 
 The park list is the first version of browse-based discovery. A visual,
 interactive supported-park map is recorded in the roadmap as a future upgrade.
 
 ### Verification
 
+- Consolidated expansion: all 39 offline catalog/photo checks and all 39 live
+  NPS source comparisons pass; 715 unit tests and 5,000 stress cases pass with
+  zero invariant failures. Lint, type checking, and the production build pass.
+  All 98 Firefox/axe flows pass at desktop and 390 px mobile widths, including
+  the new trails, unavailable-feed generation, planning notes, carousel/credit
+  synchronization, and clean console/overflow checks. Rendered crops were
+  reviewed across the full batch; Marion Lake received lower desktop framing.
 - All 13 catalog/photo records and live NPS comparisons pass, along with 572
   unit tests, 46 Firefox/axe flows, and 5,000 stress cases without invariant
   failures. Four new-trail flows pass again after final desktop photo framing.
 - Local desktop/mobile checks confirm matching photographs and source credits,
   guest generation, standard reviews, clean logs, and no horizontal overflow.
+- The two Taggart definitions pass the 15-record catalog/photo and live NPS
+  gates, 585 unit tests, 19 focused route/source tests, type checking, lint,
+  the 5,000-case stress run, and the optimized production build. All 50
+  Firefox/axe flows pass, including both routes in the reusable desktop and
+  390 px mobile guest matrix.
 
 ## Colter Bay trail expansion - 2026-09-04
 

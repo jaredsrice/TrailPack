@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "phelps-lake-death-canyon",
+    "name": "Phelps Lake from Death Canyon",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.65602705030001,
+      "lng": -110.78139804303645
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Death Canyon Trailhead marker; 2.0 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "planningNote": "Access restriction reviewed September 5, 2026: NPS reports the old Death Canyon road and trailhead closed, including to pedestrians. These published distances use that old start; do not use them for an alternate trailhead or the future relocated start. Check NPS construction updates before planning."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/7e60a615-d325-41b6-aa76-760ff6988f71.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/grte/planyourvisit/road-construction.htm",
+        "checkedAt": "2026-09-05",
+        "note": "NPS reports the old trailhead closed to all traffic and says relocation will lengthen hikes. Saved route statistics must be re-reviewed for the new start; alternative access has different distances."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4901",
+      "4845",
+      "4839"
+    ],
+    "distanceMiles": 3.684,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 3.684 mi (-0.4% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-phelps-lake-death-canyon.jpg",
+    "locationName": "Phelps Lake from Death Canyon",
+    "alt": "A lake sits at the base of a mountain canyon with a near perfect reflection on its calm surface.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Phelps Lake from Death Canyon",
+      "Phelps Lake"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}

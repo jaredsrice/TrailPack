@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "grand-view-point",
+    "name": "Grand View Point from Grand View Point Trailhead",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.89422974181161,
+      "lng": -110.56866735219955
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Grand View Point Trailhead marker; 2.8 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/6f683b26-cbfb-4123-a4da-76676cba1e52.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      },
+      {
+        "sourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-View-Point-Trail-full.json",
+        "checkedAt": "2026-09-05",
+        "note": "The first 760 metres of this official NPS route line bridge the trailhead to USGS record 4760. It is counted twice for the return walk."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4760",
+      "7308"
+    ],
+    "distanceMiles": 2.711,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments plus the official NPS trailhead connector, with clipped sections and return legs counted explicitly, total 2.711 mi (4.3% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-grand-view-point.jpg",
+    "locationName": "Grand View Point from Grand View Point Trailhead",
+    "alt": "A mountain range and a lake as viewed from a high vantage point.",
+    "credit": "NPS/J. Bonney",
+    "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling.",
+    "focalPoint": {
+      "desktop": "50% 60%",
+      "mobile": "65% 55%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Grand View Point from Grand View Point Trailhead",
+      "Grand View Point",
+      "Grand View Point from the Grand View Point Trailhead"
+    ],
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Grand View Point from the Grand View Point Trailhead"
+  },
+  "profileKind": "public-source-import"
+}

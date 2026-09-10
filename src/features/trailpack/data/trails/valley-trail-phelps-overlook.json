@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "trail": {
+    "id": "valley-trail-phelps-overlook",
+    "name": "Valley Trail to Phelps Lake Overlook",
+    "parkId": "grand-teton",
+    "coordinates": {
+      "lat": 43.59939635338373,
+      "lng": -110.82210592925547
+    },
+    "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
+    "coordinateCheckedAt": "2026-09-05",
+    "coordinateNote": "Official NPS Valley Trail Access marker; 0.5 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route."
+  },
+  "official": {
+    "sourceUrl": "https://www.nps.gov/thingstodo/valley-trail-phelps-lake-overlook.htm",
+    "additionalSources": [
+      {
+        "sourceUrl": "https://www.nps.gov/maps/builder/configs/37b0bc24-ece8-408e-b75f-5c7384d51548.json",
+        "checkedAt": "2026-09-05",
+        "note": "Official NPS activity-map configuration used to identify the named route corridor; alternate access routes and branches are not silently substituted."
+      }
+    ]
+  },
+  "comparison": {
+    "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
+    "checkedAt": "2026-09-05",
+    "sourceRecordIds": [
+      "4964",
+      "4843",
+      "4844",
+      "4836",
+      "7340",
+      "7341",
+      "4838",
+      "4837",
+      "4842",
+      "4839",
+      "4845"
+    ],
+    "distanceMiles": 13.181,
+    "distanceMatch": "strong_bridge",
+    "elevationGainFeet": null,
+    "gainMatch": "unknown",
+    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 13.181 mi (-0.1% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "gainNote": null
+  },
+  "photo": {
+    "src": "/park-images/grand-teton-phelps-lake-death-canyon.jpg",
+    "locationName": "Phelps Lake — route area",
+    "alt": "A lake sits at the base of a mountain canyon with a near perfect reflection on its calm surface.",
+    "credit": "NPS Photo/A. Falgoust",
+    "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
+    "permissionNote": "Reviewed the official NPS page and its NPS photographer credit; no third-party restriction is displayed. Retain attribution and source; no endorsement is implied. Original sharpness reviewed without upscaling. Shared lake-area photo, not a claim that it shows the overlook or upper canyon.",
+    "focalPoint": {
+      "desktop": "50% 50%",
+      "mobile": "50% 50%"
+    }
+  },
+  "sourceCheck": {
+    "aliases": [
+      "Valley Trail to Phelps Lake Overlook",
+      "Valley Trail - Phelps Lake Overlook"
+    ],
+    "skipRouteTypeReason": null
+  },
+  "profileKind": "public-source-import"
+}
