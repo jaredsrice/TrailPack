@@ -15,9 +15,15 @@ import {
   readTextWithinLimit,
 } from "@/features/trailpack/lib/read-text-with-limit";
 
+type NextFetchRequestInit = RequestInit & {
+  next?: {
+    revalidate: number;
+  };
+};
+
 type Fetcher = (
   input: RequestInfo | URL,
-  init?: RequestInit,
+  init?: NextFetchRequestInit,
 ) => Promise<{
   ok: boolean;
   status: number;
@@ -82,6 +88,7 @@ const NPS_ALERTS_URL = "https://developer.nps.gov/api/v1/alerts";
 const WEATHER_REQUEST_TIMEOUT_MS = 15_000;
 const DAYLIGHT_REQUEST_TIMEOUT_MS = 3_000;
 const NPS_ALERT_REQUEST_TIMEOUT_MS = 5_000;
+const NPS_ALERT_REVALIDATE_SECONDS = 300;
 const WEATHER_TIMEOUT_REASON = `The weather service did not respond within ${WEATHER_REQUEST_TIMEOUT_MS / 1_000} seconds.`;
 const MAX_WEATHER_RESPONSE_BYTES = 256_000;
 const MAX_DAYLIGHT_RESPONSE_BYTES = 32_000;
@@ -903,6 +910,7 @@ export async function fetchNpsAlertContext(
             Accept: "application/json",
             "X-Api-Key": apiKey,
           },
+          next: { revalidate: NPS_ALERT_REVALIDATE_SECONDS },
           signal,
         });
 

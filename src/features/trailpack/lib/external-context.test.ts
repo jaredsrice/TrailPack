@@ -13,6 +13,7 @@ import {
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 describe("buildWeatherContextFromOpenMeteoResponse", () => {
@@ -620,6 +621,25 @@ describe("external-context fallbacks", () => {
     expect(alerts.hasActiveAlerts).toBe(false);
     expect(alerts.label).toBe("unavailable");
     expect(alerts.retrievalStatus).toBe("saved-fixture");
+  });
+
+  it("bounds successful NPS requests with the shared Next.js data cache", async () => {
+    const fetcher = vi.fn<typeof fetch>(
+      async () => Response.json({ total: "0", data: [] }),
+    );
+    vi.stubGlobal("fetch", fetcher);
+
+    const alerts = await fetchNpsAlertContext("grte", "test-key");
+
+    expect(alerts).toMatchObject({
+      hasActiveAlerts: false,
+      label: "official",
+      retrievalStatus: "live",
+    });
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(fetcher.mock.calls[0]?.[1]).toMatchObject({
+      next: { revalidate: 300 },
+    });
   });
 
   it.each([
