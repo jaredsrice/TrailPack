@@ -27,11 +27,7 @@ function headingText(line) {
   const match = line.match(/^ {0,3}#{1,6}\s+(.+?)\s*#*\s*$/);
   if (!match) return null;
 
-  return match[1]
-    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/<[^>]+>/g, "")
-    .replace(/[`*_~]/g, "");
+  return match[1];
 }
 
 function slug(text, collapseWhitespace) {
