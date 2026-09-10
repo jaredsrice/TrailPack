@@ -26,7 +26,7 @@ type EvidenceRoute = {
 
 const evidence = evidenceJson as unknown as {
   routes: EvidenceRoute[];
-  deferredOfficialVariants: Array<{ name: string; reason: string }>;
+  deferredOfficialVariants: Array<{ name: string; reason: string; resolvedBy?: string }>;
   weather: { sourceUrl: string; coordinates: Point };
 };
 const bulkGeometry = JSON.parse(gunzipSync(readFileSync(new URL(
@@ -50,7 +50,7 @@ function selectedEnds(leg: Leg): Point[] {
 describe("Jenny Lake round-trip shuttle variants", () => {
   it("admits the four NPS variants as distinct access choices", () => {
     expect(evidence.routes).toHaveLength(4);
-    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(46);
+    expect(Object.keys(TRAIL_CATALOG)).toHaveLength(52);
     for (const route of evidence.routes) {
       const profile = TRAIL_CATALOG[route.id];
       expect(profile).toBeDefined();
@@ -107,7 +107,7 @@ describe("Jenny Lake round-trip shuttle variants", () => {
     }
   });
 
-  it("keeps unsupported official variants deferred with a specific evidence gap", () => {
+  it("retains the former evidence holds with their resolving route IDs", () => {
     expect(evidence.deferredOfficialVariants.map((variant) => variant.name)).toEqual([
       "Grand View Point from Jackson Lake Lodge",
       "Marion Lake from Rendezvous Mountain",
@@ -115,6 +115,8 @@ describe("Jenny Lake round-trip shuttle variants", () => {
     ]);
     for (const variant of evidence.deferredOfficialVariants) {
       expect(variant.reason).toContain("retained archive does not establish its complete route geometry");
+      expect(variant.resolvedBy).toBeTruthy();
+      expect(TRAIL_CATALOG[variant.resolvedBy!]).toBeDefined();
     }
   });
 });

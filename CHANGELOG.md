@@ -31,9 +31,16 @@ corrections within that milestone.
   itineraries, covering the NPS parent facts, mapped-distance method, exclusions,
   unknowns and source links. AllTrails links now say whether a public route is
   comparable or only related to the selected itinerary.
-- A dated Jenny Lake shuttle evidence manifest. Grand View Point from Jackson
-  Lake Lodge, Marion Lake from Rendezvous Mountain and Moose Ponds Loop remain
-  explicitly deferred until complete route geometry can be retained.
+- Six additional NPS-published route choices: Grand View Point from Jackson Lake
+  Lodge, Moose Ponds Loop, Granite Canyon from Valley Trail and Rendezvous
+  Mountain, and Marion Lake and Open Canyon from Rendezvous Mountain. Each keeps
+  its own start, route form, return plan, official metrics, weather reference,
+  AllTrails comparison, and reproducible NPS-origin USGS corridor.
+- A complete dated day-hike audit and machine-readable candidate register. It
+  records 26 technically eligible evidence holds, technical exclusions, the
+  approved score 1–5 boundary, and every assumption marked for owner review.
+  Delta Lake, Polecat Creek Loop, and Flagg Canyon remain explicit evidence
+  holds rather than being represented as verified routes.
 - An unreleased Inspiration Point access chooser: south-shore walking,
   round-trip shuttle, shuttle out/walk back, or walk out/shuttle back.
   Search and park browsing show one destination; the chosen
@@ -109,6 +116,12 @@ interactive supported-park map is recorded in the roadmap as a future upgrade.
 
 ### Verification
 
+- Final Priority 1 route coverage: 775 unit tests, all 52 catalog/photo checks,
+  all 50 live NPS source comparisons, and 5,000 system stress cases pass. Lint,
+  type checking, the production build, and all 128 Firefox/axe flows pass at
+  desktop and 390 px widths. The six added profiles are covered by guest
+  generation and exact retained-geometry tests. Per owner direction, no separate
+  manual browser walkthrough was required after the complete automated gate.
 - Access-route checkpoint: 749 unit tests, all 46 offline catalog/photo checks,
   all 44 live NPS comparisons and 5,000 offline stress cases pass. All 116
   Firefox/axe flows pass at desktop and 390 px mobile widths, including explicit

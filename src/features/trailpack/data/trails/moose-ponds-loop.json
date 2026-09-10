@@ -1,32 +1,33 @@
 {
   "schemaVersion": 1,
   "trail": {
-    "id": "moose-ponds",
-    "name": "Moose Ponds",
+    "id": "moose-ponds-loop",
+    "name": "Moose Ponds Loop",
     "parkId": "grand-teton",
     "coordinates": {
       "lat": 43.751573014308974,
       "lng": -110.7254246994853
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
-    "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; 8.4 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Jenny Lake Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
     "accessRoute": {
       "groupId": "moose-ponds",
       "groupName": "Moose Ponds",
-      "label": "Short out-and-back",
+      "label": "Full pond loop",
       "start": "Jenny Lake Trailhead",
-      "returnPlan": "Return along the same approach.",
-      "distanceScope": "Full out-and-back, including the return.",
+      "returnPlan": "Complete the pond circuit, then return on the shared Jenny Lake approach.",
+      "distanceScope": "Full lollipop loop, including the shared approach in both directions.",
       "transport": "none",
       "comparison": {
         "source": "AllTrails",
         "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/moose-ponds-trail",
         "checkedAt": "2026-09-09",
-        "relationship": "related",
-        "summary": "The public route follows the longer pond loop; this option is the NPS out-and-back."
+        "relationship": "counterpart",
+        "summary": "Same Jenny Lake start and pond loop; NPS facts remain authoritative."
       }
-    }
+    },
+    "planningNote": "The pond trail may be narrow or vegetation-covered. Check current conditions and wildlife guidance."
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
@@ -40,26 +41,26 @@
   },
   "comparison": {
     "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
-    "checkedAt": "2026-09-05",
+    "checkedAt": "2026-09-09",
     "sourceRecordIds": [
       "5161",
       "5154",
       "5160",
       "5101",
       "5112",
-      "5108",
-      "5105"
+      "5100",
+      "5108"
     ],
-    "distanceMiles": 1.94,
-    "distanceMatch": "strong_bridge",
+    "distanceMiles": 3.0902474,
+    "distanceMatch": "moderate_bridge",
     "elevationGainFeet": null,
     "gainMatch": "unknown",
-    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 1.940 mi (-3.0% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "note": "Reviewed NPS-origin USGS approach plus both sides of the Moose Pond circuit totals 3.090 mi (-9.1% versus NPS). Corridor evidence only, not a navigation track.",
     "gainNote": null
   },
   "photo": {
     "src": "/park-images/grand-teton-moose-ponds.jpg",
-    "locationName": "Moose Ponds",
+    "locationName": "Moose Ponds Loop",
     "alt": "A moose stands in a pond surrounded by vegetation at the base of a mountain.",
     "credit": "NPS Photo/J. Bonney",
     "sourceUrl": "https://www.nps.gov/thingstodo/mooseponds.htm",
@@ -71,10 +72,10 @@
   },
   "sourceCheck": {
     "aliases": [
-      "Moose Ponds"
+      "Moose Ponds Loop"
     ],
     "skipRouteTypeReason": null,
-    "metricSectionHeading": "Moose Ponds"
+    "metricSectionHeading": "Moose Ponds Loop"
   },
   "profileKind": "public-source-import"
 }

@@ -2,7 +2,7 @@
 
 Date: 2026-09-07
 
-Status: Accepted; implemented for five Jenny Lake destinations
+Status: Accepted; implemented for ten grouped destinations
 
 ## Context
 
@@ -39,8 +39,10 @@ itinerary, not a generic return-trip toggle.
 This avoids a saved-data migration and preserves old walking names and facts.
 Saved summaries already snapshot route ID, name, type, distance and gain; the
 shuttle's return-boat planning item also remains in its saved packing list.
-There are 39 discovery entries and 46 complete route profiles in this branch:
-44 NPS-published profiles and two calculated mixed itineraries.
+There are 39 discovery entries and 52 complete route profiles in this branch:
+50 NPS-published profiles and two calculated mixed itineraries. The same identity
+rule now groups Grand View Point, Moose Ponds, Granite Canyon, Marion Lake, and
+Open Canyon variants found in the complete day-hike audit.
 The NPS refresh publisher still owns only the managed snapshot, never group
 membership, transport assumptions or geometry. NPS page-wide duration estimates
 remain labeled as such rather than being silently converted to boat schedules.

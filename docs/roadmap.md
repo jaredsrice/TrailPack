@@ -1,18 +1,20 @@
 # TrailPack improvement roadmap
 
-Status: Priority 1 is implemented locally and awaiting Preview/release review.
+Status: Priority 1 is implemented on the review branch and awaiting merge approval.
 Approved planning order: route options first,
 repository and documentation cleanup second, interactive discovery map third.
 This document is the shared to-do list and starting brief for future work.
 
 ## What is available now
 
-The implementation branch contains 39 discovery entries and 46 route
-profiles: 44 NPS-backed profiles and two mapped mixed-route estimates. Hidden
+The implementation branch contains 39 discovery entries and 52 route
+profiles: 50 NPS-backed profiles and two mapped mixed-route estimates. Hidden
 Falls, Inspiration Point, Forks of Cascade Canyon, Lake Solitude and Hurricane
 Pass group their South Jenny Lake walking return with the NPS round-trip shuttle
 variant. Inspiration Point also offers shuttle out/walk back and walk out/shuttle
-back. Other entries describe one selected hike. This is not a production release.
+back. Grand View Point, Moose Ponds, Granite Canyon, Marion Lake, and Open Canyon
+group every evidence-complete NPS-published start found by the route audit.
+This is not a production release.
 
 Some entries have a **Before you go** note. That section appears only when a
 note exists. Complete AllTrails comparisons are saved in the
@@ -20,8 +22,9 @@ note exists. Complete AllTrails comparisons are saved in the
 not consistently explained in the app. Park discovery currently uses a list.
 
 The catalog changes are in [PR #55](https://github.com/jaredsrice/TrailPack/pull/55).
-The access-route implementation is separate from that PR. Neither this plan nor
-the local implementation authorizes a merge.
+The access-route and route-audit implementation is
+[PR #56](https://github.com/jaredsrice/TrailPack/pull/56), stacked on #55.
+Neither this plan nor the local implementation authorizes a merge.
 Use the PR's current checks to determine readiness; do not assume an older
 passing result applies to a newer commit.
 
@@ -60,15 +63,20 @@ source/test report and Preview per approved batch.
 - The in-app **How was this calculated?** disclosure explains mixed-route facts,
   method, exclusions, limitations and sources. Public comparisons distinguish a
   comparable route from a related route with a different itinerary.
-- Grand View Point from Jackson Lake Lodge, Marion Lake from Rendezvous Mountain
-  and Moose Ponds Loop remain deferred because the retained archive does not
-  establish complete geometry for those official variants. They are recorded in
-  the [evidence manifest](data/jenny-lake-shuttle-routes-2026-09-09.json), not invented.
+- Added six evidence-complete NPS variants: Grand View Point from Jackson Lake
+  Lodge, Moose Ponds Loop, Granite Canyon from Valley Trail and Rendezvous
+  Mountain, and Marion Lake and Open Canyon from Rendezvous Mountain. Their
+  former holds now point to the resolving profile IDs.
+- The [complete day-hike audit](data/grand-teton-day-hike-audit-2026-09-09.md)
+  records 26 technically eligible evidence holds, the technical-risk boundary,
+  and every assumption marked for owner review. Delta Lake remains a hold because
+  NPS does not publish the complete authoritative profile required by TrailPack.
 - Still pending: consolidated hosted Preview and owner approval before merge. See
   [the design decision](adr/0002-complete-access-route-identity.md).
-- Checkpoint checks: 749 unit tests, 46 catalog/photo checks, 44 live NPS source
-  comparisons, 5,000 stress cases and 116 Firefox/axe flows pass. No account or
-  second-user checks were required. New route code remains local and unmerged.
+- Final local checks: 775 unit tests, 52 catalog/photo checks, 50 live NPS source
+  comparisons, 5,000 stress cases, and 128 Firefox/axe flows pass. Lint, type
+  checking, and the production build pass. No account or second-user checks were
+  required for this data-only expansion.
 
 ### Intended experience
 
@@ -126,86 +134,89 @@ must keep those limitations visible rather than equating tests with field survey
   Boat/car travel is not walking distance, but known travel/wait time can affect
   the trip schedule and daylight; keep those assumptions separate and visible.
   A route-type label alone must not replace the actual itinerary measurements.
-- [ ] **Preserve the existing source boundary.** Keep official NPS facts separate
+- [x] **Preserve the existing source boundary.** Keep official NPS facts separate
   from reviewed route metadata and USGS comparisons. The scheduled source
   refresh must not gain permission to create routes, rewrite geometry, or edit
   unrelated files. Extend the onboarding template and source checker together.
   Review [the existing catalog decision](adr/0001-approved-trail-catalog.md)
   before changing this boundary.
-- [ ] **Verify each complete itinerary.** Prefer NPS facts, compare the selected
+- [x] **Verify each complete itinerary.** Prefer NPS facts, compare the selected
   USGS corridor and start coordinates, and record recognizable AllTrails pages.
   Do not mix walking-route gain with shuttle-route distance, average conflicting
   provider numbers, or invent missing duration/elevation values. Page-wide time
   ranges that cover several approaches must be labelled as such.
-- [ ] **Handle route differences honestly.** Show a short start/return description
+- [x] **Handle route differences honestly.** Show a short start/return description
   up front. Put the counterpart link and specific difference under a collapsed
   **Comparing with AllTrails?** section. Use **Related route—not the same
   itinerary** when necessary, particularly for the current Valley Trail match.
   Small measurement differences belong in the details; changed starts,
   turnarounds, boat use, or summit extensions must be clear before generation.
-- [ ] **Build the compact chooser.** Require an explicit selection when a group
+- [x] **Build the compact chooser.** Require an explicit selection when a group
   offers multiple routes. For a single option, show its description without an
   unnecessary selector. Keep selection keyboard-accessible and readable on
   mobile. Use real controls, not decorative pills that look interactive.
-- [ ] **Connect every route-dependent consumer.** Selection must update displayed
+- [x] **Connect every route-dependent consumer.** Selection must update displayed
   facts, the weather reference and availability state, relevant access guidance,
   packing inputs, review identity, source details, and photo/credit when the
   image differs. Keep park-wide alerts labelled park-wide unless route impact
   is supported by evidence; do not imply that every new choice needs a new NPS
   request. Shared references may reuse a valid cached response.
-- [ ] **Prevent stale or mixed results.** Changing the route makes the previous
+- [x] **Prevent stale or mixed results.** Changing the route makes the previous
   list visibly out of date and requires Generate/Update. An older weather or AI
   response must not overwrite the new selection. Selection alone must not
   consume an AI allowance. Preserve relevant user-entered trip details, but
   re-evaluate them against the new route rather than silently reusing a list.
-- [ ] **Keep transport and access limitations visible.** A shuttle option does
+- [x] **Keep transport and access limitations visible.** A shuttle option does
   not guarantee that the boat is operating or that a ticket is available.
   Link official operating information without inventing a live schedule. Keep
   material closures and alpine/weather limitations visible; move only supporting
   explanation into details. An unavailable feed must never mean “route open.”
-- [ ] **Migrate existing identities safely.** Preserve existing trail IDs and
+- [x] **Migrate existing identities safely.** Preserve existing trail IDs and
   saved-plan meaning through explicit mappings. Old saved results retain their
   original itinerary and facts; never relabel a walking plan as a boat plan.
   Define how unsupported/retired options are shown. Keep search aliases,
   park lists, route/destination counts, and device-local popularity consistent;
   do not accidentally count one destination several times as a popular trail.
-- [ ] **Deliver a reusable first example, then a verified batch.** Implement
+- [x] **Deliver a reusable first example, then a verified batch.** Implement
   Inspiration Point's two supported approaches first to prove the model and
   chooser. Apply that same pattern to the approved inventory in batches, with
   consolidated verification rather than repeated owner signoffs per trail.
-- [ ] **Update documentation with the feature.** Update README, changelog,
+- [x] **Update documentation with the feature.** Update README, changelog,
   coverage list, onboarding guide/template, glossary, route evidence, and this
   checklist. Record any architectural change when it is actually decided.
 
 ### Acceptance tests
 
-- [ ] Walking and shuttle options use their own full-trip values and preserve
+- [x] Walking and shuttle options use their own full-trip values and preserve
   the correct start, turnaround, return, and source labels.
-- [ ] Loop, out-and-back, and one-way fixtures display consistent route types
+- [x] Loop, out-and-back, and one-way fixtures display consistent route types
   in selection and packing output. Tests distinguish one-way source distances
   from published totals, prevent double-counting returns, and keep transport
   separate from hiking. Missing return arrangements or uncertain route types
   stay visible instead of silently assuming a round trip.
-- [ ] Missing, duplicate, or changed official variant headings fail source
+- [x] Missing, duplicate, or changed official variant headings fail source
   checks rather than quietly selecting another approach. Unsupported options
   cannot generate a supposedly verified plan.
-- [ ] Switching routes updates the rule inputs and produces the expected
+- [x] Switching routes updates the rule inputs and produces the expected
   recommendations where thresholds differ. It is acceptable for two correctly
   evaluated routes to yield the same items; do not force artificial differences.
-- [ ] Rapid selection changes, delayed responses, unavailable weather/NPS data,
+- [x] Rapid selection changes, delayed responses, unavailable weather/NPS data,
   stale reviews, and repeated generation leave a consistent usable guest plan.
-- [ ] Legacy saved-plan fixtures keep their original meaning; API validation
+- [x] Legacy saved-plan fixtures keep their original meaning; API validation
   rejects mismatched route IDs/facts and preserves existing access controls.
   Use automated fixtures/mocks; do not require owner authentication or a second
   account for acceptance. Report any untested live account behavior explicitly.
-- [ ] Desktop and 390 px mobile checks cover selection, keyboard/focus behavior,
+- [x] Desktop and 390 px mobile checks cover selection, keyboard/focus behavior,
   readable warnings, collapsed comparisons, matching image credits, no overflow,
   and generation without signing in.
-- [ ] Catalog/source checks, lint, type checking, unit/integration tests, relevant
+- [x] Catalog/source checks, lint, type checking, unit/integration tests, relevant
   stress cases, production build, and browser/accessibility checks pass. Review
   one consolidated source report and Preview before requesting release approval.
 
 ## Priority 2: Repository and documentation cleanup
+
+This is the next major work point after the route-coverage PR. Begin it as a
+separate reviewable branch after Priority 1 is merged or explicitly closed.
 
 ### Intended experience
 
@@ -280,6 +291,14 @@ background, oversimplifying the product, or removing important qualifications.
   exposed or lost during cleanup. Review the final diff and changed-file list.
 
 ## Priority 3: Interactive park and trail discovery map
+
+### Future route builder
+
+After the discovery map, consider an opt-in route builder that lets hikers join
+reviewed route segments into their own itinerary. It must label user-composed
+distance, gain, access, and return assumptions separately from official route
+profiles. This avoids cataloging every possible permutation while preserving the
+current evidence model. It is intentionally outside Priority 1 and Priority 2.
 
 ### Intended experience
 

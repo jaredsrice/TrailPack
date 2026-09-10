@@ -1,32 +1,33 @@
 {
   "schemaVersion": 1,
   "trail": {
-    "id": "granite-canyon",
-    "name": "Granite Canyon from Granite Canyon Trailhead",
+    "id": "granite-canyon-rendezvous",
+    "name": "Granite Canyon from Rendezvous Mountain",
     "parkId": "grand-teton",
     "coordinates": {
-      "lat": 43.60740142149473,
-      "lng": -110.79309850931168
+      "lat": 43.59684592841692,
+      "lng": -110.87165907025337
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
-    "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Granite Canyon Trailhead marker; 2.9 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Rendezvous Mountain Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
     "accessRoute": {
       "groupId": "granite-canyon",
       "groupName": "Granite Canyon",
-      "label": "Granite Canyon Trailhead",
-      "start": "Granite Canyon Trailhead",
-      "returnPlan": "Return along the same canyon trail.",
-      "distanceScope": "Full out-and-back, including the return.",
+      "label": "Rendezvous Mountain to Teton Village",
+      "start": "Rendezvous Mountain Trailhead",
+      "returnPlan": "Finish at Teton Village. Arrange access to the summit before starting; the published route is one-way.",
+      "distanceScope": "One-way summit-to-village hike; summit access is separate.",
       "transport": "none",
       "comparison": {
         "source": "AllTrails",
-        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-trail",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-to-the-tram",
         "checkedAt": "2026-09-09",
-        "relationship": "counterpart",
-        "summary": "Same Granite Canyon Trailhead and canyon out-and-back; tram alternatives are separate choices."
+        "relationship": "related",
+        "summary": "Public route maps the reverse direction. This option follows the NPS summit-to-village direction and one-way statistics."
       }
-    }
+    },
+    "planningNote": "One-way high-elevation hike. Confirm tram or resort-trail access, operating schedule, snow conditions and a complete transport plan before leaving."
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
@@ -40,26 +41,26 @@
   },
   "comparison": {
     "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
-    "checkedAt": "2026-09-05",
+    "checkedAt": "2026-09-09",
     "sourceRecordIds": [
-      "4897",
-      "7279",
-      "4765",
-      "4763",
-      "7271",
+      "7298",
+      "7282",
+      "7347",
       "4836",
-      "7347"
+      "4844",
+      "4843",
+      "4964"
     ],
-    "distanceMiles": 13.315,
+    "distanceMiles": 12.90203534,
     "distanceMatch": "strong_bridge",
     "elevationGainFeet": null,
     "gainMatch": "unknown",
-    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 13.315 mi (-0.6% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "note": "Reviewed NPS-origin USGS summit, Granite Canyon and Valley Trail corridor totals 12.902 mi (0.0% versus NPS). Corridor evidence only, not a navigation track.",
     "gainNote": null
   },
   "photo": {
     "src": "/park-images/grand-teton-granite-canyon.jpg",
-    "locationName": "Granite Canyon from Granite Canyon Trailhead",
+    "locationName": "Granite Canyon from Rendezvous Mountain",
     "alt": "A rock pinnacle towers above at the top of a slope covered in boulders and green vegetation.",
     "credit": "NPS Photo/A. Falgoust",
     "sourceUrl": "https://www.nps.gov/thingstodo/granite-canyon.htm",
@@ -71,12 +72,11 @@
   },
   "sourceCheck": {
     "aliases": [
-      "Granite Canyon from Granite Canyon Trailhead",
-      "Granite Canyon",
-      "Granite Canyon Trailhead"
+      "Granite Canyon from Rendezvous Mountain",
+      "Rendezvous Mountain Trailhead"
     ],
-    "skipRouteTypeReason": "Selected duration line says RT but does not spell out the route type. The matching access description and reviewed retraced geometry establish out-and-back; other access variants must not supply the type.",
-    "metricSectionHeading": "Granite Canyon Trailhead"
+    "skipRouteTypeReason": null,
+    "metricSectionHeading": "Rendezvous Mountain Trailhead"
   },
   "profileKind": "public-source-import"
 }

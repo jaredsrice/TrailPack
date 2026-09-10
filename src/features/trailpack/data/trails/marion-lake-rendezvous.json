@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
   "trail": {
-    "id": "marion-lake",
-    "name": "Marion Lake from Granite Canyon Trailhead",
+    "id": "marion-lake-rendezvous",
+    "name": "Marion Lake from Rendezvous Mountain",
     "parkId": "grand-teton",
     "coordinates": {
-      "lat": 43.60740142149473,
-      "lng": -110.79309850931168
+      "lat": 43.59684592841692,
+      "lng": -110.87165907025337
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
-    "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Granite Canyon Trailhead marker; 2.9 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment.",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Rendezvous Mountain Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
+    "planningNote": "Very strenuous high-elevation loop. Confirm tram or resort-trail access, operating schedule and snow conditions; the forecast point does not represent the entire route.",
     "accessRoute": {
       "groupId": "marion-lake",
       "groupName": "Marion Lake",
-      "label": "Granite Canyon Trailhead",
-      "start": "Granite Canyon Trailhead",
-      "returnPlan": "Return along the same approach.",
-      "distanceScope": "Full out-and-back, including the return.",
+      "label": "Rendezvous Mountain loop",
+      "start": "Rendezvous Mountain Trailhead",
+      "returnPlan": "The NPS loop returns to the summit trailhead; plan a separate descent to Teton Village.",
+      "distanceScope": "Summit loop only; tram or hiking access to and from the summit is excluded.",
       "transport": "none",
       "comparison": {
         "source": "AllTrails",
-        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/teton-crest-trail-granite-canyon-to-marion-lake",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/marion-lake-trail",
         "checkedAt": "2026-09-09",
-        "relationship": "related",
-        "summary": "Same Granite Canyon access and lake, but the public map continues beyond the NPS lake turnaround."
+        "relationship": "counterpart",
+        "summary": "Recognizable summit-access Marion Lake loop; NPS facts and selected loop remain authoritative."
       }
     }
   },
@@ -41,28 +41,26 @@
   },
   "comparison": {
     "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
-    "checkedAt": "2026-09-05",
+    "checkedAt": "2026-09-09",
     "sourceRecordIds": [
-      "4897",
-      "7279",
-      "4765",
-      "4763",
-      "7271",
-      "4836",
-      "7347",
+      "7298",
+      "7301",
+      "7295",
+      "7310",
+      "7273",
       "7276",
-      "7273"
+      "7282"
     ],
-    "distanceMiles": 18.764,
+    "distanceMiles": 14.670241996,
     "distanceMatch": "strong_bridge",
     "elevationGainFeet": null,
     "gainMatch": "unknown",
-    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 18.764 mi (-0.2% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "note": "Reviewed NPS-origin USGS summit access and Middle/North/South Fork loop, with the Fox Creek Pass leg clipped at Marion Lake, totals 14.670 mi (-0.2% versus NPS). Corridor evidence only, not a navigation track.",
     "gainNote": null
   },
   "photo": {
     "src": "/park-images/grand-teton-marion-lake.jpg",
-    "locationName": "Marion Lake from Granite Canyon Trailhead",
+    "locationName": "Marion Lake from Rendezvous Mountain",
     "alt": "An alpine lake sits at the base of a rocky cliff.",
     "credit": "NPS Photo/J. Bonney",
     "sourceUrl": "https://www.nps.gov/thingstodo/marionlake.htm",
@@ -74,12 +72,11 @@
   },
   "sourceCheck": {
     "aliases": [
-      "Marion Lake from Granite Canyon Trailhead",
-      "Marion Lake",
-      "Granite Canyon Trailhead"
+      "Marion Lake from Rendezvous Mountain",
+      "Rendezvous Mountain Trailhead"
     ],
     "skipRouteTypeReason": null,
-    "metricSectionHeading": "Granite Canyon Trailhead"
+    "metricSectionHeading": "Rendezvous Mountain Trailhead"
   },
   "profileKind": "public-source-import"
 }

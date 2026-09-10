@@ -33,11 +33,11 @@ activity page's shuttle map configuration. Their supporting links now point to
 the distinct walking maps. Their IDs, NPS values, USGS comparisons and saved-list
 meaning did not change.
 
-## Deferred official variants
+## Official variants resolved by the follow-up audit
 
 The source review also found Grand View Point from Jackson Lake Lodge, Marion
 Lake from Rendezvous Mountain and Moose Ponds Loop. Their NPS pages distinguish
-those variants, but the retained archive does not establish complete route
-geometry for them. They remain recorded as evidence gaps rather than selectable
-routes. Admission requires a complete start, route, return, weather reference
-and reproducible geometry comparison under the normal onboarding rules.
+those variants, but this batch's retained archive did not establish complete
+route geometry for them. The September 9 follow-up audit captured the missing
+USGS records and admitted all three. The manifest keeps the original reasons and
+adds each resolving profile ID so the evidence history remains traceable.

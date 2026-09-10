@@ -108,15 +108,18 @@
   "deferredOfficialVariants": [
     {
       "name": "Grand View Point from Jackson Lake Lodge",
-      "reason": "The NPS page distinguishes the variant, but the retained archive does not establish its complete route geometry."
+      "reason": "The NPS page distinguishes the variant, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "grand-view-point-jackson-lodge"
     },
     {
       "name": "Marion Lake from Rendezvous Mountain",
-      "reason": "The NPS page distinguishes the tram-access variant, but the retained archive does not establish its complete route geometry."
+      "reason": "The NPS page distinguishes the tram-access variant, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "marion-lake-rendezvous"
     },
     {
       "name": "Moose Ponds Loop",
-      "reason": "The NPS page distinguishes the loop, but the retained archive does not establish its complete route geometry."
+      "reason": "The NPS page distinguishes the loop, but the retained archive does not establish its complete route geometry.",
+      "resolvedBy": "moose-ponds-loop"
     }
   ]
 }

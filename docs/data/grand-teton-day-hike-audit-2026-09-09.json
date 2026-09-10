@@ -1,0 +1,271 @@
+{
+  "checkedAt": "2026-09-09",
+  "scope": "Grand Teton National Park, adjoining NPS-managed John D. Rockefeller Jr. Memorial Parkway, and NPS-published Teton Village starts.",
+  "policyDecisionsForReview": [
+    "Use the stated geographic scope rather than the entire geological Teton Range.",
+    "Admit technical scores 1 through 5; exclude scores above 5. Physical endurance remains separate from technical risk.",
+    "Create a separate profile only when the start, access, named turnaround, return form, or loop versus out-and-back materially changes.",
+    "Retain closed routes only with an obvious maintained closure warning.",
+    "Use AllTrails for discovery and comparison only; it cannot supply authoritative TrailPack facts.",
+    "Keep a custom route builder as future work rather than adding every permutation."
+  ],
+  "technicalScale": {
+    "1": "Paved or level walk.",
+    "2": "Maintained trail with mild obstacles.",
+    "3": "Steep maintained trail without hands-on movement.",
+    "4": "Rough or loose trail with simple routefinding.",
+    "5": "Intermittent hands-on movement, boulder fields, unmaintained tread, or limited exposure requiring warnings.",
+    "6": "Sustained scrambling, off-trail travel, consequential routefinding, or meaningful exposure.",
+    "7+": "Technical climbing or alpine objectives."
+  },
+  "admitted": [
+    {
+      "id": "grand-view-point-jackson-lodge",
+      "name": "Grand View Point from Jackson Lake Lodge",
+      "technicalScore": 2
+    },
+    {
+      "id": "moose-ponds-loop",
+      "name": "Moose Ponds Loop",
+      "technicalScore": 2
+    },
+    {
+      "id": "granite-canyon-valley-trail",
+      "name": "Granite Canyon via Valley Trail/Teton Village",
+      "technicalScore": 3
+    },
+    {
+      "id": "granite-canyon-rendezvous",
+      "name": "Granite Canyon from Rendezvous Mountain",
+      "technicalScore": 4
+    },
+    {
+      "id": "marion-lake-rendezvous",
+      "name": "Marion Lake from Rendezvous Mountain",
+      "technicalScore": 4
+    },
+    {
+      "id": "open-canyon-rendezvous",
+      "name": "Open Canyon from Rendezvous Mountain",
+      "technicalScore": 5
+    }
+  ],
+  "evidenceHolds": [
+    {
+      "name": "Schwabacher\u2019s Landing",
+      "technicalScore": 1,
+      "reason": "NPS describes the destination, but no complete NPS day-hike metrics and reproducible USGS walking corridor were found."
+    },
+    {
+      "name": "Grand Teton Pathway: Moose\u2013Jenny",
+      "technicalScore": 1,
+      "reason": "NPS permits walking, but the current catalog has no official complete walking-profile metrics or retained end-to-end corridor."
+    },
+    {
+      "name": "Mormon Row / Moulton Barn walk",
+      "technicalScore": 1,
+      "reason": "NPS describes the historic district, but does not publish one complete named walking itinerary with route metrics."
+    },
+    {
+      "name": "Oxbow Bend Overlook",
+      "technicalScore": 1,
+      "reason": "Scenic stop without one NPS-published day-hike route profile."
+    },
+    {
+      "name": "Menors Ferry",
+      "technicalScore": 1,
+      "reason": "Historic-area walking is described, but a complete named route and official metrics are absent."
+    },
+    {
+      "name": "Cunningham Cabin Loop",
+      "technicalScore": 1,
+      "reason": "NPS place information does not provide a complete verified loop profile."
+    },
+    {
+      "name": "Potholes Loop",
+      "technicalScore": 1,
+      "reason": "No complete NPS route profile and reproducible public corridor were found."
+    },
+    {
+      "name": "Colter Bay Village walk",
+      "technicalScore": 1,
+      "reason": "The village walk is not a distinct NPS route profile; the supported Lakeshore Trail remains available."
+    },
+    {
+      "name": "Moran Lookout",
+      "technicalScore": 1,
+      "reason": "No complete NPS route profile and reproducible public corridor were found."
+    },
+    {
+      "name": "Bradley Lake standalone",
+      "technicalScore": 2,
+      "reason": "NPS publishes the Taggart\u2013Bradley loop already in the catalog, but not this standalone turnaround as a complete profile."
+    },
+    {
+      "name": "Bearpaw Lake standalone",
+      "technicalScore": 2,
+      "reason": "NPS publishes the Bearpaw\u2013Trapper itinerary already in the catalog, but not this earlier turnaround as a separate profile."
+    },
+    {
+      "name": "Hidden Falls via String Lake",
+      "technicalScore": 2,
+      "reason": "Recognizable public route, but NPS does not publish matching complete metrics for this start."
+    },
+    {
+      "name": "Jenny Lake Loop via String Lake",
+      "technicalScore": 2,
+      "reason": "Recognizable public variant, but NPS does not publish matching complete metrics for this start."
+    },
+    {
+      "name": "Phelps Lake Jumping Rock area",
+      "technicalScore": 2,
+      "reason": "NPS does not publish a named Jumping Rock route profile. Future wording must remain neutral and must not encourage jumping."
+    },
+    {
+      "name": "Signal Mountain Loop",
+      "technicalScore": 2,
+      "reason": "The NPS profile in the catalog uses a different route form; no matching official loop metrics were found."
+    },
+    {
+      "name": "South Landing from Signal Mountain Lodge",
+      "technicalScore": 2,
+      "reason": "NPS does not publish this complete route variant with matching metrics."
+    },
+    {
+      "name": "South Landing via South Landing Lagoon Road",
+      "technicalScore": 2,
+      "reason": "NPS does not publish this complete route variant with matching metrics."
+    },
+    {
+      "name": "Flagg Canyon",
+      "technicalScore": 3,
+      "reason": "NPS publishes complete facts, but the current USGS layer retains only a short Snake River access segment rather than the full five-mile corridor."
+    },
+    {
+      "name": "Death Canyon\u2013Phelps Lake Loop",
+      "technicalScore": 3,
+      "reason": "The historic start is closed, and no complete NPS profile for the proposed loop from a valid current start was found."
+    },
+    {
+      "name": "Grand View via Bug Canyon Loop",
+      "technicalScore": 3,
+      "reason": "NPS does not publish matching complete metrics for this public-route permutation."
+    },
+    {
+      "name": "Grand View via Two Ocean Lake",
+      "technicalScore": 3,
+      "reason": "NPS does not publish matching complete metrics for this public-route permutation."
+    },
+    {
+      "name": "Lookout Rock Loop",
+      "technicalScore": 3,
+      "reason": "No complete NPS route profile and reproducible public corridor were found."
+    },
+    {
+      "name": "Lake Solitude via String Lake",
+      "technicalScore": 4,
+      "reason": "NPS publishes South Jenny Lake and boat approaches, but not matching complete metrics for this String Lake start."
+    },
+    {
+      "name": "Polecat Creek Loop",
+      "technicalScore": 4,
+      "reason": "NPS publishes complete facts and an official line, but the current USGS trail layer does not contain the loop corridor; its unmaintained status also needs ongoing review."
+    },
+    {
+      "name": "Delta Lake via Lupine Meadows",
+      "technicalScore": 5,
+      "reason": "NPS recognizes and is improving the informal route, but does not publish a complete hike profile with authoritative distance, gain, duration and difficulty."
+    },
+    {
+      "name": "Blacktail Butte summit",
+      "technicalScore": 5,
+      "reason": "NPS publishes trailhead information, but not a complete authoritative summit-route profile with all required metrics."
+    }
+  ],
+  "excludedTechnical": [
+    {
+      "name": "Middle Teton Southwest Couloir",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Grand Teton summit routes",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Hanging Canyon / Lake of the Crags",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Lower Saddle",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Paintbrush Peak",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Teewinot Mountain",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Icefloe Lake",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Taminah Lake / Shoshoko Falls",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Avalanche Canyon",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Buck Mountain",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    },
+    {
+      "name": "Wimpy\u2019s Knob and ridge or summit extensions",
+      "reason": "Technical score above 5 or a climbing/alpine objective outside the current day-hike product boundary."
+    }
+  ],
+  "excludedOther": [
+    "Teton Crest Trail and multi-day backpacking itineraries",
+    "Arbitrary partial turnarounds, reverse traces, and compound permutations without distinct official evidence",
+    "Bridger-Teton National Forest-only and Teton Wilderness-only routes",
+    "Drives, paddles, and winter-only Cottonwood routes"
+  ],
+  "additionalEvidenceHolds": [
+    {
+      "name": "Paintbrush Divide out-and-back",
+      "reason": "No complete official metrics for the exact itinerary."
+    },
+    {
+      "name": "Avalanche Divide out-and-back",
+      "reason": "NPS acknowledges the trail but does not provide a complete itinerary profile."
+    },
+    {
+      "name": "Granite Canyon to Tram reverse",
+      "reason": "NPS publishes the opposite direction; the reverse is not silently substituted."
+    },
+    {
+      "name": "Granite / Open Canyon loop",
+      "reason": "NPS suggests an overnight while the public listing presents a long day; suitability remains unresolved."
+    },
+    {
+      "name": "Glade Creek",
+      "reason": "Unbridged swift water can raise the route above score 5 seasonally."
+    },
+    {
+      "name": "Arizona Creek",
+      "reason": "No complete evidence package."
+    },
+    {
+      "name": "Berry Creek",
+      "reason": "No complete evidence package."
+    },
+    {
+      "name": "Old Patriarch",
+      "reason": "Unofficial bushwhack without an NPS route profile."
+    }
+  ]
+}

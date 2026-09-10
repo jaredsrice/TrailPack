@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
   "trail": {
-    "id": "open-canyon",
-    "name": "Open Canyon from Death Canyon Trailhead",
+    "id": "open-canyon-rendezvous",
+    "name": "Open Canyon from Rendezvous Mountain",
     "parkId": "grand-teton",
     "coordinates": {
-      "lat": 43.65602705030001,
-      "lng": -110.78139804303645
+      "lat": 43.59684592841692,
+      "lng": -110.87165907025337
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
-    "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Death Canyon Trailhead marker; 2.0 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
-    "planningNote": "Access restriction reviewed September 5, 2026: NPS reports the old Death Canyon road and trailhead closed, including to pedestrians. These published distances use that old start; do not use them for an alternate trailhead or the future relocated start. Check NPS construction updates before planning. Long, steep mountain hike: check current conditions with a backcountry ranger. Snow travel may require specialist skills and equipment. The trailhead-area forecast does not represent the higher route. TrailPack covers day-hike packing, not climbing or overnight equipment.",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Rendezvous Mountain Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
+    "planningNote": "Very strenuous one-way high-elevation hike. Confirm tram or resort-trail access, operating schedule, snow conditions and a complete transport plan before leaving.",
     "accessRoute": {
       "groupId": "open-canyon",
       "groupName": "Open Canyon",
-      "label": "Death Canyon Trailhead \u2014 closed",
-      "start": "Death Canyon Trailhead",
-      "returnPlan": "Return along the same approach. This start is currently closed, including to pedestrians.",
-      "distanceScope": "Full out-and-back, including the return.",
+      "label": "Rendezvous Mountain to Teton Village",
+      "start": "Rendezvous Mountain Trailhead",
+      "returnPlan": "Finish at Teton Village. Arrange access to the summit before starting; the published route is one-way.",
+      "distanceScope": "One-way summit-to-village hike; summit access is separate.",
       "transport": "none",
       "comparison": {
         "source": "AllTrails",
-        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/mount-hunt-ridge-via-open-canyon-and-phelps-lake",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/granite-canyon-open-canyon-loop",
         "checkedAt": "2026-09-09",
         "relationship": "related",
-        "summary": "Same Open Canyon and Mount Hunt area with a different extension. This option uses the NPS Death Canyon approach."
+        "summary": "Related Granite and Open Canyon loop. This option follows the NPS summit-to-village point-to-point itinerary."
       }
     }
   },
@@ -46,25 +46,31 @@
   },
   "comparison": {
     "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
-    "checkedAt": "2026-09-05",
+    "checkedAt": "2026-09-09",
     "sourceRecordIds": [
-      "4901",
-      "4845",
-      "4839",
-      "4842",
-      "4837",
-      "4854"
+      "7298",
+      "7282",
+      "7276",
+      "7309",
+      "4854",
+      "4838",
+      "7341",
+      "7340",
+      "7286",
+      "4836",
+      "4844",
+      "4843"
     ],
-    "distanceMiles": 14.837,
+    "distanceMiles": 19.216839718,
     "distanceMatch": "strong_bridge",
     "elevationGainFeet": null,
     "gainMatch": "unknown",
-    "note": "Reviewed NPS-origin USGS segments, with clipped sections and return legs counted explicitly, total 14.837 mi (0.2% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "note": "Reviewed NPS-origin USGS summit, Mount Hunt, Open Canyon and Valley Trail corridor, including a clipped Granite Canyon junction, totals 19.217 mi (-0.9% versus NPS). Corridor evidence only, not a navigation track.",
     "gainNote": null
   },
   "photo": {
     "src": "/park-images/grand-teton-phelps-lake-death-canyon.jpg",
-    "locationName": "Phelps Lake \u2014 route area",
+    "locationName": "Open Canyon from Rendezvous Mountain",
     "alt": "A lake sits at the base of a mountain canyon with a near perfect reflection on its calm surface.",
     "credit": "NPS Photo/A. Falgoust",
     "sourceUrl": "https://www.nps.gov/thingstodo/phelps.htm",
@@ -76,12 +82,11 @@
   },
   "sourceCheck": {
     "aliases": [
-      "Open Canyon from Death Canyon Trailhead",
-      "Open Canyon",
-      "Death Canyon Trailhead"
+      "Open Canyon from Rendezvous Mountain",
+      "Rendezvous Mountain Trailhead"
     ],
-    "skipRouteTypeReason": "Selected duration line says RT but does not spell out the route type. The matching access description and reviewed retraced geometry establish out-and-back; other access variants must not supply the type.",
-    "metricSectionHeading": "Death Canyon Trailhead"
+    "skipRouteTypeReason": "The selected NPS metric explicitly states one-way point-to-point; route-type parsing is reviewed manually for this variant.",
+    "metricSectionHeading": "Rendezvous Mountain Trailhead"
   },
   "profileKind": "public-source-import"
 }

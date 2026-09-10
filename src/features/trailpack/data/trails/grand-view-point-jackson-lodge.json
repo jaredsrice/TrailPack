@@ -1,32 +1,33 @@
 {
   "schemaVersion": 1,
   "trail": {
-    "id": "grand-view-point",
-    "name": "Grand View Point from Grand View Point Trailhead",
+    "id": "grand-view-point-jackson-lodge",
+    "name": "Grand View Point from Jackson Lake Lodge",
     "parkId": "grand-teton",
     "coordinates": {
-      "lat": 43.89422974181161,
-      "lng": -110.56866735219955
+      "lat": 43.87819550983649,
+      "lng": -110.57256996631622
     },
     "coordinateSourceUrl": "https://www.nps.gov/grte/planyourvisit/upload/Grand-Teton-Trailhead-Map.json",
-    "coordinateCheckedAt": "2026-09-05",
-    "coordinateNote": "Official NPS Grand View Point Trailhead marker; 2.8 m from reviewed route/access geometry. This is an area forecast reference, not navigation or uniform conditions along the route.",
+    "coordinateCheckedAt": "2026-09-09",
+    "coordinateNote": "Official NPS Jackson Lake Lodge Trailhead marker; area forecast reference only, not navigation or uniform conditions along the route.",
     "accessRoute": {
       "groupId": "grand-view-point",
       "groupName": "Grand View Point",
-      "label": "Grand View Point Trailhead",
-      "start": "Grand View Point Trailhead",
-      "returnPlan": "Return to the same trailhead.",
+      "label": "Jackson Lake Lodge",
+      "start": "Jackson Lake Lodge Trailhead",
+      "returnPlan": "Return to Jackson Lake Lodge along the same route.",
       "distanceScope": "Full out-and-back, including the return.",
       "transport": "none",
       "comparison": {
         "source": "AllTrails",
-        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/grand-view-point-via-grand-view-point-trail",
+        "sourceUrl": "https://www.alltrails.com/trail/us/wyoming/grand-view-point-via-two-ocean-lake-trail",
         "checkedAt": "2026-09-09",
-        "relationship": "counterpart",
-        "summary": "Same trailhead and destination; NPS facts remain authoritative."
+        "relationship": "related",
+        "summary": "Related Grand View Point route with a different start and loop. Compare the start and return form before using its mileage."
       }
-    }
+    },
+    "planningNote": "Longer Grand View Point approach from Jackson Lake Lodge. Carry bear spray and check current trail conditions."
   },
   "official": {
     "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
@@ -45,21 +46,23 @@
   },
   "comparison": {
     "sourceUrl": "https://carto.nationalmap.gov/arcgis/rest/services/transportation/MapServer/37",
-    "checkedAt": "2026-09-05",
+    "checkedAt": "2026-09-09",
     "sourceRecordIds": [
-      "4760",
+      "5079",
+      "4896",
+      "4895",
       "7308"
     ],
-    "distanceMiles": 2.711,
+    "distanceMiles": 5.679127039,
     "distanceMatch": "strong_bridge",
     "elevationGainFeet": null,
     "gainMatch": "unknown",
-    "note": "Reviewed NPS-origin USGS segments plus the official NPS trailhead connector, with clipped sections and return legs counted explicitly, total 2.711 mi (4.3% versus NPS). This is route-corridor evidence, not a navigation track.",
+    "note": "Reviewed NPS-origin USGS route from Jackson Lake Lodge, with the Grand View Point segment clipped at the NPS turnaround and all legs counted twice, totals 5.679 mi (-2.1% versus NPS). Corridor evidence only, not a navigation track.",
     "gainNote": null
   },
   "photo": {
     "src": "/park-images/grand-teton-grand-view-point.jpg",
-    "locationName": "Grand View Point from Grand View Point Trailhead",
+    "locationName": "Grand View Point from Jackson Lake Lodge",
     "alt": "A mountain range and a lake as viewed from a high vantage point.",
     "credit": "NPS/J. Bonney",
     "sourceUrl": "https://www.nps.gov/thingstodo/grandview.htm",
@@ -71,12 +74,10 @@
   },
   "sourceCheck": {
     "aliases": [
-      "Grand View Point from Grand View Point Trailhead",
-      "Grand View Point",
-      "Grand View Point from the Grand View Point Trailhead"
+      "Grand View Point from Jackson Lake Lodge"
     ],
     "skipRouteTypeReason": null,
-    "metricSectionHeading": "Grand View Point from the Grand View Point Trailhead"
+    "metricSectionHeading": "Grand View Point from Jackson Lake Lodge"
   },
   "profileKind": "public-source-import"
 }

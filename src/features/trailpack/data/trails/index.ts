@@ -1,10 +1,12 @@
 import grandViewPoint from "./grand-view-point.json";
+import grandViewPointJacksonLodge from "./grand-view-point-jackson-lodge.json";
 import emmaMatildaLakeLoop from "./emma-matilda-lake-loop.json";
 import twoOceanEmmaMatildaLoop from "./two-ocean-emma-matilda-loop.json";
 import signalMountain from "./signal-mountain.json";
 import hollyLake from "./holly-lake.json";
 import paintbrushCascadeLoop from "./paintbrush-cascade-loop.json";
 import moosePonds from "./moose-ponds.json";
+import moosePondsLoop from "./moose-ponds-loop.json";
 import hiddenFalls from "./hidden-falls.json";
 import hiddenFallsShuttle from "./hidden-falls-shuttle.json";
 import inspirationPoint from "./inspiration-point.json";
@@ -25,8 +27,12 @@ import deathCanyonJunction from "./death-canyon-junction.json";
 import staticPeakDivide from "./static-peak-divide.json";
 import valleyTrailPhelpsOverlook from "./valley-trail-phelps-overlook.json";
 import graniteCanyon from "./granite-canyon.json";
+import graniteCanyonValleyTrail from "./granite-canyon-valley-trail.json";
+import graniteCanyonRendezvous from "./granite-canyon-rendezvous.json";
 import marionLake from "./marion-lake.json";
+import marionLakeRendezvous from "./marion-lake-rendezvous.json";
 import openCanyon from "./open-canyon.json";
+import openCanyonRendezvous from "./open-canyon-rendezvous.json";
 import jennyLake from "./jenny-lake-loop.json";
 import taggartLake from "./taggart-lake.json";
 import stringLake from "./string-lake-loop.json";
@@ -52,12 +58,14 @@ export const TRAIL_DEFINITIONS = [
   leighLake, bearpawTrapper,
   taggartBeaverCreek, taggartBradleyLake,
   grandViewPoint,
+  grandViewPointJacksonLodge,
   emmaMatildaLakeLoop,
   twoOceanEmmaMatildaLoop,
   signalMountain,
   hollyLake,
   paintbrushCascadeLoop,
   moosePonds,
+  moosePondsLoop,
   hiddenFalls,
   hiddenFallsShuttle,
   inspirationPoint,
@@ -77,6 +85,10 @@ export const TRAIL_DEFINITIONS = [
   staticPeakDivide,
   valleyTrailPhelpsOverlook,
   graniteCanyon,
+  graniteCanyonValleyTrail,
+  graniteCanyonRendezvous,
   marionLake,
+  marionLakeRendezvous,
   openCanyon,
+  openCanyonRendezvous,
 ] as unknown as readonly TrailDefinition[];
