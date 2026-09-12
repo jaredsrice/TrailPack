@@ -5,6 +5,14 @@ Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 ## Recent handoff history
 
+- **2026-09-12, security report rewritten for a college reader:** Preserved
+  the exact findings, severities, test counts, scanner counts, residual risks
+  and limits while replacing the dense audit-first structure with plain-language
+  sections: summary, scope, five fixed problems, AI safety/privacy, retained
+  risks, evidence, passive scan, limits, and a short standards reference.
+  Documentation links and whitespace checks pass. This is a clarity change,
+  not a new scan or broader security claim.
+
 - **2026-09-12, owner feedback pauses final closeout:** Jared finds the live
   review insubstantial and wants useful planning guidance rather than repeated
   trail facts. The earlier implementation/test pass is verified, but a focused

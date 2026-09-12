@@ -1,128 +1,204 @@
-# Final candidate security review
+# TrailPack security review
 
-Date: September 12, 2026. Status: final candidate review complete with the
-retained risks and limits below. This is not production publication.
-Scope: the `codex/required-completion` candidate, its test website, and the
-approved shared-database changes. Main and the production website are not
-being published by this review.
+Date: September 12, 2026.
+Status: Complete for the test candidate. This does not publish the production website.
 
-## Method
+## Summary
 
-An Astra High reviewer independently inspected source and trust controls.
-The coordinator and Sol High tester checked findings and retested repairs.
-Reviewers inspected actual code and tests, not only implementation summaries.
-When the reviewer authored a fix, another agent checked it afterward.
+TrailPack's code, database permissions, automated checks, and test website were
+reviewed for common security problems. No critical or high-severity problem was
+confirmed. The review found several medium and low concerns. The necessary fixes
+were made and retested.
 
-Local checks include request/response limits, server-validated identity,
-private saved-result routes, source labels, AI payloads, failure responses,
-dependency auditing and selected secret patterns. Embedded PostgreSQL tests
-execute the actual migrations with synthetic users and permissions. Hosted
-read-only schema checks verify deployed definitions and grants without reading
-private saved records. CodeQL and passive ZAP results are recorded
-against the frozen candidate below.
+Some risk remains. The website still allows inline scripts and styles in its
+Content Security Policy. This is a real defense-in-depth weakness, but the review
+did not find a way to inject or run unsafe code. Changing that policy safely would
+require a separate rendering and browser-compatibility project. It was not treated
+as a quick closeout edit.
 
-## Findings and fixes
+This report is evidence of a careful review, not a guarantee that the application
+has no security weaknesses.
 
-| Finding | Severity | Repair and retest |
-|---|---|---|
-| SEC-10: incomplete AI and authenticated save uploads had no application read deadline (CWE-400) | Medium | Added two-second deadlines; stalled-upload tests verify controlled rejection, cancellation and no downstream quota/provider/database write |
-| SEC-11: authenticated users retained unused saved-table TRUNCATE, REFERENCES and TRIGGER rights (CWE-732) | Medium | Owner approved removing exactly those rights. A new migration and hosted readback retain only SELECT/INSERT/DELETE. No browser-accessible TRUNCATE path was demonstrated |
-| Malformed NPS alert JSON could become an official no-alert result (CWE-20) | Medium | Validate the response envelope and every returned alert before normalization; invalid counts, records or supplied park identity fall back to unavailable |
-| Source redirects were checked only after automatic following (CWE-918 defense) | Low | Check each HTTPS NPS destination before requesting it, cap redirects and retain one read deadline; external and looping redirect tests pass |
-| Failed daylight/alert bodies were not discarded | Low | Release bodies on failed HTTP responses; rejected or non-settling cancellation does not block fallback |
+## What was reviewed
 
-The broader audit also repaired dated-weather provenance and account error
-states. These are described in the [final audit](2026-09-12-final-audit.md).
-The original arbitrary AI prose path was replaced with approved highlight IDs:
-the provider cannot supply new safety wording, packing changes or evidence labels.
+The review covered:
 
-## Remaining risks
+- Google sign-in and server-side identity checks
+- Private saved plans and database row ownership
+- AI request privacy, validation, and hourly limits
+- Public NPS lookup limits and source validation
+- Request sizes, time limits, redirects, and provider failures
+- Dependencies, possible exposed secrets, and GitHub CodeQL results
+- A limited passive scan of the deployed test website
 
-- **Medium, retained:** the existing Next.js CSP permits inline scripts and
-  styles. The prior accepted decision remains: no user-authored HTML, React
-  escaping, no production `unsafe-eval`, restricted script sources, object/base
-  controls and frame denial. Nonces or hashes belong in a measured rendering
-  change, not a late cosmetic rewrite.
-- **Medium, bounded availability risk:** anonymous callers can consume the
-  shared public lookup budget. The database cannot be read or reset by them;
-  exhausted lookup falls back to manual planning. This design limits upstream
-  usage but is not identity-based protection or a distributed load test.
-- Provider outages, changing official pages and incomplete data remain possible.
-  Unknown or failed checks must remain unavailable rather than appear clear.
+An independent security reviewer inspected the code and controls. Other agents
+retested the repairs. Database tests used synthetic users. Hosted database checks
+verified tables, rules, and permissions without reading private saved plans.
 
-## Relevant OWASP and CWE coverage
+## Problems fixed
 
-| Area | Evidence |
-|---|---|
-| Access control; CWE-639/862 | Server identity checks, owner filters, RLS, synthetic cross-user read/delete/spoof denial and hosted grants |
-| Cryptography and secrets; CWE-200/319 | HTTPS provider addresses, server-only private keys, bounded secret checks; hosting encryption is managed-platform behavior |
-| Injection; CWE-79/89 | React text rendering, structured database client calls, bounded JSON and no provider-authored displayed HTML |
-| Insecure design and abuse; CWE-400 | Fail-closed atomic quotas, cache limits, request deadlines, stream caps and independent guest fallback |
-| Misconfiguration; CWE-732/693 | Least-privilege migration, response headers, CSP risk decision and exact callback allowlist |
-| Vulnerable components | Locked dependency audit and final GitHub dependency alerts |
-| Authentication; CWE-287/601 | Server-validated Google identity, PKCE callback and same-origin redirect validation |
-| Integrity; CWE-20 | Approved AI IDs, source/date/park validation, repeated NPS comparison and protected CI |
-| Logging and privacy; CWE-532 | No raw trip notes, identity or tokens in AI input; sanitized reports and safe failure messages |
-| SSRF; CWE-918 | Fixed runtime provider endpoints, restricted returned links and validated maintenance redirects |
+### 1. Slow or incomplete uploads could hold requests open
 
-## Final evidence
+**Risk: Medium.** An incomplete AI or saved-plan upload did not have its own
+application time limit. A client could keep the request waiting and consume
+server resources.
 
-- Runtime commit: `6a49b4952ae3e20610bcd91d6e946432c1de4b73`.
-  Preview `dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw`:
-  [immutable candidate](https://trailpack-db0080ubs-jared-s-rice.vercel.app).
-- Unit and integration: 887 tests across 61 files pass locally.
-- Database: owner lifecycle/isolation tests pass; hosted grants and all seven
-  migration records verified. The reconciliation changed no saved records.
-- Dependencies: final `npm audit` found zero known vulnerabilities. GitHub's
-  open code-scanning, dependency and secret-scanning alert counts were each zero.
-- Static analysis: both JavaScript/TypeScript security-extended and GitHub Actions
-  [CodeQL analyses passed](https://github.com/jaredsrice/TrailPack/actions/runs/34683963224).
-- Independent final source review found no actionable defect in the assigned
-  provider, deadline, redirect or permission changes; 181 focused tests passed.
-- Hosted provider acceptance: two signed-in AI POSTs returned 200 and Firefox
-  showed accepted Gemini highlights. The private save returned 201. A library
-  GET returned 500 once, then 200 on reload without code or data changes; cause
-  is unconfirmed. Both owner-approved deletions returned 204; Firefox confirmed
-  an empty library, successful sign-out and a fresh guest review. Full CI passed,
-  including 151 Firefox tests. The final audit records the account walkthrough.
+**Fix:** TrailPack now stops reading these request bodies after two seconds.
+Tests confirm that a stalled upload is rejected before it can use an AI quota,
+call the provider, or write to the database. This relates to CWE-400, uncontrolled
+resource consumption.
 
-## Bounded passive scan
+### 2. Saved-plan accounts had three unnecessary database permissions
 
-ZAP 2.17.0 completed successfully on the immutable Preview with current installed
-passive rules 75.0.0, scanner core 0.6.0, Automation Framework 0.60.0 and Reports
-0.46.0. The local scanner API was disabled. No browser proxy, certificate or
-operating-system settings changed.
+**Risk: Medium.** Signed-in users had `TRUNCATE`, `REFERENCES`, and `TRIGGER`
+permissions on the saved-plan table. The website did not provide a way to use
+those commands, but they were unnecessary and violated least privilege.
 
-The run used 17 explicit GET requests: public pages, eight observed same-origin
-JavaScript assets, method denials, and guest saved-results denial. No retries
-were reported; the conservative ceiling including possible retries was 59.
-There was no active attack, spider, sign-in, provider search, quota call or write.
-The pages were real TrailPack HTML, not a Vercel sign-in screen.
+**Fix:** With Jared's approval, those permissions were removed. Signed-in users
+retain only the normal `SELECT`, `INSERT`, and `DELETE` permissions used to view,
+save, and remove their own plans. Anonymous users remain denied. No saved data was
+read or changed by this repair. This relates to CWE-732, incorrect permission assignment.
 
-Scanner results: **0 high, 3 medium, 0 low and 2 informational alert types**.
-No warning was suppressed:
+### 3. A malformed NPS alert response could look like “no alerts”
 
-- Inline scripts and inline styles produced two medium CSP warnings. These
-  are genuine defense-in-depth limitations, not demonstrated injection flaws.
-  The existing retained CSP risk above still applies.
-- Wildcard cross-origin access produced one medium warning on public HTML
-  shells and JavaScript. Those responses contain no saved records. A separate
-  guest saved-results check returned 401, `Cache-Control: no-store`, cache MISS
-  and no wildcard access header. No private-data exposure was established.
-- Public cache directives and resources retrieved from cache produced two
-  informational warnings. Public shell caching is expected; private data is
-  fetched separately after authentication.
+**Risk: Medium.** A provider response with the wrong structure could be mistaken
+for a valid empty result. That could make unavailable information appear clear.
 
-The raw report remains private and ignored. Its SHA-256 is
+**Fix:** TrailPack now checks the response structure, record count, park identity,
+and every alert before marking the result official. Invalid data is labeled
+unavailable. Only a valid zero-count response means no active alerts. This relates
+to CWE-20, improper input validation.
+
+### 4. Source-page redirects needed earlier validation
+
+**Risk: Low.** The maintenance tool checked the final NPS address after automatic
+redirects. Each destination should be approved before it is requested.
+
+**Fix:** The tool now follows redirects manually, allows only secure official NPS
+addresses, rejects embedded credentials and unusual ports, limits the redirect
+chain, and uses one overall deadline. External and looping redirects are covered
+by tests. This is a defense against server-side request forgery, CWE-918.
+
+### 5. Failed provider responses were not always released promptly
+
+**Risk: Low.** Failed daylight and alert responses could retain network resources
+longer than necessary.
+
+**Fix:** TrailPack now releases failed response bodies. Failure during cleanup
+cannot block the application's saved-data fallback.
+
+The broader audit also corrected dated-weather labels and account error states.
+The [final audit](2026-09-12-final-audit.md) explains those changes.
+
+## AI safety and privacy
+
+The Gemini feature does not create packing advice. TrailPack creates the packing
+list with fixed rules. Gemini can only select from explanation IDs that TrailPack
+already approved, and TrailPack supplies the displayed wording.
+
+Raw trip notes, account identity, and free-form planning text are not sent to
+Gemini. A provider response cannot add or remove packing items, change their
+priority, invent a source label, or display arbitrary AI-written safety advice.
+Invalid responses are rejected and the normal rule-based plan remains available.
+
+## Risks that remain
+
+### Content Security Policy
+
+**Retained risk: Medium.** The current policy allows inline scripts and styles,
+which weakens one layer of protection against injected page content. React escapes
+displayed text, the production policy blocks `unsafe-eval`, framing is denied, and
+script sources are restricted. The scan found no working injection path.
+
+A stronger policy would use nonces or hashes. That change affects how Next.js
+starts, renders, caches, and hydrates pages, so it needs its own full browser and
+authentication regression pass.
+
+### Public lookup availability
+
+**Retained risk: Medium.** Anonymous visitors share one public NPS lookup budget.
+A person could use the available requests and temporarily prevent other visitors
+from using live lookup. They cannot read or reset the database quota. When the
+budget is unavailable, TrailPack keeps the manual planning workflow available.
+
+### External services
+
+Weather, NPS, daylight, and Gemini services can fail or change. TrailPack treats
+missing or invalid information as unavailable instead of claiming that conditions
+are clear. This reduces harm but cannot guarantee that every provider is current.
+
+## Test results
+
+The tested runtime is commit
+`6a49b4952ae3e20610bcd91d6e946432c1de4b73`, deployed as Preview
+`dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw` at the
+[immutable test website](https://trailpack-db0080ubs-jared-s-rice.vercel.app).
+The later evidence commit changes documentation only.
+
+- 887 unit and integration tests passed across 61 files.
+- 151 Firefox tests passed locally and in GitHub CI.
+- 181 focused security and provider tests passed in an independent review.
+- All 50 saved NPS source profiles matched their reviewed facts.
+- CodeQL passed for JavaScript/TypeScript and GitHub Actions.
+- `npm audit` reported zero known dependency vulnerabilities.
+- GitHub showed zero open code-scanning, dependency, or secret-scanning alerts.
+- Database tests passed for normal owner actions and cross-user denial.
+- Hosted permissions and all seven migration records were verified.
+
+The final account walkthrough also passed sign-in, a private save, reopening the
+saved list, two approved deletions, sign-out, and a new guest review. One saved-list
+request returned 500 and then succeeded on a normal reload without any code or
+data change. The exact cause is unknown, so the walkthrough is not described as
+error-free.
+
+## Passive website scan
+
+ZAP 2.17.0 passively inspected the immutable test website. A passive scan reads
+normal responses and checks their headers and content. It does not attack the site.
+
+The scan made 17 explicit GET requests to public pages, public JavaScript, two
+method-denial endpoints, and the guest saved-plan denial. It did not sign in,
+submit attack payloads, call AI or NPS providers, use quotas, change data, or scan
+production.
+
+ZAP reported **0 high, 3 medium, 0 low, and 2 informational alert types**:
+
+- Two medium alerts were the inline-script and inline-style policy risks described above.
+- One medium alert reported wildcard cross-origin access on public pages and
+  JavaScript. Those files contain no private saved plans. The private API returned
+  401 to a guest, used `Cache-Control: no-store`, was a cache miss, and did not
+  return the wildcard access header. No private-data exposure was demonstrated.
+- Two informational alerts concerned caching of public pages and files. Private
+  saved data is fetched separately after authentication.
+
+No scanner warning was hidden or suppressed. The private raw report remains
+outside Git. Its SHA-256 is
 `6306318c13eb8784b193183e24b71f803839ca0d797ebf8ef9a5fdd0ae704d49`.
-The scan excludes authenticated responses, attack payloads, external origins,
-production and assets outside the bounded sample. It does not prove that every
-possible attack is absent.
 
-The August 28 real two-account test remains historical evidence. Synthetic
-database tests are a new regression check, not a newly performed two-person
-hosted walkthrough. No destructive scan, live quota exhaustion or unrestricted
-external crawl is authorized or claimed.
+## Limits of this review
 
-No critical or high-severity issue has been confirmed in the reviewed source or
-bounded passive scope. This is not a zero-warning scan or security certification.
+The passive scan did not inspect authenticated responses, run attack payloads,
+crawl every deployed file, test external websites, or scan production. The live
+two-account privacy test from August 28 remains historical evidence; current
+cross-user database checks used synthetic accounts.
+
+The review therefore cannot prove that XSS, CSRF, ownership errors, provider
+abuse, or every secret exposure is impossible. It shows that the reviewed controls
+and tests passed, the known findings were handled or documented, and no critical
+or high-severity release blocker was confirmed in the reviewed scope.
+
+## OWASP and CWE reference
+
+These labels connect the report to common security-review standards:
+
+| Topic | TrailPack evidence |
+|---|---|
+| Access control (CWE-639/862) | Server identity checks, owner filters, row-level security, cross-user denial tests |
+| Secrets and secure transport (CWE-200/319) | HTTPS providers, server-only keys, secret-pattern checks |
+| Injection (CWE-79/89) | Escaped React text, structured database calls, bounded JSON, no provider-authored HTML |
+| Resource abuse (CWE-400) | Atomic quotas, request deadlines, size limits, bounded caches, guest fallback |
+| Configuration (CWE-732/693) | Reduced table permissions, exact callback list, reviewed security headers |
+| Authentication (CWE-287/601) | Server-validated Google identity, PKCE callback, same-origin redirects |
+| Data integrity (CWE-20) | Approved AI IDs and checks for source, date, park, and alert structure |
+| Logging and privacy (CWE-532) | No raw trip notes, identity, or tokens in AI input; sanitized reports |
+| Server-side requests (CWE-918) | Fixed runtime providers and validated maintenance redirects |
