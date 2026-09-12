@@ -8,13 +8,14 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-12
+
 ### Added
 
 - Bounded, explicit live NPS hiking lookup for Zion, Acadia, and Bryce Canyon.
   Partial results retain NPS sources, duration, missing facts and manual fallback,
-  with a separate Generate/Update flow. The shared quota migration is applied
-  and the test preview passes live lookup checks; production publication awaits
-  owner approval.
+  with a separate Generate/Update flow. The shared quota migration is applied,
+  and live lookup passes both Preview and production publication checks.
 
 ### Changed
 

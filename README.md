@@ -29,14 +29,13 @@ their sources.
 
 ## Current coverage
 
-The unreleased required-completion candidate also adds a separate live NPS
+Release 0.8.0 adds a separate live NPS
 lookup for Zion, Acadia, and Bryce Canyon. Its partial results use NPS duration
 plus manual details, not complete catalog profiles. Editing the duration keeps
-it user-provided even if the original number is restored. The
-[test preview](https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app)
-is available. Live lookup and signed-in Gemini highlights passed hosted checks;
-see the [final audit](docs/validation/2026-09-12-final-audit.md) for tests,
-limitations and the publication gate. Main and the production website are unchanged.
+it user-provided even if the original number is restored. Live lookup and the
+stronger signed-in Gemini review are published on the production website. See
+the [final audit](docs/validation/2026-09-12-final-audit.md) for tests,
+limitations, and release evidence.
 
 TrailPack currently supports **39 Grand Teton discovery entries and 52 complete
 route profiles**. Fifty profiles use National Park Service facts with reviewed
@@ -149,16 +148,16 @@ app users, contributors, trail-data maintainers, and technical reviewers.
 - [Product roadmap](docs/roadmap.md)
 - [Release history](CHANGELOG.md)
 
-## Next steps
+## 499B completion
 
-The required-completion candidate repairs the
+Release 0.8.0 repairs the
 [September 10 acceptance findings](docs/superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md):
 AI selects only approved fact IDs; TrailPack supplies the wording; arbitrary
 trip text is omitted from the provider payload; rejected selections show a safe
 reason; and NPS maintenance accepts valid Very Strenuous profiles while bounding
-page reads during streaming. The candidate adds the bounded partial NPS lookup.
-These changes are not yet a production release. See the
-[requirements status](docs/requirements-status.md) for local versus hosted evidence.
+page reads during streaming. The release also adds the bounded partial NPS
+lookup. See the [requirements status](docs/requirements-status.md) for the final
+requirement assessment.
 
 The current completion scope is B-01 through B-04 in the 499B specification.
 Alternative packing-list modes and guest export are not part of that scope.

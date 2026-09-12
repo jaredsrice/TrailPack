@@ -1,9 +1,18 @@
 # TrailPack project handoff
 
-Current scope checkpoint: 2026-09-12 (America/Denver). Released baseline: 0.7.1.
+Current scope checkpoint: 2026-09-12 (America/Denver). Released version: 0.8.0.
 Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 ## Recent handoff history
+
+- **2026-09-12, 0.8.0 published to production:** Jared approved merging PR #61
+  and publishing the completed 499B scope. The PR merged to `main` as
+  `746cca344769a079c589fb8808990c6d05f4cd15`. Production deployment
+  `dpl_HVsmSUULnNRKjJ8vPQQh7VUfXby3` is READY at
+  https://trailpack-ten.vercel.app. README, changelog, requirements status,
+  roadmap, audit, security status, package version, and this handoff were updated
+  for release 0.8.0. Main validation run `34718385047` and CodeQL run
+  `34718385041` both passed after publication.
 
 - **2026-09-12, practical live review approved and verified:** Jared approved
   replacing the bland highlight display with two clear outcomes. Complete plans
@@ -271,17 +280,16 @@ Use the implementation worktree above for code changes. The September 10 audit
 remains the acceptance baseline; its original lack of implementation authorization
 is historical. Release/deployment acceptance will be recorded after verification.
 
-The code candidate is committed and pushed on `codex/required-completion`,
-PR #61, with the final runtime evidence recorded in the latest history entry.
-Main source and the production website are unchanged. Approved shared-database
+The completed code was merged through PR #61, with final runtime evidence
+recorded in the latest history entry. Main and the production website now serve
+release 0.8.0. Approved shared-database
 quota, permission and migration-history changes are applied and verified.
 All six baseline requirements and B-01–B-04 have candidate evidence; the live
 Gemini, NPS maintenance and final security checks are complete. One saved-library
 request failed and recovered on reload; its cause remains unconfirmed.
 Original SH variants/export are historical, not the active backlog.
 The implementation, necessary-only audit, testing and simple documentation pass
-is complete. Preserve the worktree for owner review; do not merge or publish
-production without approval.
+is complete. Future feature work remains separately authorized.
 
 ## September 9 closeout decisions and evidence
 
