@@ -30,7 +30,7 @@ paste, or print credential values.
 
 | Variable | Purpose |
 |---|---|
-| `NPS_API_KEY` | Enables live National Park Service notices |
+| `NPS_API_KEY` | Enables live National Park Service notices and the unreleased partial lookup |
 | `GEMINI_API_KEY` | Enables the guarded Gemini explanation review |
 | `GEMINI_MODEL` | Overrides the default Gemini model |
 | `NEXT_PUBLIC_SUPABASE_URL` | Identifies the Supabase project used for authentication and private saves |
@@ -40,7 +40,42 @@ The `NEXT_PUBLIC_` values are intentionally browser-visible project settings.
 Do not use that prefix for private provider keys. Hosted Preview and Production
 variables do not automatically configure a local checkout.
 
+## Unreleased NPS lookup setup
+
+The guest baseline remains usable without any credentials. The optional live
+lookup requires `NPS_API_KEY`, both existing Supabase public settings, and the
+reviewed migration
+[`20260911000000_nps_lookup_quota.sql`](../supabase/migrations/20260911000000_nps_lookup_quota.sql).
+Apply it only to the approved project/environment through the existing database
+release process, before enabling a preview of the new route. Missing or failed
+quota RPC configuration returns unavailable and makes no NPS request.
+
+The public RPC can consume only a fixed shared allowance. It cannot read/reset
+the table or accept client-provided limits, time, or identities. Twenty initial
+tokens refill one per six seconds. This limits lookup traffic across workers
+while reserving part of NPS's shared allowance for alerts. Public callers can
+exhaust this guest allowance, so a busy response is expected under abuse;
+all deployments sharing the same NPS key must share this quota database or use
+separately budgeted keys. The bucket does not constrain other independent apps.
+Manual and supported planning remain available. The 60-second result cache is
+an optimization, not the quota authority.
+
+Test the migration's permissions, concurrency and effective allowance in the
+approved hosted environment before declaring rollout passed. Local SQL tests
+use embedded PostgreSQL via the development-only PGlite dependency; they are
+not proof of deployed database state or multi-worker behavior. See the
+[provider proof](validation/2026-09-11-nps-lookup-provider-proof.md).
+
 ## Useful first checks
+
+Hosted Google sign-in also requires the exact test callback in Supabase's
+allowed redirect list. The approved branch callback is
+`https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app/auth/callback`.
+Do not broaden it to all Vercel deployments. Production retains its own callback.
+
+Historical migration bookkeeping was reconciled against the actual schema on
+September 12. Both the lookup quota and saved-plan permission repair are applied;
+check pending migrations before pushing, rather than replaying existing SQL.
 
 ```sh
 npm run lint

@@ -17,6 +17,7 @@ import {
   type NpsRefreshPlan,
 } from "../src/features/trailpack/lib/nps-source-refresh";
 import type { TrailProfile } from "../src/features/trailpack/types";
+import { fetchNpsPageWithValidationRetry } from "../src/features/trailpack/lib/nps-page-fetch";
 
 const DEFAULT_OUTPUT_DIR = ".artifacts/nps-source-integrity";
 const SNAPSHOT_FILE = fileURLToPath(
@@ -25,11 +26,7 @@ const SNAPSHOT_FILE = fileURLToPath(
     import.meta.url,
   ),
 );
-const MAX_HTML_BYTES = 1_000_000;
 const REQUEST_DELAY_MS = 1_500;
-const REQUEST_TIMEOUT_MS = 20_000;
-const USER_AGENT =
-  "TrailPack-source-integrity/0.1 (+https://github.com/jaredsrice/TrailPack)";
 
 function outputDirectory(args: string[]): string {
   const optionIndex = args.indexOf("--output-dir");
@@ -52,101 +49,21 @@ function applyRefresh(args: string[]): boolean {
   return args.includes("--apply");
 }
 
-function isOfficialNpsUrl(value: string): boolean {
-  try {
-    const url = new URL(value);
-    return (
-      url.protocol === "https:" &&
-      (url.hostname === "nps.gov" || url.hostname.endsWith(".nps.gov"))
-    );
-  } catch {
-    return false;
-  }
-}
-
-async function fetchNpsPage(profile: TrailProfile): Promise<NpsPageSnapshot> {
-  if (!isOfficialNpsUrl(profile.npsSourceUrl)) {
-    return {
-      trailId: profile.id,
-      sourceUrl: profile.npsSourceUrl,
-      error: "Saved source URL is not an official HTTPS nps.gov address.",
-    };
-  }
-
-  try {
-    const response = await fetch(profile.npsSourceUrl, {
-      redirect: "follow",
-      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-      headers: {
-        Accept: "text/html,application/xhtml+xml",
-        "Cache-Control": "no-cache",
-        "User-Agent": USER_AGENT,
-      },
-    });
-
-    if (!response.ok) {
-      return {
-        trailId: profile.id,
-        sourceUrl: profile.npsSourceUrl,
-        finalUrl: response.url,
-        httpStatus: response.status,
-        error: `NPS returned HTTP ${response.status}.`,
-      };
-    }
-
-    if (!isOfficialNpsUrl(response.url)) {
-      return {
-        trailId: profile.id,
-        sourceUrl: profile.npsSourceUrl,
-        finalUrl: response.url,
-        httpStatus: response.status,
-        error: "NPS redirected the saved source to a non-NPS address.",
-      };
-    }
-
-    const contentType = response.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().includes("text/html")) {
-      return {
-        trailId: profile.id,
-        sourceUrl: profile.npsSourceUrl,
-        finalUrl: response.url,
-        httpStatus: response.status,
-        error: `Expected an HTML response but received ${contentType || "an unknown content type"}.`,
-      };
-    }
-
-    const html = await response.text();
-    if (Buffer.byteLength(html, "utf8") > MAX_HTML_BYTES) {
-      return {
-        trailId: profile.id,
-        sourceUrl: profile.npsSourceUrl,
-        finalUrl: response.url,
-        httpStatus: response.status,
-        error: `NPS page exceeded the ${MAX_HTML_BYTES.toLocaleString("en-US")}-byte safety limit.`,
-      };
-    }
-
-    return {
-      trailId: profile.id,
-      sourceUrl: profile.npsSourceUrl,
-      finalUrl: response.url,
-      httpStatus: response.status,
-      html,
-    };
-  } catch (error) {
-    return {
-      trailId: profile.id,
-      sourceUrl: profile.npsSourceUrl,
-      error: error instanceof Error ? error.message : "Unknown NPS request failure.",
-    };
-  }
-}
-
 async function fetchAllPages(profiles: TrailProfile[]): Promise<NpsPageSnapshot[]> {
   const snapshots: NpsPageSnapshot[] = [];
 
   for (const [index, profile] of profiles.entries()) {
-    snapshots.push(await fetchNpsPage(profile));
+    snapshots.push(await fetchNpsPageWithValidationRetry(
+      profile,
+      (snapshot) => {
+        const status = checkNpsSourceIntegrity(
+          [profile],
+          [snapshot],
+          new Date().toISOString(),
+        ).results[0]?.status;
+        return status !== "fetch-error" && status !== "parse-error";
+      },
+    ));
     if (index < profiles.length - 1) {
       await delay(REQUEST_DELAY_MS);
     }

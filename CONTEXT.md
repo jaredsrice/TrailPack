@@ -159,9 +159,17 @@ packing set, essential/optional priority, safety behavior, and source labels.
 _Avoid_: AI input suggestion, draft list
 
 **Guarded AI review**:
-Explanatory text that may summarize or clarify a rule-based baseline only after
-runtime schema, packing-set, provenance, cross-trail, and safety validation.
+In the unreleased candidate, a selection of approved fact IDs resolved to
+TrailPack-owned explanation wording. Unknown, duplicate or inapplicable IDs and
+provider-authored prose are rejected. Saved fixtures remain restricted to
+trusted template/fixture wording. The rule engine retains all packing authority.
 _Avoid_: AI recommendation, generated packing list
+
+**Partial live lookup result**:
+An NPS hiking-activity identity and duration retrieved on explicit search,
+retaining source, retrieval time and missing facts. It seeds manual rules but is
+not admitted to the complete catalog and does not enable weather, AI or saves.
+_Avoid_: verified complete route, automatic admission, universal trail search
 
 **Review generation identifier**:
 A per-generation UUID used by the server and database to recognize retries of

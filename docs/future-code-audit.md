@@ -1,8 +1,11 @@
-# Shelved code-quality audit
+# Code-quality audit brief
 
-Status: shelved by the owner. This is a saved brief, not authorization to start.
-Suggested model when resumed: GPT-6 Astra with XHigh reasoning, subject to the
-owner's model selection at that time.
+Status: completed on the review candidate September 12, 2026, with necessary
+changes only. Production publication still requires owner approval.
+The approved team is an Astra High coordinator and security reviewer, with a
+Sol High builder and tester. The earlier XHigh suggestion is superseded.
+Current work and dispositions are in the
+[final audit record](validation/2026-09-12-final-audit.md).
 
 ## Execution brief
 

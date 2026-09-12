@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { isAuthSessionMissingError } from "@supabase/supabase-js";
 import { deleteSavedResultFromRoute, listSavedResultsFromRoute } from "@/features/trailpack/lib/saved-results-client";
 import { getSupabaseBrowserClient } from "@/features/trailpack/lib/supabase/browser";
 import type { SavedResultRecord } from "@/features/trailpack/lib/saved-results";
@@ -26,16 +27,21 @@ export function SavedResultsLibrary() {
     }
 
     let active = true;
-    void supabase.auth.getUser().then(async ({ data, error }) => {
-      if (!active) {
-        return;
-      }
-      if (error || !data.user) {
-        setState({ status: "signed-out" });
-        return;
-      }
-
+    void (async () => {
       try {
+        const { data, error } = await supabase.auth.getUser();
+        if (!active) {
+          return;
+        }
+        if (error && !isAuthSessionMissingError(error)) {
+          setState({ status: "error" });
+          return;
+        }
+        if (!data.user) {
+          setState({ status: "signed-out" });
+          return;
+        }
+
         const results = await listSavedResultsFromRoute();
         if (active) {
           setState({ status: "ready", results });
@@ -45,7 +51,7 @@ export function SavedResultsLibrary() {
           setState({ status: "error" });
         }
       }
-    });
+    })();
 
     return () => {
       active = false;

@@ -103,16 +103,6 @@ const RAIN_CODES = new Set([
 const SNOW_CODES = new Set([71, 73, 75, 77, 85, 86]);
 const MAX_HOURLY_FORECAST_PERIODS = 24;
 
-function firstNumber(
-  values: number[] | undefined,
-  minimum = Number.NEGATIVE_INFINITY,
-  maximum = Number.POSITIVE_INFINITY,
-  integer = false,
-): number | undefined {
-  const value = values?.[0];
-  return boundedNumber(value, minimum, maximum, integer);
-}
-
 function numberAt(
   values: number[] | undefined,
   index: number,
@@ -270,35 +260,46 @@ function buildWeatherSummary({
   return `Open-Meteo forecast: ${details}; ${context}.`;
 }
 
+function dailyIndexForDate(
+  daily: OpenMeteoForecastResponse["daily"],
+  plannedDate?: string,
+): number | null {
+  if (plannedDate === undefined) {
+    return 0;
+  }
+  if (!isIsoDate(plannedDate) || !Array.isArray(daily?.time)) {
+    return null;
+  }
+  const index = daily.time.indexOf(plannedDate);
+  return index >= 0 ? index : null;
+}
+
 export function buildWeatherContextFromOpenMeteoResponse(
   response: OpenMeteoForecastResponse,
   plannedDate?: string,
 ): WeatherContext {
   const daily = response.daily ?? {};
-  const current = response.current ?? {};
-  const high = round(firstNumber(daily.temperature_2m_max, -150, 150));
-  const low = round(firstNumber(daily.temperature_2m_min, -150, 150));
+  const dailyIndex = dailyIndexForDate(response.daily, plannedDate);
+  const current = plannedDate === undefined ? response.current ?? {} : {};
+  const high = round(numberAt(daily.temperature_2m_max, dailyIndex ?? -1, -150, 150));
+  const low = round(numberAt(daily.temperature_2m_min, dailyIndex ?? -1, -150, 150));
   const currentTemperature = round(
     boundedNumber(current.temperature_2m, -150, 150),
   );
   const precipitationChance = round(
-    firstNumber(daily.precipitation_probability_max, 0, 100),
+    numberAt(daily.precipitation_probability_max, dailyIndex ?? -1, 0, 100),
   );
   const windMph = round(
-    firstNumber(daily.wind_speed_10m_max, 0, 300) ??
+    numberAt(daily.wind_speed_10m_max, dailyIndex ?? -1, 0, 300) ??
       boundedNumber(current.wind_speed_10m, 0, 300),
   );
   const weatherCode =
-    firstNumber(daily.weather_code, 0, 99, true) ??
-    firstNumber(daily.weathercode, 0, 99, true) ??
+    numberAt(daily.weather_code, dailyIndex ?? -1, 0, 99, true) ??
+    numberAt(daily.weathercode, dailyIndex ?? -1, 0, 99, true) ??
     boundedNumber(current.weather_code, 0, 99, true) ??
     boundedNumber(current.weathercode, 0, 99, true);
-  const dailyDate = daily.time?.[0];
-  const forecastDate = isIsoDate(plannedDate)
-    ? plannedDate
-    : isIsoDate(dailyDate)
-      ? dailyDate
-      : undefined;
+  const dailyDate = dailyIndex === null ? undefined : daily.time?.[dailyIndex];
+  const forecastDate = isIsoDate(dailyDate) ? dailyDate : undefined;
   const forecastPeriods = buildForecastPeriods(response.hourly, forecastDate);
 
   const conditions: WeatherContext["conditions"] = [];
@@ -357,21 +358,21 @@ function hasUsableOpenMeteoData(
   plannedDate?: string,
 ): boolean {
   const daily = response.daily ?? {};
-  const current = response.current ?? {};
-  const dailyDate = daily.time?.[0];
-  const forecastDate = isIsoDate(plannedDate)
-    ? plannedDate
-    : isIsoDate(dailyDate)
-      ? dailyDate
-      : undefined;
+  const dailyIndex = dailyIndexForDate(response.daily, plannedDate);
+  if (dailyIndex === null) {
+    return false;
+  }
+  const current = plannedDate === undefined ? response.current ?? {} : {};
+  const dailyDate = daily.time?.[dailyIndex];
+  const forecastDate = isIsoDate(dailyDate) ? dailyDate : undefined;
 
   return (
-    firstNumber(daily.temperature_2m_max, -150, 150) !== undefined ||
-    firstNumber(daily.temperature_2m_min, -150, 150) !== undefined ||
-    firstNumber(daily.precipitation_probability_max, 0, 100) !== undefined ||
-    firstNumber(daily.wind_speed_10m_max, 0, 300) !== undefined ||
-    firstNumber(daily.weather_code, 0, 99, true) !== undefined ||
-    firstNumber(daily.weathercode, 0, 99, true) !== undefined ||
+    numberAt(daily.temperature_2m_max, dailyIndex, -150, 150) !== undefined ||
+    numberAt(daily.temperature_2m_min, dailyIndex, -150, 150) !== undefined ||
+    numberAt(daily.precipitation_probability_max, dailyIndex, 0, 100) !== undefined ||
+    numberAt(daily.wind_speed_10m_max, dailyIndex, 0, 300) !== undefined ||
+    numberAt(daily.weather_code, dailyIndex, 0, 99, true) !== undefined ||
+    numberAt(daily.weathercode, dailyIndex, 0, 99, true) !== undefined ||
     boundedNumber(current.temperature_2m, -150, 150) !== undefined ||
     boundedNumber(current.wind_speed_10m, 0, 300) !== undefined ||
     boundedNumber(current.weather_code, 0, 99, true) !== undefined ||
@@ -538,6 +539,7 @@ async function fetchSunriseSunsetDaylightContext({
       });
 
       if (!response.ok) {
+        await discardBody({ body: response.body ?? null });
         return null;
       }
 
@@ -635,10 +637,12 @@ export async function fetchOpenMeteoWeatherContext(
   const url = new URL(OPEN_METEO_FORECAST_URL);
   url.searchParams.set("latitude", String(trail.coordinates.lat));
   url.searchParams.set("longitude", String(trail.coordinates.lng));
-  url.searchParams.set(
-    "current",
-    "temperature_2m,wind_speed_10m,weather_code",
-  );
+  if (!plannedDate) {
+    url.searchParams.set(
+      "current",
+      "temperature_2m,wind_speed_10m,weather_code",
+    );
+  }
   url.searchParams.set(
     "daily",
     "temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,weather_code",
@@ -827,6 +831,23 @@ function mapNpsAlertSeverity(
   return "info";
 }
 
+function isUsableNpsAlertsResponse(value: unknown, parkCode: string): value is NpsAlertsResponse {
+  if (!isRecord(value) || !Array.isArray(value.data)) return false;
+  const total = typeof value.total === "number" ? value.total
+    : typeof value.total === "string" && /^\d+$/.test(value.total) ? Number(value.total) : NaN;
+  if (!Number.isSafeInteger(total) || total < value.data.length ||
+    (value.data.length === 0 && total !== 0)) return false;
+
+  // An unreadable record must not disappear and turn incomplete data into
+  // an official clear state. Validate every record before bounded rendering.
+  return value.data.every((alert) => isRecord(alert) &&
+    typeof alert.title === "string" && Boolean(boundedProviderText(alert.title, MAX_PROVIDER_TEXT_LENGTH)) &&
+    typeof alert.description === "string" &&
+    typeof alert.category === "string" && ["Danger", "Caution", "Information", "Park Closure"].includes(alert.category) &&
+    (alert.url === undefined || typeof alert.url === "string") &&
+    (alert.parkCode === undefined || alert.parkCode === parkCode));
+}
+
 export function buildAlertContextFromNpsResponse(
   response: NpsAlertsResponse,
 ): AlertContext {
@@ -915,6 +936,7 @@ export async function fetchNpsAlertContext(
         });
 
         if (!response.ok) {
+          await discardBody({ body: response.body ?? null });
           return null;
         }
 
@@ -922,13 +944,11 @@ export async function fetchNpsAlertContext(
       },
       NPS_ALERT_REQUEST_TIMEOUT_MS,
     );
-    if (!isRecord(responseBody)) {
+    if (!isUsableNpsAlertsResponse(responseBody, normalizedParkCode)) {
       return buildSavedAlertFallback();
     }
 
-    return buildAlertContextFromNpsResponse(
-      responseBody as NpsAlertsResponse,
-    );
+    return buildAlertContextFromNpsResponse(responseBody);
   } catch {
     return buildSavedAlertFallback();
   }

@@ -37,6 +37,9 @@ local photograph, and an explicit decision about access and return form.
 
 ## I want technical or review evidence
 
+- [Current 499B requirements status](requirements-status.md)
+- [Final audit and acceptance](validation/2026-09-12-final-audit.md)
+- [Short demo and portfolio summary](demo.md)
 - [Architecture](architecture.md)
 - [Domain glossary](../CONTEXT.md)
 - [Architecture decisions](adr/)
@@ -70,4 +73,4 @@ known when they were written.
 ## Pausing or resuming work
 
 Use the [project handoff](project-handoff.md) for release checks, migration
-preservation requirements, and the shelved code-audit brief.
+preservation requirements, and the current code-audit status.

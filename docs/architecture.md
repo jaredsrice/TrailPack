@@ -64,6 +64,7 @@ unavailable, and unknown values remain distinguishable.
 | `GET /api/trailpack/weather` | Normalize a live forecast, labeled saved example, or unavailable state |
 | `GET /api/trailpack/alerts` | Return bounded NPS notices for a supported trail or park |
 | `POST /api/trailpack/ai-review` | Authenticate, claim allowance, request Gemini output, and validate it |
+| `POST /api/trailpack/nps-lookup` | Claim shared lookup allowance, validate NPS hiking candidates, and return partial facts |
 | `GET/POST /api/trailpack/saved-results` | List or create private owned snapshots |
 | `DELETE /api/trailpack/saved-results/:id` | Delete only the authenticated owner's result |
 | `GET /auth/callback` | Complete the Supabase Google OAuth PKCE exchange |
@@ -79,11 +80,36 @@ the user instead of accepting an owner identifier from the browser. Database
 row-level security, payload limits, result limits, and owner-scoped operations
 provide additional enforcement.
 
-Gemini receives a bounded subset of the selected route, weather, notice, trip,
-and packing context. Unrestricted notes and account data are excluded. The
-response must match the expected schema and cannot change the item set, order,
-priority, source labels, or missing information. Rejection, timeout, quota, or
-provider failure preserves the rule-generated list.
+In the unreleased candidate, Gemini receives only approved fact IDs and
+server-constructed wording. Profile wording uses the canonical catalog, not the
+browser's trail name. Fixed weather/notice flags and locally derived duration or
+reported-snow flags supply context without forwarding raw trip strings, notes,
+packing prose or account identifiers. Browser-supplied context remains supplied
+context, not newly authenticated source evidence.
+
+The response selects one to three unique applicable IDs. Unknown IDs, extra
+fields, invalid counts and arbitrary prose fail closed. TrailPack resolves
+displayed wording from its own fact set; all packing items, labels and missing
+details stay rule-owned. The older saved-fixture contract accepts only template
+or applicable trusted fixture wording. The normal review details display a safe
+rejection explanation without echoing provider content. Rejection, timeout,
+quota or provider failure preserves the baseline.
+
+## Partial live NPS lookup
+
+The unreleased lookup is separate from catalog admission. It queries only
+Zion, Acadia or Bryce Canyon, validates hiking identity and structured duration,
+and stores null distance, elevation and route type. It does not invent complete
+route geometry. NPS duration seeds a conservative manual plan, with source notes
+on affected items; edited duration and additional facts are user-provided.
+Generate/Update is explicit. Weather/alerts/AI/private saving are not expanded.
+
+The fixed server endpoint, streamed caps, deadlines, safe errors and one-minute
+bounded cache constrain the provider boundary. A database-owned shared token
+bucket is the quota authority across workers; an unavailable RPC blocks NPS
+calls. The reviewed migration is applied to the shared hosted database. See the
+[provider proof](validation/2026-09-11-nps-lookup-provider-proof.md) and
+[candidate verification](validation/2026-09-11-required-completion.md).
 
 ## Source maintenance
 
@@ -92,6 +118,14 @@ route section, requires repeated agreement, applies bounded validation, and can
 write only `src/features/trailpack/data/nps-source-snapshots.json`. Monthly
 automation opens a protected pull request rather than writing directly to
 `main`.
+
+The candidate accepts the catalog's valid `Very Strenuous` difficulty and
+enforces the one-megabyte source-page cap while streaming, with a shared request
+deadline. Each redirect is checked before following it. A reviewed delivery
+override uses `home.nps.gov` only for the two Open Canyon profiles, retaining
+their canonical saved URL and reporting the actual fetched URL. Calculated mixed
+itineraries reuse their registered parent sources and separate geometry tests;
+they do not gain invented official snapshots.
 
 See [Testing TrailPack](testing.md) and [Add a trail](trail-onboarding.md) before
 changing a provider, source snapshot, or route definition.

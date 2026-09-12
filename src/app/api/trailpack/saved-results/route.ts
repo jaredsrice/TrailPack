@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     return jsonResponse({ error: "Authentication is required." }, { status: 401 });
   }
 
-  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES);
+  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES, AbortSignal.timeout(2_000));
   if (bodyRead.status === "too-large") {
     return jsonResponse({ error: "Saved result request is too large." }, { status: 413 });
   }

@@ -55,7 +55,7 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
     expect(weather.source).toBe("open-meteo");
     expect(weather.retrievalStatus).toBe("live");
     expect(weather.timezone).toBe("America/Denver");
-    expect(weather.temperatureF).toEqual({ current: 78, high: 84, low: 42 });
+    expect(weather.temperatureF).toEqual({ current: undefined, high: 84, low: 42 });
     expect(weather.precipitationChance).toBe(55);
     expect(weather.windMph).toBe(24);
     expect(weather.conditions).toEqual(expect.arrayContaining(["heat", "rain", "wind"]));
@@ -98,6 +98,28 @@ describe("buildWeatherContextFromOpenMeteoResponse", () => {
         condition: "rain showers possible",
       },
     ]);
+  });
+
+  it("preserves current observations when no planned date is selected", () => {
+    const weather = buildWeatherContextFromOpenMeteoResponse({
+      timezone: "America/Denver",
+      current: {
+        temperature_2m: 78,
+        wind_speed_10m: 22,
+        weather_code: 61,
+      },
+      daily: {
+        time: ["2026-07-06"],
+        temperature_2m_max: [84],
+        temperature_2m_min: [42],
+        precipitation_probability_max: [55],
+        wind_speed_10m_max: [24],
+        weather_code: [61],
+      },
+    });
+
+    expect(weather.temperatureF).toEqual({ current: 78, high: 84, low: 42 });
+    expect(weather.plannedDate).toBe("2026-07-06");
   });
 });
 
@@ -201,6 +223,57 @@ describe("buildAlertContextFromNpsResponse", () => {
 });
 
 describe("external-context fallbacks", () => {
+  describe.each(["daylight", "alerts"] as const)("failed %s response cleanup", (provider) => {
+    it.each(["resolves", "rejects", "never settles"] as const)("releases the error body when cancellation %s", async (behavior) => {
+      let cancelled = false;
+      let reads = 0;
+      const failedResponse = new Response(new ReadableStream<Uint8Array>({
+        pull() { reads++; },
+        cancel() {
+          cancelled = true;
+          if (behavior === "rejects") return Promise.reject(new Error("private cancellation error"));
+          if (behavior === "never settles") return new Promise<void>(() => undefined);
+        },
+      }, { highWaterMark: 0 }), { status: 503 });
+      const pending = provider === "alerts"
+        ? fetchNpsAlertContext("grte", "test-key", async () => failedResponse)
+        : fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+          plannedDate: "2026-06-15",
+          fetcher: async (input) => new URL(String(input)).hostname === "api.open-meteo.com"
+            ? Response.json({
+              timezone: "America/Denver",
+              daily: {
+                time: ["2026-06-15"],
+                temperature_2m_max: [74],
+                temperature_2m_min: [44],
+                weather_code: [1],
+              },
+            })
+            : failedResponse,
+        });
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        const result = await Promise.race([
+          pending,
+          new Promise<null>((resolve) => { timer = setTimeout(() => resolve(null), 100); }),
+        ]);
+        expect(result, "provider failure must not wait for stream cancellation").not.toBeNull();
+        expect(cancelled).toBe(true);
+        expect(reads).toBe(0);
+        if (provider === "alerts") {
+          expect(result).toMatchObject({ retrievalStatus: "saved-fixture", label: "unavailable" });
+        } else {
+          expect(result).toMatchObject({ retrievalStatus: "live" });
+          expect(result).not.toHaveProperty("daylight");
+        }
+        expect(JSON.stringify(result)).not.toContain("private cancellation error");
+      } finally {
+        clearTimeout(timer);
+        void failedResponse.body?.cancel().catch(() => undefined);
+      }
+    });
+  });
+
   it.each([
     [400, /rejected the forecast request \(HTTP 400\)/],
     [401, /denied this forecast request \(HTTP 401\)/],
@@ -279,6 +352,106 @@ describe("external-context fallbacks", () => {
         period.time.startsWith("2027-01-01T"),
       ),
     ).toBe(true);
+  });
+
+  it("does not mix a current observation into an explicitly dated forecast", async () => {
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      const url = new URL(String(input));
+      if (url.hostname === "api.open-meteo.com") {
+        expect(url.searchParams.has("current")).toBe(false);
+        return Response.json({
+          timezone: "America/Denver",
+          current: {
+            temperature_2m: 100,
+            wind_speed_10m: 45,
+            weather_code: 95,
+          },
+          daily: {
+            time: ["2026-07-28"],
+            temperature_2m_max: [72],
+            temperature_2m_min: [50],
+            precipitation_probability_max: [10],
+            wind_speed_10m_max: [8],
+            weather_code: [2],
+          },
+        });
+      }
+      return new Response(null, { status: 503 });
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      plannedDate: "2026-07-28",
+      fetcher,
+    });
+
+    expect(weather).toMatchObject({
+      plannedDate: "2026-07-28",
+      retrievalStatus: "live",
+      temperatureF: { high: 72, low: 50 },
+      precipitationChance: 10,
+      windMph: 8,
+    });
+    expect(weather?.temperatureF?.current).toBeUndefined();
+    expect(weather?.conditions).not.toEqual(expect.arrayContaining(["heat", "rain", "wind"]));
+  });
+
+  it("falls back when Open-Meteo does not return the explicitly requested date", async () => {
+    const fetcher = vi.fn(async () => Response.json({
+      timezone: "America/Denver",
+      current: { temperature_2m: 70, wind_speed_10m: 5, weather_code: 1 },
+      daily: {
+        time: ["2026-07-27"],
+        temperature_2m_max: [72],
+        temperature_2m_min: [50],
+        weather_code: [2],
+      },
+    }));
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      plannedDate: "2026-07-28",
+      fetcher,
+    });
+
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(weather).toMatchObject({
+      plannedDate: "2026-07-28",
+      retrievalStatus: "saved-fixture",
+      label: "forecast-based",
+    });
+    expect(weather?.statusReason).toMatch(/no usable forecast values/i);
+  });
+
+  it("selects the matching day from a multi-day Open-Meteo response", async () => {
+    const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+      if (new URL(String(input)).hostname !== "api.open-meteo.com") {
+        return new Response(null, { status: 503 });
+      }
+      return Response.json({
+        timezone: "America/Denver",
+        daily: {
+          time: ["2026-07-27", "2026-07-28"],
+          temperature_2m_max: [99, 72],
+          temperature_2m_min: [80, 50],
+          precipitation_probability_max: [80, 10],
+          wind_speed_10m_max: [30, 8],
+          weather_code: [95, 2],
+        },
+      });
+    });
+
+    const weather = await fetchOpenMeteoWeatherContext("jenny-lake-loop", {
+      plannedDate: "2026-07-28",
+      fetcher,
+    });
+
+    expect(weather).toMatchObject({
+      plannedDate: "2026-07-28",
+      retrievalStatus: "live",
+      temperatureF: { high: 72, low: 50 },
+      precipitationChance: 10,
+      windMph: 8,
+    });
+    expect(weather?.conditions).not.toEqual(expect.arrayContaining(["heat", "rain", "wind"]));
   });
 
   it("uses imported-trail coordinates and falls back to its saved context", async () => {
@@ -639,6 +812,54 @@ describe("external-context fallbacks", () => {
     expect(fetcher).toHaveBeenCalledOnce();
     expect(fetcher.mock.calls[0]?.[1]).toMatchObject({
       next: { revalidate: 300 },
+    });
+  });
+
+  describe("NPS alert envelope validation", () => {
+    const validAlert = {
+      title: "Trail bridge closure",
+      description: "Check the posted detour.",
+      category: "Park Closure",
+      parkCode: "grte",
+      url: "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+    };
+
+    it.each([
+      { name: "missing envelope fields", value: {} },
+      { name: "missing data", value: { total: "0" } },
+      { name: "nonarray data", value: { total: "0", data: {} } },
+      { name: "missing total", value: { data: [] } },
+      { name: "malformed total", value: { total: "unknown", data: [] } },
+      { name: "negative total", value: { total: -1, data: [] } },
+      { name: "positive total with no records", value: { total: "1", data: [] } },
+      { name: "total below returned count", value: { total: "0", data: [validAlert] } },
+      { name: "null record", value: { total: "1", data: [null] } },
+      { name: "empty record", value: { total: "1", data: [{}] } },
+      { name: "blank title", value: { total: "1", data: [{ ...validAlert, title: " " }] } },
+      { name: "wrong description type", value: { total: "1", data: [{ ...validAlert, description: null }] } },
+      { name: "unknown severity category", value: { total: "1", data: [{ ...validAlert, category: "Unknown" }] } },
+      { name: "wrong URL type", value: { total: "1", data: [{ ...validAlert, url: {} }] } },
+      { name: "different park", value: { total: "1", data: [{ ...validAlert, parkCode: "acad" }] } },
+      { name: "mixed valid and malformed records", value: { total: "2", data: [validAlert, null] } },
+    ])("does not report official clear or partial data for $name", async ({ value }) => {
+      const result = await fetchNpsAlertContext("grte", "test-key", async () => Response.json(value));
+      expect(result).toMatchObject({ label: "unavailable", retrievalStatus: "saved-fixture", alerts: [] });
+      expect(result.statusReason).toMatch(/could not be checked/i);
+    });
+
+    it.each(["0", 0])("keeps an explicit zero total %j as official clear", async total => {
+      const result = await fetchNpsAlertContext("grte", "test-key", async () => Response.json({ total, data: [] }));
+      expect(result).toMatchObject({ hasActiveAlerts: false, label: "official", retrievalStatus: "live", alerts: [] });
+    });
+
+    it.each(["Danger", "Caution", "Information", "Park Closure"])("retains a usable %s alert with optional blank URL", async category => {
+      const result = await fetchNpsAlertContext("grte", "test-key", async () => Response.json({
+        total: "1", data: [{ ...validAlert, category, url: "", lastIndexedDate: "2026-09-12 10:00:00.0" }],
+      }));
+      expect(result).toMatchObject({ hasActiveAlerts: true, label: "official", retrievalStatus: "live" });
+      expect(result.alerts).toHaveLength(1);
+      expect(result.alerts[0]).toMatchObject({ title: "Trail bridge closure", source: "NPS" });
+      expect(result.alerts[0].sourceUrl).toBeUndefined();
     });
   });
 

@@ -97,7 +97,7 @@ export function MissingDetailPrompts({
         <label className="block text-sm">
           <span className="font-medium text-slate-700">When do you plan to hike?</span>
           <span className="ml-1 text-xs text-emerald-700">
-            (updates forecast + list)
+            {showManualFields ? "(planning date; no forecast available)" : "(updates forecast + list)"}
           </span>
           <input
             type="date"

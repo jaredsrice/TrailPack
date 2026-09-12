@@ -50,14 +50,14 @@ export function getAiReviewPresentation({
       return {
         badge: "Live review complete",
         description:
-          "The optional AI wording passed TrailPack's safety and source checks.",
+          "AI selected these highlights from TrailPack's approved explanations. Your packing list is unchanged.",
         tone: "accepted",
       };
     case "rejected":
       return {
         badge: "Live review rejected",
         description:
-          "The AI wording did not pass TrailPack's checks, so the standard review is shown instead.",
+          "The AI selection did not pass TrailPack's checks, so the standard review is shown instead.",
         tone: "fallback",
       };
     case "timed-out":
@@ -92,7 +92,7 @@ export function getAiReviewPresentation({
       return {
         badge: "Guest review ready",
         description:
-          "This one-time plan is complete without an account. Sign in only if you want an optional live AI wording check or a private saved copy.",
+          "This one-time plan is complete without an account. Sign in only if you want optional AI-selected highlights or a private saved copy.",
         tone: "ready",
       };
     case "missing-key":
@@ -106,7 +106,7 @@ export function getAiReviewPresentation({
       return {
         badge: "Invalid live response",
         description:
-          "The AI wording did not match TrailPack's required format, so the standard review is shown instead.",
+          "The AI selection did not match TrailPack's required format, so the standard review is shown instead.",
         tone: "fallback",
       };
     case "provider-error":

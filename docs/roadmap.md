@@ -1,8 +1,12 @@
 # TrailPack product roadmap
 
 Status: Priorities 1 and 2 are complete and deployed. The trail-selection
-redesign, interactive map, custom route builder, and broad code-quality audit
-are shelved until the owner resumes them. See the [project handoff](project-handoff.md).
+redesign, interactive map, and custom route builder remain shelved. The owner
+resumed the code-quality audit on September 12, limited to necessary changes;
+that pass is complete on the test candidate, pending owner review/publication.
+See the [project handoff](project-handoff.md).
+Original-scope follow-ups for B-01 and B-02 were queued by the owner on
+2026-09-10. See the [follow-up docket](#follow-up-docket).
 
 ## Available now
 
@@ -21,6 +25,32 @@ are shelved until the owner resumes them. See the [project handoff](project-hand
 | 1 | Complete-hike access routes | Complete and deployed through PRs #55 and #56 |
 | 2 | Repository and documentation cleanup | Complete and deployed through PR #57 |
 | 3 | Trail discovery and route composition | Shelved; resume explicitly |
+
+## Follow-up docket
+
+Added at the owner's request on 2026-09-10. The
+[acceptance audit and development plan](superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md)
+separates current acceptance gaps from original stretch extensions. Required
+implementation resumed September 11 on `codex/required-completion`. The
+[final audit record](validation/2026-09-12-final-audit.md)
+distinguishes verified Preview behavior from production publication.
+Historical records remain unchanged; other shelved work stays shelved.
+
+| Reference | Follow-up | Current behavior and remaining scope | Status |
+|---|---|---|---|
+| B-01 / original SH-01 | Live public trail lookup beyond the supported catalog | Bounded NPS lookup and duration-driven partial packing pass September 12 live preview checks. Shared quota migration applied; owner review/production publication remain. | Preview verified; not released to production |
+| B-02 current acceptance | Guarded explanation validation and supporting NPS maintenance | Candidate removes provider-authored prose/free-text forwarding, shows safe rejection reasons and passes all 50 NPS comparisons. Two live Gemini reviews accepted on the final Preview. | Preview verified; not released |
+| Final code audit | Necessary repairs and regression checks | State, provider failures, data labels, authentication, quotas, performance and tests reviewed. Necessary fixes verified; working architecture and trail facts preserved. | Complete on candidate; [audit record](validation/2026-09-12-final-audit.md) |
+
+The 499B specification is the current completion authority. Original SH-04
+packing-list variants and SH-06 guest export are historical ideas, not the
+current backlog. The owner has not selected alternative packing-list modes.
+
+Source scope: `Requirements Docs/Final/w12 Requirements Spec v6.docx`, SH-01
+and SH-04, retained with the owner's project documents outside this repository.
+The [499B specification](archive/project/specs/2026-07-16-cse-499b-requirements.md)
+and [delivery record](archive/validation/2026-08-28-cse-499b-closeout.md)
+describe the later scope and its completion.
 
 ## Priority 1: Complete-hike access routes
 

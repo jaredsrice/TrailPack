@@ -450,9 +450,7 @@ function signedOutReviewBody(trailName: string) {
       status: "fallback",
       review: {
         tripSummary: `TrailPack kept the deterministic ${trailName} packing list.`,
-        missingDataReview: [
-          "Sign in to add an automatically validated live review.",
-        ],
+        missingDataReview: [],
         itemExplanationDrafts: [],
       },
       validationReasons: ["Authentication is required for live AI."],
@@ -463,7 +461,7 @@ function signedOutReviewBody(trailName: string) {
 function mockedLiveReviewBody(
   outcome: Extract<
     LiveAiOutcome,
-    "accepted" | "duplicate-generation" | "quota-limited" | "rate-limited"
+    "accepted" | "rejected" | "invalid-response" | "duplicate-generation" | "quota-limited" | "rate-limited"
   >,
   trailName: string,
 ) {
@@ -941,11 +939,20 @@ test("one generated packing list requests one guarded review", async ({
   const reviewDetails = page.getByText("Why and review details", { exact: true });
   await expect(reviewDetails).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "What could improve this plan" }),
+    page.getByRole("heading", { name: "What matters most" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Review result" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Best next step" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "How the review works" }),
   ).toBeHidden();
   await reviewDetails.click();
   await expect(
-    page.getByRole("heading", { name: "What could improve this plan" }),
+    page.getByRole("heading", { name: "How the review works" }),
   ).toBeVisible();
   expect(reviewRequests).toBe(1);
   await expect(
@@ -963,6 +970,18 @@ test("one generated packing list requests one guarded review", async ({
 });
 
 for (const scenario of [
+  {
+    name: "rejected",
+    outcome: "rejected",
+    status: 200,
+    badge: "Live review rejected",
+  },
+  {
+    name: "invalid selection",
+    outcome: "invalid-response",
+    status: 200,
+    badge: "Invalid live response",
+  },
   {
     name: "accepted",
     outcome: "accepted",
@@ -1012,6 +1031,11 @@ for (const scenario of [
     await expect(
       page.getByRole("heading", { name: /Packing list for Jenny Lake Loop/i }),
     ).toBeVisible();
+    if (scenario.outcome === "rejected" || scenario.outcome === "invalid-response") {
+      await page.getByText("Why and review details", { exact: true }).click();
+      await expect(page.getByRole("heading", { name: "Why this review was rejected" })).toBeVisible();
+      await expect(page.getByText(/did not select valid approved explanations/)).toBeVisible();
+    }
     await expectNoAccessibilityViolations(page);
   });
 }

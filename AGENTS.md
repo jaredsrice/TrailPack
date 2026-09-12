@@ -1,4 +1,34 @@
+## Senior Project Memory
+
+- `/Users/jaredrice/AI/projects/TrailPack/` is the active software repo for this senior project after the approved relocation.
+- Before or during weekly project work, compare the current code state against:
+  - the highest-numbered `TrailPack_Proposal_v*.docx` under `/Users/jaredrice/Developer/Senior Project Local/Project Proposals/` (currently v9); it takes precedence over the older `TrailPack_Formal_Project_Proposal_Draft.md`
+  - the current `docs/roadmap.md` and active plans and specs under `docs/superpowers/`
+- Track milestone progress from the proposal and use the actual code changes to assess what was completed, deferred, descoped, or added.
+- When code changes materially affect project scope, supported features, milestone status, demo behavior, or user-facing capabilities, update:
+  - `README.md`
+  - `CHANGELOG.md`
+- Keep those updates systematic rather than ad hoc: tie them to the work completed that week and to the proposal or milestone expectations they satisfy or change.
+- If the code and the proposal diverge, surface the mismatch explicitly instead of silently treating the proposal as still current.
+
 ## Agent skills
+
+### Model and collaboration setup
+
+- Before starting a new substantive TrailPack task or phase, recommend the best
+  available model, reasoning level, and collaboration arrangement for that work,
+  with a brief reason, and obtain Jared's confirmation before proceeding.
+- A confirmed setup remains valid for the full authorized scope. Do not repeat
+  the selection step for minor follow-ups, status questions, or casual discussion.
+- Follow the shared flexible model presumptions: Terra Medium for straightforward
+  bounded work and Sol Medium as the normal substantive default. Recommend higher
+  reasoning or GPT-6 Astra when a concrete TrailPack difficulty, uncertainty,
+  long-horizon coordination need, consequence-linked failure mode, or observed
+  limitation justifies it. Architecture, security, review, importance, or generic
+  accuracy language does not automatically make a task an Astra task. Do not
+  require a lower-cost attempt to fail when the difficulty is already evident.
+- Keep the recommendation distinct from the actual session setting. Do not claim
+  that a recommended model or reasoning level is active unless it is known.
 
 ### Issue tracker
 
@@ -14,9 +44,23 @@ TrailPack is configured as a single-context repo that uses the root `CONTEXT.md`
 
 ## Project maintenance
 
-- Compare weekly code changes against the latest senior-project proposal under `../Project Proposals/`, the current `docs/roadmap.md`, and any active plan added under `docs/superpowers/`.
+- Prefer Firefox for website checks and sign-ins. Jared requested this on
+  September 12 because it works better for him than the Codex in-app browser.
+  Codex remains the coding and agent-coordination workspace.
+
+- Jared authorizes publishing verified TrailPack changes to the existing test
+  website (Vercel Preview) for review without asking each time. Wait for explicit
+  approval before merging into main or publishing/promoting the live production
+  website (the conservative interpretation of his “main doc” boundary).
+- On September 12, Jared specifically approved the reviewed lookup-quota
+  addition to the database shared by Preview and Production. This does not
+  authorize unrelated destructive migrations, credential/security changes, or
+  production website publication.
+
+- Use the source precedence and milestone/documentation rules above for weekly maintenance.
 - Treat `docs/archive/project/` as historical context. Its plans and specifications describe completed or superseded work and are not the current backlog.
-- Prefer the highest-numbered `TrailPack_Proposal_v*.docx` as the current proposal when it diverges from the older `TrailPack_Formal_Project_Proposal_Draft.md`.
-- Use those documents plus the actual merged work to assess milestone progress and current scope.
-- When completed work changes the app's user-facing behavior, supported features, milestone status, or documented scope, update `README.md` and `CHANGELOG.md` systematically.
-- If the implementation and the proposal diverge, call that out explicitly instead of leaving the docs stale.
+- Use actual merged work to distinguish delivered capabilities from queued plans. The September 10 acceptance plan records current gaps; it does not authorize implementation or resume shelved work.
+
+## Cross-account handoff
+
+Read docs/project-handoff.md before substantive project work. After meaningful decisions or completed steps, update that existing handoff with current state, checks, open issues, next action and a short dated entry. Reuse CHANGELOG.md under the existing user-facing change rules above. Do not create a duplicate central checkpoint or resume paused plans without authority. Both local accounts use the same saved files sequentially. Follow /Users/jaredrice/AI/WORKSPACE_RULES.md and load only relevant personal context, if any.

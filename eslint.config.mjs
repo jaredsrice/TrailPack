@@ -13,6 +13,7 @@ const eslintConfig = [
   {
     ignores: [
       ".agents/skills/**",
+      ".artifacts/**",
       ".next/**",
       "node_modules/**",
       "next-env.d.ts",

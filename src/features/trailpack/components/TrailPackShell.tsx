@@ -54,6 +54,9 @@ import { VERIFIED_TRAIL_PROFILE_LABEL, MIXED_GROUP_LABEL } from "./SourceBadge";
 import { TrailPackIcon } from "./TrailPackIcon";
 import { TrailProfileSummary } from "./TrailProfileSummary";
 import { AccessRouteChooser } from "./AccessRouteChooser";
+import { NpsTrailLookup } from "./NpsTrailLookup";
+import type { NpsLookupTrail } from "../lib/nps-lookup";
+import { generateLookupRecommendation, seedLookupInput, type LookupDurationSource } from "../lib/nps-lookup-packing";
 
 const SavedResultActions = dynamic(() =>
   import("./SavedResultActions").then((module) => module.SavedResultActions),
@@ -212,6 +215,9 @@ export function TrailPackShell() {
   const [routeChangeNotice, setRouteChangeNotice] = useState(false);
   const [userInput, setUserInput] = useState<UserHikeInput>({});
   const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlan | null>(null);
+  const [lookupTrail, setLookupTrail] = useState<NpsLookupTrail | null>(null);
+  const [lookupDurationSource, setLookupDurationSource] = useState<LookupDurationSource>("user-provided");
+  const [lookupPlan, setLookupPlan] = useState<{ recommendation: PackingRecommendation; input: UserHikeInput; durationSource: LookupDurationSource } | null>(null);
   const [liveAiState, setLiveAiState] = useState<LiveAiUiState>({
     status: "idle",
   });
@@ -503,7 +509,7 @@ export function TrailPackShell() {
   );
   const recommendation =
     mode === "manual"
-      ? manualRecommendation
+      ? lookupTrail ? lookupPlan?.recommendation ?? null : manualRecommendation
       : currentGeneratedPlan?.recommendation ?? null;
   const aiInput = currentGeneratedPlan?.aiInput ?? null;
 
@@ -649,11 +655,26 @@ export function TrailPackShell() {
   }
 
   function resetGeneratedOutput() {
+    setLookupTrail(null);
+    setLookupDurationSource("user-provided");
+    setLookupPlan(null);
     aiReviewAbortControllerRef.current?.abort();
     aiReviewAbortControllerRef.current = null;
     activeAiGenerationRef.current = null;
     setGeneratedPlan(null);
     setLiveAiState({ status: "idle" });
+  }
+
+  function handleLookupSelect(trail: NpsLookupTrail) {
+    resetGeneratedOutput();
+    setLookupTrail(trail);
+    setLookupDurationSource("nps");
+    setMode("manual");
+    setSelectedTrail(null);
+    setSelectedGroupId(null);
+    setSelectedParkId(null);
+    setQuery(trail.title);
+    setUserInput(seedLookupInput(trail));
   }
 
   function handleSuggestionSelect(suggestion: SearchSuggestion) {
@@ -903,6 +924,9 @@ export function TrailPackShell() {
                   </div>
                 </div>
               ) : null}
+              {query.trim() && !lookupTrail ? (
+                <NpsTrailLookup key={query} query={query} onSelect={handleLookupSelect} />
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -954,7 +978,7 @@ export function TrailPackShell() {
           </section>
         ) : null}
 
-        {mode === "manual" ? (
+        {mode === "manual" && !lookupTrail ? (
           <section className="manual-entry-notice">
             <TrailPackIcon name="info" className="h-6 w-6 shrink-0" />
             <div>
@@ -965,6 +989,20 @@ export function TrailPackShell() {
                 conditions can make the fallback more specific.
               </p>
             </div>
+          </section>
+        ) : null}
+
+        {lookupTrail ? (
+          <section className="trip-details-section" aria-labelledby="lookup-profile-heading">
+            <p className="section-kicker">Partial live NPS hiking record</p>
+            <h2 id="lookup-profile-heading" className="section-title">{lookupTrail.title}</h2>
+            <p>{lookupTrail.park}, {lookupTrail.state}</p>
+            <p className="mt-2">NPS duration: {lookupTrail.duration}. The upper estimate, {lookupTrail.durationHours} hours, seeds your time out. Editing it makes the planning duration user-provided.</p>
+            <p className="mt-2">Distance, elevation gain, route type, and accessibility are unverified. Weather, daylight, and alerts are unavailable for this partial path, not checked and clear.</p>
+            <p className="mt-2">Source confidence: NPS identity and duration only. Retrieved {new Date(lookupTrail.retrievedAt).toLocaleString()}.</p>
+            <a className="underline" href={lookupTrail.sourceUrl} target="_blank" rel="noreferrer">Confirm this hike and current conditions with NPS</a>
+            <p className="mt-2 text-sm">This guest planning path does not request AI or save results to your account.</p>
+            <button type="button" className="park-change-button mt-3" onClick={handleChangeSearch}>Change park or trail</button>
           </section>
         ) : null}
 
@@ -990,9 +1028,29 @@ export function TrailPackShell() {
         {selectedTrail || mode === "manual" ? (
           <MissingDetailPrompts
             value={userInput}
-            onChange={setUserInput}
+            onChange={(next) => {
+              if (lookupTrail && next.expectedDuration !== userInput.expectedDuration) {
+                setLookupDurationSource("user-provided");
+              }
+              setUserInput(next);
+            }}
             showManualFields={mode === "manual"}
           />
+        ) : null}
+
+        {lookupTrail ? (
+          <section className="plan-generation-section" aria-label="Partial plan generation">
+            <div>
+              <h2 className="section-title">Generate from partial information</h2>
+              <p>Add any known details, then generate. Missing facts remain explicit.</p>
+              {lookupPlan && (!sameUserHikeInput(userInput, lookupPlan.input) || lookupDurationSource !== lookupPlan.durationSource) ? <p role="status">Edits are not yet in the displayed list.</p> : null}
+            </div>
+            <button type="button" className="plan-generation-button"
+              disabled={Boolean(lookupPlan && sameUserHikeInput(userInput, lookupPlan.input) && lookupDurationSource === lookupPlan.durationSource)}
+              onClick={() => setLookupPlan({ recommendation: generateLookupRecommendation(lookupTrail, userInput, lookupDurationSource), input: { ...userInput }, durationSource: lookupDurationSource })}>
+              {lookupPlan ? "Update partial packing list" : "Generate partial packing list"}
+            </button>
+          </section>
         ) : null}
 
         {selectedTrail ? (
@@ -1053,11 +1111,11 @@ export function TrailPackShell() {
               weather={currentGeneratedPlan?.weather}
               alerts={currentGeneratedPlan?.alerts}
             />
-            <SavedResultActions
+            {!lookupTrail ? <SavedResultActions
               trail={selectedTrail}
               userInput={currentGeneratedPlan?.userInput ?? userInput}
               recommendation={recommendation}
-            />
+            /> : null}
           </>
         ) : null}
         {displayedAiReview && aiInput ? (
