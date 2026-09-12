@@ -1,9 +1,7 @@
 # Final 499B audit and acceptance
 
-Date: September 12, 2026. Status: approved implementation and verification scope
-complete on the test candidate. Production publication is not approved.
-Candidate branch: `codex/required-completion`. Production remains on the
-previous release until Jared approves publication.
+Date: September 12, 2026. Status: implementation, verification, and production
+publication complete. Jared approved PR #61 for merge and publication.
 
 ## Scope
 
@@ -175,8 +173,12 @@ new provider or security run for every documentation-only commit.
 
 ## Handoff
 
-No further feature or refactor work is required by this approved pass. The
-remaining decision is Jared's review and separate authorization to merge and
-publish production. The one recovered saved-library failure and retained CSP
-limitations stay visible. Academic submissions and presentation delivery remain
-owner-managed and are not claimed complete here.
+Jared approved publication after reviewing the final Preview. PR #61 merged to
+`main` as `746cca344769a079c589fb8808990c6d05f4cd15`. Production deployment
+`dpl_HVsmSUULnNRKjJ8vPQQh7VUfXby3` is READY and serves
+https://trailpack-ten.vercel.app.
+
+No further feature or refactor work is required by this approved pass. The one
+recovered saved-library failure and retained CSP limitations stay visible.
+Academic submissions and presentation delivery remain owner-managed and are not
+claimed complete here.

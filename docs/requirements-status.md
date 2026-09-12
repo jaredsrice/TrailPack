@@ -9,12 +9,12 @@ not required next steps.
 
 Reviewed September 11, 2026. Original audit base:
 `72593bc69e11b9fe3b4fc24a150b9a81f849eabf`. Updated after the authorized
-`codex/required-completion` candidate work. Main/production have not received
-these code changes. See the [local verification record](validation/2026-09-11-required-completion.md).
+`codex/required-completion` work and the September 12 production release. See
+the [final audit](validation/2026-09-12-final-audit.md).
 
-Current count: **6 baseline must-haves with local implementation/test support**;
-**6 original nice-to-haves: 3 delivered, 1 verified on the test preview,
-2 not implemented**. This is not a claim of six newly accepted deployed features.
+Current count: **6 baseline must-haves supported in production**;
+**6 original nice-to-haves: 4 delivered and 2 not implemented**. This is not a
+claim of six newly added production features.
 
 ## Counts and source authority
 
@@ -39,11 +39,10 @@ behavior, current defects, and queued extensions. The proposal's illustrative
 multi-region coverage became reviewed Grand Teton coverage; this does not make
 each illustrative park a separate unfinished requirement.
 
-## Six must-haves: six supported in the local candidate
+## Six must-haves: six supported in production
 
-“Supported” below means current code and automated checks support implementation,
-with historical demo evidence. It does not mean a new deployed walkthrough was
-performed during this inventory. Historical acceptance records remain intact.
+“Supported” below means current code, automated checks, and recorded hosted
+acceptance support the implementation. Historical acceptance records remain intact.
 
 | ID | Requirement | Current assessment | Remaining work |
 |---|---|---|---|
@@ -51,7 +50,7 @@ performed during this inventory. Historical acceptance records remain intact.
 | MH-02 | Weather and official alert context | Supported: weather and active/no-active/unavailable alerts affect output with source and fallback labels | Retain live-or-fixture demonstration; saved fixtures are explicitly permitted |
 | MH-03 | Essential/optional rule-based packing list | Supported: catalog and manual workflows generate output without AI | Retain short/easy, weather-affected, and incomplete-data scenarios |
 | MH-04 | Reasons and source labels on recommendations | Supported for deterministic packing items: reasons and evidence labels are present; official labels require source URLs | Retain item-level demonstration; AI prose defect is recorded under MH-05 |
-| MH-05 | Guarded AI contract, validation, and fallback | Approved ID selection, no raw-input forwarding, safe rejection and unchanged baseline; two accepted live Gemini reviews verified on the final Preview | Owner review and separately approved production publication |
+| MH-05 | Guarded AI contract, validation, and fallback | Approved ID selection, no raw-input forwarding, safe rejection, unchanged baseline, and practical live review are published | Retain accepted, rejected, and fallback regression coverage |
 | MH-06 | Fallback and uncertainty handling | Supported: limited manual output, missing-detail prompts, and provider fallback paths remain available | Retain failed-service and incomplete-input demonstration; accepted false AI prose is counted under MH-05 rather than double-counted here |
 
 The proposal's first three must-have bullets map to MH-01; weather maps to
@@ -59,11 +58,11 @@ MH-02; grouped packing to MH-03; explanations to MH-04; guarded AI to MH-05;
 uncertainty to MH-06, with source labeling also covered by MH-04. There are not
 eight additional baseline features to build on top of the six final requirements.
 
-## Six original nice-to-haves: three delivered, one candidate, two absent
+## Six original nice-to-haves: four delivered, two absent
 
 | ID | Requirement | Current assessment | What remains |
 |---|---|---|---|
-| SH-01 | Live public lookup beyond supported profiles | Narrow NPS lookup verified on the September 12 preview: correct live record, partial facts, Generate/Update, source labels and empty-result fallback | Owner review and eventual approved production publication. Promoted into B-01; not yet delivered to production |
+| SH-01 | Live public lookup beyond supported profiles | Narrow NPS lookup is published: correct live record, partial facts, Generate/Update, source labels and empty-result fallback | Promoted into and completed through B-01; retain quota and fallback monitoring |
 | SH-02 | Expanded supported trail coverage | Delivered in substance: 39 discovery entries and 52 route profiles versus the original three | Demonstrate an additional profile and fallback. Extra profiles are reviewed imports/calculated routes, not all the internal `curated` type; a second park is not required by the “additional trails or regions” success clause |
 | SH-03 | One extra evidence-supported context signal | Delivered in substance through Grand Teton wildlife/bear context affecting the bear-spray recommendation, with official source and inference labels | Demonstrate the sourced effect; no requirement to implement every candidate signal such as water, cell coverage, or sentiment |
 | SH-04 | AI comparison/refinement of packing-list variants | **Not delivered as written.** Current AI reviews explanations while packing decisions remain fixed | Historical requirement replaced by the 499B scope; not queued for this completion pass |
@@ -80,10 +79,10 @@ count alerts once and show their promotion to must-have scope.
 
 | ID | Current position | Remaining obligation |
 |---|---|---|
-| B-01 | Hosted quota applied; two independent clients consume one shared row; live API and preview UI checks pass | Owner review and approved production publication; no hosted exhaustion/load test performed |
-| B-02 | The stronger approved-fact review is verified with signed-in Gemini on the refreshed Preview: route effort, planned finish, relevant conditions, notice action and complete-profile result remain separate from the unchanged rule-owned list; all 50 NPS source comparisons pass unchanged on local rerun | Owner review and approved production publication; rejected/fallback regression evidence retained |
-| B-03 | Final Preview sign-in, save, revisit, approved delete and sign-out verified; fresh guest review passed; historical two-account evidence retained | Owner review; retain the one recovered library-read failure as a limitation, not an error-free claim |
-| B-04 | Necessary repairs and approved privilege removal verified; full CI and CodeQL passed; passive scan completed with triaged medium warnings | Owner review and release decision; retain CSP risks and bounded scan limitations |
+| B-01 | Published with the shared quota, partial NPS facts, manual fallback, and hosted checks | No missing requirement; no hosted exhaustion/load test was performed |
+| B-02 | Published with approved fact selection, practical complete/incomplete reviews, unchanged rule-owned lists, and 50/50 NPS comparison evidence | No missing requirement; retain rejected and fallback regressions |
+| B-03 | Published with sign-in and private save, revisit, delete, and sign-out evidence | No missing requirement; retain the one recovered library-read failure as a limitation |
+| B-04 | Published after necessary repairs, privilege removal, full CI, CodeQL, automated review, and passive Preview scanning | No missing requirement; retain CSP risks and bounded scan limitations |
 
 B-02 permits explanations, summaries, or variants; its production addendum
 specifies explanation-only output. Original SH-04 variants are consequently a
@@ -92,7 +91,8 @@ auto-on-edit/refresh interaction; do not reintroduce obsolete behavior.
 
 The [final audit](validation/2026-09-12-final-audit.md) tracks the active finishing
 pass: necessary repairs, complete tests, live acceptance, security evidence and
-simple documentation. Main/production publication still requires Jared's approval.
+simple documentation. Jared approved publication, and PR #61 was merged to
+`main` on September 12, 2026.
 Original SH-04 variants and SH-06 export are not part of this completion pass.
 Requirement counts are not percentages of the remaining effort.
 

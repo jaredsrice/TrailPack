@@ -1,7 +1,8 @@
 # TrailPack security review
 
 Date: September 12, 2026.
-Status: Complete for the test candidate. This does not publish the production website.
+Status: Complete for release 0.8.0. The review was performed on the test
+candidate before the approved production publication.
 
 ## Summary
 
