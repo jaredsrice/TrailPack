@@ -450,9 +450,7 @@ function signedOutReviewBody(trailName: string) {
       status: "fallback",
       review: {
         tripSummary: `TrailPack kept the deterministic ${trailName} packing list.`,
-        missingDataReview: [
-          "Sign in to add an automatically validated live review.",
-        ],
+        missingDataReview: [],
         itemExplanationDrafts: [],
       },
       validationReasons: ["Authentication is required for live AI."],
@@ -941,11 +939,20 @@ test("one generated packing list requests one guarded review", async ({
   const reviewDetails = page.getByText("Why and review details", { exact: true });
   await expect(reviewDetails).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "What could improve this plan" }),
+    page.getByRole("heading", { name: "What matters most" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Review result" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Best next step" }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "How the review works" }),
   ).toBeHidden();
   await reviewDetails.click();
   await expect(
-    page.getByRole("heading", { name: "What could improve this plan" }),
+    page.getByRole("heading", { name: "How the review works" }),
   ).toBeVisible();
   expect(reviewRequests).toBe(1);
   await expect(

@@ -348,9 +348,7 @@ function buildTemplateFallbackReview(input: AiContractInput): GuardedAiReview {
       `${input.packing.essential.length} essential and ${input.packing.optional.length} optional ` +
       `items in the rule-based packing list against ${activeContext}.`,
     missingDataReview:
-      input.packing.missingDetails.length > 0
-        ? input.packing.missingDetails
-        : ["No missing details were recorded for the current rule-based recommendation."],
+      input.packing.missingDetails,
     itemExplanationDrafts: items.map((item) => ({
       itemName: item.name,
       explanation: item.answer,

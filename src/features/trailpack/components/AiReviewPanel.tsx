@@ -39,14 +39,14 @@ export function AiReviewPanel({
       <div>
         <div>
           <p className="section-kicker">
-            Concise second look
+            Practical second look
           </p>
           <h2 id="ai-review-heading" className="section-title">
             Plan review
           </h2>
           <p className="section-subtitle">
-            The useful result stays up front. Open the details only if you want
-            more context.
+            Connect the route, conditions, timing, and packing decisions before
+            you leave.
           </p>
         </div>
       </div>
@@ -61,7 +61,28 @@ export function AiReviewPanel({
           <TrailPackIcon name="sparkles" className="h-4 w-4" />
           {presentation.badge}
         </p>
-        <p className="ai-trip-summary">{review.review.tripSummary}</p>
+        <div className="ai-review-priority">
+          <h3>What matters most</h3>
+          <p className="ai-trip-summary">{review.review.tripSummary}</p>
+        </div>
+        {review.review.missingDataReview.length > 0 ? (
+          <div className="ai-review-next-step">
+            <h3>Best next step</h3>
+            <ul>
+              {review.review.missingDataReview.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="ai-review-next-step">
+            <h3>Review result</h3>
+            <p>
+              The current profile has enough information for this packing list.
+              No additional planning details are needed right now.
+            </p>
+          </div>
+        )}
         <p className="ai-review-status-copy">{presentation.description}</p>
       </div>
 
@@ -80,14 +101,6 @@ export function AiReviewPanel({
               <p>The review did not select valid approved explanations for this trip. The rule-based packing list and standard explanation remain available.</p>
             </div>
           )}
-          <div>
-            <h3>What could improve this plan</h3>
-            <ul>
-              {review.review.missingDataReview.map((detail) => (
-                <li key={detail}>{detail}</li>
-              ))}
-            </ul>
-          </div>
           <div>
             <h3>How the review works</h3>
             <p>

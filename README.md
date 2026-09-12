@@ -2,8 +2,9 @@
 
 TrailPack turns trail facts, weather, official notices, and trip details into a
 practical day-hiking packing list. Its rule-based planner decides what belongs
-on the list. An optional AI review selects approved explanation highlights, but it cannot
-silently change the items or their sources.
+on the list. An optional AI review connects route effort, planned timing,
+conditions and packing priorities, but it cannot silently change the items or
+their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
 [Read the user guide](docs/user-guide.md) ·
@@ -21,8 +22,9 @@ silently change the items or their sources.
   are available.
 - Generate a packing list with visible reasons and source labels.
 - Use the full guest planner without creating an account.
-- Sign in with Google to save private plans and request a limited AI explanation
-  review.
+- Sign in with Google to save private plans and request a guarded plan review.
+  Complete plans receive a practical summary; incomplete plans receive a clear
+  best next step.
 - Enter basic facts manually for an unsupported hike and receive a limited list.
 
 ## Current coverage

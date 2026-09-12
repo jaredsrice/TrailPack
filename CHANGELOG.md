@@ -19,8 +19,11 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - AI now selects approved explanation highlights by ID. TrailPack supplies the
-  displayed wording and retains all rule-owned packing decisions. Raw trip
-  text is no longer sent to the AI provider.
+  displayed wording and retains all rule-owned packing decisions. The review
+  now connects route effort, planned timing, weather and packing priorities.
+  Complete plans receive a general readiness summary; incomplete plans put the
+  most useful next step up front. Raw trip text is no longer sent to the AI
+  provider.
 
 ### Fixed
 

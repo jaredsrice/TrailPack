@@ -1852,9 +1852,35 @@ a {
 
 .ai-trip-summary {
   margin: 0;
+  max-width: 72ch;
+  font-size: 0.88rem;
+  font-weight: 560;
+  line-height: 1.62;
+}
+
+.ai-review-priority h3,
+.ai-review-next-step h3 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.ai-review-next-step {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid currentColor;
+}
+
+.ai-review-next-step p,
+.ai-review-next-step ul {
+  margin: 0;
+  max-width: 72ch;
   font-size: 0.8rem;
-  font-weight: 600;
   line-height: 1.55;
+}
+
+.ai-review-next-step ul {
+  padding-left: 18px;
 }
 
 .ai-review-status-copy {
@@ -1876,7 +1902,7 @@ a {
 
 .ai-review-details-body {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   padding: 16px 18px 18px;
   color: #45656b;
