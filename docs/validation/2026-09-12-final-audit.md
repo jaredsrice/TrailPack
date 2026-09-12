@@ -76,14 +76,14 @@ declared difference. This is not production website publication.
 ## Final acceptance gate
 
 Local checkpoint: clean production build passed with a static homepage and
-179 kB first load; TypeScript, 887 tests across 61 files, lint and documentation
+179 kB first load; TypeScript, 895 tests across 61 files, lint and documentation
 links pass. Catalog checks passed for 52 profiles. Fixed-seed stress passed
 5,000 cases with no invariant failures and 0.053 ms p95. The NPS comparison
 passed 50/50 unchanged. One overlapping build/browser run was discarded after
 it disrupted generated server files; only the subsequent isolated run counts.
 
 Final isolated Firefox run: **151 passed, zero failed, skipped or retried**,
-one worker, 4.8 minutes. It includes rendered account failures and the synthetic
+one worker, 4.6 minutes. It includes rendered account failures and the synthetic
 save/revisit/delete lifecycle, partial lookup, catalog access variants,
 accessibility, mobile layouts, provider failures and stale AI/weather state.
 
@@ -102,10 +102,10 @@ provider or deployed account behavior.
 
 ## Exact hosted candidate
 
-Runtime commit: `6a49b4952ae3e20610bcd91d6e946432c1de4b73`.
+Runtime commit: `0ba17a7a8295af86eff05c6a16d8d59c08adea2f`.
 [Review PR #61](https://github.com/jaredsrice/TrailPack/pull/61).
-Deployment: `dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw`, Preview, READY.
-[Immutable test website](https://trailpack-db0080ubs-jared-s-rice.vercel.app).
+Deployment: `dpl_3peAT8xGbir2rz5mKYpFqEkN7xsf`, Preview, READY.
+[Immutable test website](https://trailpack-h2ea5k6xh-jared-s-rice.vercel.app).
 Google sign-in uses the
 [stable test address](https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app).
 The stable alias was independently checked against that deployment.
@@ -124,6 +124,16 @@ highlights and left the packing list unchanged. Editing a note made Update
 available without starting another review; clicking Update requested the second
 review. No tokens, account identity or raw provider payloads are included here.
 
+The refreshed candidate received another accepted signed-in review in native
+Firefox. It identified Phelps Lake Loop as a 6.4-mile moderate loop with 1,060
+feet of gain, treated the route as a sustained half-day effort, calculated a
+1:00–5:00 PM planning window, connected the cold forecast to clothing, and told
+the hiker to confirm active park notices before driving. It then stated that the
+profile was complete and needed no additional planning details. The packing list
+remained rule-owned and unchanged. Incomplete profiles instead show one visible
+"Best next step." The provider still selects only approved fact IDs, and the
+display is capped at three approved highlights.
+
 The new private plan saved with HTTP 201. Its first library request returned
 500 and a visible error; one normal reload returned 200 and displayed both the
 new plan and an older plan. The saved packing list reopened correctly. No code
@@ -140,10 +150,21 @@ while signed out produced a new **Guest review ready** result. A third accepted
 live review occurred when generating the plan needed to expose sign-out controls;
 the first two remain the recorded provider-acceptance checks above.
 
-The [full CI run passed](https://github.com/jaredsrice/TrailPack/actions/runs/34683963217)
-on the runtime commit, including 887 unit/integration tests, the NPS comparison,
-build and all 151 Firefox tests (7.9 minutes in CI).
-Both CodeQL analyses passed on the runtime commit. The bounded passive scan
+The earlier [full CI run passed](https://github.com/jaredsrice/TrailPack/actions/runs/34683963217)
+with 887 unit/integration tests, the NPS comparison, build and all 151 Firefox
+tests. Two refreshed-candidate CI attempts stopped when the NPS site returned a
+valid 200 page shell with neither Open Canyon route; each attempt failed on a
+different route from the same official page, while immediate local reads passed
+50/50 unchanged. Repeated diagnostics reproduced a short shell among complete
+responses. The checker now retries one parser-rejected fetch. Changed facts still
+fail review, and the final local comparison passed 50/50 unchanged.
+
+The [refreshed full CI run passed](https://github.com/jaredsrice/TrailPack/actions/runs/34716374761)
+on the repaired runtime commit with 895 tests, 50/50 NPS sources, deterministic
+and fixed-seed stress checks, generated-evidence verification, the production
+build and all 151 Firefox flows.
+
+Both CodeQL analyses passed on the refreshed runtime commit. The bounded passive scan
 and its retained warnings are recorded in the
 [security review](2026-09-12-security-review.md).
 

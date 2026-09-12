@@ -5,6 +5,27 @@ Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 ## Recent handoff history
 
+- **2026-09-12, practical live review approved and verified:** Jared approved
+  replacing the bland highlight display with two clear outcomes. Complete plans
+  now summarize route effort, planned finish, relevant conditions, notice action
+  and packing implications, then say when no more details are needed. Incomplete
+  plans put a single "Best next step" section up front. The AI still selects only
+  approved fact IDs, the rule-owned list stays unchanged, and the display is
+  capped at three highlights. Runtime commit `0ba17a7a8295af86eff05c6a16d8d59c08adea2f`
+  is pushed on PR #61. Preview `dpl_3peAT8xGbir2rz5mKYpFqEkN7xsf` is READY at
+  https://trailpack-h2ea5k6xh-jared-s-rice.vercel.app and the stable branch alias.
+  Native Firefox received an accepted signed-in Gemini review with the new
+  effort, 1:00–5:00 PM timing, cold-weather and active-notice guidance, plus the
+  complete-profile result. Local checks pass: 895 tests, lint, docs, types,
+  production build and 151/151 Firefox flows. The first two CI attempts saw
+  transient Open Canyon page-shell failures, each affecting a
+  different route on the same source. Diagnostics reproduced a short 200 shell
+  among complete responses. The checker now gives parser-rejected requests one
+  bounded retry while changed facts still fail; local integrity passed 50/50.
+  Final CI run 34716374761 passed all checks, including 895 tests, 50/50 NPS,
+  both stress checks, production build and 151 Firefox flows. No main merge or
+  production publication.
+
 - **2026-09-12, security report rewritten for a college reader:** Preserved
   the exact findings, severities, test counts, scanner counts, residual risks
   and limits while replacing the dense audit-first structure with plain-language

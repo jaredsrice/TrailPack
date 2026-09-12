@@ -81,7 +81,7 @@ count alerts once and show their promotion to must-have scope.
 | ID | Current position | Remaining obligation |
 |---|---|---|
 | B-01 | Hosted quota applied; two independent clients consume one shared row; live API and preview UI checks pass | Owner review and approved production publication; no hosted exhaustion/load test performed |
-| B-02 | Two accepted signed-in Gemini reviews verified on the earlier final Preview; the current candidate turns approved facts into a practical effort, timing, conditions and packing summary while preserving the rule-owned list; all 50 NPS source comparisons pass unchanged | Verify the stronger review on the refreshed Preview, then owner review and approved production publication; rejected/fallback regression evidence retained |
+| B-02 | The stronger approved-fact review is verified with signed-in Gemini on the refreshed Preview: route effort, planned finish, relevant conditions, notice action and complete-profile result remain separate from the unchanged rule-owned list; all 50 NPS source comparisons pass unchanged on local rerun | Owner review and approved production publication; rejected/fallback regression evidence retained |
 | B-03 | Final Preview sign-in, save, revisit, approved delete and sign-out verified; fresh guest review passed; historical two-account evidence retained | Owner review; retain the one recovered library-read failure as a limitation, not an error-free claim |
 | B-04 | Necessary repairs and approved privilege removal verified; full CI and CodeQL passed; passive scan completed with triaged medium warnings | Owner review and release decision; retain CSP risks and bounded scan limitations |
 
