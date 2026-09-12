@@ -159,11 +159,6 @@ page reads during streaming. The release also adds the bounded partial NPS
 lookup. See the [requirements status](docs/requirements-status.md) for the final
 requirement assessment.
 
-The current completion scope is B-01 through B-04 in the 499B specification.
-Alternative packing-list modes and guest export are not part of that scope.
-The final code audit is limited to documented defects and necessary cleanup;
-see the [audit and acceptance record](docs/validation/2026-09-12-final-audit.md).
-
 The following product work also remains shelved until explicitly resumed:
 
 1. Make the trail-selection landing experience easier to scan as the catalog
