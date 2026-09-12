@@ -30,8 +30,8 @@ Original-scope follow-ups for B-01 and B-02 were queued by the owner on
 
 Added at the owner's request on 2026-09-10. The
 [acceptance audit and development plan](superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md)
-separates current acceptance gaps from original stretch extensions. Required
-implementation resumed September 11 on `codex/required-completion`. The
+separates current acceptance gaps from original stretch extensions. Work on the
+remaining requirements resumed September 11 and was completed before release. The
 [final audit record](validation/2026-09-12-final-audit.md)
 records both Preview acceptance and the approved production publication.
 Historical records remain unchanged; other shelved work stays shelved.
