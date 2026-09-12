@@ -17,7 +17,7 @@ import {
   type NpsRefreshPlan,
 } from "../src/features/trailpack/lib/nps-source-refresh";
 import type { TrailProfile } from "../src/features/trailpack/types";
-import { fetchNpsPage } from "../src/features/trailpack/lib/nps-page-fetch";
+import { fetchNpsPageWithValidationRetry } from "../src/features/trailpack/lib/nps-page-fetch";
 
 const DEFAULT_OUTPUT_DIR = ".artifacts/nps-source-integrity";
 const SNAPSHOT_FILE = fileURLToPath(
@@ -53,7 +53,17 @@ async function fetchAllPages(profiles: TrailProfile[]): Promise<NpsPageSnapshot[
   const snapshots: NpsPageSnapshot[] = [];
 
   for (const [index, profile] of profiles.entries()) {
-    snapshots.push(await fetchNpsPage(profile));
+    snapshots.push(await fetchNpsPageWithValidationRetry(
+      profile,
+      (snapshot) => {
+        const status = checkNpsSourceIntegrity(
+          [profile],
+          [snapshot],
+          new Date().toISOString(),
+        ).results[0]?.status;
+        return status !== "fetch-error" && status !== "parse-error";
+      },
+    ));
     if (index < profiles.length - 1) {
       await delay(REQUEST_DELAY_MS);
     }

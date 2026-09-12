@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { JENNY_LAKE_LOOP } from "../data/supported-trails";
-import { fetchNpsPage } from "./nps-page-fetch";
+import { fetchNpsPage, fetchNpsPageWithValidationRetry } from "./nps-page-fetch";
 
 function page(body: BodyInit | null, status = 200, contentType = "text/html") {
   const result = new Response(body, { status, headers: { "Content-Type": contentType } });
@@ -9,6 +9,36 @@ function page(body: BodyInit | null, status = 200, contentType = "text/html") {
 }
 
 describe("NPS page fetch boundary", () => {
+  it("retries one transient 200 page shell when the parser cannot use it", async () => {
+    const bodies = ["<html>page shell</html>", "<html>complete trail facts</html>"];
+    let requests = 0;
+    const result = await fetchNpsPageWithValidationRetry(
+      JENNY_LAKE_LOOP,
+      (snapshot) => snapshot.html?.includes("complete trail facts") === true,
+      async () => page(bodies[requests++]),
+      0,
+    );
+
+    expect(requests).toBe(2);
+    expect(result.html).toContain("complete trail facts");
+  });
+
+  it("does not retry a page the parser can use", async () => {
+    let requests = 0;
+    const result = await fetchNpsPageWithValidationRetry(
+      JENNY_LAKE_LOOP,
+      (snapshot) => snapshot.html?.includes("complete trail facts") === true,
+      async () => {
+        requests++;
+        return page("<html>complete trail facts</html>");
+      },
+      0,
+    );
+
+    expect(requests).toBe(1);
+    expect(result.html).toContain("complete trail facts");
+  });
+
   it("rejects an external redirect without requesting its target", async () => {
     const requests: string[] = [];
     const result = await fetchNpsPage(JENNY_LAKE_LOOP, async (url, init) => {

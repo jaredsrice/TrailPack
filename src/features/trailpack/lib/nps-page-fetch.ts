@@ -127,3 +127,18 @@ export async function fetchNpsPage(profile: TrailProfile, fetchImpl: typeof fetc
     };
   }
 }
+
+export async function fetchNpsPageWithValidationRetry(
+  profile: TrailProfile,
+  isUsable: (snapshot: NpsPageSnapshot) => boolean,
+  fetchImpl: typeof fetch = fetch,
+  retryDelayMs = 1_500,
+): Promise<NpsPageSnapshot> {
+  const first = await fetchNpsPage(profile, fetchImpl);
+  if (isUsable(first)) {
+    return first;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+  return fetchNpsPage(profile, fetchImpl);
+}
