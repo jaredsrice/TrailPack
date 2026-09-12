@@ -51,7 +51,7 @@ performed during this inventory. Historical acceptance records remain intact.
 | MH-02 | Weather and official alert context | Supported: weather and active/no-active/unavailable alerts affect output with source and fallback labels | Retain live-or-fixture demonstration; saved fixtures are explicitly permitted |
 | MH-03 | Essential/optional rule-based packing list | Supported: catalog and manual workflows generate output without AI | Retain short/easy, weather-affected, and incomplete-data scenarios |
 | MH-04 | Reasons and source labels on recommendations | Supported for deterministic packing items: reasons and evidence labels are present; official labels require source URLs | Retain item-level demonstration; AI prose defect is recorded under MH-05 |
-| MH-05 | Guarded AI contract, validation, and fallback | Candidate repair verified locally: approved ID selection, no raw-input forwarding, safe rejected response and unchanged baseline | Original MH-05 permits mocks; B-02 still needs authorized live Gemini acceptance on the deployed candidate |
+| MH-05 | Guarded AI contract, validation, and fallback | Approved ID selection, no raw-input forwarding, safe rejection and unchanged baseline; two accepted live Gemini reviews verified on the final Preview | Owner review and separately approved production publication |
 | MH-06 | Fallback and uncertainty handling | Supported: limited manual output, missing-detail prompts, and provider fallback paths remain available | Retain failed-service and incomplete-input demonstration; accepted false AI prose is counted under MH-05 rather than double-counted here |
 
 The proposal's first three must-have bullets map to MH-01; weather maps to
@@ -81,9 +81,9 @@ count alerts once and show their promotion to must-have scope.
 | ID | Current position | Remaining obligation |
 |---|---|---|
 | B-01 | Hosted quota applied; two independent clients consume one shared row; live API and preview UI checks pass | Owner review and approved production publication; no hosted exhaustion/load test performed |
-| B-02 | Approved AI highlight selection implemented; all 50 NPS source comparisons pass unchanged | One accepted signed-in live Gemini review on the final Preview; retain rejected/fallback evidence |
-| B-03 | Historical owner/two-account acceptance retained; final audit adds auth-failure and save-library browser coverage | Verify the final deployed sign-in/save/revisit/delete/sign-out path and record what privacy checks are inherited versus repeated |
-| B-04 | Final audit identified and repaired bounded-upload, provider-validation and account-state defects; excess table permissions are being removed with approval | Final commit/static checks, passive Preview scan, independent retests and sanitized report |
+| B-02 | Two accepted signed-in Gemini reviews verified on the final Preview; all 50 NPS source comparisons pass unchanged | Owner review and approved production publication; rejected/fallback regression evidence retained |
+| B-03 | Final Preview sign-in, save, revisit, approved delete and sign-out verified; fresh guest review passed; historical two-account evidence retained | Owner review; retain the one recovered library-read failure as a limitation, not an error-free claim |
+| B-04 | Necessary repairs and approved privilege removal verified; full CI and CodeQL passed; passive scan completed with triaged medium warnings | Owner review and release decision; retain CSP risks and bounded scan limitations |
 
 B-02 permits explanations, summaries, or variants; its production addendum
 specifies explanation-only output. Original SH-04 variants are consequently a
@@ -124,7 +124,9 @@ Requirement counts are not percentages of the remaining effort.
 
 ## Current next step
 
-Finish the already approved test-and-audit pass. The 499B scope does not require
-another feature-selection decision. Keep the approved Astra High coordinator
-and security reviewer, Sol High builder and Sol High tester through final
-verification. See the [handoff](project-handoff.md) for the active worktree.
+The approved implementation, necessary audit and test pass are complete on the
+review candidate. No additional feature selection is needed. Jared's test-site
+review and separate production approval come next. Recommend Sol Medium, one
+main agent, for explaining the results and recording owner feedback. Any new
+implementation or release phase needs its own confirmed setup. See the
+[handoff](project-handoff.md) for the preserved worktree.

@@ -2,7 +2,8 @@
 
 Status: Priorities 1 and 2 are complete and deployed. The trail-selection
 redesign, interactive map, and custom route builder remain shelved. The owner
-resumed the code-quality audit on September 12, limited to necessary changes.
+resumed the code-quality audit on September 12, limited to necessary changes;
+that pass is complete on the test candidate, pending owner review/publication.
 See the [project handoff](project-handoff.md).
 Original-scope follow-ups for B-01 and B-02 were queued by the owner on
 2026-09-10. See the [follow-up docket](#follow-up-docket).
@@ -31,15 +32,15 @@ Added at the owner's request on 2026-09-10. The
 [acceptance audit and development plan](superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md)
 separates current acceptance gaps from original stretch extensions. Required
 implementation resumed September 11 on `codex/required-completion`. The
-[local verification record](validation/2026-09-11-required-completion.md)
-distinguishes candidate implementation from pending hosted acceptance.
+[final audit record](validation/2026-09-12-final-audit.md)
+distinguishes verified Preview behavior from production publication.
 Historical records remain unchanged; other shelved work stays shelved.
 
 | Reference | Follow-up | Current behavior and remaining scope | Status |
 |---|---|---|---|
 | B-01 / original SH-01 | Live public trail lookup beyond the supported catalog | Bounded NPS lookup and duration-driven partial packing pass September 12 live preview checks. Shared quota migration applied; owner review/production publication remain. | Preview verified; not released to production |
-| B-02 current acceptance | Guarded explanation validation and supporting NPS maintenance | Candidate removes provider-authored prose/free-text forwarding, shows safe rejection reasons and repairs the two maintenance boundaries. Live Gemini acceptance remains pending. | Local repairs verified; not released |
-| Final code audit | Necessary repairs and regression checks | Review state, provider failures, data labels, authentication, quotas, performance and tests. Preserve working architecture and trail facts. | In progress; [audit record](validation/2026-09-12-final-audit.md) |
+| B-02 current acceptance | Guarded explanation validation and supporting NPS maintenance | Candidate removes provider-authored prose/free-text forwarding, shows safe rejection reasons and passes all 50 NPS comparisons. Two live Gemini reviews accepted on the final Preview. | Preview verified; not released |
+| Final code audit | Necessary repairs and regression checks | State, provider failures, data labels, authentication, quotas, performance and tests reviewed. Necessary fixes verified; working architecture and trail facts preserved. | Complete on candidate; [audit record](validation/2026-09-12-final-audit.md) |
 
 The 499B specification is the current completion authority. Original SH-04
 packing-list variants and SH-06 guest export are historical ideas, not the

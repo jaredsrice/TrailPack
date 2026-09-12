@@ -31,9 +31,10 @@ The unreleased required-completion candidate also adds a separate live NPS
 lookup for Zion, Acadia, and Bryce Canyon. Its partial results use NPS duration
 plus manual details, not complete catalog profiles. Editing the duration keeps
 it user-provided even if the original number is restored. The
-[test preview](https://trailpack-8ksthnzzs-jared-s-rice.vercel.app) is available;
-lookup passed hosted checks, while signed-in live AI acceptance remains pending;
-see the [verification record](docs/validation/2026-09-11-required-completion.md).
+[test preview](https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app)
+is available. Live lookup and signed-in Gemini highlights passed hosted checks;
+see the [final audit](docs/validation/2026-09-12-final-audit.md) for tests,
+limitations and the publication gate. Main and the production website are unchanged.
 
 TrailPack currently supports **39 Grand Teton discovery entries and 52 complete
 route profiles**. Fifty profiles use National Park Service facts with reviewed

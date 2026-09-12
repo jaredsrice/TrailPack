@@ -43,6 +43,11 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Security
 
+- Remove unused saved-plan table permissions while preserving normal private
+  save, view and delete actions. No saved data was changed by the repair.
+- Record independent source review, passing CodeQL analyses and a bounded
+  passive Preview scan, including the retained inline-script/style CSP risks.
+
 - Bound stalled AI and saved-plan uploads to two seconds. Check NPS redirects
   before following them, retain a shared source-fetch deadline, and release
   failed provider response bodies.

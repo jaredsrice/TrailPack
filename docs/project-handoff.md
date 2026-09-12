@@ -1,9 +1,43 @@
 # TrailPack project handoff
 
-Current scope checkpoint: 2026-09-11 (America/Denver). Released baseline: 0.7.1.
+Current scope checkpoint: 2026-09-12 (America/Denver). Released baseline: 0.7.1.
 Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 ## Recent handoff history
+
+- **2026-09-12, owner feedback pauses final closeout:** Jared finds the live
+  review insubstantial and wants useful planning guidance rather than repeated
+  trail facts. The earlier implementation/test pass is verified, but a focused
+  review redesign is now requested. Do not mark this new request complete or
+  loosen AI safeguards without an approved design. Final evidence edits remain
+  uncommitted in the implementation worktree; no runtime changes followed
+  `6a49b495`. Next proposed step: a concrete before/after review example,
+  Sol Medium with one main agent, pending setup/design confirmation.
+
+- **2026-09-12, final runtime candidate and hosted checks:** Runtime commit
+  `6a49b4952ae3e20610bcd91d6e946432c1de4b73` is pushed on
+  `codex/required-completion`, review PR #61. Immutable Preview
+  `dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw` is READY at
+  https://trailpack-db0080ubs-jared-s-rice.vercel.app ; stable test alias is
+  https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app .
+  Final isolated local Firefox run passed 151/151 without failures, skips or
+  retries. Hosted lookup/empty/method/content-type checks and live alerts pass.
+  Firefox showed two accepted Gemini 3.5 Flash reviews; hosted metadata confirms
+  AI POST 200 twice. Private save returned 201. First library GET returned 500,
+  then a normal reload returned 200 and both current/older plans rendered.
+  Cause is unconfirmed; do not guess a parser fix or claim an error-free run.
+  Jared approved deleting both displayed plans; both returned 204. Firefox
+  confirmed an empty library, sign-out and a new Guest review ready result.
+  The temporary Phelps and older Jenny plans were permanently removed, with
+  no restore action in TrailPack. No other saved records were deleted.
+  CodeQL analyses passed. ZAP passive scan completed with 0 high, 3 medium,
+  0 low and 2 informational types; CSP inline limitations remain documented.
+  Dependency audit and GitHub open code/dependency/secret alerts are zero.
+  CI Validate passed, including 887 tests and 151 Firefox tests (7.9 minutes).
+  No main merge or production publication. Final evidence changes are docs-only.
+  Approved implementation/audit/testing scope is complete on this candidate.
+  Next is Jared's review and separate publication approval. Recommend Sol Medium,
+  one main agent, for explaining the result and recording owner feedback.
 
 - **2026-09-12, database reconciliation and permission repair verified:**
   Independent comparison found the cumulative older five migration effects
@@ -208,13 +242,17 @@ Use the implementation worktree above for code changes. The September 10 audit
 remains the acceptance baseline; its original lack of implementation authorization
 is historical. Release/deployment acceptance will be recorded after verification.
 
-The code candidate is saved but uncommitted on `codex/required-completion`.
-Main source and the production website are unchanged; the approved shared quota
-database addition is applied. Local implementation supports all six
-baseline must-haves. Of six original stretch items, three are delivered, lookup
-is verified on the test preview, and variants/export remain
-unimplemented and optional. B-02 live Gemini, final
-B-04 verification and the Open Canyon source issue remain open.
+The code candidate is committed and pushed on `codex/required-completion`,
+PR #61, with the final runtime evidence recorded in the latest history entry.
+Main source and the production website are unchanged. Approved shared-database
+quota, permission and migration-history changes are applied and verified.
+All six baseline requirements and B-01–B-04 have candidate evidence; the live
+Gemini, NPS maintenance and final security checks are complete. One saved-library
+request failed and recovered on reload; its cause remains unconfirmed.
+Original SH variants/export are historical, not the active backlog.
+The implementation, necessary-only audit, testing and simple documentation pass
+is complete. Preserve the worktree for owner review; do not merge or publish
+production without approval.
 
 ## September 9 closeout decisions and evidence
 
@@ -323,11 +361,12 @@ remain passed by the owner and were not re-audited.
 
 Resume only when the owner explicitly asks:
 
-1. Broad code-quality audit and justified rewrites, using the
-   [saved execution brief](future-code-audit.md).
-2. Less cluttered trail-selection landing experience.
-3. Accessible interactive supported-trail map.
-4. Custom route composition from reviewed segments.
+The broad code-quality audit was separately resumed and completed September 12
+with necessary changes only. These other ideas remain shelved:
+
+1. Less cluttered trail-selection landing experience.
+2. Accessible interactive supported-trail map.
+3. Custom route composition from reviewed segments.
 
 The [roadmap](roadmap.md) retains the three product stages and acceptance criteria.
 No new task, timer, or automation starts any of this work automatically.

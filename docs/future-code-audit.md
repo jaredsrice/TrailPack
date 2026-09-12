@@ -1,6 +1,7 @@
 # Code-quality audit brief
 
-Status: resumed by the owner on September 12, 2026, with necessary changes only.
+Status: completed on the review candidate September 12, 2026, with necessary
+changes only. Production publication still requires owner approval.
 The approved team is an Astra High coordinator and security reviewer, with a
 Sol High builder and tester. The earlier XHigh suggestion is superseded.
 Current work and dispositions are in the

@@ -1,6 +1,7 @@
 # Final candidate security review
 
-Date: September 12, 2026. Status: final deployed and static checks pending.
+Date: September 12, 2026. Status: final candidate review complete with the
+retained risks and limits below. This is not production publication.
 Scope: the `codex/required-completion` candidate, its test website, and the
 approved shared-database changes. Main and the production website are not
 being published by this review.
@@ -17,7 +18,7 @@ private saved-result routes, source labels, AI payloads, failure responses,
 dependency auditing and selected secret patterns. Embedded PostgreSQL tests
 execute the actual migrations with synthetic users and permissions. Hosted
 read-only schema checks verify deployed definitions and grants without reading
-private saved records. Final CodeQL and passive ZAP results will be recorded
+private saved records. CodeQL and passive ZAP results are recorded
 against the frozen candidate below.
 
 ## Findings and fixes
@@ -66,18 +67,62 @@ the provider cannot supply new safety wording, packing changes or evidence label
 
 ## Final evidence
 
-- Commit and Preview: pending final freeze/deployment.
+- Runtime commit: `6a49b4952ae3e20610bcd91d6e946432c1de4b73`.
+  Preview `dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw`:
+  [immutable candidate](https://trailpack-db0080ubs-jared-s-rice.vercel.app).
 - Unit and integration: 887 tests across 61 files pass locally.
 - Database: owner lifecycle/isolation tests pass; hosted grants and all seven
   migration records verified. The reconciliation changed no saved records.
-- Dependencies: initial final-pass audit found zero known vulnerabilities.
-- Static analysis and passive deployed scan: pending the exact candidate.
-- Manual hosted account/provider acceptance: pending the exact candidate.
+- Dependencies: final `npm audit` found zero known vulnerabilities. GitHub's
+  open code-scanning, dependency and secret-scanning alert counts were each zero.
+- Static analysis: both JavaScript/TypeScript security-extended and GitHub Actions
+  [CodeQL analyses passed](https://github.com/jaredsrice/TrailPack/actions/runs/34683963224).
+- Independent final source review found no actionable defect in the assigned
+  provider, deadline, redirect or permission changes; 181 focused tests passed.
+- Hosted provider acceptance: two signed-in AI POSTs returned 200 and Firefox
+  showed accepted Gemini highlights. The private save returned 201. A library
+  GET returned 500 once, then 200 on reload without code or data changes; cause
+  is unconfirmed. Both owner-approved deletions returned 204; Firefox confirmed
+  an empty library, successful sign-out and a fresh guest review. Full CI passed,
+  including 151 Firefox tests. The final audit records the account walkthrough.
+
+## Bounded passive scan
+
+ZAP 2.17.0 completed successfully on the immutable Preview with current installed
+passive rules 75.0.0, scanner core 0.6.0, Automation Framework 0.60.0 and Reports
+0.46.0. The local scanner API was disabled. No browser proxy, certificate or
+operating-system settings changed.
+
+The run used 17 explicit GET requests: public pages, eight observed same-origin
+JavaScript assets, method denials, and guest saved-results denial. No retries
+were reported; the conservative ceiling including possible retries was 59.
+There was no active attack, spider, sign-in, provider search, quota call or write.
+The pages were real TrailPack HTML, not a Vercel sign-in screen.
+
+Scanner results: **0 high, 3 medium, 0 low and 2 informational alert types**.
+No warning was suppressed:
+
+- Inline scripts and inline styles produced two medium CSP warnings. These
+  are genuine defense-in-depth limitations, not demonstrated injection flaws.
+  The existing retained CSP risk above still applies.
+- Wildcard cross-origin access produced one medium warning on public HTML
+  shells and JavaScript. Those responses contain no saved records. A separate
+  guest saved-results check returned 401, `Cache-Control: no-store`, cache MISS
+  and no wildcard access header. No private-data exposure was established.
+- Public cache directives and resources retrieved from cache produced two
+  informational warnings. Public shell caching is expected; private data is
+  fetched separately after authentication.
+
+The raw report remains private and ignored. Its SHA-256 is
+`6306318c13eb8784b193183e24b71f803839ca0d797ebf8ef9a5fdd0ae704d49`.
+The scan excludes authenticated responses, attack payloads, external origins,
+production and assets outside the bounded sample. It does not prove that every
+possible attack is absent.
 
 The August 28 real two-account test remains historical evidence. Synthetic
 database tests are a new regression check, not a newly performed two-person
 hosted walkthrough. No destructive scan, live quota exhaustion or unrestricted
 external crawl is authorized or claimed.
 
-No critical or high-severity issue has been confirmed in the reviewed source.
-This is not final B-04 completion until the pending checks above are recorded.
+No critical or high-severity issue has been confirmed in the reviewed source or
+bounded passive scope. This is not a zero-warning scan or security certification.

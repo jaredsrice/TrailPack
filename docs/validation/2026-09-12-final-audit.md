@@ -1,6 +1,7 @@
 # Final 499B audit and acceptance
 
-Date: September 12, 2026. Status: final checks in progress, not a release claim.
+Date: September 12, 2026. Status: approved implementation and verification scope
+complete on the test candidate. Production publication is not approved.
 Candidate branch: `codex/required-completion`. Production remains on the
 previous release until Jared approves publication.
 
@@ -48,8 +49,8 @@ it does not claim that coursework, hours or the final presentation were submitte
 
 Preview and Production share Supabase. The reviewed lookup quota migration was
 already applied with Jared's approval; it must not be replayed. Historical
-migration bookkeeping is being compared with the actual schema before any
-repair. No saved user data is needed for that check.
+migration bookkeeping was compared with the actual schema before repair.
+No saved user data was needed for that check.
 
 The independent schema comparison found the cumulative effects of all five
 older migrations already present. Function bodies, default arguments, enabled
@@ -86,15 +87,75 @@ one worker, 4.8 minutes. It includes rendered account failures and the synthetic
 save/revisit/delete lifecycle, partial lookup, catalog access variants,
 accessibility, mobile layouts, provider failures and stale AI/weather state.
 
-- [ ] Freeze and record the exact candidate commit and Preview deployment.
+- [x] Freeze and record the exact candidate commit and Preview deployment.
 - [x] Pass lint, documentation links, types, unit tests, catalog checks,
   scenarios, stress checks, production build and full Firefox suite.
-- [ ] Confirm live lookup and one accepted signed-in Gemini review on that Preview.
-- [ ] Check sign-in, save, revisit, delete and sign-out on the same Preview.
-- [ ] Finish current static analysis, dependency/secret checks, independent review,
+- [x] Confirm live lookup and one accepted signed-in Gemini review on that Preview.
+- [x] Check sign-in, save, revisit, delete and sign-out on the same Preview.
+- [x] Finish current static analysis, dependency/secret checks, independent review,
   passive deployed checks and the sanitized security summary.
-- [ ] Update the README, changelog, requirements status, demo notes and handoff.
+- [x] Update the README, changelog, requirements status, demo notes and handoff.
 
 Historical two-account privacy and owner acceptance remain dated evidence, not
 newly repeated tests. Local mocks and embedded PostgreSQL do not prove live
 provider or deployed account behavior.
+
+## Exact hosted candidate
+
+Runtime commit: `6a49b4952ae3e20610bcd91d6e946432c1de4b73`.
+[Review PR #61](https://github.com/jaredsrice/TrailPack/pull/61).
+Deployment: `dpl_CYjah6Nt2oDoGZ8B13uTHJiEXmhw`, Preview, READY.
+[Immutable test website](https://trailpack-db0080ubs-jared-s-rice.vercel.app).
+Google sign-in uses the
+[stable test address](https://trailpack-git-codex-required-completion-jared-s-rice.vercel.app).
+The stable alias was independently checked against that deployment.
+
+Hosted lookup returned the official Fairyland Loop record, its 4–5 hour NPS
+duration and a five-hour planning seed. Distance, elevation and route type
+remained unknown. A nonsense search returned an empty result; invalid method
+and content type returned 405 and 415. A Grand Teton alert request returned
+three valid live official notices. Only two provider-possible lookup requests
+and one alert request were used for these checks.
+
+Native Firefox showed a server-validated signed-in account and two accepted
+Phelps Lake Loop reviews with `gemini-3.5-flash`. Request metadata confirms
+both AI requests returned 200. The displayed explanations came from approved
+highlights and left the packing list unchanged. Editing a note made Update
+available without starting another review; clicking Update requested the second
+review. No tokens, account identity or raw provider payloads are included here.
+
+The new private plan saved with HTTP 201. Its first library request returned
+500 and a visible error; one normal reload returned 200 and displayed both the
+new plan and an older plan. The saved packing list reopened correctly. No code
+or data changed between those two reads. The cause of that one failed request
+is unconfirmed; a transient database query failure is a hypothesis, not a
+diagnosis. Do not claim the hosted walkthrough was error-free or weaken the
+saved-record parser based on this incident.
+
+Jared explicitly approved deleting both displayed plans. Both DELETE requests
+returned 204, and Firefox showed the empty library. The temporary Phelps plan
+and older Jenny plan were permanently removed; TrailPack has no restore action.
+Sign-out then returned the account controls to Google sign-in. Updating a plan
+while signed out produced a new **Guest review ready** result. A third accepted
+live review occurred when generating the plan needed to expose sign-out controls;
+the first two remain the recorded provider-acceptance checks above.
+
+The [full CI run passed](https://github.com/jaredsrice/TrailPack/actions/runs/34683963217)
+on the runtime commit, including 887 unit/integration tests, the NPS comparison,
+build and all 151 Firefox tests (7.9 minutes in CI).
+Both CodeQL analyses passed on the runtime commit. The bounded passive scan
+and its retained warnings are recorded in the
+[security review](2026-09-12-security-review.md).
+
+Final evidence updates change documentation only. The runtime, dependencies,
+configuration and database migration bytes remain identical to the verified
+runtime commit. Keep that evidence lineage explicit rather than claiming a
+new provider or security run for every documentation-only commit.
+
+## Handoff
+
+No further feature or refactor work is required by this approved pass. The
+remaining decision is Jared's review and separate authorization to merge and
+publish production. The one recovered saved-library failure and retained CSP
+limitations stay visible. Academic submissions and presentation delivery remain
+owner-managed and are not claimed complete here.
