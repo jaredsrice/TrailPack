@@ -136,6 +136,49 @@ afterEach(() => {
 });
 
 describe("POST /api/trailpack/ai-review", () => {
+  it("cancels a stalled upload before quota or provider work", async () => {
+    let controller!: ReadableStreamDefaultController<Uint8Array>;
+    let cancelled = false;
+    const stream = new ReadableStream<Uint8Array>({
+      start(value) {
+        controller = value;
+        controller.enqueue(new TextEncoder().encode("{"));
+      },
+      cancel() {
+        cancelled = true;
+        return new Promise<void>(() => undefined);
+      },
+    });
+    const stalledRequest = new Request("http://localhost/api/trailpack/ai-review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: stream as unknown as BodyInit,
+      duplex: "half",
+    } as RequestInit);
+    const claimQuota = vi.fn();
+    const requestReview = vi.fn();
+    const pending = handleAiReviewPost(stalledRequest, { claimQuota, requestReview });
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const response = await Promise.race([
+        pending,
+        new Promise<null>((resolve) => { timer = setTimeout(() => resolve(null), 3_000); }),
+      ]);
+      expect(response, "stalled uploads must finish within the body deadline").not.toBeNull();
+      if (!response) return;
+      expect(response.status).toBe(400);
+      expect(response.headers.get("cache-control")).toBe("no-store");
+      await expect(response.json()).resolves.toEqual({ error: "Unable to read AI review request." });
+      expect(cancelled).toBe(true);
+      expect(claimQuota).not.toHaveBeenCalled();
+      expect(requestReview).not.toHaveBeenCalled();
+    } finally {
+      clearTimeout(timer);
+      controller.error(new Error("test cleanup"));
+      await pending;
+    }
+  });
+
   it("returns a controlled validation error for malformed JSON", async () => {
     const response = await POST(request("{"));
 
@@ -394,7 +437,7 @@ describe("POST /api/trailpack/ai-review", () => {
             steps: [
               {
                 type: "model_output",
-                content: [{ type: "text", text: JSON.stringify(draft) }],
+                content: [{ type: "text", text: JSON.stringify({ summaryIds: ["profile"] }) }],
               },
             ],
           }),

@@ -11,7 +11,12 @@ type BodySource = {
 export async function readTextWithinLimit(
   source: BodySource,
   maximumBytes: number,
+  signal?: AbortSignal,
 ): Promise<LimitedTextReadResult> {
+  if (signal?.aborted) {
+    await discardBody(source);
+    return { status: "unreadable" };
+  }
   const declaredLengthHeader = source.headers.get("content-length");
   if (declaredLengthHeader !== null) {
     const normalizedLength = declaredLengthHeader.trim();
@@ -34,6 +39,8 @@ export async function readTextWithinLimit(
   }
 
   const reader = source.body.getReader();
+  const onAbort = () => cancelReader(reader);
+  signal?.addEventListener("abort", onAbort, { once: true });
   const decoder = new TextDecoder();
   const textChunks: string[] = [];
   let totalBytes = 0;
@@ -52,10 +59,11 @@ export async function readTextWithinLimit(
       textChunks.push(decoder.decode(value, { stream: true }));
     }
     textChunks.push(decoder.decode());
-    return { status: "ok", text: textChunks.join("") };
+    return signal?.aborted ? { status: "unreadable" } : { status: "ok", text: textChunks.join("") };
   } catch {
     return { status: "unreadable" };
   } finally {
+    signal?.removeEventListener("abort", onAbort);
     reader.releaseLock();
   }
 }

@@ -72,7 +72,9 @@ The guest planner includes the full rule-based packing list and standard plan
 review. No account is required.
 
 Google sign-in adds private saved plans and a limited Gemini explanation review.
-The server validates the account and the AI response. AI cannot add, remove,
+The unreleased candidate asks AI to select approved explanation highlights;
+TrailPack supplies the wording. The server validates the account and selection.
+AI cannot add, remove,
 reorder, or relabel packing items. Provider, quota, timeout, or validation
 failures keep the rule-generated result available.
 
@@ -81,6 +83,23 @@ failures keep the rule-generated result available.
 Manual entry accepts distance, elevation gain, route type, expected duration,
 and conditions. It produces a limited list without claiming official trail,
 weather, or access facts that were not supplied.
+
+### Partial live lookup (unreleased)
+
+After entering a trail name, open **Search live NPS hikes**, choose Zion,
+Acadia or Bryce Canyon, and press **Search NPS**. Check the returned name, park,
+source and duration before choosing a result. This is a hiking-activity lookup,
+not a complete trail profile or a statement that access is open.
+
+NPS's upper duration estimate seeds your time out. Add known missing details,
+then press **Generate partial packing list**. Edits take effect when you press
+**Update partial packing list**. Changed duration and entered distance/gain/route
+are user-provided; NPS facts keep their source. Weather, daylight and alerts are
+unavailable for this path, not checked and clear. It does not request AI or save
+results to an account. If lookup fails, choose Manual entry in Suggestions.
+
+Hosted availability requires the deployment and quota setup documented in the
+[setup guide](setup.md).
 
 ## Planning limits
 

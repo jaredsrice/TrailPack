@@ -117,7 +117,7 @@ describe("live AI provider boundary", () => {
   });
 
   it("accepts a structured response only after the existing guardrails pass", async () => {
-    const fetchImpl = asFetch(async () => geminiResponse(savedDraft()));
+    const fetchImpl = asFetch(async () => geminiResponse({ summaryIds: ["profile"] }));
 
     const result = await requestLiveAiReview(buildInput(), {
       apiKey: "test-key",
@@ -134,7 +134,7 @@ describe("live AI provider boundary", () => {
   });
 
   it("accepts an otherwise valid provider response at exactly 256 KB", async () => {
-    const responseBody = geminiResponseBody(savedDraft());
+    const responseBody = geminiResponseBody({ summaryIds: ["profile"] });
     const paddingLength = 256_000 - Buffer.byteLength(responseBody);
     const exactBoundary = `${responseBody}${" ".repeat(paddingLength)}`;
     const fetchImpl = asFetch(async () => new Response(exactBoundary));
@@ -158,10 +158,10 @@ describe("live AI provider boundary", () => {
       fetchImpl,
     });
 
-    expect(result.outcome).toBe("rejected");
+    expect(result.outcome).toBe("invalid-response");
     expect(result.review.status).toBe("fallback");
     expect(result.review.validationReasons.join(" ")).toMatch(
-      /changed source labels/i,
+      /invalid response/i,
     );
     expect(result.review.review.tripSummary).toMatch(/rule-based packing list/i);
   });
@@ -484,10 +484,8 @@ describe("live AI provider boundary", () => {
     const prompt = requestBody.input;
     expect(prompt).not.toContain(privateNote);
     expect(prompt).not.toContain('"notes"');
-    expect(prompt).toContain('"tripDetails"');
-    expect(prompt).toContain(
-      "Copy packing.missingDetails exactly into missingDataReview",
-    );
+    expect(prompt).not.toContain('"tripDetails"');
+    expect(prompt).toContain('"approvedFacts"');
     expect(requestBody).toMatchObject({
       model: DEFAULT_GEMINI_MODEL,
       store: false,
@@ -499,11 +497,7 @@ describe("live AI provider boundary", () => {
     expect(requestBody.response_format).toMatchObject({
       schema: {
         type: "object",
-        required: [
-          "tripSummary",
-          "missingDataReview",
-          "itemExplanationDrafts",
-        ],
+        required: ["summaryIds"],
       },
     });
     expect(requestBody).not.toHaveProperty("generation_config");

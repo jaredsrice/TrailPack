@@ -36,6 +36,7 @@ yarn-error.log*
 
 # local private credentials and recovery material
 /.private/
+/supabase/.temp/
 
 # typescript
 *.tsbuildinfo

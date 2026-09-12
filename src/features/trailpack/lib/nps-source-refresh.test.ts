@@ -57,6 +57,29 @@ function currentDocument(): NpsSourceSnapshotDocument {
 }
 
 describe("planNpsSourceRefresh", () => {
+  it.each(["Very Strenuous", "unexpected-difficulty"])("validates confirmed changes with %s difficulty", difficulty => {
+    const profile = TRAIL_CATALOG["paintbrush-cascade-loop"];
+    const current = structuredClone(NPS_SOURCE_SNAPSHOTS);
+    const source = current.trails[profile.id];
+    const html = `<h1>Paintbrush Canyon - Cascade Canyon Loop</h1>
+      <div class="duration"><span>Duration</span><strong>${source.estimatedDuration}</strong></div>
+      <p>Paintbrush Canyon - Cascade Canyon Loop is a 20.0 mi loop hike with ${source.elevationGainFeet} ft of elevation gain.</p>
+      <p class="difficulty">${difficulty} hike</p>
+      <div class="AccessibilityInfo__Body">${source.accessibility?.replace(/very strenuous/gi, difficulty) ?? ""}</div>`;
+    const report = checkNpsSourceIntegrity([profile], [{
+      trailId: profile.id, sourceUrl: profile.npsSourceUrl, finalUrl: profile.npsSourceUrl,
+      httpStatus: 200, html,
+    }], "2026-09-11T00:00:00.000Z");
+    const plan = planNpsSourceRefresh({ profiles: [profile], current,
+      firstReport: report, confirmationReport: report, checkedAt: "2026-09-11" });
+    if (difficulty === "Very Strenuous") {
+      expect(plan.status, JSON.stringify(plan.blockers)).toBe("updated");
+      expect(plan.document.trails[profile.id].distanceMiles).toBe(20);
+    } else {
+      expect(plan.status).toBe("blocked");
+      expect(plan.document).toEqual(current);
+    }
+  });
   it("refreshes the checked date without changing official values", () => {
     const report = checkNpsSourceIntegrity(
       [JENNY_LAKE_LOOP],

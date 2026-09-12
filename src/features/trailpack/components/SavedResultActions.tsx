@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { isAuthSessionMissingError } from "@supabase/supabase-js";
 import { buildAuthCallbackUrl } from "@/features/trailpack/lib/auth-redirect";
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
 import { buildSavedResultDraft } from "@/features/trailpack/lib/saved-results";
@@ -26,6 +27,7 @@ export function SavedResultActions({
 }) {
   const [accountState, setAccountState] = useState<AccountState>({ status: "loading" });
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [accountError, setAccountError] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
@@ -35,16 +37,27 @@ export function SavedResultActions({
     }
 
     let active = true;
-    void supabase.auth.getUser().then(({ data, error }) => {
-      if (!active) {
-        return;
+    void (async () => {
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (!active) {
+          return;
+        }
+        if (error && !isAuthSessionMissingError(error)) {
+          setAccountState({ status: "unavailable" });
+          return;
+        }
+        setAccountState(
+          data.user
+            ? { status: "signed-in", email: data.user.email ?? null }
+            : { status: "signed-out" },
+        );
+      } catch {
+        if (active) {
+          setAccountState({ status: "unavailable" });
+        }
       }
-      setAccountState(
-        !error && data.user
-          ? { status: "signed-in", email: data.user.email ?? null }
-          : { status: "signed-out" },
-      );
-    });
+    })();
 
     return () => {
       active = false;
@@ -52,25 +65,30 @@ export function SavedResultActions({
   }, []);
 
   async function handleGoogleSignIn() {
+    setAccountError(null);
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
       setAccountState({ status: "unavailable" });
       return;
     }
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: buildAuthCallbackUrl(window.location.origin),
-        queryParams: { prompt: "select_account" },
-      },
-    });
-    if (error || !data.url) {
-      setSaveState("error");
-      return;
-    }
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: buildAuthCallbackUrl(window.location.origin),
+          queryParams: { prompt: "select_account" },
+        },
+      });
+      if (error || !data.url) {
+        setAccountError("TrailPack could not start Google sign-in. Please try again.");
+        return;
+      }
 
-    window.location.assign(data.url);
+      window.location.assign(data.url);
+    } catch {
+      setAccountError("TrailPack could not start Google sign-in. Please try again.");
+    }
   }
 
   async function handleSave() {
@@ -86,11 +104,27 @@ export function SavedResultActions({
   }
 
   async function handleSignOut() {
+    setAccountError(null);
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
       return;
     }
-    await supabase.auth.signOut();
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        // Supabase removes the local session even when its remote global
+        // sign-out request returns an error.
+        setAccountState({ status: "signed-out" });
+        setSaveState("idle");
+        setAccountError(
+          "Signed out on this device, but TrailPack could not confirm sign-out with the account service.",
+        );
+        return;
+      }
+    } catch {
+      setAccountError("TrailPack could not sign out. Please try again.");
+      return;
+    }
     setAccountState({ status: "signed-out" });
     setSaveState("idle");
   }
@@ -159,7 +193,13 @@ export function SavedResultActions({
 
       {accountState.status === "unavailable" ? (
         <p className="mt-4 text-sm text-slate-700">
-          Saved plans are not configured on this deployment yet. You can still use the full guest planner without an account.
+          Saved plans are temporarily unavailable. You can still use the full guest planner without an account.
+        </p>
+      ) : null}
+
+      {accountError ? (
+        <p role="alert" className="mt-4 text-sm font-medium text-red-800">
+          {accountError}
         </p>
       ) : null}
     </section>

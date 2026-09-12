@@ -8,7 +8,49 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- Bounded, explicit live NPS hiking lookup for Zion, Acadia, and Bryce Canyon.
+  Partial results retain NPS sources, duration, missing facts and manual fallback,
+  with a separate Generate/Update flow. The shared quota migration is applied
+  and the test preview passes live lookup checks; production publication awaits
+  owner approval.
+
+### Changed
+
+- AI now selects approved explanation highlights by ID. TrailPack supplies the
+  displayed wording and retains all rule-owned packing decisions. Raw trip
+  text is no longer sent to the AI provider.
+
+### Fixed
+
+- Make sign-in and saved-plan failures visible instead of leaving controls
+  loading, and show the result of returning from Google sign-in.
+- Keep malformed alert responses unavailable rather than calling them clear.
+- Keep a future hike's weather separate from today's current observations and
+  require the forecast date to match the requested day.
+- Show the invalid-response explanation for malformed live lookup replies.
+- Restore all 50 NPS source comparisons through the reviewed official delivery
+  address for Open Canyon, without changing saved trail facts.
+
+- Keep edited lookup durations user-provided even when the original number is
+  restored, and allow updating the list when only that source changes.
+- Reject NPS lookup duration ranges with either endpoint outside 15 minutes to
+  12 hours.
+- Display a safe rejection explanation when an AI selection is invalid.
+- Accept valid Very Strenuous NPS difficulty values during guarded refresh and
+  stop reading oversized NPS source pages before buffering the full response.
+
 ### Security
+
+- Bound stalled AI and saved-plan uploads to two seconds. Check NPS redirects
+  before following them, retain a shared source-fetch deadline, and release
+  failed provider response bodies.
+
+- Enforce a database-owned guest-lookup request budget, fail closed when it is
+  unavailable, validate returned NPS links and facts, and cap request/response
+  reads. Hosted table grants and live lookup are checked; final release/security
+  acceptance remains separate from the test preview.
 
 - Cache successful NPS alert fetches for five minutes so repeated public alert
   requests cannot consume the shared upstream quota one request at a time.

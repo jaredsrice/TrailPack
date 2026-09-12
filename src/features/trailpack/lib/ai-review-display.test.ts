@@ -16,7 +16,7 @@ describe("AI review display states", () => {
 
     expect(saved.badge).toBe("Review ready");
     expect(live.badge).toBe("Live review complete");
-    expect(live.description).toMatch(/safety and source checks/i);
+    expect(live.description).toMatch(/approved explanations/i);
   });
 
   it.each<{
@@ -42,7 +42,7 @@ describe("AI review display states", () => {
 
     expect(presentation.badge).toBe(badge);
     expect(presentation.tone).toBe(tone);
-    expect(presentation.description).toMatch(/review|packing list|AI wording/i);
+    expect(presentation.description).toMatch(/review|packing list|AI-selected highlights/i);
   });
 
   it("gives loading and request failure their own understandable states", () => {

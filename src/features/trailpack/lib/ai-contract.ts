@@ -8,6 +8,8 @@ import type {
 } from "@/features/trailpack/types";
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
 import { TRAIL_CATALOG } from "@/features/trailpack/data/supported-trails";
+import { getSavedAiReviewFixture } from "../data/ai-review-fixtures";
+import { DEMO_CONTEXTS } from "../data/demo-contexts";
 
 export interface AiContractPackingItem {
   name: string;
@@ -201,6 +203,22 @@ export function validateAiReviewDraft(
   }
 
   const draftText = collectDraftText(draft).toLowerCase();
+  const template = buildTemplateFallbackReview(input);
+  const scenario = DEMO_CONTEXTS[input.trail.id];
+  const fixture = scenario && input.weather.retrievalStatus !== "live" &&
+    input.weather.summary === scenario.weather.summary &&
+    sameStrings(input.weather.conditions, scenario.weather.conditions) &&
+    input.alerts.hasActiveAlerts === scenario.alerts.hasActiveAlerts
+    ? getSavedAiReviewFixture(input.trail.id) : null;
+  const approvedSummaries = [template.tripSummary, fixture?.tripSummary];
+  if (!approvedSummaries.includes(draft.tripSummary) ||
+    draft.itemExplanationDrafts.some(item => {
+      const baseline = template.itemExplanationDrafts.find(candidate => candidate.itemName === item.itemName);
+      const saved = fixture?.itemExplanationDrafts.find(candidate => candidate.itemName === item.itemName);
+      return item.explanation !== baseline?.explanation && item.explanation !== saved?.explanation;
+    })) {
+    validationReasons.push("AI review included wording outside the approved explanations.");
+  }
   if (hasUnsupportedSafetyClaim(draftText)) {
     validationReasons.push("AI review made an unsupported safety claim.");
   }

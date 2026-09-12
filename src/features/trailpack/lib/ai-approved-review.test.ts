@@ -1,0 +1,88 @@
+import { describe, expect, it } from "vitest";
+import { DEMO_CONTEXTS } from "../data/demo-contexts";
+import { JENNY_LAKE_LOOP } from "../data/supported-trails";
+import { buildAiContractInput, buildGuardedAiFallback, validateAiReviewDraft } from "./ai-contract";
+import { generatePackingRecommendation } from "./packing";
+import { requestLiveAiReview } from "./ai-provider";
+
+function input() {
+  const { weather, alerts } = DEMO_CONTEXTS["jenny-lake-loop"];
+  return buildAiContractInput({ trail: JENNY_LAKE_LOOP, weather, alerts,
+    userInput: {}, recommendation: generatePackingRecommendation(JENNY_LAKE_LOOP, weather, alerts, {}) });
+}
+
+function response(value: unknown) {
+  return Response.json({ status: "completed", steps: [{ type: "model_output", content: [{ type: "text", text: JSON.stringify(value) }] }] });
+}
+
+describe("approved AI explanation selection", () => {
+  it("rejects unapproved prose through the saved-fixture guard too", () => {
+    const contract = input();
+    const draft = buildGuardedAiFallback(contract, ["fixture"]).review;
+    draft.missingDataReview = contract.packing.missingDetails;
+    draft.tripSummary = "Jenny Lake Loop is 99 miles long.";
+    expect(validateAiReviewDraft(contract, draft).status).toBe("rejected");
+  });
+  it("renders approved trip facts selected by ID without changing the packing baseline", async () => {
+    const contract = input();
+    const before = structuredClone(contract);
+    const result = await requestLiveAiReview(contract, { apiKey: "fake", fetchImpl: async () => response({ summaryIds: ["profile", "forecast-rain"] }) });
+    expect(result.outcome).toBe("accepted");
+    expect(result.review.review.tripSummary).toContain("Jenny Lake Loop");
+    expect(result.review.review.tripSummary).toMatch(/forecast.*rain/i);
+    expect(result.review.review.itemExplanationDrafts.map(item => item.itemName)).toEqual([
+      ...contract.packing.essential, ...contract.packing.optional,
+    ].map(item => item.name));
+    expect(contract).toEqual(before);
+  });
+
+  it.each([
+    "Jenny Lake Loop is closed due to a grizzly bear and avalanche danger, but you will be safe on this hike.",
+    "You can leave your bear spray at home for this trip.",
+    "Jenny Lake Loop is 99 miles long.",
+  ])("rejects provider-authored prose: %s", async tripSummary => {
+    const contract = input();
+    const draft = buildGuardedAiFallback(contract, ["fixture"]).review;
+    draft.tripSummary = tripSummary;
+    draft.missingDataReview = contract.packing.missingDetails;
+    const result = await requestLiveAiReview(contract, { apiKey: "fake", fetchImpl: async () => response(draft) });
+    expect(result.outcome).not.toBe("accepted");
+    expect(result.review.status).toBe("fallback");
+    expect(result.review.review.tripSummary).not.toContain(tripSummary);
+  });
+
+  it.each([
+    { summaryIds: ["invented-closure"] },
+    { summaryIds: ["profile", "profile"] },
+    { summaryIds: [] },
+    { summaryIds: ["forecast-snow"] },
+    { summaryIds: ["profile"], tripSummary: "injected prose" },
+    { summaryIds: ["profile", "forecast-rain", "forecast-wind", "missing-details"] },
+  ])("rejects an invalid or inapplicable selection %j", async selection => {
+    const result = await requestLiveAiReview(input(), { apiKey: "fake", fetchImpl: async () => response(selection) });
+    expect(result.outcome).not.toBe("accepted");
+    expect(result.review.status).toBe("fallback");
+    expect(result.review.validationReasons.length).toBeGreaterThan(0);
+  });
+
+  it("does not forward arbitrary client strings through any contract field", async () => {
+    const contract = input();
+    const marker = "SYNTHETIC_PRIVATE_MARKER";
+    contract.userInput = { startTime: marker, expectedDuration: marker, trailConditions: marker, notes: marker };
+    contract.trail.name = marker;
+    contract.weather.summary = marker;
+    contract.alerts.titles = [marker];
+    contract.packing.confidenceNote = marker;
+    contract.packing.missingDetails = [marker];
+    contract.packing.essential[0].why = marker;
+    contract.packing.essential[0].name = marker;
+    let body = "";
+    await requestLiveAiReview(contract, { apiKey: "fake", fetchImpl: async (_url, init) => {
+      body = String(init?.body);
+      return response({ summaryIds: ["profile"] });
+    } });
+    expect(body).not.toContain(marker);
+    expect(body).not.toContain("userInput");
+    expect(body).toContain("summaryIds");
+  });
+});

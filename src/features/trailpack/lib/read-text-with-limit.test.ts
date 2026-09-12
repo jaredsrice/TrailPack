@@ -24,6 +24,18 @@ function streamedResponse(
 }
 
 describe("readTextWithinLimit", () => {
+  it("cancels stalled input when the caller's signal expires", async () => {
+    let cancelled = false;
+    const response = new Response(new ReadableStream({
+      cancel() { cancelled = true; return new Promise<void>(() => undefined); },
+    }));
+    const outcome = await Promise.race([
+      readTextWithinLimit(response, 64, AbortSignal.timeout(10)),
+      new Promise<"stalled">((resolve) => setTimeout(() => resolve("stalled"), 50)),
+    ]);
+    expect(outcome).toEqual({ status: "unreadable" });
+    expect(cancelled).toBe(true);
+  });
   it("accepts a body at the exact byte boundary", async () => {
     const body = new TextEncoder().encode("éé");
 

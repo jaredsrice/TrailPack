@@ -23,7 +23,7 @@ export async function handleAiReviewPost(
     requestReview?: typeof requestLiveAiReview;
   } = {},
 ) {
-  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES);
+  const bodyRead = await readTextWithinLimit(request, MAX_REQUEST_BYTES, AbortSignal.timeout(2_000));
   if (bodyRead.status === "too-large") {
     return jsonResponse(
       { error: "AI review request is too large." },

@@ -74,6 +74,12 @@ export function AiReviewPanel({
           />
         </summary>
         <div className="ai-review-details-body">
+          {review.status === "fallback" && (liveOutcome === "rejected" || liveOutcome === "invalid-response") && (
+            <div>
+              <h3>Why this review was rejected</h3>
+              <p>The review did not select valid approved explanations for this trip. The rule-based packing list and standard explanation remain available.</p>
+            </div>
+          )}
           <div>
             <h3>What could improve this plan</h3>
             <ul>
@@ -86,7 +92,8 @@ export function AiReviewPanel({
             <h3>How the review works</h3>
             <p>
               TrailPack builds the packing list with fixed rules. A live Gemini
-              review, when available, can only check the explanation wording; it
+              review, when available, selects useful highlights from approved
+              explanations. TrailPack supplies the wording; the review
               cannot add, remove, reprioritize, or relabel packing items.
             </p>
             <p>
@@ -95,7 +102,7 @@ export function AiReviewPanel({
               editing fields alone does not count.
             </p>
             {providerModel && liveOutcome === "accepted" ? (
-              <p>Live wording reviewed with {providerModel}.</p>
+              <p>Live highlights selected with {providerModel}.</p>
             ) : null}
           </div>
         </div>

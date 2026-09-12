@@ -1,0 +1,20 @@
+# Local credentials, recovery files, tooling and evidence are never deployment inputs.
+.env*
+.git
+.next
+.vercel
+node_modules
+.private
+.artifacts
+.agents
+.cursor
+supabase/.temp
+coverage
+playwright-report
+test-results
+*.tsbuildinfo
+*.pem
+*.log
+AGENTS.md
+CONTEXT.md
+docs

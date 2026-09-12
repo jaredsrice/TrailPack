@@ -463,7 +463,7 @@ function signedOutReviewBody(trailName: string) {
 function mockedLiveReviewBody(
   outcome: Extract<
     LiveAiOutcome,
-    "accepted" | "duplicate-generation" | "quota-limited" | "rate-limited"
+    "accepted" | "rejected" | "invalid-response" | "duplicate-generation" | "quota-limited" | "rate-limited"
   >,
   trailName: string,
 ) {
@@ -964,6 +964,18 @@ test("one generated packing list requests one guarded review", async ({
 
 for (const scenario of [
   {
+    name: "rejected",
+    outcome: "rejected",
+    status: 200,
+    badge: "Live review rejected",
+  },
+  {
+    name: "invalid selection",
+    outcome: "invalid-response",
+    status: 200,
+    badge: "Invalid live response",
+  },
+  {
     name: "accepted",
     outcome: "accepted",
     status: 200,
@@ -1012,6 +1024,11 @@ for (const scenario of [
     await expect(
       page.getByRole("heading", { name: /Packing list for Jenny Lake Loop/i }),
     ).toBeVisible();
+    if (scenario.outcome === "rejected" || scenario.outcome === "invalid-response") {
+      await page.getByText("Why and review details", { exact: true }).click();
+      await expect(page.getByRole("heading", { name: "Why this review was rejected" })).toBeVisible();
+      await expect(page.getByText(/did not select valid approved explanations/)).toBeVisible();
+    }
     await expectNoAccessibilityViolations(page);
   });
 }

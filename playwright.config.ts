@@ -1,6 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = "http://127.0.0.1:3000";
+const browserTestSupabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ??
+  "https://trailpack-browser-test.supabase.co";
+const browserTestSupabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  "sb_publishable_browser_test";
 
 export default defineConfig({
   testDir: "./tests/accessibility",
@@ -28,6 +34,11 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev -- --hostname 127.0.0.1",
+    env: {
+      ...process.env,
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: browserTestSupabaseKey,
+      NEXT_PUBLIC_SUPABASE_URL: browserTestSupabaseUrl,
+    },
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

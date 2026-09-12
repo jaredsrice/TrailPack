@@ -146,6 +146,50 @@ afterEach(() => {
 });
 
 describe("saved-results route ownership", () => {
+  it("cancels an authenticated stalled upload before writing saved data", async () => {
+    const from = vi.fn();
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: { getUser: vi.fn(async () => ({ data: { user: { id: "user-a" } }, error: null })) },
+      from,
+    });
+    let controller!: ReadableStreamDefaultController<Uint8Array>;
+    let cancelled = false;
+    const stream = new ReadableStream<Uint8Array>({
+      start(value) {
+        controller = value;
+        controller.enqueue(new TextEncoder().encode("{"));
+      },
+      cancel() {
+        cancelled = true;
+        return new Promise<void>(() => undefined);
+      },
+    });
+    const pending = POST(new Request("http://localhost/api/trailpack/saved-results", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: stream as unknown as BodyInit,
+      duplex: "half",
+    } as RequestInit));
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      const response = await Promise.race([
+        pending,
+        new Promise<null>((resolve) => { timer = setTimeout(() => resolve(null), 3_000); }),
+      ]);
+      expect(response, "stalled uploads must finish within the body deadline").not.toBeNull();
+      if (!response) return;
+      expect(response.status).toBe(400);
+      expect(response.headers.get("cache-control")).toBe("no-store");
+      await expect(response.json()).resolves.toEqual({ error: "Unable to read saved result request." });
+      expect(cancelled).toBe(true);
+      expect(from).not.toHaveBeenCalled();
+    } finally {
+      clearTimeout(timer);
+      controller.error(new Error("test cleanup"));
+      await pending;
+    }
+  });
+
   it("rejects signed-out list reads before opening the saved-results table", async () => {
     const from = vi.fn();
     mocks.getSupabaseServerClient.mockResolvedValue({

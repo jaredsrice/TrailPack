@@ -2,7 +2,7 @@
 
 TrailPack turns trail facts, weather, official notices, and trip details into a
 practical day-hiking packing list. Its rule-based planner decides what belongs
-on the list. An optional AI review may improve the explanation, but it cannot
+on the list. An optional AI review selects approved explanation highlights, but it cannot
 silently change the items or their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
@@ -26,6 +26,14 @@ silently change the items or their sources.
 - Enter basic facts manually for an unsupported hike and receive a limited list.
 
 ## Current coverage
+
+The unreleased required-completion candidate also adds a separate live NPS
+lookup for Zion, Acadia, and Bryce Canyon. Its partial results use NPS duration
+plus manual details, not complete catalog profiles. Editing the duration keeps
+it user-provided even if the original number is restored. The
+[test preview](https://trailpack-8ksthnzzs-jared-s-rice.vercel.app) is available;
+lookup passed hosted checks, while signed-in live AI acceptance remains pending;
+see the [verification record](docs/validation/2026-09-11-required-completion.md).
 
 TrailPack currently supports **39 Grand Teton discovery entries and 52 complete
 route profiles**. Fifty profiles use National Park Service facts with reviewed
@@ -140,7 +148,21 @@ app users, contributors, trail-data maintainers, and technical reviewers.
 
 ## Next steps
 
-The following product work is shelved until explicitly resumed:
+The required-completion candidate repairs the
+[September 10 acceptance findings](docs/superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md):
+AI selects only approved fact IDs; TrailPack supplies the wording; arbitrary
+trip text is omitted from the provider payload; rejected selections show a safe
+reason; and NPS maintenance accepts valid Very Strenuous profiles while bounding
+page reads during streaming. The candidate adds the bounded partial NPS lookup.
+These changes are not yet a production release. See the
+[requirements status](docs/requirements-status.md) for local versus hosted evidence.
+
+The current completion scope is B-01 through B-04 in the 499B specification.
+Alternative packing-list modes and guest export are not part of that scope.
+The final code audit is limited to documented defects and necessary cleanup;
+see the [audit and acceptance record](docs/validation/2026-09-12-final-audit.md).
+
+The following product work also remains shelved until explicitly resumed:
 
 1. Make the trail-selection landing experience easier to scan as the catalog
    grows.
@@ -150,5 +172,5 @@ The following product work is shelved until explicitly resumed:
 
 See the [roadmap](docs/roadmap.md) for scope and acceptance requirements.
 
-For the maintained pause state and migration precautions, see the
+For the current checkout, pause state, and historical preservation notes, see the
 [project handoff](docs/project-handoff.md).
