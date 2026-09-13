@@ -1,7 +1,7 @@
 # TrailPack website, privacy, and release audit
 
 Date: September 12, 2026. Scope: local code and mocked browser tests prepared on
-`codex/privacy-accessibility-hardening` and prepared for release 0.8.1 with
+`codex/privacy-accessibility-hardening` and published in release 0.8.1 with
 Jared's approval. This is issue spotting for an academic project. It is not
 legal advice, a compliance certification, or approval for a public release.
 
@@ -214,7 +214,7 @@ academic demonstration:
 | Formal privacy policy or terms | Deferred | Depends on audience, jurisdiction, operator, and qualified legal review |
 | Analytics or cookie notice | Not needed now | No analytics, ads, embeds, or nonessential cookies found |
 | New UI or animation dependency | Not added | Existing React, CSS, and controls cover the identified needs |
-| Release publication | Authorized for 0.8.1 | Final push, checks, and production verification are recorded in the project handoff and GitHub release |
+| Release publication | Completed in 0.8.1 | PR #64 merged to `main`; post-merge Validate and CodeQL passed; Vercel reported production success; the homepage and `/privacy` returned HTTP 200 |
 
 ## Smallest recommended next-step plan
 
