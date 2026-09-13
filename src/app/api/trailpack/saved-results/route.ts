@@ -41,6 +41,29 @@ export async function GET() {
   return jsonResponse({ results: results as SavedResultRecord[] });
 }
 
+export async function DELETE() {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) {
+    return jsonResponse({ error: "Saved results are unavailable." }, { status: 503 });
+  }
+
+  const user = await getAuthenticatedUser(supabase);
+  if (!user) {
+    return jsonResponse({ error: "Authentication is required." }, { status: 401 });
+  }
+
+  const { error } = await supabase
+    .from("saved_results")
+    .delete()
+    .eq("user_id", user.id);
+
+  if (error) {
+    return jsonResponse({ error: "Saved results could not be deleted." }, { status: 500 });
+  }
+
+  return new Response(null, { status: 204, headers: NO_STORE_HEADERS });
+}
+
 export async function POST(request: Request) {
   const supabase = await getSupabaseServerClient();
   if (!supabase) {

@@ -5,6 +5,24 @@ Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 ## Recent handoff history
 
+- **2026-09-12, local privacy and accessibility hardening ready for owner
+  review:** Jared confirmed TrailPack remains an academic, noncommercial project
+  and approved a local improvement pass that stops before main. Branch
+  `codex/privacy-accessibility-hardening` adds a plain-language `/privacy` notice,
+  explicit Gemini choice with age and data wording, linked Open-Meteo
+  attribution, bulk saved-plan deletion with confirmation, corrected landmarks,
+  a real skip link and home link, and a shorter carousel Tab path. It preserves
+  the existing visual identity and adds no dependency. The audit and completed
+  versus deferred ledger are saved at
+  `docs/validation/2026-09-12-website-privacy-release-audit.md`. Automatic 90-day
+  deletion, full Supabase Auth identity deletion, formal legal policies, provider
+  account verification, separate Preview data, and production publication remain
+  deferred. Final local checks pass: lint, documentation links, TypeScript, the
+  optimized production build, 900 unit and integration tests across 61 files,
+  and 154 Firefox browser tests in 4.8 minutes. No service setting, database,
+  Preview, production, or main branch was changed. Next action is owner review
+  before any commit, Preview, merge, or publication decision.
+
 - **2026-09-12, 0.8.0 published to production:** Jared approved merging PR #61
   and publishing the completed 499B scope. The PR merged to `main` as
   `746cca344769a079c589fb8808990c6d05f4cd15`. Production deployment

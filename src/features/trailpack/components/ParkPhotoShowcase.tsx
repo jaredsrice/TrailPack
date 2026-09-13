@@ -221,6 +221,7 @@ export function ParkPhotoShowcase({
               onClick={() => setRotationIndex(index)}
               aria-label={`Show ${photo.parkName}`}
               aria-current={photo.id === visiblePhoto.id ? "true" : undefined}
+              tabIndex={photo.id === visiblePhoto.id ? 0 : -1}
             />
           ))}
         </div>

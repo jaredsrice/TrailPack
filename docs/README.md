@@ -39,6 +39,7 @@ local photograph, and an explicit decision about access and return form.
 
 - [Current 499B requirements status](requirements-status.md)
 - [Final audit and acceptance](validation/2026-09-12-final-audit.md)
+- [Website, privacy, and release audit](validation/2026-09-12-website-privacy-release-audit.md)
 - [Short demo and portfolio summary](demo.md)
 - [Architecture](architecture.md)
 - [Domain glossary](../CONTEXT.md)

@@ -180,6 +180,30 @@ test("a signed-in hiker can save, revisit, and delete a private plan", async ({ 
   ).toHaveCount(0);
 });
 
+test("a signed-in hiker can confirm deletion of every saved plan", async ({ page }) => {
+  let deleteRequests = 0;
+  await seedBrowserSession(page);
+  await page.route(`${supabaseUrl}/auth/v1/user`, (route) =>
+    route.fulfill({ contentType: "application/json", json: accountUser, status: 200 }),
+  );
+  await page.route("**/api/trailpack/saved-results", async (route) => {
+    if (route.request().method() === "DELETE") {
+      deleteRequests += 1;
+      await route.fulfill({ status: 204 });
+      return;
+    }
+    await route.fulfill({ contentType: "application/json", json: { results: [] }, status: 200 });
+  });
+
+  await page.goto("/saved");
+  await page.getByRole("button", { name: "Delete all saved plans" }).click();
+  expect(deleteRequests).toBe(0);
+  await expect(page.getByText("This permanently deletes every saved packing plan.")).toBeVisible();
+  await page.getByRole("button", { name: "Delete all permanently" }).click();
+  await expect.poll(() => deleteRequests).toBe(1);
+  await expect(page.getByText("All saved plans were deleted.")).toBeVisible();
+});
+
 async function openManualPlan(page: Page) {
   await page.goto("/");
   await page.getByRole("searchbox").fill("custom ridge hike");

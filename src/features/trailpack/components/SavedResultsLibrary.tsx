@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { isAuthSessionMissingError } from "@supabase/supabase-js";
-import { deleteSavedResultFromRoute, listSavedResultsFromRoute } from "@/features/trailpack/lib/saved-results-client";
+import { deleteAllSavedResultsFromRoute, deleteSavedResultFromRoute, listSavedResultsFromRoute } from "@/features/trailpack/lib/saved-results-client";
 import { getSupabaseBrowserClient } from "@/features/trailpack/lib/supabase/browser";
 import type { SavedResultRecord } from "@/features/trailpack/lib/saved-results";
 import type { SourceLabel } from "@/features/trailpack/types";
@@ -18,6 +18,7 @@ type LibraryState =
 export function SavedResultsLibrary() {
   const [state, setState] = useState<LibraryState>({ status: "loading" });
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteAllState, setDeleteAllState] = useState<"idle" | "confirming" | "deleting" | "done" | "error">("idle");
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
@@ -74,6 +75,17 @@ export function SavedResultsLibrary() {
     }
   }
 
+  async function handleDeleteAll() {
+    setDeleteAllState("deleting");
+    try {
+      await deleteAllSavedResultsFromRoute();
+      setState({ status: "ready", results: [] });
+      setDeleteAllState("done");
+    } catch {
+      setDeleteAllState("error");
+    }
+  }
+
   return (
     <main className="mx-auto min-h-screen max-w-4xl px-5 py-10 sm:px-8">
       <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-900 underline underline-offset-4">
@@ -84,6 +96,9 @@ export function SavedResultsLibrary() {
         <p className="section-kicker">Private TrailPack account</p>
         <h1 className="mt-1 text-3xl font-semibold text-slate-950">Saved plans</h1>
         <p className="mt-2 text-slate-700">Only plans saved under your signed-in account appear here.</p>
+        <Link href="/privacy" className="mt-3 inline-block text-sm font-semibold text-emerald-900 underline underline-offset-4">
+          Data and privacy details
+        </Link>
       </header>
 
       {state.status === "loading" ? <p className="mt-8 text-slate-700">Loading saved plans…</p> : null}
@@ -91,6 +106,41 @@ export function SavedResultsLibrary() {
       {state.status === "signed-out" ? <p className="mt-8 text-slate-700">Sign in from a generated packing list to view your saved plans.</p> : null}
       {state.status === "error" ? <p className="mt-8 text-red-800">TrailPack could not load saved plans. Please try again.</p> : null}
       {state.status === "ready" && state.results.length === 0 ? <p className="mt-8 text-slate-700">You have not saved a plan yet.</p> : null}
+
+      {state.status === "ready" ? (
+        <section className="mt-8 rounded-xl border border-red-200 bg-red-50 p-5" aria-labelledby="delete-saved-plans-heading">
+          <h2 id="delete-saved-plans-heading" className="text-lg font-semibold text-slate-950">Delete saved TrailPack data</h2>
+          <p className="mt-1 text-sm text-slate-700">
+            This removes every saved packing plan. It does not delete your Google or Supabase sign-in identity.
+          </p>
+          {deleteAllState === "confirming" ? (
+            <div className="mt-4" role="group" aria-label="Confirm deletion of all saved plans">
+              <p className="font-semibold text-red-900">This permanently deletes every saved packing plan.</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button type="button" onClick={() => void handleDeleteAll()} className="rounded-lg bg-red-800 px-4 py-2 text-sm font-semibold text-white">
+                  Delete all permanently
+                </button>
+                <button type="button" onClick={() => setDeleteAllState("idle")} className="rounded-lg border border-slate-400 px-4 py-2 text-sm font-semibold text-slate-800">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setDeleteAllState("confirming")}
+              disabled={deleteAllState === "deleting"}
+              className="mt-4 rounded-lg border border-red-700 px-4 py-2 text-sm font-semibold text-red-900 disabled:cursor-wait disabled:opacity-70"
+            >
+              {deleteAllState === "deleting" ? "Deleting…" : "Delete all saved plans"}
+            </button>
+          )}
+          <div aria-live="polite" className="mt-3 text-sm font-medium">
+            {deleteAllState === "done" ? <p className="text-emerald-800">All saved plans were deleted.</p> : null}
+            {deleteAllState === "error" ? <p className="text-red-800">TrailPack could not delete all saved plans. Please try again.</p> : null}
+          </div>
+        </section>
+      ) : null}
 
       {state.status === "ready" ? (
         <div className="mt-8 space-y-4">

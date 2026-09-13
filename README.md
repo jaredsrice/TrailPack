@@ -7,6 +7,7 @@ conditions and packing priorities, but it cannot silently change the items or
 their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
+[Review data and release findings](docs/validation/2026-09-12-website-privacy-release-audit.md) ·
 [Read the user guide](docs/user-guide.md) ·
 [Browse the documentation](docs/README.md) ·
 [View the roadmap](docs/roadmap.md)
@@ -22,7 +23,8 @@ their sources.
   are available.
 - Generate a packing list with visible reasons and source labels.
 - Use the full guest planner without creating an account.
-- Sign in with Google to save private plans and request a guarded plan review.
+- Sign in with Google to save private plans and explicitly request a guarded
+  Gemini plan review after reading the data notice.
   Complete plans receive a practical summary; incomplete plans receive a clear
   best next step.
 - Enter basic facts manually for an unsupported hike and receive a limited list.
@@ -133,6 +135,8 @@ admission checks. New parks require their own safety and data review.
 - Manual-entry plans have less source information than supported profiles.
 - Saved weather examples are labeled examples, not current conditions.
 - AI explanations are optional and cannot change the rule-generated list.
+- The current academic project can delete one or all saved plans. Automatic
+  90-day deletion and deletion of the sign-in identity are not active yet.
 
 ## Documentation
 

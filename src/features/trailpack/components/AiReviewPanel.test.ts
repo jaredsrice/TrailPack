@@ -4,6 +4,22 @@ import { describe, expect, it } from "vitest";
 import { AiReviewPanel } from "./AiReviewPanel";
 
 describe("review rejection explanation", () => {
+  it("explains and requires an explicit live Gemini request", () => {
+    const html = renderToStaticMarkup(createElement(AiReviewPanel, {
+      review: { status: "accepted", validationReasons: [], review: {
+        tripSummary: "The standard review remains available.", missingDataReview: [], itemExplanationDrafts: [],
+      } },
+      isLoading: false,
+      onRequestLiveReview: () => undefined,
+    }));
+
+    expect(html).toContain("Request optional Gemini review");
+    expect(html).toContain("18 or older");
+    expect(html).toContain("approved trip facts");
+    expect(html).toContain("Google&#x27;s Gemini service");
+    expect(html).toContain('aria-describedby="gemini-review-disclosure"');
+  });
+
   it("shows a safe visible rejection reason without exposing provider text", () => {
     const html = renderToStaticMarkup(createElement(AiReviewPanel, {
       review: { status: "fallback", validationReasons: ["UNTRUSTED_PRIVATE_PROVIDER_TEXT"], review: {
