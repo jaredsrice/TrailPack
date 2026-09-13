@@ -1,6 +1,6 @@
 # TrailPack project handoff
 
-Current scope checkpoint: 2026-09-12 (America/Denver). Release target: 0.8.1.
+Current scope checkpoint: 2026-09-12 (America/Denver). Released version: 0.8.1.
 Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
 Project state: approved 499B work is complete. No active feature backlog, open
@@ -11,9 +11,13 @@ privacy audit. Do not resume shelved ideas automatically.
 
 ## Recent handoff history
 
-- **2026-09-12, final 0.8.1 closeout authorized:** Jared authorized completing
+- **2026-09-12, final 0.8.1 closeout published:** Jared authorized completing
   the documentation and release bookkeeping, pushing `main`, and verifying the
-  resulting release. The patch release records the data notice, explicit Gemini
+  resulting release. PR #64 merged the release content to `main` as
+  `b8e56b370a1f1506e852f869721abfc2d0723045`. Vercel reported the production
+  deployment successful, and the production homepage and `/privacy` returned
+  HTTP 200. Post-merge Validate run `34735696027` and CodeQL run `34735696028`
+  passed. The patch release records the data notice, explicit Gemini
   choice, bulk saved-plan deletion, and focused accessibility repairs. Current
   guides now describe released behavior, the presentation path, maintenance
   status, and the exact public-release decisions still deferred. Historical
@@ -25,7 +29,8 @@ privacy audit. Do not resume shelved ideas automatically.
   `.env.local`. Final local checks pass: documentation links, lint, TypeScript,
   900 unit and integration tests, 50 of 50 live NPS comparisons, 5,000 stress
   cases, the production build, and 154 Firefox tests in 4.8 minutes. npm reports
-  zero dependency vulnerabilities.
+  zero dependency vulnerabilities. The `v0.8.1` GitHub release tag is the final
+  immutable closeout reference.
 
 - **2026-09-12, local privacy and accessibility hardening ready for owner
   review:** Jared confirmed TrailPack remains an academic, noncommercial project
