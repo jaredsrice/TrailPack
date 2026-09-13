@@ -1,9 +1,9 @@
 # TrailPack website, privacy, and release audit
 
-Date: September 12, 2026. Scope: local code and mocked browser tests on
-`codex/privacy-accessibility-hardening`. This is issue spotting for an academic
-project. It is not legal advice, a compliance certification, or approval for a
-public release.
+Date: September 12, 2026. Scope: local code and mocked browser tests prepared on
+`codex/privacy-accessibility-hardening` and later committed to local `main` with
+Jared's approval. This is issue spotting for an academic project. It is not
+legal advice, a compliance certification, or approval for a public release.
 
 ## Executive summary
 
@@ -210,7 +210,7 @@ academic demonstration:
 | Formal privacy policy or terms | Deferred | Depends on audience, jurisdiction, operator, and qualified legal review |
 | Analytics or cookie notice | Not needed now | No analytics, ads, embeds, or nonessential cookies found |
 | New UI or animation dependency | Not added | Existing React, CSS, and controls cover the identified needs |
-| Preview or production deployment | Not performed | This pass is local and stops before main publication |
+| Remote push, Preview, or production deployment | Not performed | This pass is committed only to local `main` |
 
 ## Smallest recommended next-step plan
 

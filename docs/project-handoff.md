@@ -19,9 +19,13 @@ Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
   account verification, separate Preview data, and production publication remain
   deferred. Final local checks pass: lint, documentation links, TypeScript, the
   optimized production build, 900 unit and integration tests across 61 files,
-  and 154 Firefox browser tests in 4.8 minutes. No service setting, database,
-  Preview, production, or main branch was changed. Next action is owner review
-  before any commit, Preview, merge, or publication decision.
+  and 154 Firefox browser tests in 4.8 minutes. Jared then approved the commit.
+  Feature commit `8824559` was fast-forwarded to local `main`; no remote push,
+  service setting, database, Preview, or production deployment was changed. The
+  older pre-existing dirty checkout is preserved in the named Git stash
+  `preserve pre-existing main checkout before privacy integration` after its
+  stale release documents conflicted with the current 0.8.0 records. Next action
+  is owner review before any push, Preview, or production publication decision.
 
 - **2026-09-12, 0.8.0 published to production:** Jared approved merging PR #61
   and publishing the completed 499B scope. The PR merged to `main` as
