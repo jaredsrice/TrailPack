@@ -8,6 +8,26 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-09-12
+
+### Added
+
+- Add a plain-language academic data notice, linked Open-Meteo attribution, and
+  a confirmed action to delete every saved packing plan owned by the signed-in
+  user.
+
+### Changed
+
+- Require an explicit request before sending approved trip facts to Gemini, and
+  explain the age and data boundary beside that control.
+- Improve keyboard structure with a real skip link, corrected page landmarks,
+  a true home link, and one carousel indicator in the Tab order.
+
+### Fixed
+
+- Keep local browser authentication tests isolated from `.env.local` by using
+  the same fake Supabase endpoint in the app server and request mocks.
+
 ## [0.8.0] - 2026-09-12
 
 ### Added

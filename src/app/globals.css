@@ -74,6 +74,22 @@ a {
   outline-offset: 3px;
 }
 
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  transform: translateY(-160%);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: white;
+  background: var(--evergreen);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .trailpack-app {
   min-height: 100vh;
   display: flex;
@@ -1954,6 +1970,13 @@ a {
   font-size: 0.72rem;
   line-height: 1.5;
   text-align: right;
+}
+
+.site-footer a {
+  color: white;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 1020px) {

@@ -71,8 +71,8 @@ eight additional baseline features to build on top of the six final requirements
 
 The proposal has one additional named nice-to-have idea, official alerts. It is
 already delivered and was included in Week 12 MH-02. Therefore the union of
-nice-to-have ideas mentioned across the two formal lists is seven: four delivered,
-one local candidate and two not implemented. That is not seven additional optional requirements today;
+nice-to-have ideas mentioned across the two formal lists is seven: five delivered
+and two not implemented. That is not seven additional optional requirements today;
 count alerts once and show their promotion to must-have scope.
 
 ## What the 499B continuation requires
@@ -122,11 +122,12 @@ Requirement counts are not percentages of the remaining effort.
   completion cannot be inferred from feature delivery. Existing owner UAT is
   documented; administrative completion should be checked separately as needed.
 
-## Current next step
+## Project closeout status
 
-The approved implementation, necessary audit and test pass are complete on the
-review candidate. No additional feature selection is needed. Jared's test-site
-review and separate production approval come next. Recommend Sol Medium, one
-main agent, for explaining the results and recording owner feedback. Any new
-implementation or release phase needs its own confirmed setup. See the
-[handoff](project-handoff.md) for the preserved worktree.
+The approved implementation, audit, release, and test work are complete. There
+is no active feature backlog, open pull request, or open issue. TrailPack is in
+maintenance mode. The original SH-04 variants and SH-06 export remain historical
+ideas, not unfinished 499B work. A future broad public or commercial release
+requires the privacy, provider, retention, and legal decisions in the
+[website and privacy audit](validation/2026-09-12-website-privacy-release-audit.md).
+See the [handoff](project-handoff.md) before reopening development.

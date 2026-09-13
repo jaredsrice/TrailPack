@@ -159,7 +159,7 @@ packing set, essential/optional priority, safety behavior, and source labels.
 _Avoid_: AI input suggestion, draft list
 
 **Guarded AI review**:
-In the unreleased candidate, a selection of approved fact IDs resolved to
+An explicit user-requested selection of approved fact IDs resolved to
 TrailPack-owned explanation wording. Unknown, duplicate or inapplicable IDs and
 provider-authored prose are rejected. Saved fixtures remain restricted to
 trusted template/fixture wording. The rule engine retains all packing authority.

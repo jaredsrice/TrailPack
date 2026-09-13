@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { isAuthSessionMissingError } from "@supabase/supabase-js";
 import { buildAuthCallbackUrl } from "@/features/trailpack/lib/auth-redirect";
 import type { UserHikeInput } from "@/features/trailpack/lib/packing";
@@ -177,6 +178,11 @@ export function SavedResultActions({
         <p className="mt-2 max-w-3xl">
           The trail summary, trip details that affect the list, recommendation,
           source labels, and creation time. Free-form notes are not saved.
+        </p>
+        <p className="mt-2">
+          <Link href="/privacy" className="font-semibold text-emerald-900 underline underline-offset-2">
+            Read data and privacy details
+          </Link>
         </p>
       </details>
 

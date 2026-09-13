@@ -72,11 +72,18 @@ The guest planner includes the full rule-based packing list and standard plan
 review. No account is required.
 
 Google sign-in adds private saved plans and a limited Gemini explanation review.
-The unreleased candidate asks AI to select approved explanation highlights;
-TrailPack supplies the wording. The server validates the account and selection.
-AI cannot add, remove,
+After generating a plan, the user must explicitly request the Gemini review and
+accept the displayed 18-or-older and data-sharing notice. Gemini selects approved
+explanation highlights; TrailPack supplies the wording. The server validates the
+account and selection. AI cannot add, remove,
 reorder, or relabel packing items. Provider, quota, timeout, or validation
 failures keep the rule-generated result available.
+
+Saved plans can be deleted individually or together from **Saved plans**. This
+removes packing-plan records, not the Google or Supabase sign-in identity.
+Automatic 90-day deletion is not active. The
+[data notice](https://trailpack-ten.vercel.app/privacy) explains the current
+boundary in plain language.
 
 ## Unsupported hikes
 
@@ -84,7 +91,7 @@ Manual entry accepts distance, elevation gain, route type, expected duration,
 and conditions. It produces a limited list without claiming official trail,
 weather, or access facts that were not supplied.
 
-### Partial live lookup (unreleased)
+### Partial live NPS lookup
 
 After entering a trail name, open **Search live NPS hikes**, choose Zion,
 Acadia or Bryce Canyon, and press **Search NPS**. Check the returned name, park,

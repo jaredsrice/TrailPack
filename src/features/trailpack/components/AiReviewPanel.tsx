@@ -14,6 +14,7 @@ interface AiReviewPanelProps {
   providerModel?: string;
   isLoading: boolean;
   requestError?: string;
+  onRequestLiveReview?: () => void;
 }
 
 export function AiReviewPanel({
@@ -22,6 +23,7 @@ export function AiReviewPanel({
   providerModel,
   isLoading,
   requestError,
+  onRequestLiveReview,
 }: AiReviewPanelProps) {
   const presentation = getAiReviewPresentation({
     reviewStatus: review.status,
@@ -85,6 +87,25 @@ export function AiReviewPanel({
         )}
         <p className="ai-review-status-copy">{presentation.description}</p>
       </div>
+
+      {onRequestLiveReview && !liveOutcome ? (
+        <div className="rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-sm text-slate-700">
+          <p id="gemini-review-disclosure">
+            If you are 18 or older, you can send approved trip facts to
+            Google&apos;s Gemini service for optional highlights. TrailPack
+            does not send your name, email, or free-form notes.
+          </p>
+          <button
+            type="button"
+            onClick={onRequestLiveReview}
+            disabled={isLoading}
+            aria-describedby="gemini-review-disclosure"
+            className="mt-3 rounded-lg bg-sky-800 px-4 py-2 font-semibold text-white disabled:cursor-wait disabled:opacity-70"
+          >
+            {isLoading ? "Requesting Gemini review…" : "Request optional Gemini review"}
+          </button>
+        </div>
+      ) : null}
 
       <details className="ai-review-details group">
         <summary>

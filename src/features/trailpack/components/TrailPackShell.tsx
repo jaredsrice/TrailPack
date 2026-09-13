@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { getDemoScenario } from "@/features/trailpack/data/demo-contexts";
 import { getSavedAiReviewFixture } from "@/features/trailpack/data/ai-review-fixtures";
@@ -584,6 +585,17 @@ export function TrailPackShell() {
     }
   }, []);
 
+  function handleRequestAiReview() {
+    if (!currentGeneratedPlan || activeAiGenerationRef.current !== null) {
+      return;
+    }
+    activeAiGenerationRef.current = currentGeneratedPlan.generationId;
+    void requestAiReview(
+      currentGeneratedPlan.aiInput,
+      currentGeneratedPlan.generationId,
+    );
+  }
+
   useEffect(
     () => () => {
       aiReviewAbortControllerRef.current?.abort();
@@ -639,8 +651,6 @@ export function TrailPackShell() {
       userInput: planUserInput,
       recommendation: planRecommendation,
     });
-    activeAiGenerationRef.current = generationId;
-
     setGeneratedPlan({
       generationId,
       trailId: selectedTrail.id,
@@ -651,7 +661,7 @@ export function TrailPackShell() {
       aiInput: nextAiInput,
     });
     setRouteChangeNotice(false);
-    void requestAiReview(nextAiInput, generationId);
+    setLiveAiState({ status: "idle" });
   }
 
   function resetGeneratedOutput() {
@@ -774,19 +784,21 @@ export function TrailPackShell() {
   }
 
   return (
-    <main className="trailpack-app">
+    <div className="trailpack-app">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <header className="site-masthead">
         <div className="site-masthead-inner">
-          <a href="#main-content" className="brand-lockup" aria-label="TrailPack home">
+          <Link href="/" className="brand-lockup" aria-label="TrailPack home">
             <span className="brand-mark">
               <TrailPackIcon name="logo" className="h-7 w-7" />
             </span>
             <span>TrailPack</span>
-          </a>
+          </Link>
           <p className="masthead-note">Rule-based packing guidance</p>
         </div>
       </header>
 
+      <main id="main-content">
       <section
         className={`home-hero ${mode === "park" ? "is-park-view" : ""}`}
         aria-label={mode === "park" ? "Selected park photograph" : undefined}
@@ -932,7 +944,7 @@ export function TrailPackShell() {
         </div>
       </section>
 
-      <div id="main-content" className="content-flow">
+      <div className="content-flow">
         {mode === "park" && selectedPark ? (
           <section className="park-landing-section" aria-labelledby="trailpack-heading">
             <button
@@ -1137,9 +1149,11 @@ export function TrailPackShell() {
                 ? currentLiveAiState.message
                 : undefined
             }
+            onRequestLiveReview={handleRequestAiReview}
           />
         ) : null}
       </div>
+      </main>
 
       <footer className="site-footer">
         <div>
@@ -1149,10 +1163,10 @@ export function TrailPackShell() {
           </span>
           <p>
             Planning guidance only. Confirm conditions and closures with official
-            park sources before leaving.
+            park sources before leaving. <Link href="/privacy">Data and privacy</Link>
           </p>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }

@@ -14,6 +14,36 @@ import { TRAIL_POPULARITY_STORAGE_KEY } from "../../src/features/trailpack/lib/t
 
 const JENNY_SCENARIO = DEMO_CONTEXTS["jenny-lake-loop"];
 
+test("homepage landmarks and carousel keep keyboard navigation concise", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.locator("main header, main footer")).toHaveCount(0);
+  await expect(page.locator("body > .trailpack-app > .skip-link")).toHaveAttribute("href", "#main-content");
+  await expect(page.locator(".brand-lockup")).toHaveAttribute("href", "/");
+
+  const dots = page.locator(".park-photo-dots button");
+  expect(await dots.count()).toBeGreaterThan(1);
+  await expect(page.locator('.park-photo-dots button[aria-current="true"]')).toHaveAttribute("tabindex", "0");
+  const dotTabIndexes = await dots.evaluateAll((buttons) =>
+    buttons.map((button) => button.getAttribute("tabindex")),
+  );
+  expect(dotTabIndexes.filter((value) => value === "0")).toHaveLength(1);
+  expect(dotTabIndexes.filter((value) => value === "-1")).toHaveLength(dotTabIndexes.length - 1);
+});
+
+test("data notice and weather attribution are reachable from the interface", async ({ page }) => {
+  await mockWeather(page);
+  await mockAlerts(page);
+  await page.goto("/");
+  await selectTrail(page, "Jenny Lake Loop");
+
+  await expect(page.getByRole("link", { name: "Open-Meteo" })).toHaveAttribute("href", "https://open-meteo.com/");
+  await page.getByRole("link", { name: "Data and privacy" }).click();
+  await expect(page.getByRole("heading", { name: "Data and privacy notes" })).toBeVisible();
+  await expect(page.getByText(/automatic deletion is not active yet/i)).toBeVisible();
+  await expectNoAccessibilityViolations(page);
+});
+
 for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
   test(`mixed routes keep direction, estimates and guest generation at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
@@ -62,6 +92,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
       await page.getByRole("button", { name: "Generate packing list" }).click();
       await expect(page.getByText(itemName, { exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "Request optional Gemini review" }).click();
       await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
       await expectNoAccessibilityViolations(page);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
@@ -109,6 +140,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     await expect(page.getByRole("button", { name: "Generate packing list" })).toBeEnabled();
     expect(requests).toHaveLength(0);
     await page.getByRole("button", { name: "Generate packing list" }).click();
+    await page.getByRole("button", { name: "Request optional Gemini review" }).click();
     await expect.poll(() => requests.length).toBe(1);
     await chooser.selectOption("inspiration-point-shuttle");
     await expect(page.locator("#packing-list-heading")).toHaveCount(0);
@@ -121,6 +153,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     await page.getByRole("button", { name: "Generate packing list" }).click();
     await expect(page.locator("#packing-list-heading")).toContainText("Inspiration Point via Round-trip Shuttle");
     await expect(page.getByText("Return boat plan", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Request optional Gemini review" }).click();
     await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
     await page.waitForTimeout(1300);
     expect(requests.map((input) => input.trail)).toEqual([
@@ -189,6 +222,7 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       await expect(page.getByText("Saved weather example", { exact: true })).toHaveCount(0);
       await page.getByRole("button", { name: "Generate packing list", exact: true }).click();
       await expect(page.locator("#packing-list-heading")).toContainText(trail.name);
+      await page.getByRole("button", { name: "Request optional Gemini review" }).click();
       await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible();
       expect(await page.locator(".packing-item").count()).toBeGreaterThan(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
@@ -833,7 +867,7 @@ test("manual guest entry remains usable without provider or authentication work"
   await expectNoAccessibilityViolations(page);
 });
 
-test("one generated packing list requests one guarded review", async ({
+test("one generated packing list requests a guarded review only after explicit choice", async ({
   page,
 }) => {
   let reviewRequests = 0;
@@ -900,6 +934,8 @@ test("one generated packing list requests one guarded review", async ({
     (button as HTMLButtonElement).click();
   });
 
+  expect(reviewRequests).toBe(0);
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
   await expect(page.getByText("Guest review ready", { exact: true })).toBeVisible({
     timeout: 10_000,
   });
@@ -965,6 +1001,8 @@ test("one generated packing list requests one guarded review", async ({
   await page.waitForTimeout(1_700);
   expect(reviewRequests).toBe(1);
   await page.getByRole("button", { name: "Update packing list" }).click();
+  expect(reviewRequests).toBe(1);
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
   await expect.poll(() => reviewRequests).toBe(2);
   await expectNoAccessibilityViolations(page);
 });
@@ -1026,6 +1064,7 @@ for (const scenario of [
     await page.goto("/");
     await selectTrail(page, "Jenny Lake Loop");
     await page.getByRole("button", { name: "Generate packing list" }).click();
+    await page.getByRole("button", { name: "Request optional Gemini review" }).click();
 
     await expect(page.getByText(scenario.badge, { exact: true })).toBeVisible();
     await expect(
@@ -1056,6 +1095,7 @@ test("renders a generic AI failure without exposing the route body", async ({
   await page.goto("/");
   await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
 
   await expect(page.getByText("Standard review ready", { exact: true })).toBeVisible();
   await expect(
@@ -1101,6 +1141,7 @@ test("a stalled AI browser request times out while the rule-based list remains",
   await page.goto("/");
   await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
   await expect(page.getByText("Checking plan", { exact: true })).toBeVisible();
 
   await page.clock.fastForward(30_000);
@@ -1460,6 +1501,7 @@ test("switching trails aborts stale review state without unlocking duplicates", 
   await page.goto("/");
   await selectTrail(page, "Jenny Lake Loop");
   await page.getByRole("button", { name: "Generate packing list" }).click();
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
   await expect.poll(() => reviewRequests).toBe(1);
 
   const searchBox = page.getByRole("searchbox", {
@@ -1484,6 +1526,7 @@ test("switching trails aborts stale review state without unlocking duplicates", 
     (button as HTMLButtonElement).click();
   });
 
+  await page.getByRole("button", { name: "Request optional Gemini review" }).click();
   await expect.poll(() => reviewRequests).toBe(2);
   await expect(
     page.getByText(

@@ -81,7 +81,12 @@ export function ContextStatusPanel({
           }
         >
           {weather.retrievalStatus !== "unavailable" ? (
-            <DayForecast startTime={startTime} weather={weather} />
+            <>
+              <p className="context-source-note">
+                Forecast data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" className="source-link">Open-Meteo</a>.
+              </p>
+              <DayForecast startTime={startTime} weather={weather} />
+            </>
           ) : null}
         </ContextCard>
         <ContextCard

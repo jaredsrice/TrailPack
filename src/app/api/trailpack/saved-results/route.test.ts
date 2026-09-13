@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({ getSupabaseServerClient: vi.fn() }));
 
 vi.mock("@/features/trailpack/lib/supabase/server", () => mocks);
 
-import { GET, POST } from "./route";
+import { DELETE, GET, POST } from "./route";
 
 function draft() {
   const scenario = DEMO_CONTEXTS["jenny-lake-loop"];
@@ -146,6 +146,54 @@ afterEach(() => {
 });
 
 describe("saved-results route ownership", () => {
+  it("deletes every saved plan owned by the validated user", async () => {
+    const query = {
+      delete: vi.fn(),
+      eq: vi.fn(async () => ({ error: null })),
+    };
+    query.delete.mockReturnValue(query);
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: { getUser: vi.fn(async () => ({ data: { user: { id: "user-a" } }, error: null })) },
+      from: vi.fn(() => query),
+    });
+
+    const response = await DELETE();
+
+    expect(response.status).toBe(204);
+    expect(query.eq).toHaveBeenCalledWith("user_id", "user-a");
+    expect(response.headers.get("cache-control")).toBe("no-store");
+  });
+
+  it("rejects signed-out bulk deletion before opening the table", async () => {
+    const from = vi.fn();
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: { getUser: vi.fn(async () => ({ data: { user: null }, error: null })) },
+      from,
+    });
+
+    const response = await DELETE();
+
+    expect(response.status).toBe(401);
+    expect(from).not.toHaveBeenCalled();
+  });
+
+  it("reports a failed bulk deletion without claiming success", async () => {
+    const query = {
+      delete: vi.fn(),
+      eq: vi.fn(async () => ({ error: { code: "database-error" } })),
+    };
+    query.delete.mockReturnValue(query);
+    mocks.getSupabaseServerClient.mockResolvedValue({
+      auth: { getUser: vi.fn(async () => ({ data: { user: { id: "user-a" } }, error: null })) },
+      from: vi.fn(() => query),
+    });
+
+    const response = await DELETE();
+
+    expect(response.status).toBe(500);
+    await expect(response.json()).resolves.toEqual({ error: "Saved results could not be deleted." });
+  });
+
   it("cancels an authenticated stalled upload before writing saved data", async () => {
     const from = vi.fn();
     mocks.getSupabaseServerClient.mockResolvedValue({

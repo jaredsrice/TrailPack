@@ -54,6 +54,19 @@ export async function deleteSavedResultFromRoute(
   await discardBody(response);
 }
 
+export async function deleteAllSavedResultsFromRoute(
+  fetchImpl: typeof fetch = fetch,
+): Promise<void> {
+  const response = await request(fetchImpl, SAVED_RESULTS_ROUTE, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    await discardBody(response);
+    throw new Error(REQUEST_ERROR_MESSAGE);
+  }
+  await discardBody(response);
+}
+
 async function request(
   fetchImpl: typeof fetch,
   input: RequestInfo | URL,

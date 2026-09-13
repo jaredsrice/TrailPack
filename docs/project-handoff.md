@@ -1,9 +1,51 @@
 # TrailPack project handoff
 
-Current scope checkpoint: 2026-09-12 (America/Denver). Released version: 0.8.0.
+Current scope checkpoint: 2026-09-12 (America/Denver). Release target: 0.8.1.
 Active checkout: `/Users/jaredrice/AI/projects/TrailPack/`.
 
+Project state: approved 499B work is complete. No active feature backlog, open
+pull request, or open issue remains. TrailPack is in maintenance mode and is
+ready for an academic presentation or small demonstration. Broader public or
+commercial use requires the owner and legal-review decisions in the website and
+privacy audit. Do not resume shelved ideas automatically.
+
 ## Recent handoff history
+
+- **2026-09-12, final 0.8.1 closeout authorized:** Jared authorized completing
+  the documentation and release bookkeeping, pushing `main`, and verifying the
+  resulting release. The patch release records the data notice, explicit Gemini
+  choice, bulk saved-plan deletion, and focused accessibility repairs. Current
+  guides now describe released behavior, the presentation path, maintenance
+  status, and the exact public-release decisions still deferred. Historical
+  archive records remain unchanged. The pre-integration dirty checkout remains
+  recoverable in the named stash `preserve pre-existing main checkout before
+  privacy integration`; it is not part of the released tree. A clean browser
+  startup exposed mismatched Supabase test URLs between Playwright and the app
+  server. Both now use the same fake endpoint, so local tests do not depend on
+  `.env.local`. Final local checks pass: documentation links, lint, TypeScript,
+  900 unit and integration tests, 50 of 50 live NPS comparisons, 5,000 stress
+  cases, the production build, and 154 Firefox tests in 4.8 minutes. npm reports
+  zero dependency vulnerabilities.
+
+- **2026-09-12, local privacy and accessibility hardening ready for owner
+  review:** Jared confirmed TrailPack remains an academic, noncommercial project
+  and approved a local improvement pass that stops before main. Branch
+  `codex/privacy-accessibility-hardening` adds a plain-language `/privacy` notice,
+  explicit Gemini choice with age and data wording, linked Open-Meteo
+  attribution, bulk saved-plan deletion with confirmation, corrected landmarks,
+  a real skip link and home link, and a shorter carousel Tab path. It preserves
+  the existing visual identity and adds no dependency. The audit and completed
+  versus deferred ledger are saved at
+  `docs/validation/2026-09-12-website-privacy-release-audit.md`. Automatic 90-day
+  deletion, full Supabase Auth identity deletion, formal legal policies, provider
+  account verification, separate Preview data, and production publication remain
+  deferred for broader public use. Final local checks pass: lint, documentation links, TypeScript, the
+  optimized production build, 900 unit and integration tests across 61 files,
+  and 154 Firefox browser tests in 4.8 minutes. Jared then approved the commit.
+  Feature commit `8824559` was fast-forwarded to local `main`. The
+  older pre-existing dirty checkout is preserved in the named Git stash
+  `preserve pre-existing main checkout before privacy integration` after its
+  stale release documents conflicted with the current release records.
 
 - **2026-09-12, 0.8.0 published to production:** Jared approved merging PR #61
   and publishing the completed 499B scope. The PR merged to `main` as
@@ -269,27 +311,18 @@ contains 39 discovery entries and 52 complete route profiles. Trail admission
 holds, unknown gains, and closed access remain explicit in the
 [route audit](data/grand-teton-day-hike-audit-2026-09-09.md).
 
-The approved relocation to the active checkout above is complete. The September
-10 acceptance audit records queued AI-validation and NPS maintenance repairs,
-with live external lookup and alternative packing-list variants tracked
-separately. Start with the [roadmap docket](roadmap.md#follow-up-docket) and its
-linked acceptance plan when considering further work.
-
-Required completion work resumed on September 11 after the requirements review.
-Use the implementation worktree above for code changes. The September 10 audit
-remains the acceptance baseline; its original lack of implementation authorization
-is historical. Release/deployment acceptance will be recorded after verification.
-
-The completed code was merged through PR #61, with final runtime evidence
-recorded in the latest history entry. Main and the production website now serve
-release 0.8.0. Approved shared-database
+The approved relocation to the active checkout above is complete. The completed
+499B code was merged through PR #61 and published as release 0.8.0. Release 0.8.1
+adds the final website, privacy, and accessibility closeout. Approved shared-database
 quota, permission and migration-history changes are applied and verified.
-All six baseline requirements and B-01–B-04 have candidate evidence; the live
+All six baseline requirements and B-01 through B-04 have release evidence; the live
 Gemini, NPS maintenance and final security checks are complete. One saved-library
 request failed and recovered on reload; its cause remains unconfirmed.
 Original SH variants/export are historical, not the active backlog.
-The implementation, necessary-only audit, testing and simple documentation pass
-is complete. Future feature work remains separately authorized.
+The implementation, necessary-only audits, testing, and documentation passes are
+complete. Future feature work requires separate owner authorization. Start with
+the [roadmap](roadmap.md), [requirements status](requirements-status.md), and the
+two September 12 audit records before reopening work.
 
 ## September 9 closeout decisions and evidence
 
@@ -385,21 +418,10 @@ owner-managed outside the repository.
 
 ## Shelved work
 
-On 2026-09-10, the owner queued B-01 and B-02 follow-ups to revisit the original
-live external trail lookup and alternative AI packing-list refinement goals.
-The completed [acceptance audit and development plan](superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md)
-separates current B-02 validation defects from the separately queued original
-SH-04 variant extension. B-01 live lookup remains absent despite the delivered
-stored-import substitute. The [roadmap docket](roadmap.md#follow-up-docket)
-records these distinctions. That September 10 no-implementation state was
-superseded by the September 11 authorized candidate above; this does not resume
-the other work below. Google login/private saved results
-remain passed by the owner and were not re-audited.
-
-Resume only when the owner explicitly asks:
-
-The broad code-quality audit was separately resumed and completed September 12
-with necessary changes only. These other ideas remain shelved:
+B-01 and B-02 are complete. Original SH-04 packing-list variants and SH-06 guest
+export are historical ideas, not current 499B obligations. The broad
+code-quality audit was completed September 12 with necessary changes only.
+These product ideas remain shelved and require explicit owner approval to resume:
 
 1. Less cluttered trail-selection landing experience.
 2. Accessible interactive supported-trail map.
@@ -418,6 +440,6 @@ No new task, timer, or automation starts any of this work automatically.
 - **Recovery:** restore deleted refs from the local bundle and its manifest if
   needed. Revert the maintenance commit through a PR to roll back code/config
   changes; reverting dependency patches reintroduces the addressed advisories.
-- **Release evidence:** use the 0.7.1 GitHub release, its commit checks, and its
-  Production deployment record for the final commit. This document avoids a
-  self-referential commit hash that would require another closeout commit.
+- **Release evidence:** use the 0.8.1 GitHub release, its commit checks, and its
+  Production deployment record. The release tag provides the immutable commit
+  identifier without adding a self-referential hash to this document.

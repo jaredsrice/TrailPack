@@ -3,6 +3,7 @@ import { DEMO_CONTEXTS } from "@/features/trailpack/data/demo-contexts";
 import { JENNY_LAKE_LOOP } from "@/features/trailpack/data/supported-trails";
 import { generatePackingRecommendation } from "@/features/trailpack/lib/packing";
 import {
+  deleteAllSavedResultsFromRoute,
   listSavedResultsFromRoute,
   saveResultFromRoute,
 } from "@/features/trailpack/lib/saved-results-client";
@@ -27,6 +28,16 @@ function asFetch(response: Response): typeof fetch {
 }
 
 describe("saved results route client", () => {
+  it("requests deletion of every saved result", async () => {
+    const fetchImpl = asFetch(new Response(null, { status: 204 }));
+
+    await expect(deleteAllSavedResultsFromRoute(fetchImpl)).resolves.toBeUndefined();
+    expect(fetchImpl).toHaveBeenCalledWith(
+      "/api/trailpack/saved-results",
+      expect.objectContaining({ method: "DELETE", cache: "no-store" }),
+    );
+  });
+
   it("parses a bounded saved-result response", async () => {
     const value = draft();
     const fetchImpl = asFetch(

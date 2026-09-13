@@ -1,6 +1,7 @@
 # Code-quality audit brief
 
 Status: completed and published September 12, 2026, with necessary changes only.
+This brief is closed and must not be rerun automatically.
 The approved team is an Astra High coordinator and security reviewer, with a
 Sol High builder and tester. The earlier XHigh suggestion is superseded.
 Current work and dispositions are in the
