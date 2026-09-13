@@ -1,12 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = "http://127.0.0.1:3000";
-const browserTestSupabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ??
-  "https://trailpack-browser-test.supabase.co";
-const browserTestSupabaseKey =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-  "sb_publishable_browser_test";
+const browserTestSupabaseUrl = "https://trailpack-browser-test.supabase.co";
+const browserTestSupabaseKey = "sb_publishable_browser_test";
 
 export default defineConfig({
   testDir: "./tests/accessibility",

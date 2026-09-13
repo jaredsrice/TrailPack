@@ -1,9 +1,9 @@
 # TrailPack product roadmap
 
-Status: Priorities 1 and 2 are complete and deployed. The trail-selection
-redesign, interactive map, and custom route builder remain shelved. The owner
-resumed the code-quality audit on September 12, limited to necessary changes;
-that pass is complete and published through PR #61.
+Status: the approved 499B scope and release closeout are complete. TrailPack is
+in maintenance mode with no active feature backlog. The trail-selection
+redesign, interactive map, and custom route builder remain shelved. The final
+privacy, accessibility, and website-quality pass is recorded in release 0.8.1.
 See the [project handoff](project-handoff.md).
 Original-scope follow-ups for B-01 and B-02 were queued by the owner on
 2026-09-10. See the [follow-up docket](#follow-up-docket).
@@ -41,6 +41,7 @@ Historical records remain unchanged; other shelved work stays shelved.
 | B-01 / original SH-01 | Live public trail lookup beyond the supported catalog | Bounded NPS lookup and duration-driven partial packing passed Preview checks and is published. The shared quota migration is applied. | Complete in production |
 | B-02 current acceptance | Guarded explanation validation and supporting NPS maintenance | The release removes provider-authored prose and free-text forwarding, shows safe rejection reasons, gives practical complete or incomplete reviews, and passes all 50 NPS comparisons. | Complete in production |
 | Final code audit | Necessary repairs and regression checks | State, provider failures, data labels, authentication, quotas, performance and tests were reviewed. Necessary fixes are published; working architecture and trail facts were preserved. | Complete; [audit record](validation/2026-09-12-final-audit.md) |
+| Final website and privacy review | Academic-release issue spotting and focused accessibility repairs | Data use is described plainly, Gemini requires an explicit request, saved plans support bulk deletion, and keyboard structure is improved. Broad-public-release decisions remain documented. | Complete in 0.8.1; [audit record](validation/2026-09-12-website-privacy-release-audit.md) |
 
 The 499B specification is the current completion authority. Original SH-04
 packing-list variants and SH-06 guest export are historical ideas, not the

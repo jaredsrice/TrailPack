@@ -1,9 +1,10 @@
-# TrailPack 499B demo
+# TrailPack presentation and demo
 
-Use the reviewed test website in Firefox. Check the
-[final audit record](validation/2026-09-12-final-audit.md) for the exact candidate
-and any remaining acceptance limits. This script does not claim the demo has
-already been delivered to the instructor.
+Use the production website in Firefox. Check the
+[final audit record](validation/2026-09-12-final-audit.md) and
+[website and privacy audit](validation/2026-09-12-website-privacy-release-audit.md)
+for verified behavior and remaining limits. This script does not claim the demo
+has already been delivered to the instructor.
 
 ## 1. Make a guest plan
 
@@ -26,13 +27,19 @@ to show the empty-result message and available manual entry.
 
 Return to the supported Jenny Lake Loop profile. Sign in with Google, then
 select and generate the plan again after returning. Show one accepted live
-review and its provider label. AI selects approved explanation highlights;
+review by pressing **Request Gemini review** after reading the age and data
+notice. Show its provider label. AI selects approved explanation highlights;
 it cannot add items, remove items or change priorities and evidence labels.
 
 Show a rejected-response test and its visible fallback without trying to make
 the live provider generate an unsafe answer. Then save the plan, open Saved
 plans, revisit its list and delete the disposable demo record. Sign out and
-show that guest planning still works.
+show that guest planning still works. If appropriate, demonstrate the confirmed
+**Delete all saved plans** action with disposable records only.
+
+Open **Data and privacy** in the footer. Explain that TrailPack is currently an
+academic, noncommercial project, and distinguish deleting saved plans from the
+still-unimplemented account and automatic-retention controls.
 
 ## 4. Explain source checks and security
 

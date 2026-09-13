@@ -65,7 +65,7 @@ unavailable, and unknown values remain distinguishable.
 | `GET /api/trailpack/alerts` | Return bounded NPS notices for a supported trail or park |
 | `POST /api/trailpack/ai-review` | Authenticate, claim allowance, request Gemini output, and validate it |
 | `POST /api/trailpack/nps-lookup` | Claim shared lookup allowance, validate NPS hiking candidates, and return partial facts |
-| `GET/POST /api/trailpack/saved-results` | List or create private owned snapshots |
+| `GET/POST/DELETE /api/trailpack/saved-results` | List, create, or bulk-delete private owned snapshots |
 | `DELETE /api/trailpack/saved-results/:id` | Delete only the authenticated owner's result |
 | `GET /auth/callback` | Complete the Supabase Google OAuth PKCE exchange |
 
@@ -80,7 +80,7 @@ the user instead of accepting an owner identifier from the browser. Database
 row-level security, payload limits, result limits, and owner-scoped operations
 provide additional enforcement.
 
-In the unreleased candidate, Gemini receives only approved fact IDs and
+After an explicit user request, Gemini receives only approved fact IDs and
 server-constructed wording. Profile wording uses the canonical catalog, not the
 browser's trail name. Fixed weather/notice flags and locally derived duration or
 reported-snow flags supply context without forwarding raw trip strings, notes,
@@ -97,7 +97,7 @@ quota or provider failure preserves the baseline.
 
 ## Partial live NPS lookup
 
-The unreleased lookup is separate from catalog admission. It queries only
+The partial lookup is separate from catalog admission. It queries only
 Zion, Acadia or Bryce Canyon, validates hiking identity and structured duration,
 and stores null distance, elevation and route type. It does not invent complete
 route geometry. NPS duration seeds a conservative manual plan, with source notes
@@ -109,7 +109,7 @@ bounded cache constrain the provider boundary. A database-owned shared token
 bucket is the quota authority across workers; an unavailable RPC blocks NPS
 calls. The reviewed migration is applied to the shared hosted database. See the
 [provider proof](validation/2026-09-11-nps-lookup-provider-proof.md) and
-[candidate verification](validation/2026-09-11-required-completion.md).
+[release verification](validation/2026-09-11-required-completion.md).
 
 ## Source maintenance
 
@@ -119,7 +119,7 @@ write only `src/features/trailpack/data/nps-source-snapshots.json`. Monthly
 automation opens a protected pull request rather than writing directly to
 `main`.
 
-The candidate accepts the catalog's valid `Very Strenuous` difficulty and
+The released maintenance path accepts the catalog's valid `Very Strenuous` difficulty and
 enforces the one-megabyte source-page cap while streaming, with a shared request
 deadline. Each redirect is checked before following it. A reviewed delivery
 override uses `home.nps.gov` only for the two Open Canyon profiles, retaining

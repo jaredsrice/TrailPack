@@ -1,15 +1,10 @@
-import { loadEnvConfig } from "@next/env";
 import { expect, test, type Page } from "@playwright/test";
 import type {
   SavedResultDraft,
   SavedResultRecord,
 } from "../../src/features/trailpack/lib/saved-results";
 
-loadEnvConfig(process.cwd());
-
-const supabaseUrl =
-  process.env.NEXT_PUBLIC_SUPABASE_URL ??
-  "https://trailpack-browser-test.supabase.co";
+const supabaseUrl = "https://trailpack-browser-test.supabase.co";
 const accountEmail = "trailpack-browser-test@example.com";
 const accountUser = {
   id: "11111111-1111-4111-8111-111111111111",

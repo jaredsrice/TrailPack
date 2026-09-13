@@ -4,6 +4,9 @@ Use the shortest reading path that matches what you need. Current guides appear
 first; dated research, project records, and screenshots are preserved in the
 [archive](archive/README.md).
 
+Project status: the approved 499B scope is complete and TrailPack is in
+maintenance mode. Use the [presentation guide](demo.md) for a short walkthrough.
+
 ## I want to use TrailPack
 
 1. Open [TrailPack](https://trailpack-ten.vercel.app).
@@ -52,8 +55,8 @@ local photograph, and an explicit decision about access and return form.
 
 ## Product direction
 
-The [roadmap](roadmap.md) records current priorities. Route coverage is complete.
-The shelved product-design phase covers a less cluttered trail-selection landing
+The [roadmap](roadmap.md) records the closed release scope and shelved ideas.
+Route coverage is complete. The shelved product-design phase covers a less cluttered trail-selection landing
 experience, an accessible interactive map, and later custom route composition
 from reviewed segments.
 

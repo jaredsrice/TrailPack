@@ -7,6 +7,7 @@ conditions and packing priorities, but it cannot silently change the items or
 their sources.
 
 [Open TrailPack](https://trailpack-ten.vercel.app) ·
+[Use the presentation guide](docs/demo.md) ·
 [Review data and release findings](docs/validation/2026-09-12-website-privacy-release-audit.md) ·
 [Read the user guide](docs/user-guide.md) ·
 [Browse the documentation](docs/README.md) ·
@@ -31,8 +32,10 @@ their sources.
 
 ## Current coverage
 
-Release 0.8.0 adds a separate live NPS
-lookup for Zion, Acadia, and Bryce Canyon. Its partial results use NPS duration
+Release 0.8.1 adds the plain-language data notice, explicit Gemini choice,
+bulk saved-plan deletion, and focused keyboard and page-structure repairs.
+Release 0.8.0 added a separate live NPS lookup for Zion, Acadia, and Bryce
+Canyon. Its partial results use NPS duration
 plus manual details, not complete catalog profiles. Editing the duration keeps
 it user-provided even if the original number is restored. Live lookup and the
 stronger signed-in Gemini review are published on the production website. See
@@ -152,18 +155,25 @@ app users, contributors, trail-data maintainers, and technical reviewers.
 - [Product roadmap](docs/roadmap.md)
 - [Release history](CHANGELOG.md)
 
-## 499B completion
+## Project status
 
-Release 0.8.0 repairs the
+TrailPack's approved 499B software scope is complete. Release 0.8.0 repaired the
 [September 10 acceptance findings](docs/superpowers/plans/2026-09-10-499b-acceptance-audit-and-development-plan.md):
 AI selects only approved fact IDs; TrailPack supplies the wording; arbitrary
 trip text is omitted from the provider payload; rejected selections show a safe
 reason; and NPS maintenance accepts valid Very Strenuous profiles while bounding
 page reads during streaming. The release also adds the bounded partial NPS
 lookup. See the [requirements status](docs/requirements-status.md) for the final
-requirement assessment.
+requirement assessment. Release 0.8.1 closes the current website, privacy, and
+accessibility review for an academic presentation or small demonstration.
 
-The following product work also remains shelved until explicitly resumed:
+The repository is now in maintenance mode. There is no active feature backlog,
+open pull request, or open issue. Provider maintenance and security updates may
+still require normal review. A broader public or commercial release requires
+the owner and legal-review decisions recorded in the
+[website and privacy audit](docs/validation/2026-09-12-website-privacy-release-audit.md).
+
+The following product ideas remain shelved until explicitly resumed:
 
 1. Make the trail-selection landing experience easier to scan as the catalog
    grows.

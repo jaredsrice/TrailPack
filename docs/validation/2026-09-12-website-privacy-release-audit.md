@@ -1,7 +1,7 @@
 # TrailPack website, privacy, and release audit
 
 Date: September 12, 2026. Scope: local code and mocked browser tests prepared on
-`codex/privacy-accessibility-hardening` and later committed to local `main` with
+`codex/privacy-accessibility-hardening` and prepared for release 0.8.1 with
 Jared's approval. This is issue spotting for an academic project. It is not
 legal advice, a compliance certification, or approval for a public release.
 
@@ -190,6 +190,10 @@ academic demonstration:
 - Final Firefox run: 154 tests passed in 4.8 minutes, including both responsive
   widths, Axe scans, provider failures, saved-plan lifecycle, bulk deletion,
   explicit AI choice, focus structure, and stale-request behavior.
+- A clean-start browser run first exposed mismatched fake and local Supabase test
+  URLs. The test configuration now uses one fixed fake endpoint on both sides;
+  the focused 10-test account suite and complete 154-test suite pass without
+  relying on `.env.local` or contacting the hosted account service.
 - Lint, documentation links, TypeScript, and the optimized production build
   passed. The build prerendered `/privacy` and reported 183 kB first-load
   JavaScript for the homepage.
@@ -198,24 +202,24 @@ academic demonstration:
 
 | Item | Status | Evidence or reason |
 |---|---|---|
-| Plain-language data notice | Completed locally | `/privacy`, linked from the footer and saved library |
-| Explicit Gemini request | Completed locally | No AI route call occurs during list generation; the user presses the disclosed control |
-| AI data minimization wording | Completed locally | Approved trip facts only; no name, email, or free-form notes |
-| Open-Meteo attribution | Completed locally | Linked beside weather output |
-| Skip link and landmarks | Completed locally | Browser-tested header, main, and footer structure |
-| Shorter carousel Tab path | Completed locally | One current indicator is tabbable; other indicators remain clickable |
-| Delete all saved plans | Completed locally | Two-step confirmation and authenticated owner-scoped route |
+| Plain-language data notice | Completed in 0.8.1 | `/privacy`, linked from the footer and saved library |
+| Explicit Gemini request | Completed in 0.8.1 | No AI route call occurs during list generation; the user presses the disclosed control |
+| AI data minimization wording | Completed in 0.8.1 | Approved trip facts only; no name, email, or free-form notes |
+| Open-Meteo attribution | Completed in 0.8.1 | Linked beside weather output |
+| Skip link and landmarks | Completed in 0.8.1 | Browser-tested header, main, and footer structure |
+| Shorter carousel Tab path | Completed in 0.8.1 | One current indicator is tabbable; other indicators remain clickable |
+| Delete all saved plans | Completed in 0.8.1 | Two-step confirmation and authenticated owner-scoped route |
 | Automatic 90-day deletion | Deferred | Provisional rule; requires an approved and hosted-tested scheduler |
 | Delete Google or Supabase identity | Deferred | Requires privileged deletion and account lifecycle decisions |
 | Formal privacy policy or terms | Deferred | Depends on audience, jurisdiction, operator, and qualified legal review |
 | Analytics or cookie notice | Not needed now | No analytics, ads, embeds, or nonessential cookies found |
 | New UI or animation dependency | Not added | Existing React, CSS, and controls cover the identified needs |
-| Remote push, Preview, or production deployment | Not performed | This pass is committed only to local `main` |
+| Release publication | Authorized for 0.8.1 | Final push, checks, and production verification are recorded in the project handoff and GitHub release |
 
 ## Smallest recommended next-step plan
 
-1. Review this local branch and the new data wording.
-2. Confirm the seven owner decisions above.
+1. Use the current production build for the academic presentation or small demo.
+2. Confirm the seven owner decisions above before broader public promotion.
 3. If a broad public release is planned, implement and hosted-test retention and
    full account deletion before drafting final policy text.
 4. Obtain qualified legal review for the final public policies and safety terms.

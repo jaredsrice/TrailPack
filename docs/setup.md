@@ -30,7 +30,7 @@ paste, or print credential values.
 
 | Variable | Purpose |
 |---|---|
-| `NPS_API_KEY` | Enables live National Park Service notices and the unreleased partial lookup |
+| `NPS_API_KEY` | Enables live National Park Service notices and the partial lookup |
 | `GEMINI_API_KEY` | Enables the guarded Gemini explanation review |
 | `GEMINI_MODEL` | Overrides the default Gemini model |
 | `NEXT_PUBLIC_SUPABASE_URL` | Identifies the Supabase project used for authentication and private saves |
@@ -40,14 +40,14 @@ The `NEXT_PUBLIC_` values are intentionally browser-visible project settings.
 Do not use that prefix for private provider keys. Hosted Preview and Production
 variables do not automatically configure a local checkout.
 
-## Unreleased NPS lookup setup
+## NPS lookup setup
 
 The guest baseline remains usable without any credentials. The optional live
 lookup requires `NPS_API_KEY`, both existing Supabase public settings, and the
 reviewed migration
 [`20260911000000_nps_lookup_quota.sql`](../supabase/migrations/20260911000000_nps_lookup_quota.sql).
 Apply it only to the approved project/environment through the existing database
-release process, before enabling a preview of the new route. Missing or failed
+release process, before enabling the route. Missing or failed
 quota RPC configuration returns unavailable and makes no NPS request.
 
 The public RPC can consume only a fixed shared allowance. It cannot read/reset

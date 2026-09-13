@@ -8,6 +8,8 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-09-12
+
 ### Added
 
 - Add a plain-language academic data notice, linked Open-Meteo attribution, and
@@ -20,6 +22,11 @@ and TrailPack uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   explain the age and data boundary beside that control.
 - Improve keyboard structure with a real skip link, corrected page landmarks,
   a true home link, and one carousel indicator in the Tab order.
+
+### Fixed
+
+- Keep local browser authentication tests isolated from `.env.local` by using
+  the same fake Supabase endpoint in the app server and request mocks.
 
 ## [0.8.0] - 2026-09-12
 
